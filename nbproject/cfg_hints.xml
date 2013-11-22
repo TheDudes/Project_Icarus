@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//NetBeans//DTD Tool Configuration 1.0//EN" "http://www.netbeans.org/dtds/ToolConfiguration-1_0.dtd">
+<configuration>
+    <tool kind="hints" type="text/x-java">
+        <node name="Javac_OVERRIDES">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.OrganizeImports">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="Javac_DEPRECATED">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="Braces_WHILE_LOOP">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.stringEqualsEmpty">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.getClassInsteadOfDotClass">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.jdk.AddUnderscores">
+            <attribute name="size-decimal" value="3"/>
+            <attribute name="size-hexadecimal" value="4"/>
+            <attribute name="size-binary" value="4"/>
+            <attribute name="enabled" value="false"/>
+        </node>
+        <node name="Javac_FINALLY">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.lengthOneStringIndexOf">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="EmptyStatements_IF">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="Javac_SERIALIZATION">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.collectionsToArray">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="Braces_IF">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.ClassStructure.publicConstructorInNonPublicClass">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="Javac_FALLTHROUGH">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="Javac_EMPTY_STATEMENT_AFTER_IF">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="Braces_DO_WHILE_LOOP">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="Javac_UNNECESSARY_CAST">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.perf.Tiny.constantIntern">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="Javac_UNCHECKED">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="Braces_FOR_LOOP">
+            <attribute name="enabled" value="true"/>
+        </node>
+        <node name="org.netbeans.modules.java.hints.SystemOut">
+            <attribute name="enabled" value="true"/>
+        </node>
+    </tool>
+</configuration>
