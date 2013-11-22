@@ -1,7 +1,7 @@
 <#if licenseFirst??>
 ${licenseFirst}
 </#if>
-${licensePrefix}Copyright (c) ${date?date?string("yyyy")}, ${project.organization!user}
+${licensePrefix}Copyright (c) ${date?date?string("yyyy")}, ${user}
 ${licensePrefix?replace(" +$", "", "r")}
 ${licensePrefix}Permission to use, copy, modify, and/or distribute this software for any
 ${licensePrefix}purpose with or without fee is hereby granted, provided that the above
