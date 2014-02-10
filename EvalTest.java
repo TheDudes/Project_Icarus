@@ -7,6 +7,9 @@
 //package evaltest;
 //import static evaltest.DynamicCompiler.compile;
 //import static evaltest.DynamicCompiler.runIt;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.io.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -27,12 +30,14 @@ import javax.tools.ToolProvider;
 /**
  *
  * @author Simon Mages <mages.simon@googlemail.com>
+ * @author Wolfgang Wackerbauer <w.wackerbauer@yahoo.de>
  */
 public class EvalTest {
 
     /**
      * @param args the command line arguments
      */
+	private static String javaClassFile = "/home/d4ryus/Coding/Project_Icarus/Classfile.java";
     private static String classOutputFolder = "/tmp";
 
     public static class MyDiagnosticListener implements DiagnosticListener<JavaFileObject> {
@@ -109,38 +114,47 @@ public class EvalTest {
      Object instance = thisClass.newInstance();
      Method thisMethod = thisClass.getDeclaredMethod("test", params);
  
-     // run the testAdd() method on the instance:
-     thisMethod.invoke(instance, paramsObj);
-     }
-     catch (MalformedURLException e)
-     {
-     }
-     catch (ClassNotFoundException e)
-     {
-     }
-     catch (Exception ex)
-     {
-     ex.printStackTrace();
-     }
-     }*/
+            // run the testAdd() method on the instance:
+            thisMethod.invoke(instance, paramsObj);
+        }
+        catch (MalformedURLException e)
+        {
+        }
+        catch (ClassNotFoundException e)
+        {
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }*/
+   
+	private static String readFile(String file) throws IOException 
+	{
+		BufferedReader reader = new BufferedReader( new FileReader (file));
+		String line = null;
+		StringBuilder stringBuilder = new StringBuilder();
+		String ls = System.getProperty("line.separator");
+	
+	    while((line = reader.readLine() ) != null ) 
+		{
+	        stringBuilder.append( line );
+	        stringBuilder.append( ls );
+	    }	
+	    return stringBuilder.toString();
+	} 
+
     public static void main(String[] args) throws Exception {
+
         // TODO code application logic here
-        JavaFileObject file = new EvalTest.InMemoryJavaFileObject("Test", "public class Test"
-                + "{"
-                + "public void test()"
-                + "{"
-                + "System.out.println(\"Fancy Pantsy\"); "
-                + "}"
-                + "public void blub()"
-                + "{"
-                + "System.out.println(\"Bliblablub\"); "
-                + "}"
-                + "}");
+		String everything = readFile(javaClassFile);
+		//System.out.println(everything);
+		JavaFileObject file = new EvalTest.InMemoryJavaFileObject("Test",everything );
         Iterable<? extends JavaFileObject> files = Arrays.asList(file);
 
         //2.Compile your files by JavaCompiler
         compile(files);
-
+        File classfile = new File(classOutputFolder);
         File classfile = new File(classOutputFolder);
 
         URL url = classfile.toURL(); // file:/classes/demo
@@ -156,15 +170,12 @@ public class EvalTest {
         Class params[] = {};
         Object paramsObj[] = {};
         Object instance = thisClass.newInstance();
-        Method thisMethod = thisClass.getDeclaredMethod("test", params);
-        Method anotherMethod = thisClass.getDeclaredMethod("blub", params);
+        Method mainMethod = thisClass.getDeclaredMethod("main", params);	
 
         // run the testAdd() method on the instance:
-        thisMethod.invoke(instance, paramsObj);
-        anotherMethod.invoke(instance, paramsObj);
-
+        mainMethod.invoke(instance, paramsObj);
+        
         //3.Load your class by URLClassLoader, then instantiate the instance, and call method by reflection
         //runIt();
-    }
-
+    } 
 }
