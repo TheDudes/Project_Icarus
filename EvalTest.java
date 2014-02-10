@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package evaltest;
+//package evaltest;
 
 //import static evaltest.DynamicCompiler.compile;
 //import static evaltest.DynamicCompiler.runIt;
@@ -133,7 +133,17 @@ public class EvalTest {
     
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
-        JavaFileObject file = new EvalTest.InMemoryJavaFileObject("Test", "public class Test { public void test() {System.out.println(\"Fancy Pantsy\"); }}");
+        JavaFileObject file = new EvalTest.InMemoryJavaFileObject("Test", "public class Test" +
+																		  "{" + 
+																				"public void test()" +
+																			   "{" +
+																					"System.out.println(\"Fancy Pantsy\"); " +
+																			   "}" +
+																			   "public void blub()" + 
+																			   "{" +
+																					"System.out.println(\"Bliblablub\"); " +
+																			   "}" +
+																		  "}");
         Iterable<? extends JavaFileObject> files = Arrays.asList(file);
  
         //2.Compile your files by JavaCompiler
@@ -147,17 +157,19 @@ public class EvalTest {
         // Create a new class loader with the directory
         ClassLoader loader = new URLClassLoader(urls);
 
-            // Load in the class; Class.childclass should be located in
+        // Load in the class; Class.childclass should be located in
         // the directory file:/class/demo/
         Class thisClass = loader.loadClass("Test");
 
         Class params[] = {};
         Object paramsObj[] = {};
         Object instance = thisClass.newInstance();
-        Method thisMethod = thisClass.getDeclaredMethod("test", params);
+        Method thisMethod = thisClass.getDeclaredMethod("test", params);	
+		Method anotherMethod = thisClass.getDeclaredMethod("blub", params);
 
         // run the testAdd() method on the instance:
         thisMethod.invoke(instance, paramsObj);
+		anotherMethod.invoke(instance, paramsObj);
         
         //3.Load your class by URLClassLoader, then instantiate the instance, and call method by reflection
         //runIt();
