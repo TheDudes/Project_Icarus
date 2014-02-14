@@ -18,7 +18,7 @@ public class Container_Long {
     }
     public long getValue(String varName) throws Exception { 
         if(container_long.containsKey(varName)){  
-            return container_long.get(varName).intValue();
+            return container_long.get(varName).longValue();
         } else {
             throw new Exception("Variable \"" + varName + "\" might not be initialised");
         }
