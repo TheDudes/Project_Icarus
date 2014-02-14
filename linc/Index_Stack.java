@@ -33,7 +33,7 @@ public class Index_Stack {
      */
     public int getFirst(){
         if(container.isEmpty()){
-            System.err.println("No more Elements stored in here!");
+            System.err.println("No more Elements stored in the Index Stack!");
             return -1;
         }
         else{
