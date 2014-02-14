@@ -138,8 +138,8 @@ public class EvalTest {
 	
 	    while((line = reader.readLine() ) != null ) 
 		{
-	        stringBuilder.append( line );
-	        stringBuilder.append( ls );
+	        stringBuilder.append(line);
+	        stringBuilder.append(ls);
 	    }	
 	    return stringBuilder.toString();
 	} 
@@ -148,13 +148,11 @@ public class EvalTest {
 
         // TODO code application logic here
 		String everything = readFile(javaClassFile);
-		//System.out.println(everything);
 		JavaFileObject file = new EvalTest.InMemoryJavaFileObject("Test",everything );
         Iterable<? extends JavaFileObject> files = Arrays.asList(file);
 
         //2.Compile your files by JavaCompiler
         compile(files);
-        File classfile = new File(classOutputFolder);
         File classfile = new File(classOutputFolder);
 
         URL url = classfile.toURL(); // file:/classes/demo
@@ -170,7 +168,7 @@ public class EvalTest {
         Class params[] = {};
         Object paramsObj[] = {};
         Object instance = thisClass.newInstance();
-        Method mainMethod = thisClass.getDeclaredMethod("main", params);	
+        Method mainMethod = thisClass.getDeclaredMethod("main", params);
 
         // run the testAdd() method on the instance:
         mainMethod.invoke(instance, paramsObj);
