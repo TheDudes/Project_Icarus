@@ -17,7 +17,7 @@ public class Container_double {
     
     private Map<String, Double> container = new HashMap<>();
     
-    public void add(String key, double value){
+    public void put(String key, double value){
         container.put(key, value);
     }
     

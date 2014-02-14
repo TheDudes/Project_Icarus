@@ -17,7 +17,7 @@ public class Container_String {
     
     private Map<String, String> container = new HashMap<>();
         
-    public void add(String key, String value){
+    public void put(String key, String value){
         container.put(key, value);
     }
     
