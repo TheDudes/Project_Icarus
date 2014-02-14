@@ -13,18 +13,11 @@ public class Container_Long {
     public void set(String varName, long varValue){
         container_long.put(varName, varValue);
     }
-    
     public boolean is_In(String varName){
-        boolean isIn = false;
-        if(container_long.containsKey(varName)){
-            isIn = true;
-        }
-        return isIn;
+        return container_long.containsKey(varName);
     }
-    
     public long getValue(String varName) throws Exception { 
         long value = 0;
-        
         if(container_long.containsKey(varName)){
             for(Map.Entry<String, Long> item: container_long.entrySet()){ 
                 if(item.getKey().equals(varName)){
