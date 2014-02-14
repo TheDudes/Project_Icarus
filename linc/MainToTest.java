@@ -1,3 +1,7 @@
+
+import test.Condition_Stack;
+import test.Index_Stack;
+
 /*
  * Copyright (c) 2014, linc
  *
@@ -20,11 +24,33 @@
  */
 public class MainToTest {
     
-    Index_Stack iStack = new Index_Stack;
-    Condition_Stack cStack = new Condition_Stack();
 
     public static void main(String[] args){
         
+        Index_Stack iStack = new Index_Stack();
+        Condition_Stack cStack = new Condition_Stack();
+        
+        iStack.push(2);
+        iStack.push(5);
+        iStack.push(9);
+        cStack.push("a == 3");
+        cStack.push("b == 0");
+        cStack.push("c == 5");
+        
+        System.out.println(iStack.getFirst());
+        iStack.pop();
+        System.out.println(iStack.getFirst());
+        iStack.pop();
+        System.out.println(iStack.getFirst());
+        iStack.pop();
+        System.out.println(cStack.getFirst());
+        cStack.pop();
+        System.out.println(cStack.getFirst());
+        cStack.pop();
+        System.out.println(cStack.getFirst());
+        cStack.pop();
+        System.out.println(cStack.getFirst());
+        cStack.pop();
     }
     
 }
