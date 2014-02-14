@@ -6,7 +6,7 @@ import java.util.Map;
 public class Container_Integer {
     
     Map<String, Integer> container_integer = new HashMap<>();
-    
+
     public void put(String varName, int varValue){
         container_integer.put(varName, varValue);
     }
@@ -17,14 +17,8 @@ public class Container_Integer {
         return container_integer.containsKey(varName);
     }
     public int getValue(String varName) throws Exception { 
-        int value = 0;
-        if(container_integer.containsKey(varName)){
-            for(Map.Entry<String, Integer> item: container_integer.entrySet()){ 
-                if(item.getKey().equals(varName)){
-                    value = item.getValue();
-                } 
-            }
-            return value;
+        if(container_integer.containsKey(varName)){  
+            return container_integer.get(varName).intValue();
         } else {
             throw new Exception("Variable \"" + varName + "\" might not be initialised");
         }

@@ -17,14 +17,8 @@ public class Container_Long {
         return container_long.containsKey(varName);
     }
     public long getValue(String varName) throws Exception { 
-        long value = 0;
-        if(container_long.containsKey(varName)){
-            for(Map.Entry<String, Long> item: container_long.entrySet()){ 
-                if(item.getKey().equals(varName)){
-                    value = item.getValue();
-                } 
-            }
-            return value;
+        if(container_long.containsKey(varName)){  
+            return container_long.get(varName).intValue();
         } else {
             throw new Exception("Variable \"" + varName + "\" might not be initialised");
         }
