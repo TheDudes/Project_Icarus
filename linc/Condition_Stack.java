@@ -33,7 +33,7 @@ public class Condition_Stack {
      */
     public String getFirst(){
         if(container.isEmpty()){
-            System.err.println("No more Elements stored in here!");
+            System.err.println("No more Elements stored in the Condition Stack!");
             return "-1";
         }
         else{
