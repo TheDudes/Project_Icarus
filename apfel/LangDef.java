@@ -3,7 +3,7 @@ package parser;
 public class LangDef {
     
     //public Map<String, Integer> map = new HashMap<>();
-    public String[] token = {
+    public static String[] token = {
 	"PROGRAM",
 	"END_PROGRAM",
 	"FUNCTION_BLOCK",
@@ -11,13 +11,18 @@ public class LangDef {
 	"VAR",
 	"VAR_INPUT",
 	"VAR_OUTPUT",
+	"VAR_GLOBAL",
 	"END_VAR",
 	"CASE",
 	"OF",
 	"END_CASE",
 	"IF",
 	"THEN",
-	"END_IF"
+	"END_IF",
+	":",
+	":=",
+	";",
+	"(",
+	")"
     }
-
 }
