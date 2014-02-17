@@ -188,3 +188,5 @@ public class VALUE {
 
     }
 }
+
+public class VALUE<T>
