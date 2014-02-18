@@ -34,12 +34,16 @@ public class Config_Reader {
     /**
      * 
      * @param path the path of the config file
-     * @throws java.io.IOException
      */
-    public Config_Reader(String path) throws IOException {
+    public Config_Reader(String path) {
         filePath = path;
+        try{
         workWithThat = read();
         read_config();
+        }
+        catch(IOException e){
+            System.err.println("could not access the config file");
+        }
     }
 
     
@@ -49,6 +53,31 @@ public class Config_Reader {
      */
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+    
+    
+    /**
+     * 
+     * @return StringArray with all the keys stored in the container
+     */
+    public String[] get_variables(){
+        int i = 0;
+        String[] toReturn = new String[container.size()];
+        for(Map.Entry e : container.entrySet()){
+            toReturn[i] = (String) e.getKey();
+            i++;
+        }
+        return toReturn;
+    }
+    
+    
+    /**
+     * just used for debugging, Object isn't a really good return value
+     * @param key
+     * @return 
+     */
+    public Object get_val(String key){
+        return container.get(key);
     }
     
     
