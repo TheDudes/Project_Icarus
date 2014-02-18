@@ -34,7 +34,6 @@ class Icarus {
 
 	/* at first create a container to hold the VAR values */
 	public static Container container = new Container();
-
 	/*
 	 * convert given string so that the Java Script Engine can Interpret it,
 	 * will replace following matches:
