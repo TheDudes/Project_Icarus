@@ -373,7 +373,6 @@ public class Config_Reader {
             "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll, /home/linc/Icarus/Logs/SyntaxCheck;";
         try{
             BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-            System.out.println("hi");
             writer.write(hugeAssExampleString);
             writer.flush();
         }
@@ -471,7 +470,6 @@ public class Config_Reader {
             "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll, /home/linc/Icarus/Logs/SyntaxCheck;";
         try{
             BufferedWriter writer = new BufferedWriter(new FileWriter("example_config"));
-            System.out.println("hi");
             writer.write(hugeAssExampleString);
             writer.flush();
         }
