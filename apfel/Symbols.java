@@ -149,6 +149,24 @@ public class Symbols {
 	}
     }
 
+    private void setVar() {
+	String start = "VAR";
+	String stop = "END_VAR";
+	String varend = ";";
+	StringBuilder local;
+	int varcursor;
+	int seperator;
+	for(int tmp = builder.indexOf(start); tmp != -1; tmp = builder.indexOf(start, tmp+start.length())) {
+	    local = new StringBuilder(builder.substring(tmp+start.length(), builder.indexOf(stop)));
+	    varcursor = tmp+start.length();
+	    for(int tmp2 = builder.indexOf(varend); tmp2 != -1; builder.indexOf(varend, tmp2+1)) {
+		String var = builder.substring(varcursor, tmp2);
+		String[] collon = var.split(":");
+		
+	    }
+	}
+    }
+
     public Symbols(StringBuilder builder) {
 	this.builder = builder;
 	setGlobals();

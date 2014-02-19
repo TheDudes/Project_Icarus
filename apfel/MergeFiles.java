@@ -1,8 +1,23 @@
 package parser;
 
 import java.io.*;
+/**
+ * This class merges all files together and removes the unneeded chars
+ *
+ * @author Simon Mages <mages.simon@googlemail.com>
+ * @version 1.0
+ */
 
 public class MergeFiles {
+    /**
+     * mergeAll goes through all the files byte by byte and filters out the unneeded
+     * charakters. The final String will be saved in a StringBuilder. StringBuilder should
+     * be faster then String.
+     *
+     * @params String[] args, file names+paths
+     * @return StringBuilder
+     * @throws FileNotFoundException, IOException
+     */
     public static StringBuilder mergeAll(String[] args) throws FileNotFoundException, IOException {
 	StringBuilder builder = new StringBuilder();
 	FileReader r;
