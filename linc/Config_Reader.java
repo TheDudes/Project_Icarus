@@ -227,6 +227,18 @@ public class Config_Reader {
                     sign = (char)reader.read();
                 }
             }
+            //throws out everything after //, if there is only one / it appends it plus the next sign
+            else if(sign == '/'){
+                sign = (char)reader.read();
+                if(sign == '/'){
+                    while(sign != '\n'){
+                        sign = (char)reader.read();
+                    }
+                }
+                else{
+                    toReturn += '/' + sign;
+                }
+            }
             //remove spaces (they are not attached to the string, that's all)
             else if(sign == ' '){
                 sign = (char)reader.read();
