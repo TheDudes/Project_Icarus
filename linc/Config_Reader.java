@@ -7,8 +7,11 @@
 package test;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,12 +40,18 @@ public class Config_Reader {
      */
     public Config_Reader(String path) {
         filePath = path;
-        try{
-        workWithThat = read();
-        read_config();
+        File checkFile = new File(filePath);
+        if(checkFile.exists()){
+            try{
+                workWithThat = read();
+                read_config();
+            }
+            catch(IOException e){
+                System.err.println("could not access the config file");       
+            }
         }
-        catch(IOException e){
-            System.err.println("could not access the config file");
+        else{
+            create_example_config(filePath);
         }
     }
 
@@ -162,14 +171,22 @@ public class Config_Reader {
      * @throws IOException 
      */
     private void read_config() throws IOException{
-        //default values
-        container.put("takt_frequency", 100);
-        container.put("verbosity_level", 1);
-        
+        set_default_values();
         String[] lines = workWithThat.split("\n");
         for (String line : lines) {
             interpret_line(line);
         }
+    }
+    
+    /**
+     * puts some default values in the container, the default value is
+     * defined here
+     * takt_frequency default is 100
+     * verbosity_level default is 0
+     */
+    private void set_default_values(){
+        container.put("takt_frequency", 100);
+        container.put("verbosity_level", 0);        
     }
     
     
@@ -264,5 +281,202 @@ public class Config_Reader {
             }
         }
         return toReturn;
-    }   
+    }
+    
+    
+    /**
+     * will created an example config file at the specified path
+     * @param path the path at which the example config will be created
+     */
+    private void create_example_config(String path){
+        String hugeAssExampleString = "######################################################################\n" +
+            "######################################################################\n" +
+            "##	Default Config File for the Config_Reader 						##\n" +
+            "##	Class of the Icarus Project										##\n" +
+            "##	Config_Reader by:	Michael Kaspera/linc						##\n" +
+            "##	Icarus Project by:												##\n" +
+            "##	currently only supports the linux newline						##\n" +
+            "######################################################################\n" +
+            "######################################################################\n" +
+            "\n" +
+            "######################################################################\n" +
+            "######################################################################\n" +
+            "##	The Config_Reader will throw out all unneeded symbols such as:	##\n" +
+            "##	-space															##\n" +
+            "##	-several newlines after each other without a sign between them	##\n" +
+            "##	-tabs															##\n" +
+            "##																	##\n" +
+            "##	Comment signs are:												##\n" +
+            "##	-the # sign														##\n" +
+            "##	-the // signs													##\n" +
+            "## 	Comments will throw out everything following 					##\n" +
+            "##	them until a newLine symbol is read								##\n" +
+            "##																	##\n" +
+            "##	Default Values are at the moment:								##\n" +
+            "##	takt_frequency = 100;											##\n" +
+            "##	verbosity_level = 0;											##\n" +
+            "######################################################################\n" +
+            "######################################################################\n" +
+            "\n" +
+            "						##################\n" +
+            "						## 	Variables	##\n" +
+            "						##################\n" +
+            "\n" +
+            "## verbosity_level 0: standard value\n" +
+            "## verbosity_level 1: some additional informations\n" +
+            "## verbosity_level 2: more exact informations\n" +
+            "## verbosity_level 3: almost everything the program does is logged\n" +
+            "# verbosity_level = 0;\n" +
+            "# takt_frequency = 100;\n" +
+            "\n" +
+            "## will add the variable testvar in the container map and assign \n" +
+            "## the value 1 to it - the testvar will be a Integer Object\n" +
+            "#testvar = 1;\n" +
+            "\n" +
+            "## will add the variable testvar in the container map and assign\n" +
+            "## the value 1.5 to it - the testvar will be a Double Object\n" +
+            "#testvar2 = 1.5;\n" +
+            "\n" +
+            "## will add the variable testvar in the container map and assign\n" +
+            "## the value true to it - the testvar will be a Boolean Object\n" +
+            "#testvar3 = true;\n" +
+            "\n" +
+            "## will add the variable testvar in the container map and assign\n" +
+            "## the value asdf to it - the testvar will be a String\n" +
+            "#testvar4 = asdf;\n" +
+            "\n" +
+            "######################################################################\n" +
+            "######################################################################\n" +
+            "## Setting the path for where which log will be written to			##\n" +
+            "## The key for telling the porgramm that there 						##\n" +
+            "## will now be a path for an output is:								##\n" +
+            "## key_																##\n" +
+            "## there can be several paths assigned to the output of an object, 	##\n" +
+            "## each path is simply seperated by a ,								##\n" +
+            "## This means that key_Parser will signal the Config_Reader that	##\n" +
+            "## the paths to where the output from the Parser shall be written	##\n" +
+            "## to will follow now (see example below)							##\n" +
+            "######################################################################\n" +
+            "######################################################################\n" +
+            "\n" +
+            "					##############################\n" +
+            "					##	logs and paths to them	##\n" +
+            "					##############################\n" +
+            "						\n" +
+            "## will assign the path /home/linc/Documents/ParseLog to the Parser \n" +
+            "## output\n" +
+            "#key_parser = /home/linc/Documents/ParseLog;\n" +
+            "\n" +
+            "## will assign the path /home/linc/Icarus/Logs/LogAll as well as\n" +
+            "## the path /home/linc/Icarus/Logs/SyntaxCheck to the output \n" +
+            "## of the Syntax checker\n" +
+            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll, /home/linc/Icarus/Logs/SyntaxCheck;";
+        try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+            System.out.println("hi");
+            writer.write(hugeAssExampleString);
+            writer.flush();
+        }
+        catch(IOException e){
+            System.err.println("could not create example_config");
+        }
+    }
+    
+    
+    /**
+     * 
+     */
+    public void create_example_config(){
+        String hugeAssExampleString = "######################################################################\n" +
+            "######################################################################\n" +
+            "##	Default Config File for the Config_Reader 						##\n" +
+            "##	Class of the Icarus Project										##\n" +
+            "##	Config_Reader by:	Michael Kaspera/linc						##\n" +
+            "##	Icarus Project by:												##\n" +
+            "##	currently only supports the linux newline						##\n" +
+            "######################################################################\n" +
+            "######################################################################\n" +
+            "\n" +
+            "######################################################################\n" +
+            "######################################################################\n" +
+            "##	The Config_Reader will throw out all unneeded symbols such as:	##\n" +
+            "##	-space															##\n" +
+            "##	-several newlines after each other without a sign between them	##\n" +
+            "##	-tabs															##\n" +
+            "##																	##\n" +
+            "##	Comment signs are:												##\n" +
+            "##	-the # sign														##\n" +
+            "##	-the // signs													##\n" +
+            "## 	Comments will throw out everything following 					##\n" +
+            "##	them until a newLine symbol is read								##\n" +
+            "##																	##\n" +
+            "##	Default Values are at the moment:								##\n" +
+            "##	takt_frequency = 100;											##\n" +
+            "##	verbosity_level = 0;											##\n" +
+            "######################################################################\n" +
+            "######################################################################\n" +
+            "\n" +
+            "						##################\n" +
+            "						## 	Variables	##\n" +
+            "						##################\n" +
+            "\n" +
+            "## verbosity_level 0: standard value\n" +
+            "## verbosity_level 1: some additional informations\n" +
+            "## verbosity_level 2: more exact informations\n" +
+            "## verbosity_level 3: almost everything the program does is logged\n" +
+            "# verbosity_level = 0;\n" +
+            "# takt_frequency = 100;\n" +
+            "\n" +
+            "## will add the variable testvar in the container map and assign \n" +
+            "## the value 1 to it - the testvar will be a Integer Object\n" +
+            "#testvar = 1;\n" +
+            "\n" +
+            "## will add the variable testvar in the container map and assign\n" +
+            "## the value 1.5 to it - the testvar will be a Double Object\n" +
+            "#testvar2 = 1.5;\n" +
+            "\n" +
+            "## will add the variable testvar in the container map and assign\n" +
+            "## the value true to it - the testvar will be a Boolean Object\n" +
+            "#testvar3 = true;\n" +
+            "\n" +
+            "## will add the variable testvar in the container map and assign\n" +
+            "## the value asdf to it - the testvar will be a String\n" +
+            "#testvar4 = asdf;\n" +
+            "\n" +
+            "######################################################################\n" +
+            "######################################################################\n" +
+            "## Setting the path for where which log will be written to			##\n" +
+            "## The key for telling the porgramm that there 						##\n" +
+            "## will now be a path for an output is:								##\n" +
+            "## key_																##\n" +
+            "## there can be several paths assigned to the output of an object, 	##\n" +
+            "## each path is simply seperated by a ,								##\n" +
+            "## This means that key_Parser will signal the Config_Reader that	##\n" +
+            "## the paths to where the output from the Parser shall be written	##\n" +
+            "## to will follow now (see example below)							##\n" +
+            "######################################################################\n" +
+            "######################################################################\n" +
+            "\n" +
+            "					##############################\n" +
+            "					##	logs and paths to them	##\n" +
+            "					##############################\n" +
+            "						\n" +
+            "## will assign the path /home/linc/Documents/ParseLog to the Parser \n" +
+            "## output\n" +
+            "#key_parser = /home/linc/Documents/ParseLog;\n" +
+            "\n" +
+            "## will assign the path /home/linc/Icarus/Logs/LogAll as well as\n" +
+            "## the path /home/linc/Icarus/Logs/SyntaxCheck to the output \n" +
+            "## of the Syntax checker\n" +
+            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll, /home/linc/Icarus/Logs/SyntaxCheck;";
+        try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter("example_config"));
+            System.out.println("hi");
+            writer.write(hugeAssExampleString);
+            writer.flush();
+        }
+        catch(IOException e){
+            System.err.println("could not create example_config");
+        }
+    }
 }
