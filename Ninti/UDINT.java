@@ -19,22 +19,22 @@
  */
 package Ninti;
 
-public class ULINT extends SubCheckConvert {
+public class UDINT extends SubCheckConvert {
 
-    private final String MAX_VALUE = "18446744073709551615";
+    private final String MAX_VALUE = "4294967295";
     // Variable who holds the Max Value of the ULINT                        
     private String MaxForSub = MAX_VALUE;
     // Variable to hold the String for subtracts
     private StringBuilder value;
-    // Variable to hold the Value of the Unsigned Long Int
+    // Variable to hold the Value of the Unsigned double Int
 
     /**
      * Constructor
      *
-     * @param aValue is value of the integer given in strings
+     * @param aValue value of the integer given in strings
      * @throws UnsignedException
      */
-    ULINT(String aValue) throws UnsignedException {
+    UDINT(String aValue) throws UnsignedException {
 
         StringBuilder temp = new StringBuilder(aValue);
         while (check(temp, MAX_VALUE)) {
@@ -48,22 +48,10 @@ public class ULINT extends SubCheckConvert {
     /**
      * GETTER
      *
-     * @return value of the unsigned long integer
+     * @return value of the unsigned double integer
      */
-    public String ulintValue() {
+    public String udintValue() {
         return value.toString();
     }
 
-//    public static void main(String... args) throws Exception {
-//
-//        String a = "18446744073709551617";
-//        System.out.println(a);
-//        ULINT b = new ULINT(a);
-//        System.out.println(b.ulintValue());
-//        
-//        
-//        String c = "257";
-//        USINT d = new USINT(c);
-//        System.out.println(d.usintValue());
-//    }
 }
