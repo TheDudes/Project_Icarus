@@ -1,7 +1,5 @@
-/*
- * if((Boolean)engine.eval(convert_condition(container.replace(condition.toString())))) 
- *
- * Pre Alpha Icarus Interpreter Version 0.2
+/**
+ * this is the Main file, containing the main function to start the Interpreter.
  *
  * current status:
  *  - able to preprozess file (removes comments and stuff, no one needs that, right?)
@@ -12,21 +10,13 @@
  *                             it should or could!)
  *  - able to interpret IF conditions (pretty damn great, isnt it?)
  *
- * todo:
- *  - changing of values
- *  - WHILE/FOR/CASE implementation
- *  - Timer implementation
- *  - clean up code
- *  - optimizing code
- *
- *
- * this is the Main file, containing the main function to start the Interpreter.
  *
  * to get this to work you have to change the path to the structured text by hand for
  * now, simple search for the string which looks like "/home/d4ryus/..." and replace
  * it with ur own path.
  *
- * created by d4ryus, using Vim
+ * @autor d4ryus <w.wackerbauer@yahoo.de>
+ * @version 0.1
  */
 import java.io.*;
 import javax.script.ScriptEngine;
@@ -37,7 +27,8 @@ class Icarus {
     /* at first create a container to hold the VAR values */
     public static Container container = new Container();
     private static Boolean_Stack stack = new Boolean_Stack();
-    /*
+
+    /**
      * convert given string so that the Java Script Engine can Interpret it,
      * will replace following matches: 
      * FROM     | TO
@@ -53,6 +44,9 @@ class Icarus {
      * 'MOD'    | ' % '
      * 'OR'     | ' || '
      * ---------+------------
+     *
+     * @param code will be the full condition as a string
+     * @return string with the converted condition
      */
     public static String convert_condition(String code) {
         String final_condition = "";
@@ -143,6 +137,11 @@ System.out.println(code + "\n---------------------------------------------------
         interpret(code);
     }
 
+    /**
+     * main function to interpret given string
+     *
+     * @param string after preprozession
+     */
     public static void interpret (String string) throws Exception { 
 
         ScriptEngineManager factory = new ScriptEngineManager();

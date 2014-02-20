@@ -1,13 +1,14 @@
+/**
+ * Container class, which holds all the different Hashmaps, these will hold
+ * Values which will be added by the add function.
+ *
+ * @autor d4ryus <w.wackerbauer@yahoo.de>
+ * @version 1.0
+ */
+
 import java.util.HashMap;
 import java.util.Map;
 
-/*
- * Class to dynamicly add and hold values and their name..
- * @author linc
- * @author vault 
- * @author Ninti
- * @author d4ryus 
- */
 public class Container {
 
     private Map<String, Long>    container_long    = new HashMap<>();
@@ -15,12 +16,14 @@ public class Container {
     private Map<String, Double>  container_double  = new HashMap<>();
     private Map<String, String>  container_string  = new HashMap<>();
 
-    /*
+    /**
      * will insert Values into the HashMap's from given structure text string.
      * For Example:
      * String: "var1,var2:INT:=5;"
      * ---> container_long.put(var1, 5);
      *      container_long.put(var2, 5);
+     *
+     * @param var_line will be the given line from the interpreter.
      */
     public void add(String var_line) {
         String[] names = new String[1];
@@ -61,73 +64,81 @@ public class Container {
         }
     }
 
+    /**
+     * function to fill the Hashmaps.
+     *
+     * @param type of the variable
+     * @param name of the variable
+     * @param value of the variable
+     */
     public void insert(String type, String name, String value) {
+        Boolean value_given = true;
+        if(value.equals("")) {
+            value_given = false;
+        }
 
-    Boolean value_given = true;
+        switch(type) {
 
-    if(value.equals("")) {
-        value_given = false;
+        case "BOOL":
+            if(value_given) { 
+                container_boolean.put(name, new Boolean(value));
+            } else {
+                container_boolean.put(name, new Boolean(false));
+            }
+            break;
+        case "INT":
+            if(value_given) {
+                container_long.put(name, new Long(value));
+            } else {
+                container_long.put(name, new Long(0));
+            }
+            break;
+        case "SINT":
+        case "DINT":
+        case "LINT":
+        case "UINT":
+        case "USINT":
+        case "UDINT":
+        case "ULINT":
+        case "REAL":
+            if(value_given) {
+                container_double.put(name, new Double(value));
+            } else {
+                container_double.put(name, new Double(0.0));
+            }
+            break;
+        case "LREAL":
+        case "TIME":
+        case "DATE":
+        case "TIME_OF_DAY":
+        case "TOD":
+        case "DATE_AND_TIME":
+        case "DT":
+        case "STRING":
+            if(value_given) {
+                container_string.put(name, new String(value));
+            } else {
+                container_string.put(name, new String(""));
+            }
+            break;
+        case "WSTRING":
+        case "WORD":
+        case "DWORD":
+        case "LWORD":
+        default:
+        }
     }
 
-    switch(type) {
-
-    case "BOOL":
-        if(value_given) { 
-            container_boolean.put(name, new Boolean(value));
-        } else {
-            container_boolean.put(name, new Boolean(false));
-        }
-        break;
-    case "INT":
-        if(value_given) {
-            container_long.put(name, new Long(value));
-        } else {
-            container_long.put(name, new Long(0));
-        }
-        break;
-    case "SINT":
-    case "DINT":
-    case "LINT":
-    case "UINT":
-    case "USINT":
-    case "UDINT":
-    case "ULINT":
-    case "REAL":
-        if(value_given) {
-            container_double.put(name, new Double(value));
-        } else {
-            container_double.put(name, new Double(0.0));
-        }
-        break;
-    case "LREAL":
-    case "TIME":
-    case "DATE":
-    case "TIME_OF_DAY":
-    case "TOD":
-    case "DATE_AND_TIME":
-    case "DT":
-    case "STRING":
-        if(value_given) {
-            container_string.put(name, new String(value));
-        } else {
-            container_string.put(name, new String(""));
-        }
-        break;
-    case "WSTRING":
-    case "WORD":
-    case "DWORD":
-    case "LWORD":
-    default:
-    }
-    }
-
-    /*
+    /**
      * searches given string for matches inside the Container, if a match is found
      * the name will be replaces with its value. 
      * For Example:
      * Container contains variable with name 'var' and its value is '10',
      * the given string looks like: 'var > 10',
      * then the returned string will be: '10 > 10'
+     *
+     * @param code is the given string with the variable names.
+     * @return String where the variable names are replaced with their values.
      */
     public String replace(String code) {
 
@@ -172,22 +183,44 @@ public class Container {
     return final_code;
     }
 
+    /**
+     * @param key which will be looked up at the Hashmaps
+     * @return long value of the given key
+     */
     private long get_long_value(String key) {
         return container_long.get(key).longValue();
     }
 
+    /**
+     * @param key which will be looked up at the Hashmaps
+     * @return boolean value of the given key
+     */
     private boolean get_boolean_value(String key) {
         return container_boolean.get(key).booleanValue();
     }
 
+    /**
+     * @param key which will be looked up at the Hashmaps
+     * @return double value of the given key
+     */
     private double get_double_value(String key) {
         return container_double.get(key).doubleValue();
     }
 
+    /**
+     * @param key which will be looked up at the Hashmaps
+     * @return string value of the given key
+     */
     private String get_string_value(String key) {
         return container_string.get(key);
     }
 
+    /**
+     * checks if given key is inside one of the Hashmaps
+     *
+     * @param key which will be looked up at the Hashmaps
+     * @return true if key is found, false when not
+     */
     public boolean contains(String key) {
         if      (container_long.containsKey(key))    return true;
         else if (container_boolean.containsKey(key)) return true;
