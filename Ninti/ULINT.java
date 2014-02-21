@@ -50,7 +50,8 @@ public class ULINT extends SubCheckConvert {
      *
      * @return value of the unsigned long integer
      */
-    public String ulintValue() {
+    @Override
+    public String toString() {
         return value.toString();
     }
 

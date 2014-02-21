@@ -50,7 +50,8 @@ public class UINT extends SubCheckConvert {
      *
      * @return value of the unsigned integer
      */
-    public String uintValue() {
+    @Override
+    public String toString() {
         return value.toString();
     }
 

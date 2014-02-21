@@ -50,7 +50,8 @@ public class USINT extends SubCheckConvert {
      *
      * @return value of the unsigned short integer
      */
-    public String usintValue() {
+    @Override
+    public String toString() {
         return value.toString();
     }
 
