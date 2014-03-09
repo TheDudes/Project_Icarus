@@ -37,7 +37,7 @@ public abstract class SubCheckConvert {
      * MAX_VALUE
      *
      * @param aValue
-     * @return's the state of the Value(lower than max, or higher)
+     * @return the state of the Value(lower than max, or higher)
      * @throws UnsignedException
      */
     public boolean check(StringBuilder aValue, String MAX_VALUE) throws UnsignedException {
@@ -73,7 +73,7 @@ public abstract class SubCheckConvert {
      * Function for subtracting the Strings It's awesome I mean, look at it!
      *
      * @param aValue
-     * @return's the one time subtracted aValue
+     * @return the one time subtracted aValue
      */
     public StringBuilder sub(StringBuilder aValue, String MaxForSub) {
 
@@ -129,7 +129,7 @@ public abstract class SubCheckConvert {
      *
      * @param aChar
      * @param bChar
-     * @return's the subtracted char
+     * @return the subtracted char
      */
     public char convertAndSubtrac10(char aChar, char bChar) {
 
