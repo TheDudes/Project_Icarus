@@ -34,7 +34,7 @@ public class USINT extends SubCheckConvert {
      * @param aValue is the value of the integer given in strings
      * @throws UnsignedException
      */
-    USINT(String aValue) throws UnsignedException {
+    public USINT(String aValue) throws UnsignedException {
 
         StringBuilder temp = new StringBuilder(aValue);
         while (check(temp, MAX_VALUE)) {

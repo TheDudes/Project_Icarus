@@ -22,7 +22,7 @@
     <target name="javadoc">
       <mkdir dir="${javadoc.dir}"/>
       
-      <javadoc packagenames="parser"
+      <javadoc packagenames="parser,Ninti"
 	       sourcepath="${src.dir}"
                destdir="${javadoc.dir}"
 	       version="true"

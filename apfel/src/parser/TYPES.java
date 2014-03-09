@@ -17,6 +17,7 @@
 package parser;
 
 import java.util.*;
+import Ninti.*;
 
 /**
  * This class only creates objects of different types to return them.
@@ -43,14 +44,14 @@ public class TYPES {
 	    return new Integer(0);
 	case "LINT":
 	    return new Long(0);
-	case "USINT": //throw some Exception, because no unsingend type in java
-	    break;
-	case "UINT": //throw some Exception, because no unsingend type in java
-	    break;
-	case "UDINT": //throw some Exception, because no unsingend type in java
-	    break;
-	case "ULINT": //throw some Exception, because no unsingend type in java
-	    break;
+	case "USINT":
+	    return new USINT("0");
+	case "UINT":
+	    return new UINT("0");
+	case "UDINT":
+	    return new UDINT("0");
+	case "ULINT":
+	    return new ULINT("0");
 	case "REAL":
 	    return new Float(0.0);
 	case "LREAL":
@@ -97,14 +98,14 @@ public class TYPES {
 	    return new Integer(value);
 	case "LINT":
 	    return new Long(value);
-	case "USINT": //throw some Exception, because no unsingend type in java
-	    break;
-	case "UINT": //throw some Exception, because no unsingend type in java
-	    break;
-	case "UDINT": //throw some Exception, because no unsingend type in java
-	    break;
-	case "ULINT": //throw some Exception, because no unsingend type in java
-	    break;
+	case "USINT":
+	    return new USINT(value);
+	case "UINT":
+	    return new UINT(value);
+	case "UDINT":
+	    return new UDINT(value);
+	case "ULINT":
+	    return new ULINT(value);
 	case "REAL":
 	    return new Float(value);
 	case "LREAL":

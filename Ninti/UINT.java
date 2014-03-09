@@ -34,7 +34,7 @@ public class UINT extends SubCheckConvert {
      * @param aValue value of the integer given in strings
      * @throws UnsignedException
      */
-    UINT(String aValue) throws UnsignedException {
+    public UINT(String aValue) throws UnsignedException {
 
         StringBuilder temp = new StringBuilder(aValue);
         while (check(temp, MAX_VALUE)) {
