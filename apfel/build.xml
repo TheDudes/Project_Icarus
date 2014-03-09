@@ -1,0 +1,38 @@
+<project name="InfoCollector" basedir="." default="clean-build">
+
+    <property name="src.dir"     value="src"/>
+    <property name="build.dir"   value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="javadoc.dir" value="${build.dir}/doc"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <!--verbose="true"-->
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac 
+	    srcdir="${src.dir}" 
+	    destdir="${classes.dir}"
+	    includeantruntime="false"/>
+    </target>
+
+    <!--verbose="true"-->
+    <target name="javadoc">
+      <mkdir dir="${javadoc.dir}"/>
+      
+      <javadoc packagenames="parser"
+	       sourcepath="${src.dir}"
+               destdir="${javadoc.dir}"
+	       version="true"
+	       author="true"
+	       use="true"
+	       windowtitle="InfoCollector API"
+	       doctitle="&lt;h1&gt;InfoCollector&lt;/h1&gt;">
+      </javadoc> 
+    </target>
+    
+    <target name="clean-build" depends="clean,compile,javadoc"/>
+
+</project>
