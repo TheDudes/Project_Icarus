@@ -127,7 +127,7 @@ public class Config_Reader {
      */
     public int get_int(String key){
         Integer toReturn = (Integer)container.get(key);
-        return toReturn.intValue();
+        return toReturn;
     }
     
     
@@ -139,7 +139,7 @@ public class Config_Reader {
      */
     public double get_double(String key){
         Double toReturn = (Double)container.get(key);
-        return toReturn.doubleValue();
+        return toReturn;
     }
     
     
@@ -151,7 +151,7 @@ public class Config_Reader {
      */
     public boolean get_boolean(String key){
         Boolean toReturn = (Boolean)container.get(key);
-        return toReturn.booleanValue();
+        return toReturn;
     }
     
     
