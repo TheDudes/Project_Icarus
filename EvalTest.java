@@ -37,7 +37,7 @@ public class EvalTest {
     /**
      * @param args the command line arguments
      */
-	private static String javaClassFile = "/home/d4ryus/Coding/Project_Icarus/Classfile.java";
+	private static String javaClassFile = "/home/linc/Coding/Project_Icarus/Classfile";
     private static String classOutputFolder = "/tmp";
 
     public static class MyDiagnosticListener implements DiagnosticListener<JavaFileObject> {

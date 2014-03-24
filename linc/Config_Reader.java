@@ -82,7 +82,7 @@ public class Config_Reader {
     
     /**
      * just used for debugging, Object isn't a really good return value
-     * @param key
+     * @param key 
      * @return 
      */
     public Object get_val(String key){
@@ -228,12 +228,29 @@ public class Config_Reader {
     
     
     /**
-     * 
+     * only checks if the System is Windows or Linux and then calls the
+     * read Method for the fitting system
+     * @return the String with the read in config file
+     */
+    private String read() throws IOException{
+        String toReturn = "";
+        if(Pattern.matches("Windows.*", System.getProperty("os.name"))){
+            toReturn = read_Windows();
+        }
+        else{
+            toReturn = read_Linux();
+        }
+        return toReturn;
+    }
+    
+    
+    /**
+     * This is the read Method for Linux since Linux uses only \n as a newLine indicator
      * @return the content of the file without comments, spaces and stuff as a String
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    private String read() throws FileNotFoundException, IOException{
+    private String read_Linux() throws FileNotFoundException, IOException{
         BufferedReader reader = new BufferedReader(new FileReader (filePath));
         String toReturn = "";
         char sign = (char)reader.read();
@@ -272,6 +289,83 @@ public class Config_Reader {
                     sign = (char)reader.read();
                 }if(sign == '\n'){
                     sign = (char)reader.read();
+                }
+            }
+            //every other symbol is attached to the string
+            else{
+                toReturn += sign;
+                sign = (char)reader.read();
+            }
+        }
+        return toReturn;
+    }
+    
+    
+    /**
+     * This is the read Method for Windows as Windows uses \r\n as a newLine indicator
+     * @return the content of the file without comments, spaces and stuff as a String
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
+     private String read_Windows() throws FileNotFoundException, IOException{
+        BufferedReader reader = new BufferedReader(new FileReader (filePath));
+        String toReturn = "";
+        char sign = (char)reader.read();
+        while(sign != (char)-1){
+            //read over the comment line without attaching it to the string
+            if(sign == '#'){
+                while(true){
+                    if(sign == '\r'){
+                        sign = (char)reader.read();
+                        if(sign == '\n'){
+                            break;
+                        }
+                    }
+                    sign = (char)reader.read();
+                }
+            }
+            //throws out everything after //, if there is only one / it appends it plus the next sign
+            else if(sign == '/'){
+                sign = (char)reader.read();
+                if(sign == '/'){
+                    while(true){
+                        if(sign == '\r'){
+                            sign = (char)reader.read();
+                            if(sign == '\n'){
+                                break;
+                            }
+                        }
+                        sign = (char)reader.read();
+                    }
+                }
+                else{
+                    toReturn += '/' + sign;
+                }
+            }
+            //remove spaces (they are not attached to the string, that's all)
+            else if(sign == ' '){
+                sign = (char)reader.read();
+            }
+            //reads over tabs aswell, they are not needed
+            else if(sign == '\t'){
+                sign = (char)reader.read();
+            }
+            //if there are several newLines after each other only one is attached
+            else if(sign == '\r'){
+                toReturn += sign;
+                sign = (char)reader.read();
+                if(sign == '\n'){
+                    toReturn += sign;
+                    sign = (char)reader.read();
+                    while(sign == '\r'){
+                        sign = (char)reader.read();
+                        if(sign == '\n'){
+                            sign = (char)reader.read();
+                        }
+                        else{
+                            break;
+                        }
+                    }
                 }
             }
             //every other symbol is attached to the string

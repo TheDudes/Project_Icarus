@@ -1,6 +1,5 @@
 
-import test.Condition_Stack;
-import test.Index_Stack;
+import test.Container_double;
 
 /*
  * Copyright (c) 2014, linc
@@ -27,30 +26,12 @@ public class MainToTest {
 
     public static void main(String[] args){
         
-        Index_Stack iStack = new Index_Stack();
-        Condition_Stack cStack = new Condition_Stack();
+        Container_double cd = new Container_double();
         
-        iStack.push(2);
-        iStack.push(5);
-        iStack.push(9);
-        cStack.push("a == 3");
-        cStack.push("b == 0");
-        cStack.push("c == 5");
+        String d = "4.5";
         
-        System.out.println(iStack.getFirst());
-        iStack.pop();
-        System.out.println(iStack.getFirst());
-        iStack.pop();
-        System.out.println(iStack.getFirst());
-        iStack.pop();
-        System.out.println(cStack.getFirst());
-        cStack.pop();
-        System.out.println(cStack.getFirst());
-        cStack.pop();
-        System.out.println(cStack.getFirst());
-        cStack.pop();
-        System.out.println(cStack.getFirst());
-        cStack.pop();
+        cd.put("var2", d);
+        
     }
     
 }
