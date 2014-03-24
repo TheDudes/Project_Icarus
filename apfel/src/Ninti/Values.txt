@@ -1,0 +1,31 @@
+"BOOL":         
+	boolean in java
+"INT":          
+	short in java.
+"SINT":         
+	byte in java.
+"DINT":         
+	Integer bei java.
+"LINT":         
+	Long in java.
+"UINT":         
+"USINT":        
+"UDINT":        
+"ULINT":        
+"REAL":         
+	Float in java.
+"LREAL":        
+	Double in java.
+"TIME":         
+"DATE":         
+"TIME_OF_DAY":  
+"TOD":          
+"DATE_AND_TIME":
+"DT":           
+"STRING":
+	String in java. 
+"WSTRING":      
+	String in java.
+"WORD":         
+"DWORD":        
+"LWORD":        
