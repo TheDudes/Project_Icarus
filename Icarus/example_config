@@ -1,0 +1,83 @@
+######################################################################
+######################################################################
+##	Default Config File for the Config_Reader 						##
+##	Class of the Icarus Project										##
+##	Config_Reader by:	Michael Kaspera/linc						##
+##	Icarus Project by:												##
+##	currently only supports the linux newline						##
+######################################################################
+######################################################################
+
+######################################################################
+######################################################################
+##	The Config_Reader will throw out all unneeded symbols such as:	##
+##	-space															##
+##	-several newlines after each other without a sign between them	##
+##	-tabs															##
+##																	##
+##	Comment signs are:												##
+##	-the # sign														##
+##	-the // signs													##
+## 	Comments will throw out everything following 					##
+##	them until a newLine symbol is read								##
+##																	##
+##	Default Values are at the moment:								##
+##	takt_frequency = 100;											##
+##	verbosity_level = 0;											##
+######################################################################
+######################################################################
+
+						##################
+						## 	Variables	##
+						##################
+
+## verbosity_level 0: standard value
+## verbosity_level 1: some additional informations
+## verbosity_level 2: more exact informations
+## verbosity_level 3: almost everything the program does is logged
+# verbosity_level = 0;
+# takt_frequency = 100;
+
+## will add the variable testvar in the container map and assign 
+## the value 1 to it - the testvar will be a Integer Object
+#testvar = 1;
+
+## will add the variable testvar in the container map and assign
+## the value 1.5 to it - the testvar will be a Double Object
+#testvar2 = 1.5;
+
+## will add the variable testvar in the container map and assign
+## the value true to it - the testvar will be a Boolean Object
+#testvar3 = true;
+
+## will add the variable testvar in the container map and assign
+## the value asdf to it - the testvar will be a String
+#testvar4 = asdf;
+
+######################################################################
+######################################################################
+## Setting the path for where which log will be written to			##
+## The key for telling the porgramm that there 						##
+## will now be a path for an output is:								##
+## key_																##
+## there can be several paths assigned to the output of an object, 	##
+## each path is simply seperated by a ,								##
+## This means that key_Parser will signal the Config_Reader that	##
+## the paths to where the output from the Parser shall be written	##
+## to will follow now (see example below)							##
+######################################################################
+######################################################################
+
+					##############################
+					##	logs and paths to them	##
+					##############################
+						
+## will assign the path /home/linc/Documents/ParseLog to the Parser 
+## output
+#key_parser = /home/linc/Documents/ParseLog;
+path = /home/d4ryus/coding/Project_Icarus/franzke_files/plc_prg.st
+
+## will assign the path /home/linc/Icarus/Logs/LogAll as well as
+## the path /home/linc/Icarus/Logs/SyntaxCheck to the output 
+## of the Syntax checker
+#key_syntax_checker = /home/linc/Icarus/Logs/LogAll, /home/linc/Icarus/Logs/SyntaxCheck;
