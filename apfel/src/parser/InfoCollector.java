@@ -46,7 +46,7 @@ public class InfoCollector {
      * @see Match
      * @see Symbols
      */
-    public InfoCollector (String[] files) throws FileNotFoundException, IOException {
+    public InfoCollector (String[] files) throws FileNotFoundException, IOException, Exception {
 	allthecode = MergeFiles.mergeAll(files);
 	analyser = new Analyser(allthecode);
 	match = new Match(analyser, allthecode);
@@ -286,7 +286,7 @@ public class InfoCollector {
 	return symb.replaceVars(input, context);
     }
     
-    public void setValue(String input, String context) {
+    public void setValue(String input, String context) throws Exception {
 	symb.setValue(input, context);
     }
 }

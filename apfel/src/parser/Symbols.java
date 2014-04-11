@@ -49,7 +49,7 @@ public class Symbols {
      * This function is private
      * @param kind String like PROGRAM or FUNCTION
      */
-    private void findContextVars(String kind) {
+    private void findContextVars(String kind) throws Exception {
 	ArrayList<Integer> varlist;
 	StringBuilder block = new StringBuilder();
 	StringBuilder tmpstr;
@@ -124,7 +124,7 @@ public class Symbols {
      * @param context the Context where the variable block lifes in
      * @param block the variable block
      */
-    private void fillUpTheContainers(String context, StringBuilder block) {
+    private void fillUpTheContainers(String context, StringBuilder block) throws Exception {
 	HashMap<String,Integer> percontext;
 	int tmpint;
 	Integer tmpint2;
@@ -257,7 +257,7 @@ public class Symbols {
      * @param input String with variable line.
      * @param context String representing the context
      */
-    public void setValue(String input, String context) {
+    public void setValue(String input, String context)  throws Exception {
 	fillUpTheContainers(context, new StringBuilder(input));
     }
     
@@ -267,7 +267,7 @@ public class Symbols {
      * @param builder the whole program code
      * @param match the match class with preprosesd informations
      */
-    public Symbols(StringBuilder builder, Match match) {
+    public Symbols(StringBuilder builder, Match match) throws Exception {
 	this.builder = builder;
 	this.match = match;
 

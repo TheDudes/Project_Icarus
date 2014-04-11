@@ -32,7 +32,7 @@ public class TYPES {
      * @param type typeString like DINT, SINT, TIME ...
      * @return Object of the right type
      */
-    public static Object getType(String type) {
+    public static Object getType(String type) throws UnsignedException {
 	switch(type) {
 	case "BOOL":
 	    return new Boolean(false);
@@ -86,7 +86,7 @@ public class TYPES {
      * @param value valueString like "2.3", "32323" ...
      * @return Object of the right type with the new value
      */
-    public static Object getType(String type, String value) {
+    public static Object getType(String type, String value) throws UnsignedException {
 	switch(type) {
 	case "BOOL":
 	    return new Boolean(value);
