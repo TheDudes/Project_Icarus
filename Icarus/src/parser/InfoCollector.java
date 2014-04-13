@@ -47,9 +47,13 @@ public class InfoCollector {
      * @see Symbols
      */
     public InfoCollector (String[] files) throws FileNotFoundException, IOException, Exception {
+	System.out.println("Parser: InfoCollector: MergeFiles.mergeAll");
 	allthecode = MergeFiles.mergeAll(files);
+	System.out.println("Parser: InfoCollector: Analyser");
 	analyser = new Analyser(allthecode);
+	System.out.println("Parser: InfoCollector: Match");
 	match = new Match(analyser, allthecode);
+	System.out.println("Parser: InfoCollector: Symbols");
 	symb = new Symbols(allthecode, match);
     }
 
@@ -286,7 +290,24 @@ public class InfoCollector {
 	return symb.replaceVars(input, context);
     }
     
+    /**
+     * setValue accepts whole variable lines like:
+     * var,var1,var2:=5;
+     * OR
+     * var3:=3.45;
+     * and sets the new value in the right containers depending on there context.
+     * @param input String with variable line.
+     * @param context String representing the context
+     */
     public void setValue(String input, String context) throws Exception {
 	symb.setValue(input, context);
+    }
+
+    /**
+     * getAllTheCode will give you all the preprocessed code
+     * @return a StringBuilder with all the preprocessed code inside
+     */
+    public StringBuilder getAllTheCode() {
+	return allthecode;
     }
 }

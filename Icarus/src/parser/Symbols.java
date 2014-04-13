@@ -57,19 +57,26 @@ public class Symbols {
 	int tmpint;
 	switch (kind) {
 	case "PROGRAM":
+	    System.out.println("Parser: Symbols: findContextVars(PROGRAM): bevor loop");
 	    for (int k : match.getPrograms()) {
+		System.out.println("Parser: Symbols: findContextVars(PROGRAM): inside loop, k: "+k);
 		varlist = new ArrayList<>();
 		for (int j : match.getVars()) {
+		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): inside first inner loop, j: "+j);
 		    if (j < match.getEndProgram(k) && j > k) { // room for improvement here! but, fuck it.
+			System.out.println("Parser: Symbols: findContextVars(PROGRAM): inside first inner loop, inside if");
 			varlist.add(j);
 		    }
 		}
 		context = builder.substring(k+7, varlist.get(0));  // +7 == "PROGRAM".length(), i should replace all these with final constants, btw. finds out name of the context
+		System.out.println("Parser: Symbols: findContextVars(PROGRAM): between the inner loops, context: "+context);
 		for (int i : varlist) {
+		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): inside inner loop 2, i: "+i);
 		    tmpint = match.getEndVar(i);
 		    block.append(builder.substring(i+match.getVarStart(i).length(), tmpint));  
 		    deleteme.add(new Integer[] {i, tmpint+7});  // +7 == "END_VAR".length()
 		}
+		System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers()");
 		fillUpTheContainers(context, block);
 		varlist = null;
 	    }
@@ -131,10 +138,16 @@ public class Symbols {
 	String type;
 	String[] names;
 	String value;
+	System.out.println("block: "+block);
 	try {
-	    for (StringBuilder b = block.delete(0, block.indexOf(";")+1); true; b = block.delete(0, block.indexOf(";")+1)) {
+	    for (StringBuilder b = new StringBuilder(block.substring(0, block.indexOf(";")+1)); true; b = new StringBuilder(block.substring(0, block.indexOf(";")+1))) {
+		block.delete(0, block.indexOf(";")+1);
+		System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside loop");
 		tmpint = b.indexOf(":=");
+		System.out.println("block: "+block);
+		System.out.println("b: "+b);
 		if (tmpint == -1) {
+		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside first if");
 		    tmpint = b.indexOf(":");
 		    //if (tmpint == -1)
 		    // throw the wrong variablen deklaration error or so 
@@ -142,6 +155,7 @@ public class Symbols {
 		    type = b.substring(tmpint+1, b.indexOf(";"));
 		    percontext = new HashMap<>();
 		    for (String name : names) {
+			System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside inner loop in if");
 			percontext.put(name, id);
 			typebyid.put(id, type);
 			valuebyid.put(id, TYPES.getType(type));
@@ -149,10 +163,18 @@ public class Symbols {
 			id++;
 		    }
 		} else if (!(Pattern.matches(":.*:", b.toString()))) {
-		    names = b.substring(0, tmpint).split(",");
+		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside second if");
+		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): names");
+		    names = b.substring(0, tmpint).split(":");
+		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): type");
+		    System.out.println(Arrays.toString(names));
+		    System.out.println("names[0]: "+names[0]);
 		    type = typebyid.get(contextstore.get(context).get(names[0]));
+		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): value");
 		    value = b.substring(tmpint+2, b.indexOf(";"));
+		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): bevor for loop");
 		    for (String name : names) {
+			System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside inner loop in second if");
 			tmpint2 = contextstore.get(context).get(name);
 			if (!(tmpint2 == null)) {
 			    valuebyid.put(tmpint2, TYPES.getType(type, value));
@@ -161,6 +183,7 @@ public class Symbols {
 			}
 		    }
 		} else {
+		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside else");
 		    tmpint2 = b.indexOf(":");
 		    //if (tmpint == -1)
 		    // throw the wrong variablen deklaration error or so 
@@ -169,6 +192,7 @@ public class Symbols {
 		    value = b.substring(tmpint+2, b.indexOf(";"));
 		    percontext = new HashMap<>();
 		    for (String name : names) {
+			System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside loop in else");
 			percontext.put(name, id);
 			typebyid.put(id, type);
 			valuebyid.put(id, TYPES.getType(type, value));
@@ -270,16 +294,21 @@ public class Symbols {
     public Symbols(StringBuilder builder, Match match) throws Exception {
 	this.builder = builder;
 	this.match = match;
-
+	
+	
 	deleteme = new ArrayList<>();
 	symbolnames = new ArrayList<>();
 	contextstore = new HashMap<String,HashMap<String,Integer>>();
 	typebyid = new HashMap<>();
 	valuebyid = new HashMap<>();
 
+	System.out.println("Parser: Symbols: findContextVars(PROGRAM)");
 	findContextVars("PROGRAM");
+	System.out.println("Parser: Symbols: findContextVars(FUNCTION)");
 	findContextVars("FUNCTION");
+	System.out.println("Parser: Symbols: findContextVars(FUNCTION_BLOCK)");
 	findContextVars("FUNCTION_BLOCK");
+	System.out.println("Parser: Symbols: generateSymbolsList()");
 	generateSymbolsList();
 	//deleteVarBlocks();
     }

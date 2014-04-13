@@ -160,15 +160,19 @@ public class Analyser {
     private void findAllIfs() {
 	String start = "IF";
 	String stop = "END_IF";
-	int endpointer;
-	for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, endpointer+stop.length())) {
-	    if (builder.substring(pointer-4, pointer)=="ELSE") {
-		endpointer = builder.indexOf(stop, pointer);
-		continue;
+	System.out.println("Parser: Analyser: findAllIfs(): bevor for loop");
+	for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, pointer+start.length())) {
+	    System.out.println("Parser: Analyser: findAllIfs(): in for loop pointer: "+pointer);
+	    if (builder.charAt(pointer-1) == '_') {
+		if_all.add(new Integer(pointer-4));
+	    } else if (builder.charAt(pointer-1) == 'E') {
+
+	    } else {
+		if_all.add(new Integer(pointer));
 	    }
-	    if_all.add(new Integer(pointer));
-	    endpointer = builder.indexOf(stop, pointer);
-	    if_all.add(new Integer(endpointer));
+	    //endpointer = builder.indexOf(stop, pointer);
+	    //if_all.add(new Integer(pointer));
+	    //if_all.add(new Integer(endpointer));
 	}
     }
 
@@ -387,18 +391,31 @@ public class Analyser {
      */
     public Analyser(StringBuilder builder) {
 	this.builder = builder;
+	System.out.println("Parser: Analyser: findAllPrograms()");
 	findAllPrograms(); // matcher done
+	System.out.println("Parser: Analyser: findAllFunctions()");
 	findAllFunctions(); // matcher done
+	System.out.println("Parser: Analyser: findAllFunctionBlocks()");
 	findAllFunctionBlocks(); // matcher done
+	System.out.println("Parser: Analyser: findAllGlobals()");
 	findAllGlobals(); // matcher done
+	System.out.println("Parser: Analyser: findAllConfigs()");
 	findAllConfigs(); // matcher done
+	System.out.println("Parser: Analyser: findAllVars()");
 	findAllVars(); // matcher done
+	System.out.println("Parser: Analyser: findAllIfs()");
 	findAllIfs(); // matcher done
+	System.out.println("Parser: Analyser: findAllCases()");
 	findAllCases(); // matcher done
+	System.out.println("Parser: Analyser: findAllFors()");
 	findAllFors(); // matcher done
+	System.out.println("Parser: Analyser: findAllWhiles()");
 	findAllWhiles(); // matcher done
+	System.out.println("Parser: Analyser: findAllRepeats()");
 	findAllRepeats(); // matcher done
+	System.out.println("Parser: Analyser: findAllVarINputs()");
 	findAllVarInputs(); // matcher done
+	System.out.println("Parser: Analyser: findAllVarOutputs()");
 	findAllVarOutputs(); // matcher done
 	//printAll();
     }
