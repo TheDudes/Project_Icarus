@@ -77,6 +77,8 @@ public class Symbols {
 		    deleteme.add(new Integer[] {i, tmpint+7});  // +7 == "END_VAR".length()
 		}
 		System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers()");
+                System.out.println(" --- Context: "+context);
+                System.out.println(" --- block: "+block);
 		fillUpTheContainers(context, block);
 		varlist = null;
 	    }
@@ -169,7 +171,8 @@ public class Symbols {
 		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): type");
 		    System.out.println(Arrays.toString(names));
 		    System.out.println("names[0]: "+names[0]);
-		    type = typebyid.get(contextstore.get(context).get(names[0]));
+		    // type = typebyid.get(contextstore.get(context).get(names[0])); // i don't know ....
+                    type = names[1];
 		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): value");
 		    value = b.substring(tmpint+2, b.indexOf(";"));
 		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): bevor for loop");

@@ -23,7 +23,7 @@ public class TestMain {
     
     public static void main(String[] args) throws UnknownHostException, Exception {
         
-        String[] path = new String[1];
+        String[] path = new String[2];
 
         /*
          * To make testing easyer for all of us, add your hostname to this logic
@@ -32,6 +32,7 @@ public class TestMain {
         switch (hostname) {
             case "beelzebub":
                 path[0] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/franzke_files/plc_prg.st";
+                path[1] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/franzke_files/drilling_manager.st";
                 break;
             case "d4ryus":
                 path[0] = "/home/d4ryus/coding/Project_Icarus/franzke_files/plc_prg.st";
@@ -49,11 +50,13 @@ public class TestMain {
         InfoCollector infR = new InfoCollector(path);
         StringBuilder code = infR.getAllTheCode();
         System.out.println(code);
+        ArrayList<Integer> liste = new ArrayList<>();
+        
         
         /*
         * First Test
         */
-        System.out.println("First Test:");
+        System.out.println("Print out all lists");
         List<ArrayList<Integer>> list = infR.giveMeAllTheLists();
         
         for (ArrayList<Integer> elem : list) {
@@ -62,79 +65,121 @@ public class TestMain {
                 System.out.println(item);
             }
         }
+        System.out.println("-------------------------");
         
         
         /*
         * Test if functions
         */
         System.out.println("Test if functions");
-        for (Integer item : infR.getIfs()) {
-            System.out.println("Open IF: "+item);
-            System.out.println("Close IF: "+infR.getEndIf(item));
+        liste = infR.getIfs();
+        if (liste.isEmpty()) {
+            System.out.println("No ifs in here.");
+        } else {
+            for (Integer item : liste) {
+                System.out.println("Open IF: " + item);
+                System.out.println("Close IF: " + infR.getEndIf(item));
+            }
         }
- 
+        System.out.println("-------------------------");
+        
         
         /*
         * Test case functions
         */
         System.out.println("Test case functions");
-        for (Integer item : infR.getCases()) {
-            System.out.println("Open case: "+item);
-            System.out.println("Cases here ... " );
-            System.out.println("Close case: "+infR.getEndCase(item));
+        liste = infR.getCases();
+        if (liste.isEmpty()) {
+            System.out.println("No cases in here.");
+        } else {
+            for (Integer item : liste) {
+                System.out.println("Open case: " + item);
+                System.out.println("Cases here ... ");
+                System.out.println("Close case: " + infR.getEndCase(item));
+            }
         }
-
+        System.out.println("-------------------------");
+        
         
         /*
         * Test var functions
         */
         System.out.println("Test var functions");
-        for (Integer item : infR.getVars()) {
-            System.out.println("Open VAR: "+item);
-            System.out.println("Is a: "+infR.getVarStart(item));
-            System.out.println("Close VAR: "+infR.getEndVar(item));
+        liste = infR.getVars();
+        if (liste.isEmpty()) {
+            System.out.println("No vars in here.");
+        } else {
+            for (Integer item : liste) {
+                System.out.println("Open VAR: " + item);
+                System.out.println("Is a: " + infR.getVarStart(item));
+                System.out.println("Close VAR: " + infR.getEndVar(item));
+            }
         }
+        System.out.println("-------------------------");
         
         
         /*
         * Test progam functions
         */
         System.out.println("Test program functions");
-        for (Integer item : infR.getPrograms()) {
-            System.out.println("Open Program: "+item);
-            System.out.println("Close Program: "+infR.getEndProgram(item));
+        liste = infR.getPrograms();
+        if (liste.isEmpty()) {
+            System.out.println("No programs in here.");
+        } else {
+            for (Integer item : liste) {
+                System.out.println("Open Program: " + item);
+                System.out.println("Close Program: " + infR.getEndProgram(item));
+            }
         }
+        System.out.println("-------------------------");
         
         
         /*
         * Test function functions
         */
         System.out.println("Test function functions");
-        for (Integer item : infR.getFunctions()) {
-            System.out.println("Open Function: "+item);
-            System.out.println("Close Function: "+infR.getEndFunction(item));
+        liste = infR.getFunctions();
+        if (liste.isEmpty()) {
+            System.out.println("No functions in here.");
+        } else {
+            for (Integer item : liste) {
+                System.out.println("Open Function: " + item);
+                System.out.println("Close Function: " + infR.getEndFunction(item));
+            }
         }
+        System.out.println("-------------------------");
         
         
         /*
-        * Test progam functions
+        * Test function block functions
         */
         System.out.println("Test function block functions");
-        for (Integer item : infR.getFunctionBlocks()) {
-            System.out.println("Open Function Block: "+item);
-            System.out.println("Close Function Block: "+infR.getEndFunctionBlock(item));
+        liste = infR.getFunctionBlocks();
+        if (liste.isEmpty()) {
+            System.out.println("No function blocks in here.");
+        } else {
+            for (Integer item : liste) {
+                System.out.println("Open Function Block: " + item);
+                System.out.println("Close Function Block: " + infR.getEndFunctionBlock(item));
+            }
         }
-        
+        System.out.println("-------------------------");
+
         
         /*
         * Test for functions
         */
         System.out.println("Test for functions");
-        //if (infR.getFunctions())
-        for (Integer item : infR.getFors()) {
-            System.out.println("Open For: "+item);
-            System.out.println("Close For: "+infR.getEndFor(item));
+        liste = infR.getFors();
+        if (liste.isEmpty()) {
+            System.out.println("No fors in here.");
+        } else {
+            for (Integer item : liste) {
+                System.out.println("Open For: " + item);
+                System.out.println("Close For: " + infR.getEndFor(item));
+            }
         }
+        System.out.println("-------------------------");
         
         
         /*
@@ -142,13 +187,14 @@ public class TestMain {
         */
         System.out.println("Test while functions");
         if (infR.getRepeats() == null) {
-            System.out.println("While - NULL");
+            System.out.println("No whiles in here.");
         } else {
             for (Integer item : infR.getWhiles()) {
                 System.out.println("Open While: " + item);
                 System.out.println("Close While: " + infR.getEndWhile(item));
             }
         }
+        System.out.println("-------------------------");
         
 
         /*
@@ -156,13 +202,14 @@ public class TestMain {
         */
         System.out.println("Test repeat functions");
         if (infR.getRepeats() == null) {
-            System.out.println("Repeat - NULL");
+            System.out.println("No repeats in here.");
         } else {
             for (Integer item : infR.getRepeats()) {
                 System.out.println("Open Repeat: " + item);
                 System.out.println("Close Repeat: " + infR.getEndRepeat(item));
             }
         }
+        System.out.println("-------------------------");
         
         
         
