@@ -163,26 +163,28 @@ public class Symbols {
 			valuebyid.put(id, TYPES.getType(type));
 			contextstore.put(context, percontext);
 			id++;
-		    }
-		} else if (!(Pattern.matches(":.*:", b.toString()))) {
+		    } 
+		} else if (!(Pattern.matches(":.*@", b.toString()))) {
 		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside second if");
 		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): names");
-		    names = b.substring(0, tmpint).split(":");
+		    names = b.substring(0, b.indexOf(":")).split(",");
 		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): type");
 		    System.out.println(Arrays.toString(names));
 		    System.out.println("names[0]: "+names[0]);
-		    // type = typebyid.get(contextstore.get(context).get(names[0])); // i don't know ....
-                    type = names[1];
+		    type = typebyid.get(contextstore.get(context).get(names[0]));
+                    //type = b.substring(0, tmpint).split(":")[1];
 		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): value");
 		    value = b.substring(tmpint+2, b.indexOf(";"));
 		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): bevor for loop");
-		    for (String name : names) {
+		    percontext = new HashMap<>();
+                    for (String name : names) {
 			System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside inner loop in second if");
 			tmpint2 = contextstore.get(context).get(name);
 			if (!(tmpint2 == null)) {
 			    valuebyid.put(tmpint2, TYPES.getType(type, value));
 			} else {
 			    // throw unknown symbol in this context exception
+                            throw new Exception("Unknown Symbol \""+name+"\" in: "+context);
 			}
 		    }
 		} else {
@@ -285,9 +287,17 @@ public class Symbols {
      * @param context String representing the context
      */
     public void setValue(String input, String context)  throws Exception {
-	fillUpTheContainers(context, new StringBuilder(input));
+	fillUpTheContainers(context, new StringBuilder(input+"@"));
     }
     
+    /**
+     * addVar will add a variable to a context like setValue
+     * @param input String with variable line.
+     * @param context String representing the context
+     */
+    public void addVar(String input, String context) throws Exception {
+        fillUpTheContainers(context, new StringBuilder(input));
+    }
 
     /**
      * Symbols needs a StringBuilder and a Match to work and to do all his Operations
