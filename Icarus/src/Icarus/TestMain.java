@@ -91,9 +91,19 @@ public class TestMain {
         System.out.println("Test var functions");
         for (Integer item : infR.getVars()) {
             System.out.println("Open VAR: "+item);
+            System.out.println("Is a: "+infR.getVarStart(item));
             System.out.println("Close VAR: "+infR.getEndVar(item));
         }
         
+        
+        /*
+        * Test progam functions
+        */
+        System.out.println("Test program functions");
+        for (Integer item : infR.getPrograms()) {
+            System.out.println("Open Program: "+item);
+            System.out.println("Close Program: "+infR.getEndProgram(item));
+        }
         
     }
 }
