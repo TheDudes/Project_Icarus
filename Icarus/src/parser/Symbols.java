@@ -296,7 +296,24 @@ public class Symbols {
      * @param context String representing the context
      */
     public void addVar(String input, String context) throws Exception {
-        fillUpTheContainers(context, new StringBuilder(input));
+        // type integer all the time
+        String[] splitted = new String[2];
+        String[] splitted2 = new String[2]; // oh its to late man ...
+        splitted = input.split(":=");
+        splitted2 = splitted[1].split(";"); 
+        Integer tmp = contextstore.get(context).get(splitted[0]);
+        if (tmp == null) {
+            fillUpTheContainers(context, new StringBuilder(splitted[0]+":INT:="+splitted2[0]+";"));
+        } else {
+            HashMap<String, Integer> percontext; //= new HashMap<>();
+            typebyid.remove(tmp);
+            valuebyid.remove(tmp);
+            percontext = contextstore.get(context);
+            percontext.remove(splitted[0]);
+            contextstore.put(context, percontext);  // aaaah fuck it, tooo late man ....
+            fillUpTheContainers(context, new StringBuilder(splitted[0]+":INT:="+splitted2[0]+";"));
+        }
+        
     }
 
     /**
