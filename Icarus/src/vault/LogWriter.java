@@ -1,36 +1,57 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package vault;
 
-import java.io.*;
-import java.util.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.sql.Timestamp;
-
-public class LogWriter{
-	
-	ArrayList<LogWriterWorker> workers = new ArrayList<>();
-	String configPath = "/home/vault/testConfig";
-	Config_Reader configReader = new Config_Reader(configPath);
-	FileOutputStream fos = null;
-	PrintWriter write = null;
-	Date date = new Date();
-	Timestamp currentTimestamp = new Timestamp(date.getTime());
-	String timeStamp;
-	String logLine;	
-	String[] path;
-	String[] keys;
-
-	public static void main(String[] args) throws IOException{
-		LogWriter logwrite = new LogWriter();
-	}
-	
-	public void log(String key, String message)throws IOException{
-		startWorker(key, message);
-	}
-
-	public void startWorker(String key, String message){
-		path = configReader.get_path(key);		
-		for(int i = 0; i < path.length; i++){
-			//workers.add(new LogWriterWorker(key, path, message));
-		}	
-	}
-}	
+/**
+ *
+ * @author vault
+ */
+public class LogWriter {
+    
+    private LinkedBlockingQueue<String> lbq = new LinkedBlockingQueue<>(1024);
+    private String host; //Hostname
+    private int verboseLevel = 5; //Needs to be implemented
+    private Date date; 
+    private SimpleDateFormat sdf;
+    private String timeStamp;
+    
+    public LogWriter(){
+        new Thread(new LogWriterWorker(lbq)).start();
+        getHostname();
+    }
+    //Gets the Hostname
+    private void getHostname() {
+        try {
+            host = InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException ex) {
+            host = "localhost";
+        } 
+    }
+    //Generates the Timestamp
+    private String getTimestamp(){ 
+        date = new Date(System.currentTimeMillis());
+        sdf = new SimpleDateFormat("dd/MM/yyyy-kk:mm:ss");
+        return timeStamp = sdf.format(date);
+    }
+    //Writes to the LogFile
+    public void log(String key, int verboseLevel, String logMessage) {
+        if(verboseLevel <= this.verboseLevel){
+            int queueSize = lbq.size();
+            String logLine = queueSize+" ["+getTimestamp()+"]"+" ["+
+                                host+"] "+"["+
+                                key+"]"+": "+
+                                logMessage+"\n";
+            lbq.offer(logLine); 
+        } 
+    }
+    
+}

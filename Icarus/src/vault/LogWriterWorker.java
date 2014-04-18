@@ -1,61 +1,46 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package vault;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.sql.Timestamp;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class LogWriterWorker extends Thread{
-
-	String configPath = "/home/vault/testConfig";
-	Config_Reader configReader = new Config_Reader(configPath);
-	Map<String, FileOutputStream[]> fileStreams = new HashMap<>();
-	FileOutputStream fos = null;
-	PrintWriter write = null;
-	Date date = new Date();
-	Timestamp currentTimestamp = new Timestamp(date.getTime());
-	String timeStamp;
-	String logLine;	
-	String[] key;
-	String[] paths;
-	String message;
-	static int count = 1;
-
- 	public LogWriterWorker(){
-	
-	}
-	public static void main(String[] args) throws FileNotFoundException{
-		LogWriterWorker logWriter = new LogWriterWorker();
-		logWriter.getFileStreams();
-	}	
-	public void getFileStreams() throws FileNotFoundException{
-		key = configReader.get_keys();
-		for(int i = 0; i < key.length; i++){
-			paths = configReader.get_path(key[i]);
-			for(int j = 0; j < paths.length; j++){
-				//fileStreams.put(key[i], new FileOutputStream(paths[j], true));
-			}
-		}
-		
-	/*	
-		for(int i = 0; i < paths.length; i++){
-			try{
-				fos = new FileOutputStream(paths[i], true);
-				write = new PrintWriter(
-				 	 new BufferedWriter(
-		    	    		  new OutputStreamWriter(fos, "UTF-8")));
-			} catch(IOException e){} 
-		}*/
-		System.out.println(fileStreams.keySet());
-		//System.out.println((String)fileStreams.values());
-	}
-	
-	public void run(){
-	}
-
-	/* 
-		timeStamp = "[" + currentTimestamp + "] ";
-		logLine = timeStamp + "[" + key + "]" + ": " + message + "\n";	
-		write.append(logLine);
-		*/
+/**
+ *
+ * @author vault
+ */
+public class LogWriterWorker implements Runnable{
+    
+    private LinkedBlockingQueue<String> lbq;
+    
+    //needs to be implemented//
+    private String filePath = "/home/vault/programing/NetBeansProjects/Project_Icarus/Icarus/src/vault/LogFile.txt";
+    
+    public LogWriterWorker(LinkedBlockingQueue lbq){
+        this.lbq = lbq;
+    }
+    
+    @Override
+    public void run() {
+        try (Writer fWriter = new BufferedWriter(new FileWriter(filePath, true))) {
+            while (true) {
+                fWriter.write(lbq.take());
+                fWriter.flush();
+            }
+        } catch (IOException e) { 
+            System.out.println("Error while writing File!");
+        } catch (InterruptedException ex) {
+            Logger.getLogger(LogWriterWorker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+    }
 }

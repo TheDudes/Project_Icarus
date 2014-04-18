@@ -1,0 +1,15 @@
+0[18/04/2014-22:59:20] [vault] [blub]: HelloFuck
+1[18/04/2014-22:59:20] [vault] [bddslub]: HelloFasduck
+1[18/04/2014-22:59:20] [vault] [bldssddub]: HelloFufdck
+1[18/04/2014-22:59:20] [vault] [blufb]: HelloFadsfuck
+1[18/04/2014-22:59:20] [vault] [bluffb]: HelloFuadsfck
+1[18/04/2014-22:59:20] [vault] [blfsdfuddb]: HelloFsdfuck
+1[18/04/2014-22:59:20] [vault] [bffdflub]: HelloFufffasdfck
+1[18/04/2014-22:59:20] [vault] [bludfdfb]: HellosadfFuck
+1[18/04/2014-22:59:20] [vault] [bluhhnb]: HelldfoFuck
+1[18/04/2014-22:59:20] [vault] [blumtzb]: HelloFadsfsadfuck
+1[18/04/2014-22:59:20] [vault] [blmghmub]: HelldfoFuck
+1[18/04/2014-22:59:20] [vault] [bgmlub]: HelloFuck
+0 [18/04/2014-23:08:04] [vault] [Verbose1]: Should be printed out
+0 [18/04/2014-23:08:33] [vault] [Verbose5]: Starting the testrun
+1 [18/04/2014-23:08:33] [vault] [Verbose1]: Should be printed out
