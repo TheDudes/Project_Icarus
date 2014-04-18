@@ -304,6 +304,15 @@ public class InfoCollector {
     }
 
     /**
+     * addVar will add a variable to a context like setValue
+     * @param input String with variable line.
+     * @param context String representing the context
+     */
+    public void addVar(String input, String context) throws Exception {
+        symb.addVar(context, input);
+    }
+    
+    /**
      * getAllTheCode will give you all the preprocessed code
      * @return a StringBuilder with all the preprocessed code inside
      */
