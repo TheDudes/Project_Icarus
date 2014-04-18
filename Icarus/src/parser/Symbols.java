@@ -310,8 +310,7 @@ public class Symbols {
             percontext.remove(splitted[0]);
             contextstore.put(context, percontext);  // aaaah fuck it, tooo late man ....
             fillUpTheContainers(context, new StringBuilder(splitted[0]+":INT:="+splitted2[0]+";"));
-        }
-        
+        }        
     }
 
     /**
