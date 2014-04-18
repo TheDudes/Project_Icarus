@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, HAW-Landshut
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
 package Icarus;
 
 import Ninti.*;
@@ -9,7 +25,6 @@ import java.net.*;
 import java.util.Stack;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-
 
 public class main {
 
@@ -43,30 +58,40 @@ static InfoCollector container;
         container = new InfoCollector(path);
         String code = container.getAllTheCode().toString();
         System.out.println(code);
-    }
-
-    public static void interpret (String string, int start, int end) throws Exception { 
 
         ScriptEngineManager factory = new ScriptEngineManager();
         ScriptEngine engine = factory.getEngineByName("JavaScript");
+        engine_warmup(engine);
+    }
+
+    public static void interpret (String string, int start, int end, ScriptEngine engine) throws Exception { 
+
 
         /* stacks */
-        Stack<Boolean> stack         = new Stack(); // last if condition
-        Stack<Integer> if_stack      = new Stack(); // last if position
-        Stack<String>  context_stack = new Stack(); // current context
+        Stack<String>  context_stack              = new Stack(); // current context
+        Stack<Boolean> if_stack                   = new Stack(); // last if condition
+        Stack<Integer> if_position_stack          = new Stack(); // last if position
+
+        Stack<Integer> loop_do_position_stack     = new Stack(); // last loop Do
+        Stack<String> loop_condition_stack        = new Stack(); // last loop Condition
+
+        Stack<Integer> loop_while_position_stack  = new Stack(); // last loop Condition
+        Stack<Integer> loop_repeat_position_stack = new Stack(); // last loop Condition
+        Stack<Integer> loop_for_postition_stack   = new Stack(); // last loop Condition
 
         StringBuilder code = new StringBuilder(string);
+
+        String context = "";
 
         for(int INDEX = start; INDEX < end; INDEX++) {
 
             if ( (code.charAt(INDEX)     == 'P') &&
-                        (code.charAt(INDEX + 1) == 'R') &&
-                        (code.charAt(INDEX + 2) == 'O') &&
-                        (code.charAt(INDEX + 3) == 'G') &&
-                        (code.charAt(INDEX + 4) == 'A') &&
-                        (code.charAt(INDEX + 5) == 'M') )
+                 (code.charAt(INDEX + 1) == 'R') &&
+                 (code.charAt(INDEX + 2) == 'O') &&
+                 (code.charAt(INDEX + 3) == 'G') &&
+                 (code.charAt(INDEX + 4) == 'A') &&
+                 (code.charAt(INDEX + 5) == 'M') )
             {
-                String context = "";
                 INDEX += 6;
                 for(;;INDEX++) {
                     if ( (code.charAt(INDEX)     == 'V') &&
@@ -84,26 +109,18 @@ static InfoCollector container;
             } else if ( (code.charAt(INDEX)     == 'I') &&
                         (code.charAt(INDEX + 1) == 'F') )
             {
-                if_stack.push(INDEX);
-                INDEX += 2;
-                StringBuilder condition = new StringBuilder("");
-                for(;;INDEX++) {
-                    if ( (code.charAt(INDEX)     == 'T') &&
-                         (code.charAt(INDEX + 1) == 'H') &&
-                         (code.charAt(INDEX + 2) == 'E') &&
-                         (code.charAt(INDEX + 3) == 'N') )
-                    {
-                        stack.push((Boolean)engine.eval(convert_condition(container.replaceVars(condition.toString(), context_stack.peek()))));
-                        if(stack.peek()) {
-                            break;
-                        } else {
-                            INDEX = get_next_keyword(INDEX, code);
-                            break;
-                        }
-                    }
-                    condition.append(code.charAt(INDEX));
+                if_position_stack.push(INDEX);
+                int then_position = get_then(INDEX, code);
+                String condition = code.substring(INDEX + 2, then_position - 1);
+                if_stack.push((Boolean)engine.eval(convert_condition(container.replaceVars(condition, context_stack.peek()))));
+                if (if_stack.peek()) {
+                    INDEX = then_position + 3;
+                    continue;
+                } else {
+                    INDEX = get_next_keyword(INDEX, code) - 1;
+                    continue;
                 }
-            } else if ( (code.charAt(INDEX) ==     'E') &&
+            } else if ( (code.charAt(INDEX)     == 'E') &&
                         (code.charAt(INDEX + 1) == 'N') &&
                         (code.charAt(INDEX + 2) == 'D') &&
                         (code.charAt(INDEX + 3) == '_') &&
@@ -111,65 +128,43 @@ static InfoCollector container;
                         (code.charAt(INDEX + 5) == 'F') )
             {
                 INDEX += 5;
-                stack.pop();
                 if_stack.pop();
-            } else if ( (code.charAt(INDEX) ==     'E') &&
+                if_position_stack.pop();
+                continue;
+            } else if ( (code.charAt(INDEX)     == 'E') &&
                         (code.charAt(INDEX + 1) == 'L') &&
                         (code.charAt(INDEX + 2) == 'S') &&
                         (code.charAt(INDEX + 3) == 'E') )
             {
-                if(stack.peek()) {
-                    int jump = container.getEndIf(if_stack.pop());
-                    if_stack.pop();
-                    stack.pop();
-                    INDEX = jump + 5;
+                if(if_stack.peek()) {
+                    INDEX = container.getEndIf(if_position_stack.pop()) + 5;
                     continue;
                 } else {
                         INDEX += 3;
                         continue;
                 }
-            } else if ( (code.charAt(INDEX) ==     'E') &&
+            } else if ( (code.charAt(INDEX)     == 'E') &&
                         (code.charAt(INDEX + 1) == 'L') &&
                         (code.charAt(INDEX + 2) == 'S') &&
                         (code.charAt(INDEX + 3) == 'I') &&
                         (code.charAt(INDEX + 4) == 'F') )
             {
-                if(stack.peek()) {
-                    INDEX = get_next_keyword(INDEX, code);
+                if(if_stack.peek()) {
+                    INDEX = container.getEndIf(if_position_stack.pop()) + 5;
                     continue;
                 } else {
                     INDEX += 5;
-                    StringBuilder condition = new StringBuilder("");
-                    for(;;INDEX++) {
-                        if ( (code.charAt(INDEX)     == 'T') &&
-                             (code.charAt(INDEX + 1) == 'H') &&
-                             (code.charAt(INDEX + 2) == 'E') &&
-                             (code.charAt(INDEX + 3) == 'N') )
-                        {
-                            stack.pop();
-                            Boolean bool_condition = (Boolean)engine.eval(convert_condition(container.replaceVars(condition.toString(), context_stack.peek())));
-                            stack.push(bool_condition);
-                            if(bool_condition) {
-                                break;
-                            } else {
-                                INDEX = get_next_keyword(INDEX, code);
-                                break;
-                            }
-                        }
-                        condition.append(code.charAt(INDEX));
+                    int then_position = get_then(INDEX, code);
+                    String condition = code.substring(INDEX + 2, then_position - 1);
+                    if_stack.pop();
+                    if_stack.push((Boolean)engine.eval(convert_condition(container.replaceVars(condition, context_stack.peek()))));
+                    if (if_stack.peek()) {
+                        INDEX = then_position + 3;
+                        continue;
+                    } else {
+                        INDEX = get_next_keyword(INDEX, code) - 1;
+                        continue;
                     }
-                }
-            } else if ( (code.charAt(INDEX) ==     'T') &&
-                        (code.charAt(INDEX + 1) == 'H') &&
-                        (code.charAt(INDEX + 2) == 'E') &&
-                        (code.charAt(INDEX + 3) == 'N') )
-            {
-                if(stack.peek()) {
-                    INDEX += 3;
-                    continue;
-                } else {
-                    INDEX = get_next_keyword(INDEX, code);
-                    continue;
                 }
             } else if ( (code.charAt(INDEX)      == 'V') &&
                         (code.charAt(INDEX + 1)  == 'A') &&
@@ -177,6 +172,53 @@ static InfoCollector container;
             {
                 INDEX = container.getEndVar(INDEX) + 6;
                 continue;
+            } else if ( (code.charAt(INDEX)     == 'F') &&
+                        (code.charAt(INDEX + 1) == 'O') &&
+                        (code.charAt(INDEX + 2) == 'R') )
+            {
+                loop_for_postition_stack.push(INDEX);
+            } else if ( (code.charAt(INDEX)     == 'W') &&
+                        (code.charAt(INDEX + 1) == 'H') &&
+                        (code.charAt(INDEX + 2) == 'I') &&
+                        (code.charAt(INDEX + 3) == 'L') &&
+                        (code.charAt(INDEX + 4) == 'E') )
+            {
+                loop_while_position_stack.push(INDEX);
+                int do_position = get_do(INDEX, code);
+                String condition = code.substring(INDEX + 5, do_position - 1);
+                loop_do_position_stack.push(do_position);
+                loop_condition_stack.push(condition);
+                if((Boolean)engine.eval(convert_condition(container.replaceVars(loop_condition_stack.peek(), context_stack.peek())))) {
+                    INDEX = loop_do_position_stack.peek() + 1;
+                    continue;
+                } else {
+                    INDEX = container.getEndWhile(loop_while_position_stack.peek() + 1) + 8;
+                    loop_while_position_stack.pop();
+                    loop_condition_stack.pop();
+                    loop_do_position_stack.pop();
+                    continue;
+                }
+
+            } else if ( (code.charAt(INDEX)     == 'E') &&
+                        (code.charAt(INDEX + 1) == 'N') &&
+                        (code.charAt(INDEX + 2) == 'D') &&
+                        (code.charAt(INDEX + 3) == '_') &&
+                        (code.charAt(INDEX + 4) == 'W') &&
+                        (code.charAt(INDEX + 5) == 'H') &&
+                        (code.charAt(INDEX + 6) == 'I') &&
+                        (code.charAt(INDEX + 7) == 'L') &&
+                        (code.charAt(INDEX + 8) == 'E') )
+            {
+                INDEX += 8;
+                if((Boolean)engine.eval(convert_condition(container.replaceVars(loop_condition_stack.peek(), context_stack.peek())))) {
+                    INDEX = loop_do_position_stack.peek() + 1;
+                    continue;
+                } else {
+                    loop_while_position_stack.pop();
+                    loop_condition_stack.pop();
+                    loop_do_position_stack.pop();
+                    continue;
+                }
             } else if ( (code.charAt(INDEX)     == 'P') &&
                         (code.charAt(INDEX + 1) == 'R') &&
                         (code.charAt(INDEX + 2) == 'I') &&
@@ -212,7 +254,7 @@ static InfoCollector container;
             {
                 break;
             }
-        }/* end main for loop   */
+        } /* end main for loop   */
     }
 
     public static int get_next_keyword(int INDEX, StringBuilder code) {
@@ -235,11 +277,129 @@ static InfoCollector container;
                    (code.charAt(INDEX + 4) == 'I') &&
                    (code.charAt(INDEX + 5) == 'F') ) )
             {
-                INDEX -= 1;
-                break;
+                return INDEX;
+            } else if ( (code.charAt(INDEX)     == 'I') &&
+                        (code.charAt(INDEX + 1) == 'F') )
+            {
+                INDEX = get_end_if(INDEX, code) + 5;
+                continue;
             }
         }
-        return INDEX;
+    }
+
+    public static int get_to(int INDEX, StringBuilder code) {
+        for(;;INDEX++) {
+            if ( (code.charAt(INDEX)     == 'T') &&
+                 (code.charAt(INDEX + 1) == 'O') )
+            {
+                return INDEX;
+            }
+        }
+    }
+    public static int get_by(int INDEX, StringBuilder code) {
+        for(;;INDEX++) {
+            if ( (code.charAt(INDEX)     == 'B') &&
+                 (code.charAt(INDEX + 1) == 'Y') )
+            {
+                return INDEX;
+            }
+        }
+    }
+    public static int get_do(int INDEX, StringBuilder code) {
+        for(;;INDEX++) {
+            if ( (code.charAt(INDEX)     == 'D') &&
+                 (code.charAt(INDEX + 1) == 'O') )
+            {
+                return INDEX;
+            }
+        }
+    }
+
+    public static int get_then(int INDEX, StringBuilder code) {
+        for(;;INDEX++) {
+            if ( (code.charAt(INDEX)     == 'T') &&
+                 (code.charAt(INDEX + 1) == 'H') &&
+                 (code.charAt(INDEX + 2) == 'E') &&
+                 (code.charAt(INDEX + 3) == 'N') )
+            {
+                return INDEX;
+            }
+        }
+    }
+
+    public static int get_end_if(int INDEX, StringBuilder code) {
+        for(;;INDEX++) {
+            if  ( (code.charAt(INDEX)     == 'E') &&
+                  (code.charAt(INDEX + 1) == 'N') &&
+                  (code.charAt(INDEX + 2) == 'D') &&
+                  (code.charAt(INDEX + 3) == '_') &&
+                  (code.charAt(INDEX + 4) == 'I') &&
+                  (code.charAt(INDEX + 5) == 'F') )
+            {
+                return INDEX;
+            } else if ( (code.charAt(INDEX)     == 'I') &&
+                        (code.charAt(INDEX + 1) == 'F') )
+            {
+                INDEX = get_end_if(INDEX, code) + 5;
+                continue;
+            }
+        }
+    }
+
+
+    public static void engine_warmup(ScriptEngine engine) throws Exception {
+
+        int total_evaluations = 2000;
+        double avg = 0.0;
+
+        System.out.print("starting engine warmup...\n");
+        long start = System.currentTimeMillis();
+
+        for(int i = 0; i < total_evaluations; i++) {
+
+            String test0 = "true == false != true && false";
+            String test1 = "true";
+            String test2 = "false";
+            String test3 = (Math.random() * 1000) % 89 + " + 7";
+            String test4 = (Math.random() * 1000) % 83 + " + 1";
+            String test5 = (Math.random() * 1000) % 67 + " + 901";
+            String test6 = (Math.random() * 1000) % 51 + " > 5";
+            String test7 = (Math.random() * 1000) % 39 + " < 123.122134";
+            String test8 = (Math.random() * 1000) % 27 + " <= 10987123";
+            String test9 = (Math.random() * 1000) % 97 + " < 18723 >= " + (Math.random() * 100);
+
+            long now = System.currentTimeMillis();
+
+            boolean result0 = (boolean)engine.eval(test0);
+            boolean result1 = (boolean)engine.eval(test1);
+            boolean result2 = (boolean)engine.eval(test2);
+            double  result3 = (double)engine.eval(test3);
+            double  result4 = (double)engine.eval(test4);
+            double  result5 = (double)engine.eval(test5);
+            boolean result6 = (boolean)engine.eval(test6);
+            boolean result7 = (boolean)engine.eval(test7);
+            boolean result8 = (boolean)engine.eval(test8);
+            boolean result9 = (boolean)engine.eval(test9);
+
+            now = System.currentTimeMillis() - now;
+
+            avg += now;
+            if (i % 100 == 0 && i != 0) {
+                avg = avg / 100;
+                try {
+                    // log verbosity lvl 2;
+                    System.out.print("100 evaluations done, avg time: (" + avg + "ms avg)\n");
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+        }
+        System.out.print("100 evaluations done, avg time: (" + avg / 100 + "ms avg)\n");
+        System.out.print("engine warmup finished, total evaluations: "
+                                    + total_evaluations
+                                    + ", total time: "
+                                    + (System.currentTimeMillis() - start)
+                                    + "ms\n");
     }
 
     /**
