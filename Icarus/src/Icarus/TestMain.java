@@ -7,16 +7,21 @@
 package Icarus;
 
 import Ninti.*;
+import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 import linc.*;
 import parser.*;
-import java.net.*;
 
 /**
  *
  * @author apfel
  */
 public class TestMain {
-    public static void main(String args) throws UnknownHostException, Exception {
+    
+    
+    
+    public static void main(String[] args) throws UnknownHostException, Exception {
         
         String[] path = new String[1];
 
@@ -42,6 +47,53 @@ public class TestMain {
         }
         System.out.println(path[0]);
         InfoCollector infR = new InfoCollector(path);
-        System.out.println(infR.getAllTheCode());
+        StringBuilder code = infR.getAllTheCode();
+        System.out.println(code);
+        
+        /*
+        * First Test
+        */
+        System.out.println("First Test:");
+        List<ArrayList<Integer>> list = infR.giveMeAllTheLists();
+        
+        for (ArrayList<Integer> elem : list) {
+            System.out.println("A List:");
+            for (Integer item : elem) {
+                System.out.println(item);
+            }
+        }
+        
+        
+        /*
+        * Test if functions
+        */
+        System.out.println("Test if functions");
+        for (Integer item : infR.getIfs()) {
+            System.out.println("Open IF: "+item);
+            System.out.println("Close IF: "+infR.getEndIf(item));
+        }
+ 
+        
+        /*
+        * Test case functions
+        */
+        System.out.println("Test case functions");
+        for (Integer item : infR.getCases()) {
+            System.out.println("Open case: "+item);
+            System.out.println("Cases here ... " );
+            System.out.println("Close case: "+infR.getEndCase(item));
+        }
+
+        
+        /*
+        * Test var functions
+        */
+        System.out.println("Test var functions");
+        for (Integer item : infR.getVars()) {
+            System.out.println("Open VAR: "+item);
+            System.out.println("Close VAR: "+infR.getEndVar(item));
+        }
+        
+        
     }
 }
