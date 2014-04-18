@@ -1,14 +1,15 @@
 package Icarus;
 
 import Ninti.*;
+import linc.*;
+import parser.*;
 
 import java.io.*;
 import java.net.*;
 import java.util.Stack;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import linc.*;
-import parser.*;
+
 
 public class main {
 
