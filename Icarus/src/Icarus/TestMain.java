@@ -130,6 +130,7 @@ public class TestMain {
         * Test for functions
         */
         System.out.println("Test for functions");
+        //if (infR.getFunctions())
         for (Integer item : infR.getFors()) {
             System.out.println("Open For: "+item);
             System.out.println("Close For: "+infR.getEndFor(item));
@@ -142,10 +143,11 @@ public class TestMain {
         System.out.println("Test while functions");
         if (infR.getRepeats() == null) {
             System.out.println("While - NULL");
-        }
-        for (Integer item : infR.getWhiles()) {
-            System.out.println("Open While: "+item);
-            System.out.println("Close While: "+infR.getEndWhile(item));
+        } else {
+            for (Integer item : infR.getWhiles()) {
+                System.out.println("Open While: " + item);
+                System.out.println("Close While: " + infR.getEndWhile(item));
+            }
         }
         
 
