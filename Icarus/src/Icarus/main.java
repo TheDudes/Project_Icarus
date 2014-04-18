@@ -1,41 +1,42 @@
 package Icarus;
 
-import parser.*;
 import Ninti.*;
-import linc.*;
-
-import java.net.*;
 
 import java.io.*;
+import java.net.*;
+import java.util.Stack;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import linc.*;
+import parser.*;
 
-public class main{
-    public static void main(String[] args) throws Exception{
+public class main {
 
-    String[] path = new String[1];
+    public static void main(String[] args) throws Exception {
 
-    /*
-     * To make testing easyer for all of us, add your hostname to this logic
-     */
-    String hostname = InetAddress.getLocalHost().getHostName();
-    switch (hostname) {
-    case "beelzebub":
-        path[0] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/franzke_files/plc_prg.st";
-        break;
-    case "d4ryus":
-        path[0] = "/home/d4ryus/coding/Project_Icarus/franzke_files/plc_prg.st";
-        break;
-    /*
-    case "yourhostname":
-            path[0] = "/your/path/to/the/file";
-            break;
-    */
-    default:
-        System.out.println("Hey stupid(faggot), take a look in the code!");
-        System.exit(0);
-    }
-    System.out.println(path[0]);
+        String[] path = new String[1];
+
+        /*
+         * To make testing easyer for all of us, add your hostname to this logic
+         */
+        String hostname = InetAddress.getLocalHost().getHostName();
+        switch (hostname) {
+            case "beelzebub":
+                path[0] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/franzke_files/plc_prg.st";
+                break;
+            case "d4ryus":
+                path[0] = "/home/d4ryus/coding/Project_Icarus/franzke_files/plc_prg.st";
+                break;
+            /*
+             case "yourhostname":
+             path[0] = "/your/path/to/the/file";
+             break;
+             */
+            default:
+                System.out.println("Hey stupid(faggot), take a look in the code!");
+                System.exit(0);
+        }
+        System.out.println(path[0]);
         InfoCollector infR = new InfoCollector(path);
         System.out.println(infR.getAllTheCode());
     }
@@ -46,8 +47,8 @@ public class main{
         ScriptEngine engine = factory.getEngineByName("JavaScript");
 
         /* here apfel's container later */
-        Container container = new Container();
-        Boolean_Stack stack = new Boolean_Stack();
+        // container Container = new Container();
+        Stack<Boolean> stack = new Stack<>();
 
         StringBuilder code = new StringBuilder(string);
 
@@ -86,7 +87,7 @@ public class main{
                         (code.charAt(INDEX + 2) == 'S') &&
                         (code.charAt(INDEX + 3) == 'E') )
             {
-                if(stack.get_first()) {
+                if(stack.pop()) {
                     /* jump over ELSE block */
                 } else {
                         INDEX += 3;
@@ -98,7 +99,7 @@ public class main{
                         (code.charAt(INDEX + 3) == 'I') &&
                         (code.charAt(INDEX + 4) == 'F') )
             {
-                if(stack.get_first()) {
+                if(stack.pop()) {
                     /* jump over ELSIF block */
                 } else {
                     INDEX += 5;
@@ -129,7 +130,7 @@ public class main{
                         (code.charAt(INDEX + 2) == 'E') &&
                         (code.charAt(INDEX + 3) == 'N') )
             {
-                if(stack.get_first()) {
+                if(stack.pop()) {
                     /*
                      * if the last condition was true, just dont to anything and continue
                      * evaluating the code
