@@ -105,5 +105,54 @@ public class TestMain {
             System.out.println("Close Program: "+infR.getEndProgram(item));
         }
         
+        
+        /*
+        * Test function functions
+        */
+        System.out.println("Test function functions");
+        for (Integer item : infR.getFunctions()) {
+            System.out.println("Open Function: "+item);
+            System.out.println("Close Function: "+infR.getEndFunction(item));
+        }
+        
+        
+        /*
+        * Test progam functions
+        */
+        System.out.println("Test function block functions");
+        for (Integer item : infR.getFunctionBlocks()) {
+            System.out.println("Open Function Block: "+item);
+            System.out.println("Close Function Block: "+infR.getEndFunctionBlock(item));
+        }
+        
+        
+        /*
+        * Test for functions
+        */
+        System.out.println("Test for functions");
+        for (Integer item : infR.getFors()) {
+            System.out.println("Open For: "+item);
+            System.out.println("Close For: "+infR.getEndFor(item));
+        }
+        
+        
+        /*
+        * Test while functions
+        */
+        System.out.println("Test while functions");
+        for (Integer item : infR.getWhiles()) {
+            System.out.println("Open While: "+item);
+            System.out.println("Close While: "+infR.getEndWhile(item));
+        }
+        
+        
+        /*
+        * Test repeat functions
+        */
+        System.out.println("Test repeat functions");
+        for (Integer item : infR.getRepeats()) {
+            System.out.println("Open Repeat: "+item);
+            System.out.println("Close Repeat: "+infR.getEndRepeat(item));
+        }
     }
 }
