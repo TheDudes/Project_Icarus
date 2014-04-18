@@ -21,8 +21,11 @@ public class LogWriter {
     private String host; //Hostname
     private int verboseLevel = 5; //Needs to be implemented
     private Date date; 
-    private SimpleDateFormat sdf;
-    private String timeStamp;
+    private SimpleDateFormat sdf;    
+    
+    //temporär//
+    public int queueSize;
+    //temporär//
     
     public LogWriter(){
         new Thread(new LogWriterWorker(lbq)).start();
@@ -39,13 +42,13 @@ public class LogWriter {
     //Generates the Timestamp
     private String getTimestamp(){ 
         date = new Date(System.currentTimeMillis());
-        sdf = new SimpleDateFormat("dd/MM/yyyy-kk:mm:ss");
-        return timeStamp = sdf.format(date);
+        sdf = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+        return sdf.format(date);
     }
     //Writes to the LogFile
     public void log(String key, int verboseLevel, String logMessage) {
         if(verboseLevel <= this.verboseLevel){
-            int queueSize = lbq.size();
+            queueSize = lbq.size();
             String logLine = queueSize+" ["+getTimestamp()+"]"+" ["+
                                 host+"] "+"["+
                                 key+"]"+": "+

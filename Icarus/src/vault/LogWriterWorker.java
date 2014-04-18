@@ -10,6 +10,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,11 +24,21 @@ public class LogWriterWorker implements Runnable{
     
     private LinkedBlockingQueue<String> lbq;
     
+    private Date date; 
+    private SimpleDateFormat sdf;
+    
     //needs to be implemented//
-    private String filePath = "/home/vault/programing/NetBeansProjects/Project_Icarus/Icarus/src/vault/LogFile.txt";
+    private String filePath = "/home/vault/programing/NetBeansProjects/Project_Icarus/Icarus/src/vault/LogFile-"+getTimestamp()+".log";
     
     public LogWriterWorker(LinkedBlockingQueue lbq){
         this.lbq = lbq;
+    }
+    
+    private String getTimestamp(){ 
+        date = new Date(System.currentTimeMillis());
+        sdf = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
+        return sdf.format(date);
+        
     }
     
     @Override

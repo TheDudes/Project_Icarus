@@ -15,8 +15,14 @@ public class TestMain {
         
     public static void main(String[] args) {
         LogWriter logwriter = new LogWriter();
-        logwriter.log("Verbose5", 5, "Starting the testrun");
-        logwriter.log("Verbose1", 1, "Should be printed out");
-        logwriter.log("Verbose29", 29, "Nobody will ever read this");
+        int peak = 0;
+        for(int i = 0; i < 10; i++){
+            logwriter.log("LogLine "+i, 1, "OMAGOD"); 
+            if(peak < logwriter.queueSize){
+                peak = logwriter.queueSize;
+            }
+        }
+        System.out.println(peak);
+        
     }
 }
