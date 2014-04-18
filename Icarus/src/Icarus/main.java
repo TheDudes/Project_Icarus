@@ -28,12 +28,11 @@ import javax.script.ScriptEngineManager;
 
 public class main {
 
-static InfoCollector container;
+    static InfoCollector container;
 
     public static void main(String[] args) throws Exception {
 
         String[] path = new String[1];
-
         /*
          * To make testing easyer for all of us, add your hostname to this logic
          */
@@ -54,6 +53,7 @@ static InfoCollector container;
                 System.out.println("Hey stupid(faggot), take a look in the code!");
                 System.exit(0);
         }
+
         System.out.println(path[0]);
         container = new InfoCollector(path);
         String code = container.getAllTheCode().toString();
@@ -65,7 +65,6 @@ static InfoCollector container;
     }
 
     public static void interpret (String string, int start, int end, ScriptEngine engine) throws Exception { 
-
 
         /* stacks */
         Stack<String>  context_stack              = new Stack(); // current context
@@ -345,7 +344,6 @@ static InfoCollector container;
             }
         }
     }
-
 
     public static void engine_warmup(ScriptEngine engine) throws Exception {
 
