@@ -164,7 +164,7 @@ public class Symbols {
 			contextstore.put(context, percontext);
 			id++;
 		    } 
-		} else if (!(Pattern.matches(":.*@", b.toString()))) {
+		} else if (Pattern.matches(".*@", b.toString())) {
 		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside second if");
 		    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): names");
 		    names = b.substring(0, b.indexOf(":")).split(",");
@@ -184,7 +184,7 @@ public class Symbols {
 			    valuebyid.put(tmpint2, TYPES.getType(type, value));
 			} else {
 			    // throw unknown symbol in this context exception
-                            // throw new Exception("Unknown Symbol \""+name+"\" in: "+context);
+                            throw new Exception("Unknown Symbol \""+name+"\" in: "+context);
 			}
 		    }
 		} else {
