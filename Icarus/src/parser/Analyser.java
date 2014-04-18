@@ -234,14 +234,18 @@ public class Analyser {
      * This function is private.
      */
     private void findAllRepeats() {
+        System.out.println("Parser: Analyser: findAllRepeats: beginning");
 	String start = "REPEAT";
 	String stop = "END_REPEAT";
 	int endpointer;
+        System.out.println("Parser: Analyser: findAllRepeats: bevor loop");
 	for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, endpointer+stop.length())) {
+            System.out.println("Parser: Analyser: findAllRepeats: inside loop");
 	    repeat_all.add(new Integer(pointer));
 	    endpointer = builder.indexOf(stop, pointer);
 	    repeat_all.add(new Integer(endpointer));
 	}
+        System.out.println("Parser: Analyser: findAllRepeats: end");
     }
 
     /**

@@ -140,19 +140,29 @@ public class TestMain {
         * Test while functions
         */
         System.out.println("Test while functions");
+        if (infR.getRepeats() == null) {
+            System.out.println("While - NULL");
+        }
         for (Integer item : infR.getWhiles()) {
             System.out.println("Open While: "+item);
             System.out.println("Close While: "+infR.getEndWhile(item));
         }
         
-        
+
         /*
         * Test repeat functions
         */
         System.out.println("Test repeat functions");
-        for (Integer item : infR.getRepeats()) {
-            System.out.println("Open Repeat: "+item);
-            System.out.println("Close Repeat: "+infR.getEndRepeat(item));
+        if (infR.getRepeats() == null) {
+            System.out.println("Repeat - NULL");
+        } else {
+            for (Integer item : infR.getRepeats()) {
+                System.out.println("Open Repeat: " + item);
+                System.out.println("Close Repeat: " + infR.getEndRepeat(item));
+            }
         }
+        
+        
+        
     }
 }
