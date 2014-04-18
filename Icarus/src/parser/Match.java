@@ -718,9 +718,7 @@ public class Match {
      * This function is private.
      */
     private void getherAllRepeatList() {
-        System.out.println("Parser: Match: bevor get list");
 	repeats = list.get(10);
-	System.out.println("Parser: Match: after get list");
         repeatendrepeat = new TreeMap<>();
 	for (Integer item : repeats) {
 	    if (builder.substring(item, item+5).equals("REPEAT")) {
