@@ -184,7 +184,7 @@ public class Symbols {
 			    valuebyid.put(tmpint2, TYPES.getType(type, value));
 			} else {
 			    // throw unknown symbol in this context exception
-                            throw new Exception("Unknown Symbol \""+name+"\" in: "+context);
+                            // throw new Exception("Unknown Symbol \""+name+"\" in: "+context);
 			}
 		    }
 		} else {
