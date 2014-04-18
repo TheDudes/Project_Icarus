@@ -297,10 +297,8 @@ public class Symbols {
      */
     public void addVar(String input, String context) throws Exception {
         // type integer all the time
-        String[] splitted = new String[2];
-        String[] splitted2 = new String[2]; // oh its to late man ...
-        splitted = input.split(":=");
-        splitted2 = splitted[1].split(";"); 
+        String[] splitted = input.split(":=");
+        String[] splitted2 = splitted[1].split(";"); // oh its to late man ...
         Integer tmp = contextstore.get(context).get(splitted[0]);
         if (tmp == null) {
             fillUpTheContainers(context, new StringBuilder(splitted[0]+":INT:="+splitted2[0]+";"));
