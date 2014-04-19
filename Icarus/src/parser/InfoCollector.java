@@ -48,8 +48,7 @@ public class InfoCollector {
      * @see Match
      * @see Symbols
      */
-    public InfoCollector (String[] files, LogWriter logger) throws FileNotFoundException, IOException, Exception {
-        this.logger = logger; // logger inizialized
+    public InfoCollector (String[] files) throws FileNotFoundException, IOException, Exception {
 	System.out.println("Parser: InfoCollector: MergeFiles.mergeAll");
 	allthecode = MergeFiles.mergeAll(files);
 	System.out.println("Parser: InfoCollector: Analyser");
