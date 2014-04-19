@@ -11,6 +11,7 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 import linc.*;
+import vault.*;
 import parser.*;
 
 /**

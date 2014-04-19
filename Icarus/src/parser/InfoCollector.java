@@ -18,6 +18,7 @@ package parser;
 
 import java.util.*;
 import java.io.*;
+import vault.*;
 
 /**
  * This class is a Interfaceclass to all the functions which a potentionally needed
@@ -32,7 +33,8 @@ public class InfoCollector {
     private Analyser analyser;
     private Match match;
     private Symbols symb;
-
+    private LogWriter logger;
+    
     /**
      * InfoCollector is a Interfaceclass which has all the functions from a
      * lot of different classes to make the life for others easyer
@@ -46,7 +48,8 @@ public class InfoCollector {
      * @see Match
      * @see Symbols
      */
-    public InfoCollector (String[] files) throws FileNotFoundException, IOException, Exception {
+    public InfoCollector (String[] files, LogWriter logger) throws FileNotFoundException, IOException, Exception {
+        this.logger = logger; // logger inizialized
 	System.out.println("Parser: InfoCollector: MergeFiles.mergeAll");
 	allthecode = MergeFiles.mergeAll(files);
 	System.out.println("Parser: InfoCollector: Analyser");
