@@ -19,7 +19,8 @@ package vault;
  * everywhere.
  */
 public class Log {
-    private static LogWriter log;
+    private static LogWriter log;                  // the logger
+    private static boolean initialized = false;    // will be true if logger is ready
     
     /**
      * init initializes the Log subsystem, it will create a static context where
@@ -30,6 +31,7 @@ public class Log {
      */
     public static void init(String pathToLogfile, int verboseLevel) {
         log = new LogWriter(pathToLogfile, verboseLevel);
+        initialized = true;
     }
     
     /**
@@ -41,5 +43,14 @@ public class Log {
      */
     public static void log(String key, int verboseLevel, String message) {
         log.log(key, verboseLevel, message);
+    }
+    
+    
+    /**
+     * isInitialized will return tha logger status
+     * @return true if the logger is ready and false if its not
+     */
+    public static boolean isInitialized() {
+        return initialized;
     }
 }
