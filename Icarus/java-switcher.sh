@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
-
 #set -x
+
 
 if [[ `ps | grep $$ | awk '{ print $4 }'` != zsh ]]
 then
@@ -11,10 +11,11 @@ fi
 
 setVars()
 {
+    HOSTNAME=/usr/bin/hostname
     JAVA=/usr/bin/java
     JAVAC=/usr/bin/javac
     
-    case `hostname` in
+    case `$HOSTNAME` in
 	beelzebub)
 	    ORACLE=/usr/lib/jvm/jdk1.7.0_51/bin
 	    OPEN=/usr/lib/jvm/java-7-openjdk/bin
@@ -65,6 +66,7 @@ help()
     print "\tibm\t\t-\tIBM JDK"
     print " "
     print "Don't forget to add your machine to the setVars function."
+    print "Only tested on Arch Linux!"
     print "Have fun ;)"
 }
 
