@@ -32,7 +32,7 @@ public class LogWriterWorker implements Runnable{
     private String pathToLogfile;
     
     
-    public LogWriterWorker(LinkedBlockingQueue lbq, String logFilePath){
+    public LogWriterWorker(LinkedBlockingQueue<String> lbq, String logFilePath){
         this.lbq = lbq;
         this.tmpFilePath = logFilePath;        
         pathToLogfile = tmpFilePath+getTimestamp()+".log";

@@ -67,16 +67,16 @@ public class main {
     public static void interpret (String string, int start, int end, ScriptEngine engine) throws Exception { 
 
         /* stacks */
-        Stack<String>  context_stack              = new Stack(); // current context
-        Stack<Boolean> if_stack                   = new Stack(); // last if condition
-        Stack<Integer> if_position_stack          = new Stack(); // last if position
+        Stack<String>  context_stack              = new Stack<>(); // current context
+        Stack<Boolean> if_stack                   = new Stack<>(); // last if condition
+        Stack<Integer> if_position_stack          = new Stack<>(); // last if position
 
-        Stack<Integer> loop_do_position_stack     = new Stack(); // last loop Do
-        Stack<String> loop_condition_stack        = new Stack(); // last loop Condition
+        Stack<Integer> loop_do_position_stack     = new Stack<>(); // last loop Do
+        Stack<String> loop_condition_stack        = new Stack<>(); // last loop Condition
 
-        Stack<Integer> loop_while_position_stack  = new Stack(); // last loop Condition
-        Stack<Integer> loop_repeat_position_stack = new Stack(); // last loop Condition
-        Stack<Integer> loop_for_postition_stack   = new Stack(); // last loop Condition
+        Stack<Integer> loop_while_position_stack  = new Stack<>(); // last loop Condition
+        Stack<Integer> loop_repeat_position_stack = new Stack<>(); // last loop Condition
+        Stack<Integer> loop_for_postition_stack   = new Stack<>(); // last loop Condition
 
         StringBuilder code = new StringBuilder(string);
 

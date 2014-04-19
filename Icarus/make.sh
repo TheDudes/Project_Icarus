@@ -1,11 +1,11 @@
 #!/usr/bin/zsh
 
-if [[ `ps | grep $$ | awk '{ print $4 }'` != zsh ]]
-then
-    echo "Error: zsh needed."
-    echo "Error: Please use \"zsh java-switcher.sh\" or \"./java-switcher.sh\""
-    exit 1
-fi
+# if [[ `ps | grep $$ | awk '{ print $4 }'` != zsh ]]
+# then
+#    echo "Error: zsh needed."
+#    echo "Error: Please use \"zsh java-switcher.sh\" or \"./java-switcher.sh\""
+#    exit 1
+#fi
 
 BUILD=./build.xml
 ANT=/usr/bin/ant

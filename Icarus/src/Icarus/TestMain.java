@@ -24,6 +24,8 @@ public class TestMain {
     
     public static void main(String[] args) throws UnknownHostException, Exception {
         
+        Log.init("/tmp/logfile.log", 10);
+        Log.log("TEST", 1, "Starting Test");
         String[] path = new String[2];
 
         /*
@@ -211,8 +213,8 @@ public class TestMain {
             }
         }
         System.out.println("-------------------------");
-        
-        
-        
+                
+        Log.log("EOF", 0, "Thats a message");
+        System.exit(0);
     }
 }
