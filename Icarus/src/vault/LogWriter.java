@@ -19,16 +19,13 @@ public class LogWriter {
     
     private LinkedBlockingQueue<String> lbq = new LinkedBlockingQueue<>(1024);
     private String host; //Hostname
-    private int verboseLevel = 5; //Needs to be implemented
     private Date date; 
-    private SimpleDateFormat sdf;    
-    
-    //temporär//
-    public int queueSize;
-    //temporär//
-    
-    public LogWriter(){
-        new Thread(new LogWriterWorker(lbq)).start();
+    private SimpleDateFormat sdf; 
+    private int verboseLevel;
+
+    public LogWriter(String pathToLogfile, int verboseLevel){
+        new Thread(new LogWriterWorker(lbq, pathToLogfile)).start();
+        this.verboseLevel = verboseLevel;
         getHostname();
     }
     //Gets the Hostname
@@ -48,8 +45,8 @@ public class LogWriter {
     //Writes to the LogFile
     public void log(String key, int verboseLevel, String logMessage) {
         if(verboseLevel <= this.verboseLevel){
-            queueSize = lbq.size();
-            String logLine = queueSize+" ["+getTimestamp()+"]"+" ["+
+            
+            String logLine ="["+getTimestamp()+"]"+" ["+
                                 host+"] "+"["+
                                 key+"]"+": "+
                                 logMessage+"\n";

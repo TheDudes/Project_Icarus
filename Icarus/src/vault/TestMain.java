@@ -14,15 +14,13 @@ package vault;
 public class TestMain {
         
     public static void main(String[] args) {
-        LogWriter logwriter = new LogWriter();
-        int peak = 0;
-        for(int i = 0; i < 10; i++){
-            logwriter.log("LogLine "+i, 1, "OMAGOD"); 
-            if(peak < logwriter.queueSize){
-                peak = logwriter.queueSize;
-            }
-        }
-        System.out.println(peak);
-        
+        LogWriter logwriter = new LogWriter("/home/vault/programing/Logfile", 10);
+        logwriter.log("bleefsdfub", 3, "Blsdub");
+        logwriter.log("blufewb", 3, "Blusdb");
+        logwriter.log("blffwub", 3, "Blwfwub");
+        logwriter.log("bleesfub", 3, "fwefBlub");
+        logwriter.log("bluasdfb", 3, "Blsdfub");
+        logwriter.log("blufdasb", 3, "Blfewub");
+        logwriter.log("basdflub", 3, "Bluwefwfeb");
     }
 }

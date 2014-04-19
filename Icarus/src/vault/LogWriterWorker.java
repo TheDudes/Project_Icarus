@@ -28,10 +28,14 @@ public class LogWriterWorker implements Runnable{
     private SimpleDateFormat sdf;
     
     //needs to be implemented//
-    private String filePath = "/home/vault/programing/NetBeansProjects/Project_Icarus/Icarus/src/vault/LogFile-"+getTimestamp()+".log";
+    private String tmpFilePath;
+    private String pathToLogfile;
     
-    public LogWriterWorker(LinkedBlockingQueue lbq){
+    
+    public LogWriterWorker(LinkedBlockingQueue lbq, String logFilePath){
         this.lbq = lbq;
+        this.tmpFilePath = logFilePath;        
+        pathToLogfile = tmpFilePath+getTimestamp()+".log";
     }
     
     private String getTimestamp(){ 
@@ -43,8 +47,11 @@ public class LogWriterWorker implements Runnable{
     
     @Override
     public void run() {
-        try (Writer fWriter = new BufferedWriter(new FileWriter(filePath, true))) {
+        try (Writer fWriter = new BufferedWriter(new FileWriter(pathToLogfile, true))) {
             while (true) {
+                
+                System.out.println(pathToLogfile);
+                
                 fWriter.write(lbq.take());
                 fWriter.flush();
             }
