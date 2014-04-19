@@ -20,11 +20,11 @@ setVars()
 	    OPEN=/usr/lib/jvm/java-7-openjdk/bin
 	    IBM=/usr/lib/jvm/ibm-java-x86_64-71/bin
 	    ;;
-	#newone)
-	#    ORACLE=/path/to/java
-	#    OPEN=/path/to/java
-	#    IBM=/path/to/java
-	#    ;;
+	d4ryus)
+	    ORACLE=/home/d4ryus/coding/gay_java/jdk1.8.0_05/bin
+	    OPEN=/usr/lib/jvm/java-7-openjdk/bin
+	    IBM=/path/to/java
+	    ;;
 	*)
 	    print "... "
 	    sleep 1
