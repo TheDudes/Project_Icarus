@@ -21,37 +21,33 @@ import java.util.logging.Logger;
  * @author vault
  */
 public class LogWriterWorker implements Runnable{
-    
+
     private LinkedBlockingQueue<String> lbq;
-    
+
     private Date date; 
     private SimpleDateFormat sdf;
-    
+
     //needs to be implemented//
     private String tmpFilePath;
     private String pathToLogfile;
-    
-    
+
     public LogWriterWorker(LinkedBlockingQueue<String> lbq, String logFilePath){
         this.lbq = lbq;
-        this.tmpFilePath = logFilePath;        
+        this.tmpFilePath = logFilePath;
         pathToLogfile = tmpFilePath+getTimestamp()+".log";
     }
-    
+
     private String getTimestamp(){ 
         date = new Date(System.currentTimeMillis());
         sdf = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
         return sdf.format(date);
-        
     }
-    
+
     @Override
     public void run() {
+        /* the "File not found error should be here */
         try (Writer fWriter = new BufferedWriter(new FileWriter(pathToLogfile, true))) {
             while (true) {
-                
-                System.out.println(pathToLogfile);
-                
                 fWriter.write(lbq.take());
                 fWriter.flush();
             }
@@ -60,6 +56,5 @@ public class LogWriterWorker implements Runnable{
         } catch (InterruptedException ex) {
             Logger.getLogger(LogWriterWorker.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
     }
 }

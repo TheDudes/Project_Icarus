@@ -1,0 +1,4 @@
+- path to log directory, instead of a file.
+- fix error "File not found". (added comment at LogWriterWorker.java LN line 48)
+- stop thread when main stops. *fixed
+- there is a print to Terminal on every write to log :/ *fixed

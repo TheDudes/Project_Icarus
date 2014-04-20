@@ -17,6 +17,7 @@
 package Icarus;
 
 import Ninti.*;
+import vault.*;
 import linc.*;
 import parser.*;
 
@@ -29,42 +30,55 @@ import javax.script.ScriptEngineManager;
 public class main {
 
     static InfoCollector container;
+    static LogWriter log;
+    static int verbose_level = 5;
 
     public static void main(String[] args) throws Exception {
 
-        String[] path = new String[1];
+        String[] path = new String[2];
         /*
          * To make testing easyer for all of us, add your hostname to this logic
          */
-        String hostname = InetAddress.getLocalHost().getHostName();
+        String hostname    = InetAddress.getLocalHost().getHostName();
+
         switch (hostname) {
             case "beelzebub":
                 path[0] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/franzke_files/plc_prg.st";
+                System.out.println("Hey tux, would you mind taking a look at the code?");
                 break;
             case "d4ryus":
                 path[0] = "/home/d4ryus/coding/Project_Icarus/franzke_files/plc_prg.st";
+                path[1] = "/home/d4ryus/coding/Project_Icarus/Icarus/log";
                 break;
             /*
              case "yourhostname":
-             path[0] = "/your/path/to/the/file";
+             path[0] = "/your/path/to/the/st/file";
+             path[1] = "/your/path/to/the/log/file";
              break;
              */
             default:
                 System.out.println("Hey stupid(faggot), take a look in the code!");
                 System.exit(0);
         }
+        System.out.print("your st file path: " + path[0] + "\n");
+        System.out.print("your log file path: " + path[1] + "\n");
 
-        System.out.println(path[0]);
+        log = new LogWriter(path[1], verbose_level);
+
         container = new InfoCollector(path);
         String code = container.getAllTheCode().toString();
-        System.out.println(code);
 
         ScriptEngineManager factory = new ScriptEngineManager();
         ScriptEngine engine = factory.getEngineByName("JavaScript");
         engine_warmup(engine);
+
+        log.kill();
     }
 
     public static void interpret (String string, int start, int end, ScriptEngine engine) throws Exception { 
+
+        log.log("interpreter started", 4, "start: " + start + ", end: " + end);
+        log.log("interpreter", 4, "init stacks");
 
         /* stacks */
         Stack<String>  context_stack              = new Stack<>(); // current context
@@ -84,6 +98,8 @@ public class main {
 
         for(int INDEX = start; INDEX < end; INDEX++) {
 
+            log.log("interpreter", 4, "for_loop_top, INDEX = " + INDEX);
+
             if ( (code.charAt(INDEX)     == 'P') &&
                  (code.charAt(INDEX + 1) == 'R') &&
                  (code.charAt(INDEX + 2) == 'O') &&
@@ -91,6 +107,7 @@ public class main {
                  (code.charAt(INDEX + 4) == 'A') &&
                  (code.charAt(INDEX + 5) == 'M') )
             {
+                log.log("interpreter", 4, "found PROGRAM, INDEX = " + INDEX);
                 INDEX += 6;
                 for(;;INDEX++) {
                     if ( (code.charAt(INDEX)     == 'V') &&
@@ -108,6 +125,7 @@ public class main {
             } else if ( (code.charAt(INDEX)     == 'I') &&
                         (code.charAt(INDEX + 1) == 'F') )
             {
+                log.log("interpreter", 4, "found IF, INDEX = " + INDEX);
                 if_position_stack.push(INDEX);
                 int then_position = get_then(INDEX, code);
                 String condition = code.substring(INDEX + 2, then_position - 1);
@@ -126,6 +144,7 @@ public class main {
                         (code.charAt(INDEX + 4) == 'I') &&
                         (code.charAt(INDEX + 5) == 'F') )
             {
+                log.log("interpreter", 4, "found END_IF, INDEX = " + INDEX);
                 INDEX += 5;
                 if_stack.pop();
                 if_position_stack.pop();
@@ -135,6 +154,7 @@ public class main {
                         (code.charAt(INDEX + 2) == 'S') &&
                         (code.charAt(INDEX + 3) == 'E') )
             {
+                log.log("interpreter", 4, "found ELSE, INDEX = " + INDEX);
                 if(if_stack.peek()) {
                     INDEX = container.getEndIf(if_position_stack.pop()) + 5;
                     continue;
@@ -148,6 +168,7 @@ public class main {
                         (code.charAt(INDEX + 3) == 'I') &&
                         (code.charAt(INDEX + 4) == 'F') )
             {
+                log.log("interpreter", 4, "found ELSIF, INDEX = " + INDEX);
                 if(if_stack.peek()) {
                     INDEX = container.getEndIf(if_position_stack.pop()) + 5;
                     continue;
@@ -169,12 +190,14 @@ public class main {
                         (code.charAt(INDEX + 1)  == 'A') &&
                         (code.charAt(INDEX + 2)  == 'R') )
             {
+                log.log("interpreter", 4, "found VAR, INDEX = " + INDEX);
                 INDEX = container.getEndVar(INDEX) + 6;
                 continue;
             } else if ( (code.charAt(INDEX)     == 'F') &&
                         (code.charAt(INDEX + 1) == 'O') &&
                         (code.charAt(INDEX + 2) == 'R') )
             {
+                log.log("interpreter", 4, "found FOR, INDEX = " + INDEX);
                 loop_for_postition_stack.push(INDEX);
             } else if ( (code.charAt(INDEX)     == 'W') &&
                         (code.charAt(INDEX + 1) == 'H') &&
@@ -182,6 +205,7 @@ public class main {
                         (code.charAt(INDEX + 3) == 'L') &&
                         (code.charAt(INDEX + 4) == 'E') )
             {
+                log.log("interpreter", 4, "found WHILE, INDEX = " + INDEX);
                 loop_while_position_stack.push(INDEX);
                 int do_position = get_do(INDEX, code);
                 String condition = code.substring(INDEX + 5, do_position - 1);
@@ -208,6 +232,7 @@ public class main {
                         (code.charAt(INDEX + 7) == 'L') &&
                         (code.charAt(INDEX + 8) == 'E') )
             {
+                log.log("interpreter", 4, "found END_WHILE, INDEX = " + INDEX);
                 INDEX += 8;
                 if((Boolean)engine.eval(convert_condition(container.replaceVars(loop_condition_stack.peek(), context_stack.peek())))) {
                     INDEX = loop_do_position_stack.peek() + 1;
@@ -224,6 +249,7 @@ public class main {
                         (code.charAt(INDEX + 3) == 'N') &&
                         (code.charAt(INDEX + 4) == 'T') )
             {
+                log.log("interpreter", 4, "found PRINT, INDEX = " + INDEX);
                 INDEX += 6;
                 String print = "";
                 for( ;; INDEX++ ) {
@@ -251,12 +277,14 @@ public class main {
                         (code.charAt(INDEX + 9)  == 'A') &&
                         (code.charAt(INDEX + 10) == 'M') )
             {
+                log.log("interpreter", 4, "found END_PROGRAM, INDEX = " + INDEX);
                 break;
             }
         } /* end main for loop   */
     }
 
     public static int get_next_keyword(int INDEX, StringBuilder code) {
+        log.log("interpreter", 4, "get_next_keyword call, INDEX = " + INDEX);
         for(;;INDEX++) {
             if ( ( (code.charAt(INDEX)     == 'E') &&
                    (code.charAt(INDEX + 1) == 'L') &&
@@ -276,6 +304,7 @@ public class main {
                    (code.charAt(INDEX + 4) == 'I') &&
                    (code.charAt(INDEX + 5) == 'F') ) )
             {
+                log.log("interpreter", 4, "get_next_keyword return, INDEX = " + INDEX);
                 return INDEX;
             } else if ( (code.charAt(INDEX)     == 'I') &&
                         (code.charAt(INDEX + 1) == 'F') )
@@ -287,46 +316,56 @@ public class main {
     }
 
     public static int get_to(int INDEX, StringBuilder code) {
+        log.log("interpreter", 4, "get_to call, INDEX = " + INDEX);
         for(;;INDEX++) {
             if ( (code.charAt(INDEX)     == 'T') &&
                  (code.charAt(INDEX + 1) == 'O') )
             {
+                log.log("interpreter", 4, "get_to return, INDEX = " + INDEX);
                 return INDEX;
             }
         }
     }
+
     public static int get_by(int INDEX, StringBuilder code) {
+        log.log("interpreter", 4, "get_by call, INDEX = " + INDEX);
         for(;;INDEX++) {
             if ( (code.charAt(INDEX)     == 'B') &&
                  (code.charAt(INDEX + 1) == 'Y') )
             {
+                log.log("interpreter", 4, "get_by return, INDEX = " + INDEX);
                 return INDEX;
             }
         }
     }
     public static int get_do(int INDEX, StringBuilder code) {
+        log.log("interpreter", 4, "get_do call, INDEX = " + INDEX);
         for(;;INDEX++) {
             if ( (code.charAt(INDEX)     == 'D') &&
                  (code.charAt(INDEX + 1) == 'O') )
             {
+                log.log("interpreter", 4, "get_do return, INDEX = " + INDEX);
                 return INDEX;
             }
         }
     }
 
     public static int get_then(int INDEX, StringBuilder code) {
+        log.log("interpreter", 4, "get_then call, INDEX = " + INDEX);
         for(;;INDEX++) {
             if ( (code.charAt(INDEX)     == 'T') &&
                  (code.charAt(INDEX + 1) == 'H') &&
                  (code.charAt(INDEX + 2) == 'E') &&
                  (code.charAt(INDEX + 3) == 'N') )
             {
+                log.log("interpreter", 4, "get_then return, INDEX = " + INDEX);
                 return INDEX;
             }
         }
     }
 
     public static int get_end_if(int INDEX, StringBuilder code) {
+        log.log("interpreter", 4, "get_end_if call, INDEX = " + INDEX);
         for(;;INDEX++) {
             if  ( (code.charAt(INDEX)     == 'E') &&
                   (code.charAt(INDEX + 1) == 'N') &&
@@ -335,6 +374,7 @@ public class main {
                   (code.charAt(INDEX + 4) == 'I') &&
                   (code.charAt(INDEX + 5) == 'F') )
             {
+                log.log("interpreter", 4, "get_end_if return, INDEX = " + INDEX);
                 return INDEX;
             } else if ( (code.charAt(INDEX)     == 'I') &&
                         (code.charAt(INDEX + 1) == 'F') )
@@ -350,7 +390,7 @@ public class main {
         int total_evaluations = 2000;
         double avg = 0.0;
 
-        System.out.print("starting engine warmup...\n");
+        log.log("engine", 1,"starting engine warmup...");
         long start = System.currentTimeMillis();
 
         for(int i = 0; i < total_evaluations; i++) {
@@ -385,15 +425,13 @@ public class main {
             if (i % 100 == 0 && i != 0) {
                 avg = avg / 100;
                 try {
-                    // log verbosity lvl 2;
-                    System.out.print("100 evaluations done, avg time: (" + avg + "ms avg)\n");
+                    log.log("engine", 2,"100 evaluations done, avg time: (" + avg + "ms avg)");
                 } catch (Exception e) {
-                    System.out.println(e);
                 }
             }
         }
-        System.out.print("100 evaluations done, avg time: (" + avg / 100 + "ms avg)\n");
-        System.out.print("engine warmup finished, total evaluations: "
+        log.log("engine", 2, "100 evaluations done, avg time: (" + avg / 100 + "ms avg)");
+        log.log("engine", 1, "engine warmup finished, total evaluations: "
                                     + total_evaluations
                                     + ", total time: "
                                     + (System.currentTimeMillis() - start)

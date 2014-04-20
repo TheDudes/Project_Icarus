@@ -16,15 +16,17 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @author vault
  */
 public class LogWriter {
-    
+
     private LinkedBlockingQueue<String> lbq = new LinkedBlockingQueue<>(1024);
     private String host; //Hostname
     private Date date; 
     private SimpleDateFormat sdf; 
     private int verboseLevel;
+    private Thread worker;
 
     public LogWriter(String pathToLogfile, int verboseLevel){
-        new Thread(new LogWriterWorker(lbq, pathToLogfile)).start();
+        worker = new Thread(new LogWriterWorker(lbq, pathToLogfile));
+        worker.start();
         this.verboseLevel = verboseLevel;
         getHostname();
     }
@@ -34,7 +36,7 @@ public class LogWriter {
             host = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException ex) {
             host = "localhost";
-        } 
+        }
     }
     //Generates the Timestamp
     private String getTimestamp(){ 
@@ -45,13 +47,17 @@ public class LogWriter {
     //Writes to the LogFile
     public void log(String key, int verboseLevel, String logMessage) {
         if(verboseLevel <= this.verboseLevel){
-            
+
             String logLine ="["+getTimestamp()+"]"+" ["+
                                 host+"] "+"["+
                                 key+"]"+": "+
                                 logMessage+"\n";
             lbq.offer(logLine); 
-        } 
+        }
     }
-    
+    //kills the Log Thread
+    public void kill(){
+        worker.stop();
+    }
+
 }
