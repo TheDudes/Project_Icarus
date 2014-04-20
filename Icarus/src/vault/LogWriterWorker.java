@@ -28,8 +28,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class creates a logfile and writes logs
  * @author Aleksej Weinberg <weinberg.aleksej@yahoo.de>
+ * <p>
+ * This class creates a logfile and writes logs
+ * <p>
  * @version 1.0
  */
 public class LogWriterWorker implements Runnable{
@@ -41,14 +43,22 @@ public class LogWriterWorker implements Runnable{
 
     //needs to be implemented//
     private String tmpFilePath;
-    private String pathToLogfile;
-
+    private String pathToLogfiles;
+    
+    /**
+     * LogWriterWorker constructor
+     * @param lbq LinkedBlockingQueue 
+     * @param logFilePath Path to the logfile directory
+     */
     public LogWriterWorker(LinkedBlockingQueue<String> lbq, String logFilePath){
         this.lbq = lbq;
         this.tmpFilePath = logFilePath;
-        pathToLogfile = tmpFilePath+getTimestamp()+".log";
+        pathToLogfiles = tmpFilePath+getTimestamp()+".log";
     }
-
+    /**
+     * getTimeStamp returns the current time to use it in the timestamp
+     * @return String
+     */
     private String getTimestamp(){ 
         date = new Date(System.currentTimeMillis());
         sdf = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
@@ -57,8 +67,7 @@ public class LogWriterWorker implements Runnable{
 
     @Override
     public void run() {
-        /* the "File not found error should be here */
-        try (Writer fWriter = new BufferedWriter(new FileWriter(pathToLogfile, true))) {
+        try (Writer fWriter = new BufferedWriter(new FileWriter(pathToLogfiles, true))) {
             while (true) {
                 fWriter.write(lbq.take());
                 fWriter.flush();

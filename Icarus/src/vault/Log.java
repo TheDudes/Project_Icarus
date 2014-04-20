@@ -1,22 +1,32 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+ * Copyright (c) 2014, HAW-Landshut
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FORimport static vault.Log.*;
 
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
 package vault;
 
 /**
  *
  * @author apfel
  * <p>
- * this is a little helper class, from now on i can call Log.log from everywhere without
- * handling an obejct ...
+ * this is a little helper class, from now on I can call Log.log from everywhere without
+ * handling an object ...
  * <p>
  * Usage:
- * first initialize Log with the init function, you only have to do it once,
- * somewhere at the beginning of your project, after that you can use log()
- * everywhere.
+ * first import vault.*; and then initialize Log with the init function, 
+ * you only have to do it once, somewhere at the beginning of your project, after 
+ * that you can use log() everywhere.
  */
 public class Log {
     private static LogWriter log;                  // the logger
@@ -26,7 +36,7 @@ public class Log {
      * init initializes the Log subsystem, it will create a static context where
      * Log lives. So that it can be called From everywhere.
      * 
-     * @param pathToLogfile Path to logfile as String
+     * @param pathToLogfile Path to where you want the logfile to be saved as String
      * @param verboseLevel here you can configure the loglevel of the messages
      */
     public static void init(String pathToLogfile, int verboseLevel) {
@@ -47,7 +57,7 @@ public class Log {
     
     
     /**
-     * isInitialized will return tha logger status
+     * isInitialized will return the logger status
      * @return true if the logger is ready and false if its not
      */
     public static boolean isInitialized() {

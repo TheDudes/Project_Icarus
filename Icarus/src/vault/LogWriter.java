@@ -24,9 +24,11 @@ import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
+ * @author Aleksej Weinberg <weinberg.aleksej@yahoo.de>
+ * <p>
  * This class gathers the information about one log line and hands it over to
  * the worker class
- * @author Aleksej Weinberg <weinberg.aleksej@yahoo.de>
+ * <p>
  * @version 1.0
  */
 public class LogWriter {
@@ -37,14 +39,22 @@ public class LogWriter {
     private SimpleDateFormat sdf; 
     private int verboseLevel;
     private Thread worker;
-
+    
+    /**
+     * LogWriter Constructor
+     * 
+     * @param pathToLogfile Path to where you want the logfile to be saved
+     * @param verboseLevel verboselevel
+     */
     public LogWriter(String pathToLogfile, int verboseLevel){
         worker = new Thread(new LogWriterWorker(lbq, pathToLogfile));
         worker.start();
         this.verboseLevel = verboseLevel;
         getHostname();
     }
-    //Gets the Hostname
+    /**
+     * getHostname gets the name of the host
+     */
     private void getHostname() {
         try {
             host = InetAddress.getLocalHost().getHostName();
@@ -52,13 +62,21 @@ public class LogWriter {
             host = "localhost";
         }
     }
-    //Generates the Timestamp
+    /**
+     * getTimeStamp returns the current time to use it in the timestamp
+     * @return String
+     */
     private String getTimestamp(){ 
         date = new Date(System.currentTimeMillis());
         sdf = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
         return sdf.format(date);
     }
-    //Writes to the LogFile
+    /**
+     * log generates one logline and adds it to the LinkeBlockingQueue lbq
+     * @param key Key 
+     * @param verboseLevel Verboselevel
+     * @param logMessage Message
+     */
     public void log(String key, int verboseLevel, String logMessage) {
         if(verboseLevel <= this.verboseLevel){
 
@@ -69,7 +87,9 @@ public class LogWriter {
             lbq.offer(logLine); 
         }
     }
-    //kills the Log Thread
+    /**
+     * kill kills the log thread
+     */
     public void kill(){
         worker.stop();
     }
