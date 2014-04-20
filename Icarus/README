@@ -1,3 +1,5 @@
+./magic will do what's written below.
+
 execute make.sh (zsh and apache-ant needed)
 to run change to build/classes (cd build/classes) 
 then execute "java Icarus.main".
