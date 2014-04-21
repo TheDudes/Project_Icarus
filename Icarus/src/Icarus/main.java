@@ -81,6 +81,13 @@ public class main
         log.kill();
     }
 
+    /**
+     * will interpret given code from given start till end INDEX.
+     * @param string structure text code after parser
+     * @param start INDEX where interpreter will start
+     * @param end INDEX where interpreter will stop
+     * @param engine ScriptEngine which will be used.
+     */
     public static void interpret (String string, int start, int end, ScriptEngine engine) throws Exception 
     {
 
@@ -289,6 +296,12 @@ public class main
         } /* end main for loop   */
     }
 
+    /**
+     * will return the next keyword found, these are ELSEIF ELSE END_IF
+     * @param INDEX starting point
+     * @param code code from parser
+     * @return INDEX of found keyword
+     */
     public static int get_next_keyword(int INDEX, StringBuilder code)
     {
         log.log("interpreter", 4, "get_next_keyword call, INDEX = " + INDEX);
@@ -323,6 +336,12 @@ public class main
         }
     }
 
+    /**
+     * will return next VAR index
+     * @param INDEX starting point
+     * @param code code from parser
+     * @return INDEX of found VAR
+     */
     public static int get_var(int INDEX, StringBuilder code) 
     {
         log.log("interpreter", 4, "get_var call, INDEX = " + INDEX);
@@ -338,6 +357,12 @@ public class main
         }
     }
 
+    /**
+     * will return next TO index
+     * @param INDEX starting point
+     * @param code code from parser
+     * @return INDEX of found TO
+     */
     public static int get_to(int INDEX, StringBuilder code)
     {
         log.log("interpreter", 4, "get_to call, INDEX = " + INDEX);
@@ -351,6 +376,12 @@ public class main
         }
     }
 
+    /**
+     * will return next BY index
+     * @param INDEX starting point
+     * @param code code from parser
+     * @return INDEX of found BY
+     */
     public static int get_by(int INDEX, StringBuilder code)
     {
         log.log("interpreter", 4, "get_by call, INDEX = " + INDEX);
@@ -363,6 +394,13 @@ public class main
             }
         }
     }
+
+    /**
+     * will return next DO index
+     * @param INDEX starting point
+     * @param code code from parser
+     * @return INDEX of found DO
+     */
     public static int get_do(int INDEX, StringBuilder code)
     {
         log.log("interpreter", 4, "get_do call, INDEX = " + INDEX);
@@ -376,6 +414,12 @@ public class main
         }
     }
 
+    /**
+     * will return next THEN index
+     * @param INDEX starting point
+     * @param code code from parser
+     * @return INDEX of found THEN
+     */
     public static int get_then(int INDEX, StringBuilder code)
     {
         log.log("interpreter", 4, "get_then call, INDEX = " + INDEX);
@@ -391,6 +435,12 @@ public class main
         }
     }
 
+    /**
+     * will return next END_IF index
+     * @param INDEX starting point
+     * @param code code from parser
+     * @return INDEX of found END_IF
+     */
     public static int get_end_if(int INDEX, StringBuilder code)
     {
         log.log("interpreter", 4, "get_end_if call, INDEX = " + INDEX);
@@ -413,6 +463,10 @@ public class main
         }
     }
 
+    /**
+     * used to warmup the Java ScriptEngine.
+     * @param engine the engine which will be used
+     */
     public static void engine_warmup(ScriptEngine engine) throws Exception
     {
 
@@ -493,7 +547,6 @@ public class main
      * 'LN()'   | 'Math.log()'
      * 'SQRT()' | 'Math.sqrt()'
      * ---------+---------------
-     *
      * @param code will be the full condition as a string
      * @return string with the converted condition
      */
