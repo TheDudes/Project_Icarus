@@ -162,7 +162,7 @@ public class Symbols {
                 System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside loop");
                 tmpint = b.indexOf(":=");
                 System.out.println("block: " + block);
-                System.out.println("b: " + b);
+                System.out.println("b: " + b.toString());
                 if (tmpint == -1) {
                     System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside first if");
                     tmpint = b.indexOf(":");
@@ -184,24 +184,27 @@ public class Symbols {
                         id++;
                     }
                     contextstore.put(context, percontext);
-                } else if (Pattern.matches(".*@", b.toString())) {
-                    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside second if");
-                    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): names");
+                } else if (Pattern.matches("@", block.toString())) {
+                    //String tmp[] = b.toString().split("@");
+                    //b = new StringBuilder(tmp[0]);
+                    System.out.println("b Stringbuilder without @:" + b);
+                    //System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside second if");
+                    //System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): names");
                     names = b.substring(0, b.indexOf(":")).split(",");
-                    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): type");
-                    System.out.println(Arrays.toString(names));
-                    System.out.println("names[0]: " + names[0]);
+                    //System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): type");
+                    //System.out.println(Arrays.toString(names));
+                    //System.out.println("names[0]: " + names[0]);
                     type = typebyid.get(contextstore.get(context).get(names[0]));
                     //type = b.substring(0, tmpint).split(":")[1];
-                    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): value");
+                    //System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): value");
                     value = b.substring(tmpint + 2, b.indexOf(";"));
-                    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): bevor for loop");
+                    //System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): bevor for loop");
                     percontext = contextstore.get(context);
                     if (percontext == null) {
                         percontext = new HashMap<>();
                     }
                     for (String name : names) {
-                        System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside inner loop in second if");
+                        //System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside inner loop in second if");
                         tmpint2 = contextstore.get(context).get(name);
                         if (!(tmpint2 == null)) {
                             valuebyid.put(tmpint2, TYPES.getType(type, value));
@@ -337,6 +340,7 @@ public class Symbols {
      * @param context String representing the context
      */
     public void setValue(String input, String context) throws Exception {
+        System.out.println(input);
         fillUpTheContainers(context, new StringBuilder(input + "@"));
     }
 
@@ -366,6 +370,7 @@ public class Symbols {
             contextstore.put(context, percontext);  // aaaah fuck it, tooo late man .... */
             fillUpTheContainers(context, new StringBuilder(input));
         }
+        generateSymbolsList();
     }
 
     /**
