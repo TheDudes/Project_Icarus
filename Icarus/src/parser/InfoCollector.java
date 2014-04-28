@@ -35,7 +35,7 @@ public class InfoCollector {
     private Analyser analyser;
     private Match match;
     private Symbols symb;
-    private LogWriter logger;
+    //private LogWriter logger;
     
     // logger
     private boolean logstat;

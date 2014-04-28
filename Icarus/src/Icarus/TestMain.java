@@ -25,7 +25,7 @@ public class TestMain {
     public static void main(String[] args) throws UnknownHostException, Exception {
         
         Log.init("/tmp/logfile.log", 10);
-        Log.log("TEST", 1, "Starting Test");
+        Log.log("TEST", 4, "Starting Test");
         String[] path = new String[2];
 
         /*
