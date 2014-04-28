@@ -117,7 +117,7 @@ public class Analyser {
                 stop = keywords[i][1];
                 for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, pointer + start.length())) {
                     if (builder.charAt(pointer - 1) == '_') {
-                        block.add(new Integer(pointer - 3));
+                        block.add(new Integer(pointer - 4));
                     } else if (builder.charAt(pointer + 1) == '_') {
                         continue;
                     } else {
