@@ -124,13 +124,13 @@ public class Symbols {
                     varlist = null;
                 }
                 break;
-            case "GLOBAL":
+            /*case "GLOBAL":
                 context = kind;
                 int tmp = builder.indexOf("VAR_GLOBAL");
                 tmpint = match.getEndVar(tmp);
                 block.append(builder.substring(tmp + match.getVarStart(tmp).length(), tmpint));
                 fillUpTheContainers(context, block);
-                break;
+                break;*/
             default:
                 System.err.println("What are you doing stupid FAG!?");
         }
