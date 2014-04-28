@@ -299,20 +299,20 @@ public class Symbols {
      * @return the input string with all replaced variables
      */
     public String replaceVars(String input, String context) {
-        /*String tmp = null;
+        String tmp = null;
         for (String item : symbolnames) {
             if (tmp == null) {
                 tmp = input.replaceAll(item, valuebyid.get(contextstore.get(context).get(item)).toString());
             } else {
                 tmp = tmp.replaceAll(item, valuebyid.get(contextstore.get(context).get(item)).toString());
             }
-        }*/
-        for (String item : symbolnames) {
-            input.replaceAll(item, valuebyid.get(contextstore.get(context).get(item)).toString());
         }
-        //return tmp;
+        //for (String item : symbolnames) {
+        //    input.replaceAll(item, valuebyid.get(contextstore.get(context).get(item)).toString());
+        //}
+        return tmp;
         //return input;
-        return "asdfasdfasdfasdfasdf";
+        //return "asdfasdfasdfasdfasdf";
     }
 
     /**
