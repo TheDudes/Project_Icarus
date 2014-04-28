@@ -169,15 +169,20 @@ public class Symbols {
                     // throw the wrong variablen deklaration error or so 
                     names = b.substring(0, tmpint).split(",");
                     type = b.substring(tmpint + 1, b.indexOf(";"));
-                    percontext = new HashMap<>();
+                    
+                    percontext = contextstore.get(context);
+                    if (percontext == null) {
+                        percontext = new HashMap<>();
+                    }
                     for (String name : names) {
                         System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside inner loop in if");
                         percontext.put(name, id);
                         typebyid.put(id, type);
                         valuebyid.put(id, TYPES.getType(type));
-                        contextstore.put(context, percontext);
+                        //contextstore.put(context, percontext);
                         id++;
                     }
+                    contextstore.put(context, percontext);
                 } else if (Pattern.matches(".*@", b.toString())) {
                     System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside second if");
                     System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): names");
@@ -190,7 +195,10 @@ public class Symbols {
                     System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): value");
                     value = b.substring(tmpint + 2, b.indexOf(";"));
                     System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): bevor for loop");
-                    percontext = new HashMap<>();
+                    percontext = contextstore.get(context);
+                    if (percontext == null) {
+                        percontext = new HashMap<>();
+                    }
                     for (String name : names) {
                         System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside inner loop in second if");
                         tmpint2 = contextstore.get(context).get(name);
@@ -209,15 +217,18 @@ public class Symbols {
                     names = b.substring(0, tmpint2).split(",");
                     type = b.substring(tmpint2 + 1, tmpint);
                     value = b.substring(tmpint + 2, b.indexOf(";"));
-                    percontext = new HashMap<>();
+                    percontext = contextstore.get(context);
+                    if (percontext == null) {
+                        percontext = new HashMap<>();
+                    }
                     for (String name : names) {
                         System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside loop in else");
                         percontext.put(name, id);
                         typebyid.put(id, type);
                         valuebyid.put(id, TYPES.getType(type, value));
-                        contextstore.put(context, percontext);
                         id++;
                     }
+                    contextstore.put(context, percontext);
                 }
             }
         } catch (StringIndexOutOfBoundsException e) {
