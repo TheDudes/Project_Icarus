@@ -7,8 +7,12 @@ VAR
     test2 : INT := 4432;
 END_VAR
 
-FOR bl := 3 TO 5 DO
-    PRINT(bl);
+FOR hihihi := 0 TO 10 BY 2 DO
+    IF blah = 3 THEN
+       PRINT(hihihi);
+    ELSE
+       PRINT(hohoho);
+    END_IF
 END_FOR
 
 PRINT(blub);

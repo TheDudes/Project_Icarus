@@ -133,10 +133,11 @@ public class Interpreter
                 log.log("interpreter", 4, "found ELSE, INDEX = " + INDEX);
                 if(if_stack.peek()) {
                     INDEX = container.getEndIf(if_position_stack.pop()) + 5;
+                    if_stack.pop();
                     continue;
                 } else {
-                        INDEX += 3;
-                        continue;
+                    INDEX += 3;
+                    continue;
                 }
             }
             else if ( (code.charAt(INDEX)     == 'E') &&
@@ -220,7 +221,7 @@ public class Interpreter
                 obj.type           = 1;
                 obj.INDEX          = INDEX;
                 obj.do_index       = get_do(INDEX, code);
-                obj.end_index      = container.getEndFor(INDEX);
+                obj.end_index      = container.getEndFor(INDEX) + 6;
 
                 int to_position    = get_to(INDEX, code);
                 int by_position    = get_by(to_position + 2, code);
@@ -286,7 +287,7 @@ public class Interpreter
                 loop_stack.peek().count += loop_stack.peek().by;
 
                 if(loop_stack.peek().name_given)
-                    container.setValue(loop_stack.peek().name + ":=" + loop_stack.peek().count, context);
+                    container.setValue(loop_stack.peek().name + ":=" + loop_stack.peek().count + ";", context);
                 if(loop_stack.peek().count >= loop_stack.peek().limit)
                 {
                     INDEX = loop_stack.pop().end_index;
@@ -635,6 +636,7 @@ public class Interpreter
             }
         }
     }
+
 
     /**
      * convert given string so that the Java Script Engine can Interpret it,
