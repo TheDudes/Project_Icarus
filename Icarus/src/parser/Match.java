@@ -63,7 +63,12 @@ public class Match {
     TreeMap<Integer,Integer> allcases = new TreeMap<>();
     TreeMap<Integer,TreeMap<Integer,Integer[]>> casevalue = new TreeMap<>();
 
-
+    // logger
+    private boolean logstat;
+    private String mainkey = "parser";
+    private String subkey = "Match";
+    private String key = mainkey+"-"+subkey;
+    
     /**
      * Matcher needs the Analyser object with the results from his analyses of
      * the Second argument StringBuilder builder.
@@ -111,7 +116,7 @@ public class Match {
      * This function is private.
      */
     private void getherIfList() {
-	ifs = list.get(6);
+	ifs = list.get(11);
 	ifendif = new TreeMap<>();
 	//String ifendif;
 	for (Integer item : ifs) {
@@ -169,7 +174,7 @@ public class Match {
      * This function is private.
      */
     private void getherCaseList() {
-	cases = list.get(7);
+	cases = list.get(5);
 	caseendcase = new TreeMap<>();
 	//String ifendif;
 	for (Integer item : cases) {
@@ -355,9 +360,9 @@ public class Match {
 	vars = new ArrayList<>();
 	vars.addAll(list.get(3));
 	vars.addAll(list.get(4));
-	vars.addAll(list.get(5));
+	vars.addAll(list.get(9));
+	vars.addAll(list.get(10));
 	vars.addAll(list.get(12));
-	vars.addAll(list.get(13));
 	varendvar = new TreeMap<>();
 	for (Integer item : vars) {
 	    if (builder.substring(item, item+4).equals("VAR_")) {
@@ -606,7 +611,7 @@ public class Match {
      * This function is private.
      */
     private void getherAllForList() {
-	fors = list.get(8);
+	fors = list.get(6);
 	forendfor = new TreeMap<>();
 	for (Integer item : fors) {
 	    if (builder.substring(item, item+3).equals("FOR")) {
@@ -662,7 +667,7 @@ public class Match {
      * This function is private.
      */
     private void getherAllWhileList() {
-	whiles = list.get(9);
+	whiles = list.get(7);
 	whileendwhile = new TreeMap<>();
 	for (Integer item : whiles) {
 	    if (builder.substring(item, item+5).equals("WHILE")) {
@@ -718,7 +723,7 @@ public class Match {
      * This function is private.
      */
     private void getherAllRepeatList() {
-	repeats = list.get(10);
+	repeats = list.get(8);
         repeatendrepeat = new TreeMap<>();
 	for (Integer item : repeats) {
 	    if (builder.substring(item, item+5).equals("REPEAT")) {

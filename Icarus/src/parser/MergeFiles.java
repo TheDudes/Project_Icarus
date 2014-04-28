@@ -17,6 +17,7 @@
 package parser;
 
 import java.io.*;
+import vault.Log;
 /**
  * This class merges all files together and removes the unneeded chars
  *
@@ -25,6 +26,13 @@ import java.io.*;
  */
 
 public class MergeFiles {
+    
+    // logger
+    private static boolean logstat;
+    private static String mainkey = "parser";
+    private static String subkey = "MergeFiles";
+    private static String key = mainkey+"-"+subkey;
+    
     /**
      * mergeAll goes through all the files byte by byte and filters out the unneeded
      * charakters. The final String will be saved in a StringBuilder. StringBuilder should
@@ -35,6 +43,8 @@ public class MergeFiles {
      * @throws FileNotFoundException, IOException
      */
     public static StringBuilder mergeAll(String[] args) throws FileNotFoundException, IOException {
+        logstat = Log.isInitialized();     // get status of the logger
+        if (logstat) { Log.log(key, 3, "Inside mergeAll()"); }
 	StringBuilder builder = new StringBuilder();
 	FileReader r;
 	boolean flag = false;
@@ -89,6 +99,7 @@ public class MergeFiles {
 	    }
 	}
 	r = null;
+        if (logstat) { Log.log(key, 4, "Merged code: \n"+builder.toString()); }
 	return builder;
     }
 }

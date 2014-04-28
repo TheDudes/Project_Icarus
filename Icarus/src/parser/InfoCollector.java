@@ -19,6 +19,8 @@ package parser;
 import java.util.*;
 import java.io.*;
 import vault.*;
+import Ninti.*;
+import vault.*;
 
 /**
  * This class is a Interfaceclass to all the functions which a potentionally needed
@@ -35,6 +37,12 @@ public class InfoCollector {
     private Symbols symb;
     private LogWriter logger;
     
+    // logger
+    private boolean logstat;
+    private String mainkey = "parser";
+    private String subkey = "InfoCollector";
+    private String key = mainkey+"-"+subkey;
+    
     /**
      * InfoCollector is a Interfaceclass which has all the functions from a
      * lot of different classes to make the life for others easyer
@@ -49,14 +57,26 @@ public class InfoCollector {
      * @see Symbols
      */
     public InfoCollector (String[] files) throws FileNotFoundException, IOException, Exception {
-	System.out.println("Parser: InfoCollector: MergeFiles.mergeAll");
-	allthecode = MergeFiles.mergeAll(files);
-	System.out.println("Parser: InfoCollector: Analyser");
+        logstat = Log.isInitialized();     // get status of the logger
+	if (logstat) { Log.log(key, 1, "parsing file ..."); }
+        
+        if (logstat) { Log.log(key, 2, "merge all Files ..."); }
+        allthecode = MergeFiles.mergeAll(files);
+        if (logstat) { Log.log(key, 2, "Files merged."); }
+        
+        if (logstat) { Log.log(key, 2, "analyse the code ..."); }
 	analyser = new Analyser(allthecode);
-	System.out.println("Parser: InfoCollector: Match");
+        if (logstat) { Log.log(key, 2, "Analysed."); }
+        
+        if (logstat) { Log.log(key, 2, "matching open and close tags ..."); }
 	match = new Match(analyser, allthecode);
-	System.out.println("Parser: InfoCollector: Symbols");
+        if (logstat) { Log.log(key, 2, "Matched."); }
+        
+        if (logstat) { Log.log(key, 2, "find all symbols in the code ..."); }
 	symb = new Symbols(allthecode, match);
+        if (logstat) { Log.log(key, 2, "Symbols stored."); }
+        
+        if (logstat) { Log.log(key, 1, "file parsed."); }
     }
 
     /* function from analyser class */
@@ -68,6 +88,7 @@ public class InfoCollector {
      * @see ArrayList
      */
     public List<ArrayList<Integer>> giveMeAllTheLists() {
+        if (logstat) { Log.log(key, 4, "giveMeAllTheLists called."); }
 	return analyser.giveMeAllTheLists();
     }
 
@@ -80,6 +101,7 @@ public class InfoCollector {
      * @see Match
      */
     public int getEndIf(int a) {
+        if (logstat) { Log.log(key, 4, "getEndIf called."); }
 	return match.getEndIf(a);
     }
     
@@ -89,6 +111,7 @@ public class InfoCollector {
      * @see Match
      */
     public ArrayList<Integer> getIfs() {
+        if (logstat) { Log.log(key, 4, "getIfs called."); }
 	return match.getIfs();
     }
 
@@ -115,6 +138,7 @@ public class InfoCollector {
      * @see Match
      */
     public Integer[] getCaseCoordinates(int caseopen, int value) {
+        if (logstat) { Log.log(key, 4, "getCaseCoordinates called."); }
 	return match.getCaseCoordinates(caseopen, value);
     }
 
@@ -125,6 +149,7 @@ public class InfoCollector {
      * @see Match
      */
     public int getEndCase(int a) {
+        if (logstat) { Log.log(key, 4, "getEndCase called."); }
 	return match.getEndCase(a);
     }
 
@@ -134,6 +159,7 @@ public class InfoCollector {
      * @see Match
      */
     public ArrayList<Integer> getCases() {
+        if (logstat) { Log.log(key, 4, "getCases called."); }
 	return match.getCases();
     }
 
@@ -144,6 +170,7 @@ public class InfoCollector {
      * @see Match
      */
     public int getEndVar(int a) {
+        if (logstat) { Log.log(key, 4, "getEndVar called."); }
 	return match.getEndVar(a);
     }
 
@@ -153,6 +180,7 @@ public class InfoCollector {
      * @see Match
      */
     public ArrayList<Integer> getVars() {
+        if (logstat) { Log.log(key, 4, "getVars called."); }
 	return match.getVars();
     }
 
@@ -163,6 +191,7 @@ public class InfoCollector {
      * @see Match
      */
     public String getVarStart(int a) {
+        if (logstat) { Log.log(key, 4, "getVarStart called."); }
 	return match.getVarStart(a);
     }
 
@@ -173,6 +202,7 @@ public class InfoCollector {
      * @see Match
      */
     public int getEndProgram(int a) {
+        if (logstat) { Log.log(key, 4, "getEndProgram called."); }
 	return match.getEndProgram(a);
     }
 
@@ -182,6 +212,7 @@ public class InfoCollector {
      * @see Match
      */
     public ArrayList<Integer> getPrograms() {
+        if (logstat) { Log.log(key, 4, "getPrograms called."); }
 	return match.getPrograms();
     }
 
@@ -192,6 +223,7 @@ public class InfoCollector {
      * @see Match
      */
     public int getEndFunction(int a) {
+        if (logstat) { Log.log(key, 4, "getEndFunction called."); }
 	return match.getEndFunction(a);
     }
 
@@ -201,6 +233,7 @@ public class InfoCollector {
      * @see Match
      */
     public ArrayList<Integer> getFunctions() {
+        if (logstat) { Log.log(key, 4, "getFunctions called."); }
 	return match.getFunctions();
     }
 
@@ -211,6 +244,7 @@ public class InfoCollector {
      * @see Match
      */
     public int getEndFunctionBlock(int a) {
+        if (logstat) { Log.log(key, 4, "getEndFunctionBlock called."); }
 	return match.getEndFunctionBlock(a);
     }
 
@@ -220,6 +254,7 @@ public class InfoCollector {
      * @see Match
      */
     public ArrayList<Integer> getFunctionBlocks() {
+        if (logstat) { Log.log(key, 4, "getFunctionBlock called."); }
 	return match.getFunctionBlocks();
     }
 
@@ -230,6 +265,7 @@ public class InfoCollector {
      * @see Match
      */
     public int getEndFor(int a) {
+        if (logstat) { Log.log(key, 4, "getEndFor called."); }
 	return match.getEndFor(a);
     }
 
@@ -239,6 +275,7 @@ public class InfoCollector {
      * @see Match
      */
     public ArrayList<Integer> getFors() {
+        if (logstat) { Log.log(key, 4, "getFors called."); }
 	return match.getFors();
     }
 
@@ -249,6 +286,7 @@ public class InfoCollector {
      * @see Match
      */
     public int getEndWhile(int a) {
+        if (logstat) { Log.log(key, 4, "getEndWhile called."); }
 	return match.getEndWhile(a);
     }
 
@@ -258,6 +296,7 @@ public class InfoCollector {
      * @see Match
      */
     public ArrayList<Integer> getWhiles() {
+        if (logstat) { Log.log(key, 4, "getWhiles called."); }
 	return match.getWhiles();
     }
 
@@ -268,6 +307,7 @@ public class InfoCollector {
      * @see Match
      */
     public int getEndRepeat(int a) {
+        if (logstat) { Log.log(key, 4, "getEndRepeat called."); }
 	return match.getEndRepeat(a);
     }
 
@@ -277,6 +317,7 @@ public class InfoCollector {
      * @see Match
      */
     public ArrayList<Integer> getRepeats() {
+        if (logstat) { Log.log(key, 4, "getRepeats called."); }
 	return match.getRepeats();
     }
 
@@ -289,6 +330,7 @@ public class InfoCollector {
      * @see Symbols
      */
     public String replaceVars(String input, String context) {
+        if (logstat) { Log.log(key, 4, "replaceVars called."); }
 	return symb.replaceVars(input, context);
     }
     
@@ -302,6 +344,7 @@ public class InfoCollector {
      * @param context String representing the context
      */
     public void setValue(String input, String context) throws Exception {
+        if (logstat) { Log.log(key, 4, "setValue called."); }
 	symb.setValue(input, context);
     }
 
@@ -311,6 +354,7 @@ public class InfoCollector {
      * @param context String representing the context
      */
     public void addVar(String input, String context) throws Exception {
+        if (logstat) { Log.log(key, 4, "addVar called."); }
         symb.addVar(context, input);
     }
     
@@ -319,6 +363,7 @@ public class InfoCollector {
      * @return a StringBuilder with all the preprocessed code inside
      */
     public StringBuilder getAllTheCode() {
+        if (logstat) { Log.log(key, 4, "getAllTheCode called."); }
 	return allthecode;
     }
 }
