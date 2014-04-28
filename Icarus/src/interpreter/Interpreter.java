@@ -232,9 +232,8 @@ public class Interpreter
                     colon          = get_colon(condition);
                     obj.name_given = true;
                     obj.name       = condition.substring(0, colon);
-                    obj.count      = Integer.parseInt(condition.substring(colon + 2, condition.length() + 1));
+                    obj.count      = Integer.parseInt(condition.substring(colon + 2, condition.length()));
                     container.addVar(condition + ";", context);
-                    System.out.println(condition);
                 } else
                 {
 
@@ -480,7 +479,7 @@ public class Interpreter
     {
         log.log("interpreter", 4, "get_colon call, string: " + string);
         for(int i = 0;;i++) {
-            if (string.charAt(i) == ':');
+            if (string.charAt(i) == ':')
             {
                 log.log("interpreter", 4, "get_colon return, i = " + i);
                 return i;
