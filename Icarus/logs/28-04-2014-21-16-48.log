@@ -1,0 +1,27 @@
+[28/04/2014-21:16:48] [beelzebub] [engine]: starting engine warmup...
+[28/04/2014-21:16:49] [beelzebub] [engine]: 100 evaluations done, avg time: (10.76ms avg)
+[28/04/2014-21:16:50] [beelzebub] [engine]: 100 evaluations done, avg time: (3.0976ms avg)
+[28/04/2014-21:16:50] [beelzebub] [engine]: 100 evaluations done, avg time: (1.770976ms avg)
+[28/04/2014-21:16:50] [beelzebub] [engine]: 100 evaluations done, avg time: (1.3177097600000003ms avg)
+[28/04/2014-21:16:50] [beelzebub] [engine]: 100 evaluations done, avg time: (1.0331770976ms avg)
+[28/04/2014-21:16:50] [beelzebub] [engine]: 100 evaluations done, avg time: (1.180331770976ms avg)
+[28/04/2014-21:16:50] [beelzebub] [engine]: 100 evaluations done, avg time: (0.8718033177097599ms avg)
+[28/04/2014-21:16:50] [beelzebub] [engine]: 100 evaluations done, avg time: (0.5887180331770976ms avg)
+[28/04/2014-21:16:51] [beelzebub] [engine]: 100 evaluations done, avg time: (0.545887180331771ms avg)
+[28/04/2014-21:16:51] [beelzebub] [engine]: 100 evaluations done, avg time: (0.6654588718033178ms avg)
+[28/04/2014-21:16:51] [beelzebub] [engine]: 100 evaluations done, avg time: (0.766654588718033ms avg)
+[28/04/2014-21:16:51] [beelzebub] [engine]: 100 evaluations done, avg time: (0.4576665458871803ms avg)
+[28/04/2014-21:16:51] [beelzebub] [engine]: 100 evaluations done, avg time: (0.4645766654588718ms avg)
+[28/04/2014-21:16:51] [beelzebub] [engine]: 100 evaluations done, avg time: (0.4146457666545887ms avg)
+[28/04/2014-21:16:51] [beelzebub] [engine]: 100 evaluations done, avg time: (0.3941464576665459ms avg)
+[28/04/2014-21:16:51] [beelzebub] [engine]: 100 evaluations done, avg time: (0.39394146457666546ms avg)
+[28/04/2014-21:16:51] [beelzebub] [engine]: 100 evaluations done, avg time: (0.46393941464576666ms avg)
+[28/04/2014-21:16:51] [beelzebub] [engine]: 100 evaluations done, avg time: (0.44463939414645764ms avg)
+[28/04/2014-21:16:51] [beelzebub] [engine]: 100 evaluations done, avg time: (0.41444639394146454ms avg)
+[28/04/2014-21:16:51] [beelzebub] [engine]: 100 evaluations done, avg time: (0.3941444639394146ms avg)
+[28/04/2014-21:16:51] [beelzebub] [engine]: engine warmup finished, total evaluations: 2000, total time: 2704ms
+[28/04/2014-21:16:51] [beelzebub] [interpreter]: started with start: 0, end: 91
+[28/04/2014-21:16:51] [beelzebub] [interpreter]: init stacks...
+[28/04/2014-21:16:51] [beelzebub] [interpreter]: init stacks done.
+[28/04/2014-21:16:56] [beelzebub] [interpreter]: for_loop_top, INDEX = 0
+[28/04/2014-21:16:59] [beelzebub] [interpreter]: found PROGRAM, INDEX = 0
