@@ -311,7 +311,8 @@ public class Symbols {
             input.replaceAll(item, valuebyid.get(contextstore.get(context).get(item)).toString());
         }
         //return tmp;
-        return input;
+        //return input;
+        return "asdfasdfasdfasdfasdf";
     }
 
     /**
