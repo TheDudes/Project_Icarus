@@ -415,6 +415,7 @@ public class Match {
      * @return int
      */
     public int getEndVar(int a) {
+        System.out.println("getEndVar called in Match.java");
         System.out.println(varmatching.toString());
 	return (int)varmatching.get(new Integer(a));
     }

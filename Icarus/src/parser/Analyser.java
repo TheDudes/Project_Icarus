@@ -86,7 +86,7 @@ public class Analyser {
                 }
                 //blocks.add(i, block);
                 if (logstat) {
-                    Log.log(key, 3, "Found " + blocks.size() + " " + start + " and " + stop);
+                    Log.log(key, 3, "Found " + block.size() + " " + start + " and " + stop);
                 }
                 if (logstat) {
                     Log.log(key, 4, start + " and " + stop + " Indexes: " + Arrays.toString(block.toArray()));
@@ -106,7 +106,7 @@ public class Analyser {
                 }
                 //blocks.add(i, block);
                 if (logstat) {
-                    Log.log(key, 3, "Found " + blocks.size() + " " + start + " and " + stop);
+                    Log.log(key, 3, "Found " + block.size() + " " + start + " and " + stop);
                 }
                 if (logstat) {
                     Log.log(key, 4, start + " and " + stop + " Indexes: " + Arrays.toString(block.toArray()));
@@ -126,7 +126,7 @@ public class Analyser {
                 }
                 //blocks.add(i, block);
                 if (logstat) {
-                    Log.log(key, 3, "Found " + blocks.size() + " " + start + " and " + stop);
+                    Log.log(key, 3, "Found " + block.size() + " " + start + " and " + stop);
                 }
                 if (logstat) {
                     Log.log(key, 4, start + " and " + stop + " Indexes: " + Arrays.toString(block.toArray()));

@@ -55,7 +55,7 @@ public class main
         switch (hostname)
         {
             case "beelzebub":
-                path[0] = "/home/apfel/Documents/StudienProjekt/ StudienProjekt/sp_ 2013_ 10/Project_Icarus/franzke_files/plc_prg.st";
+                path[0] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_ 2013_ 10/Project_Icarus/franzke_files/plc_prg.st";
                 System.out.println("Hey tux, would you mind taking a look at the code?");
                 break;
             case "d4ryus":
