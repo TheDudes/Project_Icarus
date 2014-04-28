@@ -300,19 +300,19 @@ public class Symbols {
      */
     public String replaceVars(String input, String context) {
         String tmp = null;
-        /*for (String item : symbolnames) {
+        for (String item : symbolnames) {
             if (tmp == null) {
                 tmp = input.replaceAll(item, valuebyid.get(contextstore.get(context).get(item)).toString());
             } else {
                 tmp = tmp.replaceAll(item, valuebyid.get(contextstore.get(context).get(item)).toString());
                 
             }
-        }*/
-        for (String item : symbolnames) {
-            input.replaceAll(item, valuebyid.get(contextstore.get(context).get(item)).toString());
         }
-        //return tmp;
-        return input;
+        /*for (String item : symbolnames) {
+            input.replaceAll(item, valuebyid.get(contextstore.get(context).get(item)).toString());
+        }*/
+        return tmp;
+        //return input;
         //return "asdfasdfasdfasdfasdf";
     }
 
