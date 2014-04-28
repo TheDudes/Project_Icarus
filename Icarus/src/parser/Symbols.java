@@ -350,6 +350,10 @@ public class Symbols {
         // type integer all the time
         String[] splitted = input.split(":=");
         //String[] splitted2 = splitted[1].split(";"); // oh its to late man ...
+        /*System.out.println(splitted[0]);
+        System.out.println(context);
+        System.out.println(splitted[1]);
+        System.out.println();*/
         Integer tmp = contextstore.get(context).get(splitted[0]);
         if (tmp == null) {
             fillUpTheContainers(context, new StringBuilder(splitted[0] + ":INT:=" + splitted[1]));

@@ -356,7 +356,7 @@ public class InfoCollector {
      */
     public void addVar(String input, String context) throws Exception {
         if (logstat) { Log.log(key, 4, "addVar called."); }
-        symb.addVar(context, input);
+        symb.addVar(input, context);
     }
     
     /**
