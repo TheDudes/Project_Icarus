@@ -372,8 +372,8 @@ public class Symbols {
         System.out.println("Parser: Symbols: findContextVars(FUNCTION_BLOCK)");
         findContextVars("FUNCTION_BLOCK");
         System.out.println("Parser: Symbols: findContextVars(GLOBAL)");
-        findContextVars("GLOBAL");
-        System.out.println("Parser: Symbols: generateSymbolsList()");
+        //findContextVars("GLOBAL");
+        //System.out.println("Parser: Symbols: generateSymbolsList()");
         
         generateSymbolsList();
         //deleteVarBlocks();
