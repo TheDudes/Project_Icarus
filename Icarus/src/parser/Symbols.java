@@ -69,7 +69,7 @@ public class Symbols {
                             System.out.println("Parser: Symbols: findContextVars(PROGRAM): inside first inner loop, inside if");
                             varlist.add(j);
                         }
-                        variableIndexes.remove(j);
+                        //variableIndexes.remove(j);
                     }
                     context = builder.substring(k + 7, varlist.get(0));  // +7 == "PROGRAM".length(), i should replace all these with final constants, btw. finds out name of the context
                     System.out.println("Parser: Symbols: findContextVars(PROGRAM): between the inner loops, context: " + context);
@@ -93,7 +93,7 @@ public class Symbols {
                         if (j < match.getEndFunction(k) && j > k) { // room for improvement here! but, fuck it.
                             varlist.add(j);
                         }
-                        variableIndexes.remove(j);
+                        //variableIndexes.remove(j);
                     }
                     context = builder.substring(k + 8, varlist.get(0));  // +8 == "FUNCTION".length(), i should replace all these with final constants, btw. finds out name of the context
                     for (int i : varlist) {
@@ -112,7 +112,7 @@ public class Symbols {
                         if (j < match.getEndFunctionBlock(k) && j > k) { // room for improvement here! but, fuck it.
                             varlist.add(j);
                         }
-                        variableIndexes.remove(j);
+                        //variableIndexes.remove(j);
                     }
                     context = builder.substring(k + 14, varlist.get(0));  // +14 == "FUNCTION_BLOCK".length(), i should replace all these with final constants, btw. finds out name of the context
                     for (int i : varlist) {

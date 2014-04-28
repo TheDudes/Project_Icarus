@@ -14,17 +14,19 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-
 package parser;
 
 import java.util.*;
 import vault.Log;
+
 /**
  * This class locates all block beginnings and endings
+ *
  * @author Simon Mages <mages.simon@googlemail.com>
  * @version 1.0
  */
 public class Analyser {
+
     private ArrayList<Integer> program_cursor = new ArrayList<>();
     private ArrayList<Integer> function_cursor = new ArrayList<>();
     private ArrayList<Integer> function_block_cursor = new ArrayList<>();
@@ -39,85 +41,97 @@ public class Analyser {
     private ArrayList<Integer> exit_all = new ArrayList<>();
     private ArrayList<Integer> var_input_all = new ArrayList<>();
     private ArrayList<Integer> var_output_all = new ArrayList<>();
-    
+
     private final StringBuilder builder;
-    
+
     private final int LISTCOUNT = 13;
-    private ArrayList<ArrayList<Integer>> blocks = new ArrayList<>();
+    private List<ArrayList<Integer>> blocks = new ArrayList<>();
     private final String[][] keywords = {
-        { "PROGRAM", "END_PROGRAM" },
-        { "FUNCTION", "END_FNUNCTION" },
-        { "FUNCTION_BLOCK", "END_FUNCTION_BLOCK" },
-        { "VAR_GLOBAL", "END_VAR" },
-        { "VAR_CONFIG", "END_VAR" },
-        { "CASE", "END_CASE" },
-        { "FOR", "END_FOR" },
-        { "WHILE", "END_WHILE" },
-        { "REPEAT", "END_REPEAT" },
-        { "VAR_INPUT", "END_VAR" },
-        { "VAR_OUTPUT", "END_VAR" },
-        { "IF", "END_IF" },
-        { "VAR", "END_VAR" }
+        {"PROGRAM", "END_PROGRAM"},
+        {"FUNCTION", "END_FNUNCTION"},
+        {"FUNCTION_BLOCK", "END_FUNCTION_BLOCK"},
+        {"VAR_GLOBAL", "END_VAR"},
+        {"VAR_CONFIG", "END_VAR"},
+        {"CASE", "END_CASE"},
+        {"FOR", "END_FOR"},
+        {"WHILE", "END_WHILE"},
+        {"REPEAT", "END_REPEAT"},
+        {"VAR_INPUT", "END_VAR"},
+        {"VAR_OUTPUT", "END_VAR"},
+        {"IF", "END_IF"},
+        {"VAR", "END_VAR"}
     };
 
     // logger
     private boolean logstat;
     private String mainkey = "parser";
     private String subkey = "Analyser";
-    private String key = mainkey+"-"+subkey;
-    
+    private String key = mainkey + "-" + subkey;
+
     private void findAllKeywords() { // think of the IF, its a special case
-        if (logstat) { Log.log(key, 3, "findAllKeywords called."); }
+        if (logstat) {
+            Log.log(key, 3, "findAllKeywords called.");
+        }
         int i;
-        for (i = 0; i < LISTCOUNT-1; i++) {
+        for (i = 0; i < LISTCOUNT; i++) {
             ArrayList<Integer> block = blocks.get(i);
             String start = keywords[i][0];
             String stop = keywords[i][1];
             int endpointer;
-            for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, endpointer+stop.length())) {
-                block.add(new Integer(pointer));
-                endpointer = builder.indexOf(stop, pointer);
-                block.add(new Integer(endpointer));
-            }
-            blocks.add(i, block);
-            if (logstat) { Log.log(key, 3, "Found "+blocks.size()+" "+start+" and "+stop); }
-            if (logstat) { Log.log(key, 4, start+" and "+stop+" Indexes: "+Arrays.toString(block.toArray())); }
-        }
-        if (i == 11) { // normaly not needed, should work anyway
-            ArrayList<Integer> block = blocks.get(i);
-            String start = keywords[i][0];
-            String stop = keywords[i][1];
-            int endpointer;
-            for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, pointer+stop.length())) {
-                if (builder.charAt(pointer-1) == '_') {
-                    if_all.add(new Integer(pointer-4));
-                } else if (builder.charAt(pointer-1) == 'E') {
-                    
-                } else {
-                    if_all.add(new Integer(pointer));
+            if (i < 11) {
+                for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, endpointer + stop.length())) {
+                    block.add(new Integer(pointer));
+                    endpointer = builder.indexOf(stop, pointer);
+                    block.add(new Integer(endpointer));
+                }
+                //blocks.add(i, block);
+                if (logstat) {
+                    Log.log(key, 3, "Found " + blocks.size() + " " + start + " and " + stop);
+                }
+                if (logstat) {
+                    Log.log(key, 4, start + " and " + stop + " Indexes: " + Arrays.toString(block.toArray()));
+                }
+            } else if (i == 11) { // normaly not needed, should work anyway
+                block = blocks.get(i);
+                start = keywords[i][0];
+                stop = keywords[i][1];
+                for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, pointer + start.length())) {
+                    if (builder.charAt(pointer - 1) == '_') {
+                        block.add(new Integer(pointer - 3));
+                    } else if (builder.charAt(pointer - 1) == 'E') {
+                        
+                    } else {
+                        block.add(new Integer(pointer));
+                    }
+                }
+                //blocks.add(i, block);
+                if (logstat) {
+                    Log.log(key, 3, "Found " + blocks.size() + " " + start + " and " + stop);
+                }
+                if (logstat) {
+                    Log.log(key, 4, start + " and " + stop + " Indexes: " + Arrays.toString(block.toArray()));
+                }
+            } else if (i == 12) {
+                block = blocks.get(i);
+                start = keywords[i][0];
+                stop = keywords[i][1];
+                for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, pointer + start.length())) {
+                    if (builder.charAt(pointer - 1) == '_') {
+                        block.add(new Integer(pointer - 3));
+                    } else if (builder.charAt(pointer + 1) == '_') {
+                        continue;
+                    } else {
+                        block.add(new Integer(pointer));
+                    }
+                }
+                //blocks.add(i, block);
+                if (logstat) {
+                    Log.log(key, 3, "Found " + blocks.size() + " " + start + " and " + stop);
+                }
+                if (logstat) {
+                    Log.log(key, 4, start + " and " + stop + " Indexes: " + Arrays.toString(block.toArray()));
                 }
             }
-            blocks.add(i, block);
-            if (logstat) { Log.log(key, 3, "Found "+blocks.size()+" "+start+" and "+stop); }
-            if (logstat) { Log.log(key, 4, start+" and "+stop+" Indexes: "+Arrays.toString(block.toArray())); }
-        }
-        if (i == 12) {
-            ArrayList<Integer> block = blocks.get(i);
-            String start = keywords[i][0];
-            String stop = keywords[i][1];
-            int endpointer;
-            for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, endpointer+start.length())) {
-                if (builder.charAt(pointer+start.length()) == '_') {
-		endpointer = builder.indexOf(stop, pointer);
-		continue;
-                }
-                endpointer = builder.indexOf(stop, pointer);
-                var_all.add(new Integer(pointer));
-                var_all.add(new Integer(endpointer));
-            }
-            blocks.add(i, block);
-            if (logstat) { Log.log(key, 3, "Found "+blocks.size()+" "+start+" and "+stop); }
-            if (logstat) { Log.log(key, 4, start+" and "+stop+" Indexes: "+Arrays.toString(block.toArray())); }
         }
     }
     
@@ -555,6 +569,10 @@ public class Analyser {
 	System.out.println("Parser: Analyser: findAllVarOutputs()");
 	findAllVarOutputs(); // matcher done
 	//printAll();*/
+        findAllKeywords();
+/*        for (String[] item : blocks.toArray(keywords)) {
+            System.out.println(Arrays.toString(item));
+        }*/
     }
 }
 
