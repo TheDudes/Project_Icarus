@@ -330,6 +330,7 @@ public class InfoCollector {
      * @see Symbols
      */
     public String replaceVars(String input, String context) {
+        System.out.println(input);
         if (logstat) { Log.log(key, 4, "replaceVars called."); }
 	return symb.replaceVars(input, context);
     }
