@@ -17,6 +17,7 @@ package parser;
 
 import java.util.*;
 import java.util.regex.*;
+import vault.Log;
 
 /**
  * This finds all var block and the corresponding context in which they life an
@@ -348,18 +349,18 @@ public class Symbols {
     public void addVar(String input, String context) throws Exception {
         // type integer all the time
         String[] splitted = input.split(":=");
-        String[] splitted2 = splitted[1].split(";"); // oh its to late man ...
+        //String[] splitted2 = splitted[1].split(";"); // oh its to late man ...
         Integer tmp = contextstore.get(context).get(splitted[0]);
         if (tmp == null) {
-            fillUpTheContainers(context, new StringBuilder(splitted[0] + ":INT:=" + splitted2[0] + ";"));
+            fillUpTheContainers(context, new StringBuilder(splitted[0] + ":INT:=" + splitted[1]));
         } else {
-            HashMap<String, Integer> percontext; //= new HashMap<>();
+            /*HashMap<String, Integer> percontext; //= new HashMap<>();
             typebyid.remove(tmp);
             valuebyid.remove(tmp);
             percontext = contextstore.get(context);
             percontext.remove(splitted[0]);
-            contextstore.put(context, percontext);  // aaaah fuck it, tooo late man ....
-            fillUpTheContainers(context, new StringBuilder(splitted[0] + ":INT:=" + splitted2[0] + ";"));
+            contextstore.put(context, percontext);  // aaaah fuck it, tooo late man .... */
+            fillUpTheContainers(context, new StringBuilder(input));
         }
     }
 
