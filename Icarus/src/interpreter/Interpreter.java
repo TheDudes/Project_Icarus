@@ -132,8 +132,7 @@ public class Interpreter
             {
                 log.log("interpreter", 4, "found ELSE, INDEX = " + INDEX);
                 if(if_stack.peek()) {
-                    INDEX = container.getEndIf(if_position_stack.pop()) + 5;
-                    if_stack.pop();
+                    INDEX = container.getEndIf(if_position_stack.peek() - 1);
                     continue;
                 } else {
                     INDEX += 3;
