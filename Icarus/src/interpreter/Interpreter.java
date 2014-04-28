@@ -220,7 +220,7 @@ public class Interpreter
                 obj.type           = 1;
                 obj.INDEX          = INDEX;
                 obj.do_index       = get_do(INDEX, code);
-                obj.do_index       = container.getEndFor(INDEX);
+                obj.end_index      = container.getEndFor(INDEX);
 
                 int to_position    = get_to(INDEX, code);
                 int by_position    = get_by(to_position + 2, code);
@@ -234,6 +234,7 @@ public class Interpreter
                     obj.name       = condition.substring(0, colon);
                     obj.count      = Integer.parseInt(condition.substring(colon + 2, condition.length() + 1));
                     container.addVar(condition + ";", context);
+                    System.out.println(condition);
                 } else
                 {
 

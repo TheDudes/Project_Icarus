@@ -7,8 +7,11 @@ VAR
     test2 : INT := 4432;
 END_VAR
 
+FOR bl := 3 TO 5 DO
+    PRINT(bl);
+END_FOR
+
 PRINT(blub);
-PRINT(blah);
 PRINT(test);
 PRINT(test2);
 
