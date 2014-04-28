@@ -131,7 +131,7 @@ public class main
             {
                 log.log("interpreter", 4, "found PROGRAM, INDEX = " + INDEX);
                 int var = get_var(INDEX, code);
-                context = code.substring(INDEX + 6, var);
+                context = code.substring(INDEX + 7, var);
                 INDEX   = container.getEndVar(var) + 6;
                 context_stack.push(context);
                 continue;
