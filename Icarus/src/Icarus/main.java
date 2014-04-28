@@ -55,8 +55,8 @@ public class main
         switch (hostname)
         {
             case "beelzebub":
-                path[0] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_ 2013_ 10/Project_Icarus/Icarus/test.st";
-                path[1] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_ 2013_ 10/Project_Icarus/Icarus/logs/";
+                path[0] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/franzke_files/plc_prg.st";
+                System.out.println("Hey tux, would you mind taking a look at the code?");
                 break;
             case "d4ryus":
                 path[0] = "/home/d4ryus/coding/Project_Icarus/Icarus/test.st";
@@ -74,6 +74,8 @@ public class main
         }
         System.out.print("your st file path: " + path[0] + "\n");
         System.out.print("your log file path: " + path[1] + "\n");
+
+        Log.init(path[1], verbose_level);
 
         log = new LogWriter(path[1], verbose_level);
 
@@ -114,7 +116,7 @@ public class main
 
         String context = "";
 
-        for(int INDEX = start; INDEX < end; INDEX++) 
+        for(int INDEX = start; INDEX < end; INDEX++)
         {
 
             log.log("interpreter", 4, "for_loop_top, INDEX = " + INDEX);
@@ -128,11 +130,11 @@ public class main
                       (code.charAt(INDEX + 6) == 'M') )
             {
                 log.log("interpreter", 4, "found PROGRAM, INDEX = " + INDEX);
-                int jump = container.getEndVar(INDEX);
-                INDEX += 6;
-                context = code.substring(INDEX, get_var(INDEX, code));
-                INDEX = jump;
+                int var = get_var(INDEX, code);
+                context = code.substring(INDEX + 6, var);
+                INDEX   = container.getEndVar(var) + 6;
                 context_stack.push(context);
+                continue;
             }
             else if ( (code.charAt(INDEX)     == 'I') &&
                       (code.charAt(INDEX + 1) == 'F') )
@@ -140,7 +142,7 @@ public class main
                 log.log("interpreter", 4, "found IF, INDEX = " + INDEX);
                 if_position_stack.push(INDEX);
                 int then_position = get_then(INDEX, code);
-                String condition = code.substring(INDEX + 2, then_position - 1);
+                String condition = code.substring(INDEX + 2, then_position);
                 if_stack.push((Boolean)engine.eval(convert_condition(container.replaceVars(condition, context_stack.peek()))));
                 if (if_stack.peek()) {
                     INDEX = then_position + 3;
@@ -190,7 +192,7 @@ public class main
                 } else {
                     INDEX += 5;
                     int then_position = get_then(INDEX, code);
-                    String condition = code.substring(INDEX + 2, then_position - 1);
+                    String condition = code.substring(INDEX + 2, then_position);
                     if_stack.pop();
                     if_stack.push((Boolean)engine.eval(convert_condition(container.replaceVars(condition, context_stack.peek()))));
                     if (if_stack.peek()) {
@@ -216,7 +218,7 @@ public class main
                 obj.do_index       = get_do(INDEX, code);
                 obj.end_index      = container.getEndWhile(INDEX) + 8;
 
-                obj.condition      = code.substring(INDEX + 5, obj.do_index - 1);
+                obj.condition      = code.substring(INDEX + 5, obj.do_index);
 
                 loop_stack.push(obj);
 
@@ -262,15 +264,15 @@ public class main
 
                 int to_position    = get_to(INDEX, code);
                 int by_position    = get_by(to_position + 2, code);
-                String condition   = code.substring(INDEX + 3, to_position - 1);
+                String condition   = code.substring(INDEX + 3, to_position);
                 int colon;
 
                 if(condition.contains(":="))
                 {
                     colon          = get_colon(condition);
                     obj.name_given = true;
-                    obj.name       = condition.substring(0, colon - 1);
-                    obj.count      = Integer.parseInt(condition.substring(colon + 2, condition.length()));
+                    obj.name       = condition.substring(0, colon);
+                    obj.count      = Integer.parseInt(condition.substring(colon + 2, condition.length() + 1));
                     container.addVar(condition + ";", context);
                 } else
                 {
@@ -291,14 +293,14 @@ public class main
                 if (by_position == -1)
                 {
                     do_position = get_do(to_position + 2, code);
-                    obj.limit   = Integer.parseInt(container.replaceVars(code.substring(to_position + 2, do_position - 1), context));
+                    obj.limit   = Integer.parseInt(container.replaceVars(code.substring(to_position + 2, do_position), context));
                     obj.by      = 1;
                 }
                 else
                 {
                     do_position = get_do(by_position + 2, code);
-                    obj.limit   = Integer.parseInt(container.replaceVars(code.substring(to_position + 2, by_position - 1), context));
-                    obj.by      = Integer.parseInt(container.replaceVars(code.substring(by_position + 2, do_position - 1), context));
+                    obj.limit   = Integer.parseInt(container.replaceVars(code.substring(to_position + 2, by_position), context));
+                    obj.by      = Integer.parseInt(container.replaceVars(code.substring(by_position + 2, do_position), context));
                 }
                 loop_stack.push(obj);
 
@@ -359,7 +361,7 @@ public class main
             {
                 log.log("interpreter", 4, "found UNTIL, INDEX = " + INDEX);
 
-                String condition = code.substring(INDEX + 6, loop_stack.peek().end_index - 10);
+                String condition = code.substring(INDEX + 6, loop_stack.peek().end_index - 9);
                 if((Boolean)engine.eval(convert_condition(container.replaceVars(condition, context_stack.peek()))))
                 {
                     INDEX = loop_stack.peek().do_index;
@@ -387,10 +389,9 @@ public class main
                       (code.charAt(INDEX + 4) == 'T') )
             {
                 log.log("interpreter", 4, "found PRINT, INDEX = " + INDEX);
-                INDEX += 5;
 
-                int semicolon_position = get_semicolon(INDEX, code);
-                String print = code.substring(INDEX + 1, semicolon_position - 1);
+                int semicolon_position = get_semicolon(INDEX + 6, code);
+                String print = code.substring(INDEX + 6, semicolon_position - 1);
 
                 print = container.replaceVars(print, context);
                 log.log("PRINT", 0, print);
