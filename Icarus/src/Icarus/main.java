@@ -13,9 +13,9 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * 
+ * @author: d4ryus - https://github.com/d4ryus/
+ * @version 0.2
  */
-
 
 package Icarus;
 
@@ -30,12 +30,18 @@ import java.util.Stack;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
-public class main 
+public class main
 {
 
     static InfoCollector container;
     static LogWriter log;
     static int verbose_level = 5;
+
+    /* stacks */
+    static Stack<String>  context_stack;
+    static Stack<Container_LOOP> loop_stack;
+    static Stack<Boolean> if_stack;
+    static Stack<Integer> if_position_stack;
 
     public static void main(String[] args) throws Exception 
     {
@@ -46,20 +52,20 @@ public class main
          */
         String hostname    = InetAddress.getLocalHost().getHostName();
 
-        switch (hostname) 
+        switch (hostname)
         {
             case "beelzebub":
-                path[0] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/franzke_files/plc_prg.st";
+                path[0] = "/home/apfel/Documents/StudienProjekt/ StudienProjekt/sp_ 2013_ 10/Project_Icarus/franzke_files/plc_prg.st";
                 System.out.println("Hey tux, would you mind taking a look at the code?");
                 break;
             case "d4ryus":
-                path[0] = "/home/d4ryus/coding/Project_Icarus/franzke_files/plc_prg.st";
-                path[1] = "/home/d4ryus/coding/Project_Icarus/Icarus/log";
+                path[0] = "/home/d4ryus/coding/Project_Icarus/Icarus/test.st";
+                path[1] = "/home/d4ryus/coding/Project_Icarus/Icarus/logs/";
                 break;
             /*
              case "yourhostname":
              path[0] = "/your/path/to/the/st/file";
-             path[1] = "/your/path/to/the/log/file";
+             path[1] = "/your/path/to/the/logfolder/";
              break;
              */
             default:
@@ -78,6 +84,8 @@ public class main
         ScriptEngine engine = factory.getEngineByName("JavaScript");
         engine_warmup(engine);
 
+        interpret(code, 0, code.length(), engine);
+
         log.kill();
     }
 
@@ -91,20 +99,16 @@ public class main
     public static void interpret (String string, int start, int end, ScriptEngine engine) throws Exception 
     {
 
-        log.log("interpreter started", 4, "start: " + start + ", end: " + end);
-        log.log("interpreter", 4, "init stacks");
+        log.log("interpreter", 4, "started with start: " + start + ", end: " + end);
 
-        /* stacks */
-        Stack<String>  context_stack              = new Stack<>(); // current context
-        Stack<Boolean> if_stack                   = new Stack<>(); // last if condition
-        Stack<Integer> if_position_stack          = new Stack<>(); // last if position
+        log.log("interpreter", 4, "init stacks...");
 
-        Stack<Integer> loop_do_position_stack     = new Stack<>(); // last loop Do
-        Stack<String> loop_condition_stack        = new Stack<>(); // last loop Condition
+        context_stack     = new Stack<>();
+        loop_stack        = new Stack<>();
+        if_stack          = new Stack<>();
+        if_position_stack = new Stack<>();
 
-        Stack<Integer> loop_while_position_stack  = new Stack<>(); // last loop Condition
-        Stack<Integer> loop_repeat_position_stack = new Stack<>(); // last loop Condition
-        Stack<Integer> loop_for_postition_stack   = new Stack<>(); // last loop Condition
+        log.log("interpreter", 4, "init stacks done.");
 
         StringBuilder code = new StringBuilder(string);
 
@@ -119,13 +123,14 @@ public class main
                       (code.charAt(INDEX + 1) == 'R') &&
                       (code.charAt(INDEX + 2) == 'O') &&
                       (code.charAt(INDEX + 3) == 'G') &&
-                      (code.charAt(INDEX + 4) == 'A') &&
-                      (code.charAt(INDEX + 5) == 'M') )
+                      (code.charAt(INDEX + 4) == 'R') &&
+                      (code.charAt(INDEX + 5) == 'A') &&
+                      (code.charAt(INDEX + 6) == 'M') )
             {
                 log.log("interpreter", 4, "found PROGRAM, INDEX = " + INDEX);
                 int jump = container.getEndVar(INDEX);
                 INDEX += 6;
-                String context = code.substring(INDEX, get_var(INDEX, code));
+                context = code.substring(INDEX, get_var(INDEX, code));
                 INDEX = jump;
                 context_stack.push(context);
             }
@@ -197,21 +202,6 @@ public class main
                     }
                 }
             }
-            else if ( (code.charAt(INDEX)     == 'V') &&
-                      (code.charAt(INDEX + 1) == 'A') &&
-                      (code.charAt(INDEX + 2) == 'R') )
-            {
-                log.log("interpreter", 4, "found VAR, INDEX = " + INDEX);
-                INDEX = container.getEndVar(INDEX) + 6;
-                continue;
-            }
-            else if ( (code.charAt(INDEX)     == 'F') &&
-                      (code.charAt(INDEX + 1) == 'O') &&
-                      (code.charAt(INDEX + 2) == 'R') )
-            {
-                log.log("interpreter", 4, "found FOR, INDEX = " + INDEX);
-                loop_for_postition_stack.push(INDEX);
-            }
             else if ( (code.charAt(INDEX)     == 'W') &&
                       (code.charAt(INDEX + 1) == 'H') &&
                       (code.charAt(INDEX + 2) == 'I') &&
@@ -219,19 +209,22 @@ public class main
                       (code.charAt(INDEX + 4) == 'E') )
             {
                 log.log("interpreter", 4, "found WHILE, INDEX = " + INDEX);
-                loop_while_position_stack.push(INDEX);
-                int do_position = get_do(INDEX, code);
-                String condition = code.substring(INDEX + 5, do_position - 1);
-                loop_do_position_stack.push(do_position);
-                loop_condition_stack.push(condition);
-                if((Boolean)engine.eval(convert_condition(container.replaceVars(loop_condition_stack.peek(), context_stack.peek())))) {
-                    INDEX = loop_do_position_stack.peek() + 1;
+
+                Container_LOOP obj = new Container_LOOP();
+                obj.type           = 0;
+                obj.INDEX          = INDEX;
+                obj.do_index       = get_do(INDEX, code);
+                obj.end_index      = container.getEndWhile(INDEX) + 8;
+
+                obj.condition      = code.substring(INDEX + 5, obj.do_index - 1);
+
+                loop_stack.push(obj);
+
+                if((Boolean)engine.eval(convert_condition(container.replaceVars(obj.condition, context_stack.peek())))) {
+                    INDEX = obj.do_index + 1;
                     continue;
                 } else {
-                    INDEX = container.getEndWhile(loop_while_position_stack.peek() + 1) + 8;
-                    loop_while_position_stack.pop();
-                    loop_condition_stack.pop();
-                    loop_do_position_stack.pop();
+                    INDEX = loop_stack.pop().end_index;
                     continue;
                 }
             }
@@ -247,15 +240,145 @@ public class main
             {
                 log.log("interpreter", 4, "found END_WHILE, INDEX = " + INDEX);
                 INDEX += 8;
-                if((Boolean)engine.eval(convert_condition(container.replaceVars(loop_condition_stack.peek(), context_stack.peek())))) {
-                    INDEX = loop_do_position_stack.peek() + 1;
+                if((Boolean)engine.eval(convert_condition(container.replaceVars(loop_stack.peek().condition, context_stack.peek())))) {
+                    INDEX = loop_stack.peek().do_index + 1;
                     continue;
                 } else {
-                    loop_while_position_stack.pop();
-                    loop_condition_stack.pop();
-                    loop_do_position_stack.pop();
+                    INDEX = loop_stack.pop().end_index;
                     continue;
                 }
+            }
+            else if ( (code.charAt(INDEX)     == 'F') &&
+                      (code.charAt(INDEX + 1) == 'O') &&
+                      (code.charAt(INDEX + 2) == 'R') )
+            {
+                log.log("interpreter", 4, "found FOR, INDEX = " + INDEX);
+
+                Container_LOOP obj = new Container_LOOP();
+                obj.type           = 1;
+                obj.INDEX          = INDEX;
+                obj.do_index       = get_do(INDEX, code);
+                obj.do_index       = container.getEndFor(INDEX);
+
+                int to_position    = get_to(INDEX, code);
+                int by_position    = get_by(to_position + 2, code);
+                String condition   = code.substring(INDEX + 3, to_position - 1);
+                int colon;
+
+                if(condition.contains(":="))
+                {
+                    colon          = get_colon(condition);
+                    obj.name_given = true;
+                    obj.name       = condition.substring(0, colon - 1);
+                    obj.count      = Integer.parseInt(condition.substring(colon + 2, condition.length()));
+                    container.addVar(condition + ";", context);
+                } else
+                {
+
+                    int count = Integer.parseInt(container.replaceVars(condition, context));
+                    obj.count = count;
+                    if (condition.equals(Integer.toString(count)))
+                    {
+                        obj.name_given = false;
+                    } else
+                    {
+                        obj.name_given = true;
+                        obj.name       = condition;
+                    }
+                }
+
+                int do_position;
+                if (by_position == -1)
+                {
+                    do_position = get_do(to_position + 2, code);
+                    obj.limit   = Integer.parseInt(container.replaceVars(code.substring(to_position + 2, do_position - 1), context));
+                    obj.by      = 1;
+                }
+                else
+                {
+                    do_position = get_do(by_position + 2, code);
+                    obj.limit   = Integer.parseInt(container.replaceVars(code.substring(to_position + 2, by_position - 1), context));
+                    obj.by      = Integer.parseInt(container.replaceVars(code.substring(by_position + 2, do_position - 1), context));
+                }
+                loop_stack.push(obj);
+
+                if(loop_stack.peek().count >= loop_stack.peek().limit)
+                {
+                    INDEX = loop_stack.pop().end_index;
+                    continue;
+                } else
+                {
+                    INDEX = loop_stack.peek().do_index + 1;
+                    continue;
+                }
+            }
+            else if ( (code.charAt(INDEX)     == 'E') &&
+                      (code.charAt(INDEX + 1) == 'N') &&
+                      (code.charAt(INDEX + 2) == 'D') &&
+                      (code.charAt(INDEX + 3) == '_') &&
+                      (code.charAt(INDEX + 4) == 'F') &&
+                      (code.charAt(INDEX + 5) == 'O') &&
+                      (code.charAt(INDEX + 6) == 'R') )
+            {
+                log.log("interpreter", 4, "found END_FOR, INDEX = " + INDEX);
+                loop_stack.peek().count += loop_stack.peek().by;
+
+                if(loop_stack.peek().name_given)
+                    container.setValue(loop_stack.peek().name + ":=" + loop_stack.peek().count, context);
+                if(loop_stack.peek().count >= loop_stack.peek().limit)
+                {
+                    INDEX = loop_stack.pop().end_index;
+                    continue;
+                } else
+                {
+                    INDEX = loop_stack.peek().do_index + 1;
+                    continue;
+                }
+            }
+            else if ( (code.charAt(INDEX)     == 'R') &&
+                      (code.charAt(INDEX + 1) == 'E') &&
+                      (code.charAt(INDEX + 2) == 'P') &&
+                      (code.charAt(INDEX + 3) == 'E') &&
+                      (code.charAt(INDEX + 4) == 'A') &&
+                      (code.charAt(INDEX + 5) == 'T') )
+            {
+                log.log("interpreter", 4, "found REPEAT, INDEX = " + INDEX);
+
+                Container_LOOP obj = new Container_LOOP();
+                obj.type           = 2;
+                obj.INDEX          = INDEX;
+                obj.do_index       = INDEX + 5;
+                obj.end_index      = container.getEndRepeat(INDEX) + 9;
+                loop_stack.push(obj);
+            }
+            else if ( (code.charAt(INDEX)     == 'U') &&
+                      (code.charAt(INDEX + 1) == 'N') &&
+                      (code.charAt(INDEX + 2) == 'T') &&
+                      (code.charAt(INDEX + 3) == 'I') &&
+                      (code.charAt(INDEX + 4) == 'L') )
+            {
+                log.log("interpreter", 4, "found UNTIL, INDEX = " + INDEX);
+
+                String condition = code.substring(INDEX + 6, loop_stack.peek().end_index - 10);
+                if((Boolean)engine.eval(convert_condition(container.replaceVars(condition, context_stack.peek()))))
+                {
+                    INDEX = loop_stack.peek().do_index;
+                    continue;
+                } else {
+                    INDEX = loop_stack.peek().end_index;
+                    loop_stack.pop();
+                    continue;
+                }
+            }
+            else if ( (code.charAt(INDEX)     == 'B') &&
+                      (code.charAt(INDEX + 1) == 'R') &&
+                      (code.charAt(INDEX + 2) == 'E') &&
+                      (code.charAt(INDEX + 3) == 'A') &&
+                      (code.charAt(INDEX + 4) == 'K') )
+            {
+                log.log("interpreter", 4, "found BREAK, INDEX = " + INDEX);
+                INDEX = loop_stack.pop().end_index;
+                continue;
             }
             else if ( (code.charAt(INDEX)     == 'P') &&
                       (code.charAt(INDEX + 1) == 'R') &&
@@ -264,19 +387,24 @@ public class main
                       (code.charAt(INDEX + 4) == 'T') )
             {
                 log.log("interpreter", 4, "found PRINT, INDEX = " + INDEX);
-                INDEX += 6;
-                String print = "";
-                for( ;; INDEX++ ) {
-                    if ( (code.charAt(INDEX)     == ')') &&
-                         (code.charAt(INDEX + 1) == ';') )
-                    {
-                        INDEX += 1;
-                        log.log(print, 0, print);
-                        break;
-                    } else {
-                        print += code.charAt(INDEX);
-                    }
-                }
+                INDEX += 5;
+
+                int semicolon_position = get_semicolon(INDEX, code);
+                String print = code.substring(INDEX + 1, semicolon_position - 1);
+
+                print = container.replaceVars(print, context);
+                log.log("PRINT", 0, print);
+                System.out.println("PRINT: " + print + "\n");
+                INDEX = semicolon_position;
+                continue;
+            }
+            else if ( (code.charAt(INDEX)     == 'V') &&
+                      (code.charAt(INDEX + 1) == 'A') &&
+                      (code.charAt(INDEX + 2) == 'R') )
+            {
+                log.log("interpreter", 4, "found VAR, INDEX = " + INDEX);
+                INDEX = container.getEndVar(INDEX) + 6;
+                continue;
             }
             else if ( (code.charAt(INDEX)     == 'E') &&
                       (code.charAt(INDEX + 1) == 'N') &&
@@ -292,6 +420,12 @@ public class main
             {
                 log.log("interpreter", 4, "found END_PROGRAM, INDEX = " + INDEX);
                 break;
+            }
+            else /* if no match is found */
+            {
+                log.log("error", 0, "could not find: " + code.charAt(INDEX));
+                System.out.println("error: could not find: " + code.charAt(INDEX));
+                continue;
             }
         } /* end main for loop   */
     }
@@ -346,14 +480,13 @@ public class main
     {
         log.log("interpreter", 4, "get_var call, INDEX = " + INDEX);
         for(;;INDEX++) {
-            if ( (code.charAt(INDEX)        == 'V') &&
-                    (code.charAt(INDEX + 1) == 'A') &&
-                    (code.charAt(INDEX + 2) == 'R') )
+            if ( (code.charAt(INDEX)     == 'V') &&
+                 (code.charAt(INDEX + 1) == 'A') &&
+                 (code.charAt(INDEX + 2) == 'R') )
             {
                 log.log("interpreter", 4, "get_var return, INDEX = " + INDEX);
                 return INDEX;
             }
-            context += code.charAt(INDEX);
         }
     }
 
@@ -377,19 +510,67 @@ public class main
     }
 
     /**
+     * will return next colon index
+     * @param string containing colon
+     * @return ińdex of colon
+     */
+    public static int get_colon(String string)
+    {
+        log.log("interpreter", 4, "get_colon call, string: " + string);
+        for(int i = 0;;i++) {
+            if (string.charAt(i) == ':');
+            {
+                log.log("interpreter", 4, "get_colon return, i = " + i);
+                return i;
+            }
+        }
+    }
+
+    /**
      * will return next BY index
      * @param INDEX starting point
      * @param code code from parser
-     * @return INDEX of found BY
+     * @return INDEX of found BY, -1 if DO is found
      */
     public static int get_by(int INDEX, StringBuilder code)
     {
         log.log("interpreter", 4, "get_by call, INDEX = " + INDEX);
+        int count = 0;
         for(;;INDEX++) {
+            if ( (code.charAt(INDEX)     == 'D') &&
+                 (code.charAt(INDEX + 1) == 'O') )
+            {
+                log.log("interpreter", 4, "get_by return (DO found): -1");
+                return -1;
+            }
             if ( (code.charAt(INDEX)     == 'B') &&
                  (code.charAt(INDEX + 1) == 'Y') )
             {
-                log.log("interpreter", 4, "get_by return, INDEX = " + INDEX);
+                log.log("interpreter", 4, "get_by return, (BY found) INDEX = "
+                                                                      + INDEX);
+                return INDEX;
+            }
+            else
+            {
+                count++;
+            }
+        }
+
+    }
+
+    /**
+     * will return next Semicolon index
+     * @param INDEX starting point
+     * @param code code from parser
+     * @return INDEX of found semicolon
+     */
+    public static int get_semicolon(int INDEX, StringBuilder code)
+    {
+        log.log("interpreter", 4, "get_semicolon call, INDEX = " + INDEX);
+        for(;;INDEX++) {
+            if ( (code.charAt(INDEX)     == ';') )
+            {
+                log.log("interpreter", 4, "get_semicolon return, INDEX = " + INDEX);
                 return INDEX;
             }
         }
@@ -436,7 +617,7 @@ public class main
     }
 
     /**
-     * will return next END_IF index
+     * will return END_IF index
      * @param INDEX starting point
      * @param code code from parser
      * @return INDEX of found END_IF
@@ -458,6 +639,37 @@ public class main
                         (code.charAt(INDEX + 1) == 'F') )
             {
                 INDEX = get_end_if(INDEX, code) + 5;
+                continue;
+            }
+        }
+    }
+
+    /**
+     * will return UNTIL index
+     * @param INDEX starting point
+     * @param code code from parser
+     * @return INDEX of found UNTIL
+     */
+    public static int get_until(int INDEX, StringBuilder code)
+    {
+        log.log("interpreter", 4, "get_until call, INDEX = " + INDEX);
+        for(;;INDEX++) {
+            if  ( (code.charAt(INDEX)     == 'U') &&
+                  (code.charAt(INDEX + 1) == 'N') &&
+                  (code.charAt(INDEX + 2) == 'T') &&
+                  (code.charAt(INDEX + 3) == 'I') &&
+                  (code.charAt(INDEX + 4) == 'L') )
+            {
+                log.log("interpreter", 4, "get_until return, INDEX = " + INDEX);
+                return INDEX;
+            } else if ( (code.charAt(INDEX)     == 'R') &&
+                        (code.charAt(INDEX + 1) == 'E') &&
+                        (code.charAt(INDEX + 2) == 'P') &&
+                        (code.charAt(INDEX + 3) == 'E') &&
+                        (code.charAt(INDEX + 4) == 'A') &&
+                        (code.charAt(INDEX + 5) == 'T') )
+            {
+                INDEX = get_until(INDEX, code) + 5;
                 continue;
             }
         }
@@ -518,7 +730,7 @@ public class main
                                     + total_evaluations
                                     + ", total time: "
                                     + (System.currentTimeMillis() - start)
-                                    + "ms\n");
+                                    + "ms");
     }
 
     /**
