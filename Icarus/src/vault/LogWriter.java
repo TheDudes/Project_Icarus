@@ -39,10 +39,9 @@ public class LogWriter {
     private SimpleDateFormat sdf; 
     private int verboseLevel;
     private Thread worker;
-    
+
     /**
      * LogWriter Constructor
-     * 
      * @param pathToLogfile Path to where you want the logfile to be saved
      * @param verboseLevel verboselevel
      */
@@ -52,6 +51,7 @@ public class LogWriter {
         this.verboseLevel = verboseLevel;
         getHostname();
     }
+
     /**
      * getHostname gets the name of the host
      */
@@ -62,8 +62,10 @@ public class LogWriter {
             host = "localhost";
         }
     }
+
     /**
      * getTimeStamp returns the current time to use it in the timestamp
+     *
      * @return String
      */
     private String getTimestamp(){ 
@@ -71,8 +73,10 @@ public class LogWriter {
         sdf = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
         return sdf.format(date);
     }
+
     /**
      * log generates one logline and adds it to the LinkeBlockingQueue lbq
+     *
      * @param key Key 
      * @param verboseLevel Verboselevel
      * @param logMessage Message
@@ -84,14 +88,14 @@ public class LogWriter {
                                 host+"] "+"["+
                                 key+"]"+": "+
                                 logMessage+"\n";
-            lbq.offer(logLine); 
+            lbq.offer(logLine);
         }
     }
+
     /**
      * kill kills the log thread
      */
     public void kill(){
         worker.stop();
     }
-
 }

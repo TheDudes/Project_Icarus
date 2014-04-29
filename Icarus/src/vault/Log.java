@@ -31,11 +31,11 @@ package vault;
 public class Log {
     private static LogWriter log;                  // the logger
     private static boolean initialized = false;    // will be true if logger is ready
-    
+
     /**
      * init initializes the Log subsystem, it will create a static context where
      * Log lives. So that it can be called From everywhere.
-     * 
+     *
      * @param pathToLogfile Path to where you want the logfile to be saved as String
      * @param verboseLevel here you can configure the loglevel of the messages
      */
@@ -43,10 +43,19 @@ public class Log {
         log = new LogWriter(pathToLogfile, verboseLevel);
         initialized = true;
     }
-    
+
+    /**
+     * returns current LogWriter
+     *
+     * @return current LogWriter
+     */
+    public static LogWriter get_log() {
+        return log;
+    }
+
     /**
      * log simply writes a message to the logfile.
-     * 
+     *
      * @param key The key for this Message
      * @param verboseLevel The verbosity level
      * @param message the message
@@ -54,8 +63,7 @@ public class Log {
     public static void log(String key, int verboseLevel, String message) {
         log.log(key, verboseLevel, message);
     }
-    
-    
+
     /**
      * isInitialized will return the logger status
      * @return true if the logger is ready and false if its not

@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2014, HAW-Landshut
  *
@@ -38,30 +37,31 @@ public class LogWriterWorker implements Runnable{
 
     private LinkedBlockingQueue<String> lbq;
 
-    private Date date; 
+    private Date date;
     private SimpleDateFormat sdf;
 
     //needs to be implemented//
     private String tmpFilePath;
     private String pathToLogfiles;
-    
+
     /**
      * LogWriterWorker constructor
      * @param lbq LinkedBlockingQueue 
      * @param logFilePath Path to the logfile directory
      */
-    public LogWriterWorker(LinkedBlockingQueue<String> lbq, String logFilePath){
+    public LogWriterWorker(LinkedBlockingQueue<String> lbq, String logFilePath) {
         this.lbq = lbq;
         this.tmpFilePath = logFilePath;
         pathToLogfiles = tmpFilePath+getTimestamp()+".log";
     }
+
     /**
      * getTimeStamp returns the current time to use it in the timestamp
      * @return String
      */
-    private String getTimestamp(){ 
+    private String getTimestamp() {
         date = new Date(System.currentTimeMillis());
-        sdf = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
+        sdf  = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss");
         return sdf.format(date);
     }
 
@@ -72,7 +72,7 @@ public class LogWriterWorker implements Runnable{
                 fWriter.write(lbq.take());
                 fWriter.flush();
             }
-        } catch (IOException e) { 
+        } catch (IOException e) {
             System.out.println("Error while writing File!");
         } catch (InterruptedException ex) {
             Logger.getLogger(LogWriterWorker.class.getName()).log(Level.SEVERE, null, ex);
