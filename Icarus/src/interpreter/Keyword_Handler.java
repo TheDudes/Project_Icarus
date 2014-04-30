@@ -86,8 +86,9 @@ public class Keyword_Handler
      * @param INDEX current Position
      * @param code current working code
      * @return INDEX after handling Keyword
+     * @throws ScriptException
      */
-    public int found_IF(int INDEX, String code) throws Exception /* ScriptException */
+    public int found_IF(int INDEX, String code) throws Exception
     {
         log.log(log_key, 4, "call   found_IF, INDEX = " + INDEX);
 
@@ -147,8 +148,9 @@ public class Keyword_Handler
      * @param INDEX current Position
      * @param code current working code
      * @return INDEX after handling Keyword
+     * @throws ScriptException
      */
-    public int found_ELSIF(int INDEX, String code) throws Exception /* ScriptException */
+    public int found_ELSIF(int INDEX, String code) throws Exception
     {
         log.log(log_key, 4, "call   found_ELSIF, INDEX = " + INDEX);
 
@@ -182,8 +184,9 @@ public class Keyword_Handler
      * @param INDEX current Position
      * @param code current working code
      * @return INDEX after handling Keyword
+     * @throws ScriptException
      */
-    public int found_WHILE(int INDEX, String code) throws Exception /* ScriptException */
+    public int found_WHILE(int INDEX, String code) throws Exception
     {
         log.log(log_key, 4, "call   found_WHILE, INDEX = " + INDEX);
 
@@ -210,8 +213,9 @@ public class Keyword_Handler
      * @param INDEX current Position
      * @param code current working code
      * @return INDEX after handling Keyword
+     * @throws ScriptException
      */
-    public int found_END_WHILE(int INDEX, String code) throws Exception /* ScriptException */
+    public int found_END_WHILE(int INDEX, String code) throws Exception
     {
         log.log(log_key, 4, "call   found_END_WHILE, INDEX = " + INDEX);
 
@@ -231,8 +235,9 @@ public class Keyword_Handler
      * @param INDEX current Position
      * @param code current working code
      * @return INDEX after handling Keyword
+     * @throws exception
      */
-    public int found_FOR(int INDEX, String code) throws Exception /* exception */
+    public int found_FOR(int INDEX, String code) throws Exception
     {
         log.log(log_key, 4, "call   found_FOR, INDEX = " + INDEX);
 
@@ -300,8 +305,9 @@ public class Keyword_Handler
      * @param INDEX current Position
      * @param code current working code
      * @return INDEX after handling Keyword
+     * @throws exception
      */
-    public int found_END_FOR(int INDEX, String code) throws Exception /* exception */
+    public int found_END_FOR(int INDEX, String code) throws Exception
     {
         log.log(log_key, 4, "call   found_END_FOR, INDEX = " + INDEX);
 
@@ -346,8 +352,9 @@ public class Keyword_Handler
      * @param INDEX current Position
      * @param code current working code
      * @return INDEX after handling Keyword
+     * @throws ScriptException
      */
-    public int found_UNTIL(int INDEX, String code) throws Exception /* ScriptException */
+    public int found_UNTIL(int INDEX, String code) throws Exception
     {
         log.log(log_key, 4, "call   found_UNTIL, INDEX = " + INDEX);
 
