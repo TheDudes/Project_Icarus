@@ -91,4 +91,16 @@ public class LogWriter {
             lbq.offer(logLine);
         }
     }
+
+    /* --warning--
+     * thread.kill() is deprecated, more information:
+     * http://docs.oracle.com/javase/1.5.0/docs/guide/misc/threadPrimitiveDeprecation.html
+     */
+    /**
+     * kill will stop the thread
+     */
+    public void kill()
+    {
+        worker.stop();
+    }
 }
