@@ -1,9 +1,5 @@
-
-import java.util.HashMap;
-import java.util.Map;
-
 /*
- * Copyright (c) 2014, Jonas Huber <Jonas_Huber2@gmx.de>
+ * Copyright (c) 2014, HAW-Landshut
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -17,6 +13,12 @@ import java.util.Map;
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
+package Ninti;
+
+import java.util.HashMap;
+import java.util.Map;
+
+
 /**
  *
  * @author Jonas Huber <Jonas_Huber2@gmx.de>

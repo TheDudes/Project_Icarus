@@ -22,12 +22,9 @@
 
 package Ninti;
 
-public class UnsignedException extends Exception{
-    
-
+public class UnsignedException extends Exception {
         UnsignedException() {
             super("Signed number in an unsigned Datatype");
         }
 
-    
 }

@@ -23,10 +23,8 @@ package interpreter;
 import vault.*;
 import parser.*;
 
-import java.io.*;
 import java.util.Stack;
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 
 public class Keyword_Handler
 {

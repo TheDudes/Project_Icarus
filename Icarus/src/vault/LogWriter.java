@@ -91,11 +91,4 @@ public class LogWriter {
             lbq.offer(logLine);
         }
     }
-
-    /**
-     * kill kills the log thread
-     */
-    public void kill(){
-        worker.stop();
-    }
 }

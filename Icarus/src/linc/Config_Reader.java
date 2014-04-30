@@ -71,6 +71,8 @@ public class Config_Reader {
     public String[] get_variables(){
         int i = 0;
         String[] toReturn = new String[container.size()];
+        /* --warning-- map.entry is a raw type. References to generic
+         * type Map<K,V>.Entry<K,V> should be parameterized */
         for(Map.Entry e : container.entrySet()){
             toReturn[i] = (String) e.getKey();
             i++;
@@ -96,6 +98,8 @@ public class Config_Reader {
     public String[] get_keys(){
         int i = 0;
         String[] toReturn = new String[key_container.size()];
+        /* --warning-- map.entry is a raw type. References to generic 
+         * type Map<K,V>.Entry<K,V> should be parameterized */
         for(Map.Entry e : key_container.entrySet()){
             toReturn[i] = (String) e.getKey();
             i++;
@@ -122,7 +126,7 @@ public class Config_Reader {
      * first casts the object in the Map to an Integer (we assume the one calling this method knows there is an Integer stored in there)
      * and we then get the int value of it
      * @param key the key of the entry in which the data you want are stored in
-     * @return
+     * @return value of given key
      */
     public int get_int(String key){
         Integer toReturn = (Integer)container.get(key);
@@ -134,7 +138,7 @@ public class Config_Reader {
      * first casts the object in the Map to a Double (we assume the one calling this method knows there is a Double stored in there)
      * and we then get the double value of it
      * @param key the key of the entry in which the data you want are stored in
-     * @return 
+     * @return value of given key
      */
     public double get_double(String key){
         Double toReturn = (Double)container.get(key);
@@ -146,7 +150,7 @@ public class Config_Reader {
      * first casts the object in the Map to a Boolean (we assume the one calling this method knows there is a Boolean stored in there)
      * and we then get the boolean value of it
      * @param key the key of the entry in which the data you want are stored in
-     * @return 
+     * @return value of given key
      */
     public boolean get_boolean(String key){
         Boolean toReturn = (Boolean)container.get(key);
@@ -157,7 +161,7 @@ public class Config_Reader {
     /**
      * we cast the object in the Map to a String which we then return
      * @param key the key of the entry in which the data you want are stored in
-     * @return 
+     * @return value of given key
      */
     public String get_string(String key){
         return (String)container.get(key);
@@ -250,6 +254,7 @@ public class Config_Reader {
      * @throws IOException 
      */
     private String read_Linux() throws FileNotFoundException, IOException{
+        /* --warning-- this reader is never closed */
         BufferedReader reader = new BufferedReader(new FileReader (filePath));
         String toReturn = "";
         char sign = (char)reader.read();
@@ -307,6 +312,7 @@ public class Config_Reader {
      * @throws IOException 
      */
      private String read_Windows() throws FileNotFoundException, IOException{
+        /* --warning-- this reader is never closed */
         BufferedReader reader = new BufferedReader(new FileReader (filePath));
         String toReturn = "";
         char sign = (char)reader.read();
@@ -383,37 +389,37 @@ public class Config_Reader {
      */
     private void create_example_config(String path){
         String hugeAssExampleString = "######################################################################\n" +
-            "######################################################################\n" +
-            "##	Default Config File for the Config_Reader 						##\n" +
-            "##	Class of the Icarus Project										##\n" +
-            "##	Config_Reader by:	Michael Kaspera/linc						##\n" +
-            "##	Icarus Project by:												##\n" +
-            "##	currently only supports the linux newline						##\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
+            "#####################################################################\n" +
+            "## Default Config File for the Config_Reader                       ##\n" +
+            "## Class of the Icarus Project                                     ##\n" +
+            "## Config_Reader by:   Michael Kaspera/linc                        ##\n" +
+            "## Icarus Project by:                                              ##\n" +
+            "## currently only supports the linux newline                       ##\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
             "\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
-            "##	The Config_Reader will throw out all unneeded symbols such as:	##\n" +
-            "##	-space															##\n" +
-            "##	-several newlines after each other without a sign between them	##\n" +
-            "##	-tabs															##\n" +
-            "##																	##\n" +
-            "##	Comment signs are:												##\n" +
-            "##	-the # sign														##\n" +
-            "##	-the // signs													##\n" +
-            "## 	Comments will throw out everything following 					##\n" +
-            "##	them until a newLine symbol is read								##\n" +
-            "##																	##\n" +
-            "##	Default Values are at the moment:								##\n" +
-            "##	takt_frequency = 100;											##\n" +
-            "##	verbosity_level = 0;											##\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
+            "## The Config_Reader will throw out all unneeded symbols such as:  ##\n" +
+            "## -space                                                          ##\n" +
+            "## -several newlines after each other without a sign between them  ##\n" +
+            "## -tabs                                                           ##\n" +
+            "##                                                                 ##\n" +
+            "## Comment signs are:                                              ##\n" +
+            "## -the # sign                                                     ##\n" +
+            "## -the // signs                                                   ##\n" +
+            "##     Comments will throw out everything following                ##\n" +
+            "## them until a newLine symbol is read                             ##\n" +
+            "##                                                                 ##\n" +
+            "## Default Values are at the moment:                               ##\n" +
+            "## takt_frequency = 100;                                           ##\n" +
+            "## verbosity_level = 0;                                            ##\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
             "\n" +
-            "						##################\n" +
-            "						## 	Variables	##\n" +
-            "						##################\n" +
+            "                       ##################\n" +
+            "                       ##  Variables   ##\n" +
+            "                       ##################\n" +
             "\n" +
             "## verbosity_level 0: standard value\n" +
             "## verbosity_level 1: some additional informations\n" +
@@ -438,24 +444,24 @@ public class Config_Reader {
             "## the value asdf to it - the testvar will be a String\n" +
             "#testvar4 = asdf;\n" +
             "\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
-            "## Setting the path for where which log will be written to			##\n" +
-            "## The key for telling the porgramm that there 						##\n" +
-            "## will now be a path for an output is:								##\n" +
-            "## key_																##\n" +
-            "## there can be several paths assigned to the output of an object, 	##\n" +
-            "## each path is simply seperated by a ,								##\n" +
-            "## This means that key_Parser will signal the Config_Reader that	##\n" +
-            "## the paths to where the output from the Parser shall be written	##\n" +
-            "## to will follow now (see example below)							##\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
+            "## Setting the path for where which log will be written to         ##\n" +
+            "## The key for telling the porgramm that there                     ##\n" +
+            "## will now be a path for an output is:                            ##\n" +
+            "## key_                                                            ##\n" +
+            "## there can be several paths assigned to the output of an object, ##\n" +
+            "## each path is simply seperated by a ,                            ##\n" +
+            "## This means that key_Parser will signal the Config_Reader that   ##\n" +
+            "## the paths to where the output from the Parser shall be written  ##\n" +
+            "## to will follow now (see example below)                          ##\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
             "\n" +
-            "					##############################\n" +
-            "					##	logs and paths to them	##\n" +
-            "					##############################\n" +
-            "						\n" +
+            "                   ##############################\n" +
+            "                   ##  logs and paths to them  ##\n" +
+            "                   ##############################\n" +
+            "                       \n" +
             "## will assign the path /home/linc/Documents/ParseLog to the Parser \n" +
             "## output\n" +
             "#key_parser = /home/linc/Documents/ParseLog;\n" +
@@ -465,6 +471,7 @@ public class Config_Reader {
             "## of the Syntax checker\n" +
             "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll, /home/linc/Icarus/Logs/SyntaxCheck;";
         try{
+        /* --warning-- this writer is never closed */
             BufferedWriter writer = new BufferedWriter(new FileWriter(path));
             writer.write(hugeAssExampleString);
             writer.flush();
@@ -480,37 +487,37 @@ public class Config_Reader {
      */
     public void create_example_config(){
         String hugeAssExampleString = "######################################################################\n" +
-            "######################################################################\n" +
-            "##	Default Config File for the Config_Reader 						##\n" +
-            "##	Class of the Icarus Project										##\n" +
-            "##	Config_Reader by:	Michael Kaspera/linc						##\n" +
-            "##	Icarus Project by:												##\n" +
-            "##	currently only supports the linux newline						##\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
+            "#####################################################################\n" +
+            "## Default Config File for the Config_Reader                       ##\n" +
+            "## Class of the Icarus Project                                     ##\n" +
+            "## Config_Reader by:   Michael Kaspera/linc                        ##\n" +
+            "## Icarus Project by:                                              ##\n" +
+            "## currently only supports the linux newline                       ##\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
             "\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
-            "##	The Config_Reader will throw out all unneeded symbols such as:	##\n" +
-            "##	-space															##\n" +
-            "##	-several newlines after each other without a sign between them	##\n" +
-            "##	-tabs															##\n" +
-            "##																	##\n" +
-            "##	Comment signs are:												##\n" +
-            "##	-the # sign														##\n" +
-            "##	-the // signs													##\n" +
-            "## 	Comments will throw out everything following 					##\n" +
-            "##	them until a newLine symbol is read								##\n" +
-            "##																	##\n" +
-            "##	Default Values are at the moment:								##\n" +
-            "##	takt_frequency = 100;											##\n" +
-            "##	verbosity_level = 0;											##\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
+            "## The Config_Reader will throw out all unneeded symbols such as:  ##\n" +
+            "## -space                                                          ##\n" +
+            "## -several newlines after each other without a sign between them  ##\n" +
+            "## -tabs                                                           ##\n" +
+            "##                                                                 ##\n" +
+            "## Comment signs are:                                              ##\n" +
+            "## -the # sign                                                     ##\n" +
+            "## -the // signs                                                   ##\n" +
+            "##     Comments will throw out everything following                ##\n" +
+            "## them until a newLine symbol is read                             ##\n" +
+            "##                                                                 ##\n" +
+            "## Default Values are at the moment:                               ##\n" +
+            "## takt_frequency = 100;                                           ##\n" +
+            "## verbosity_level = 0;                                            ##\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
             "\n" +
-            "						##################\n" +
-            "						## 	Variables	##\n" +
-            "						##################\n" +
+            "                       ##################\n" +
+            "                       ##  Variables   ##\n" +
+            "                       ##################\n" +
             "\n" +
             "## verbosity_level 0: standard value\n" +
             "## verbosity_level 1: some additional informations\n" +
@@ -535,24 +542,24 @@ public class Config_Reader {
             "## the value asdf to it - the testvar will be a String\n" +
             "#testvar4 = asdf;\n" +
             "\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
-            "## Setting the path for where which log will be written to			##\n" +
-            "## The key for telling the porgramm that there 						##\n" +
-            "## will now be a path for an output is:								##\n" +
-            "## key_																##\n" +
-            "## there can be several paths assigned to the output of an object, 	##\n" +
-            "## each path is simply seperated by a ,								##\n" +
-            "## This means that key_Parser will signal the Config_Reader that	##\n" +
-            "## the paths to where the output from the Parser shall be written	##\n" +
-            "## to will follow now (see example below)							##\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
+            "## Setting the path for where which log will be written to         ##\n" +
+            "## The key for telling the porgramm that there                     ##\n" +
+            "## will now be a path for an output is:                            ##\n" +
+            "## key_                                                            ##\n" +
+            "## there can be several paths assigned to the output of an object, ##\n" +
+            "## each path is simply seperated by a ,                            ##\n" +
+            "## This means that key_Parser will signal the Config_Reader that   ##\n" +
+            "## the paths to where the output from the Parser shall be written  ##\n" +
+            "## to will follow now (see example below)                          ##\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
             "\n" +
-            "					##############################\n" +
-            "					##	logs and paths to them	##\n" +
-            "					##############################\n" +
-            "						\n" +
+            "                   ##############################\n" +
+            "                   ##  logs and paths to them  ##\n" +
+            "                   ##############################\n" +
+            "                       \n" +
             "## will assign the path /home/linc/Documents/ParseLog to the Parser \n" +
             "## output\n" +
             "#key_parser = /home/linc/Documents/ParseLog;\n" +
@@ -562,6 +569,7 @@ public class Config_Reader {
             "## of the Syntax checker\n" +
             "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll, /home/linc/Icarus/Logs/SyntaxCheck;";
         try{
+            /* --warning-- this writer is never closed */
             BufferedWriter writer = new BufferedWriter(new FileWriter("example_config"));
             writer.write(hugeAssExampleString);
             writer.flush();

@@ -22,22 +22,18 @@ package interpreter;
 
 import vault.*;
 
-import java.io.*;
-import java.net.*;
-import java.util.Stack;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
-/**
- * used to warmup the Java ScriptEngine.
- * @param engine the engine which will be used
- */
 public class Engine_Warmup
 {
 
     ScriptEngine engine;
     LogWriter log;
 
+    /**
+     * @param log LogWriter Object
+     */
     public Engine_Warmup(LogWriter log)
     {
         this.log = log;
@@ -48,6 +44,8 @@ public class Engine_Warmup
 
     /**
      * used to warmup the Java ScriptEngine.
+     * @param engine the engine which will be used
+     * @throws ScriptException Exception
      */
     public ScriptEngine engine_warmup() throws Exception
     {
@@ -73,16 +71,16 @@ public class Engine_Warmup
 
             long now = System.currentTimeMillis();
 
-            boolean result0 = (boolean)engine.eval(test0);
-            boolean result1 = (boolean)engine.eval(test1);
-            boolean result2 = (boolean)engine.eval(test2);
-            double  result3 = (double)engine.eval(test3);
-            double  result4 = (double)engine.eval(test4);
-            double  result5 = (double)engine.eval(test5);
-            boolean result6 = (boolean)engine.eval(test6);
-            boolean result7 = (boolean)engine.eval(test7);
-            boolean result8 = (boolean)engine.eval(test8);
-            boolean result9 = (boolean)engine.eval(test9);
+            engine.eval(test0);
+            engine.eval(test1);
+            engine.eval(test2);
+            engine.eval(test3);
+            engine.eval(test4);
+            engine.eval(test5);
+            engine.eval(test6);
+            engine.eval(test7);
+            engine.eval(test8);
+            engine.eval(test9);
 
             now = System.currentTimeMillis() - now;
 

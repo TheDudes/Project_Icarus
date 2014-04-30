@@ -21,12 +21,6 @@
 package interpreter;
 
 import vault.*;
-import parser.*;
-
-import java.io.*;
-import java.util.Stack;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 
 public class Offset_Handler
 {
@@ -147,7 +141,6 @@ public class Offset_Handler
     public int get_BY(int INDEX, String code)
     {
         log.log(log_key, 4, "call   get_BY, INDEX = " + INDEX);
-        int count = 0;
         for(;;INDEX++) {
             if ( (code.charAt(INDEX)     == 'D') &&
                  (code.charAt(INDEX + 1) == 'O') )
@@ -164,7 +157,7 @@ public class Offset_Handler
             }
             else
             {
-                count++;
+                INDEX++;
             }
         }
     }

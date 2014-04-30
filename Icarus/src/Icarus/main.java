@@ -20,22 +20,17 @@
 
 package Icarus;
 
-import Ninti.*;
 import vault.*;
-import linc.*;
 import parser.*;
 import interpreter.*;
-
-import java.io.*;
 import java.net.*;
-import java.util.Stack;
+
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 
 public class main
 {
 
-    public static void main(String[] args) throws Exception 
+    public static void main(String[] args) throws Exception
     {
 
         String[] path = new String[2];

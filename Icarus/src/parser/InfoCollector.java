@@ -19,8 +19,6 @@ package parser;
 import java.util.*;
 import java.io.*;
 import vault.*;
-import Ninti.*;
-import vault.*;
 
 /**
  * This class is a Interfaceclass to all the functions which a potentionally needed
