@@ -22,8 +22,7 @@
 
 package Ninti;
 
-/* --warning-- */
-/* The serializable class UnsignedException does not declare a static final serialVersionUID field of type long */
+
 public class UnsignedException extends Exception {
     
             private static final long serialVersionUID = 7526472295622776147L;
