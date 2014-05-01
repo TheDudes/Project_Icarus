@@ -20,7 +20,7 @@
 
 package Icarus;
 
-import vault.*;;
+import vault.*;
 import parser.*;
 import linc.*;
 import interpreter.*;
@@ -47,8 +47,25 @@ public class main
                 path[1] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/Icarus/logs/";
                 break;
             case "d4ryus":
+            case "cubie":
                 path[0] = "/home/d4ryus/coding/Project_Icarus/Icarus/test.st";
                 path[1] = "/home/d4ryus/coding/Project_Icarus/Icarus/logs/";
+                break;
+            case "alarmpi":
+                path[0] = "/home/vault/Project_Icarus/Icarus/test.st";
+                path[1] = "/home/vault/Project_Icarus/Icarus/logs/";
+                break;
+            case "vault":
+                path[0] = "/home/vault/programing/NetBeansProjects/Project_Icarus/Icarus/test.st";
+                path[1] = "/home/vault/programing/NetBeansProjects/Project_Icarus/Icarus/logs/";
+                break;
+            case "csb.local":
+                path[0] = "/home/ninti/NetBeansProject/Project_Icarus/Icarus/test.st";
+                path[1] = "/home/ninti/NetbeansProject/Project_Icarus/Icarus/logs/";
+                break;
+            case "link":
+                path[0] = "/home/linc/NetBeansProject/Project_Icarus/Icarus/test.st";
+                path[1] = "/home/linc/NetBeansProject/Project_Icarus/Icarus/logs/";
                 break;
             /*
              case "yourhostname":
@@ -57,7 +74,7 @@ public class main
              break;
              */
             default:
-                System.out.println("Hey stupid(faggot), take a look in the code!");
+                System.out.print("no case for hostname: " + hostname + "\n");
                 System.exit(0);
         }
         System.out.print("your st file path: "  + path[0] + "\n");
