@@ -49,6 +49,8 @@ public class InfoCollector {
      * Then different operations are run on these files to gether a lot of
      * Information.
      * @param files array of filenames to process
+     * @param log logwriter from above
+     * @throws java.io.FileNotFoundException
      * @see MergeFiles
      * @see Analyser
      * @see Match
