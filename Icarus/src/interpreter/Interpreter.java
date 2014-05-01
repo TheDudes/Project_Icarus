@@ -14,8 +14,6 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * file: Icarus/src/interpreter/Interpreter.java
- * @author: d4ryus - https://github.com/d4ryus/
- * @version 0.2
  * vim: foldmethod=syntax:foldcolumn=5:
  */
 
@@ -27,11 +25,11 @@ import parser.*;
 import javax.script.ScriptEngine;
 
 /**
- * @author: d4ryus - https://github.com/d4ryus/
+ * @author d4ryus - https://github.com/d4ryus/
  * <p>
  * class where the main interpret function is located.
  * <p>
- * @version: 0.2
+ * @version 0.2
  */
 public class Interpreter
 {

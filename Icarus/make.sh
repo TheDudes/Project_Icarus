@@ -26,4 +26,4 @@ then
     exit 1
 fi
 
-$ANT -f $BUILD
+$ANT -f $BUILD $1

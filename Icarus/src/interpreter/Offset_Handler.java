@@ -14,8 +14,6 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * file: Icarus/src/interpreter/Offset.java
- * @author: d4ryus - https://github.com/d4ryus/
- * @version 0.2
  * vim: foldmethod=syntax:foldcolumn=5:
  */
 
@@ -24,12 +22,12 @@ package interpreter;
 import vault.*;
 
 /**
- * @author: d4ryus - https://github.com/d4ryus/
+ * @author d4ryus - https://github.com/d4ryus/
  * <p>
  * class which holds all the offset related Functions, these are used
  * to get the index of the next Keyword, for example.
  * <p>
- * @version: 0.2
+ * @version 0.2
  */
 public class Offset_Handler
 {

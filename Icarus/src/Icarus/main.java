@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * file: Icarus/src/Icarus/main.java
- * @author: d4ryus - https://github.com/d4ryus/
+ * @author d4ryus - https://github.com/d4ryus/
  * @version 0.2
  * vim: foldmethod=syntax:foldcolumn=5:
  */

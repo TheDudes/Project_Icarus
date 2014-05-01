@@ -1,5 +1,20 @@
-./magic will do what's written below.
+Compile and Create Javadoc:
+- execute './make.sh' (zsh and apache-ant needed)
+- or execute 'ant -f build.xml' (apache-ant needed)
 
-execute make.sh (zsh and apache-ant needed)
-to run change to build/classes (cd build/classes) 
-then execute "java Icarus.main".
+Only Compile:
+- execute './make.sh compile' (zsh and apache-ant needed)
+- or execute 'ant -f build.xml compile' (apache-ant needed)
+
+Only create Javadoc:
+- execute './make.sh javadoc' (zsh and apache-ant needed)
+- or execute 'ant -f build.xml compile' (apache-ant needed)
+
+Run:
+- execute 'cd build/classes && java Icarus.main'
+
+Magic: (compile and run)
+- './magic.sh' will execute:
+  './make.sh && cd build/classes && java Icarus.main && cd ../..'
+- './magic.sh compile' will execute:
+  './make.sh compile && cd build/classes && java Icarus.main && cd ../..'

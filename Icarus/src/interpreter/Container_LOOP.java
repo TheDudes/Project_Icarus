@@ -19,11 +19,11 @@
 package interpreter;
 
 /**
- * @author: d4ryus - https://github.com/d4ryus/
+ * @author d4ryus - https://github.com/d4ryus/
  * <p>
  * class/struct to hold Loop values.
  * <p>
- * @version: 0.2
+ * @version 0.2
  */
 public class Container_LOOP
 {

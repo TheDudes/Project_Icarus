@@ -1,3 +1,3 @@
 #! /bin/bash
 
-./make.sh && cd build/classes && java Icarus.main && cd ../..
+./make.sh $1 && cd build/classes && java Icarus.main && cd ../..
