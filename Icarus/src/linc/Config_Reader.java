@@ -73,7 +73,7 @@ public class Config_Reader {
         String[] toReturn = new String[container.size()];
         /* --warning-- map.entry is a raw type. References to generic
          * type Map<K,V>.Entry<K,V> should be parameterized */
-        for(Map.Entry e : container.entrySet()){
+        for(Map.Entry<String, Object> e : container.entrySet()){
             toReturn[i] = (String) e.getKey();
             i++;
         }
@@ -100,7 +100,7 @@ public class Config_Reader {
         String[] toReturn = new String[key_container.size()];
         /* --warning-- map.entry is a raw type. References to generic 
          * type Map<K,V>.Entry<K,V> should be parameterized */
-        for(Map.Entry e : key_container.entrySet()){
+        for(Map.Entry<String, String> e : key_container.entrySet()){
             toReturn[i] = (String) e.getKey();
             i++;
         }
@@ -470,10 +470,9 @@ public class Config_Reader {
             "## output\n" +
             "#key_parser = /home/linc/Documents/ParseLog;\n" +
             "\n" +
-            "## will assign the path /home/linc/Icarus/Logs/LogAll as well as\n" +
-            "## the path /home/linc/Icarus/Logs/SyntaxCheck to the output \n" +
+            "## will assign the path /home/linc/Icarus/Logs/LogAll to the output \n" +
             "## of the Syntax checker\n" +
-            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll, /home/linc/Icarus/Logs/SyntaxCheck;";
+            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll;";
         try(
             BufferedWriter writer = new BufferedWriter(new FileWriter(path));
         ){
@@ -568,10 +567,9 @@ public class Config_Reader {
             "## output\n" +
             "#key_parser = /home/linc/Documents/ParseLog;\n" +
             "\n" +
-            "## will assign the path /home/linc/Icarus/Logs/LogAll as well as\n" +
-            "## the path /home/linc/Icarus/Logs/SyntaxCheck to the output \n" +
+            "## will assign the path /home/linc/Icarus/Logs/LogAll to the output \n" +
             "## of the Syntax checker\n" +
-            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll, /home/linc/Icarus/Logs/SyntaxCheck;";
+            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll;";
         try(
             BufferedWriter writer = new BufferedWriter(new FileWriter("example_config"));
         ){
