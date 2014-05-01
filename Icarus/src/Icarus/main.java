@@ -52,7 +52,7 @@ public class main
             case "d4ryus":
             case "cubie":
                 path[0] = "/home/d4ryus/coding/Project_Icarus/Icarus/test.st";
-                path[1] = "/home/d4ryus/coding/Project_Icarus/Icarus/example_config";
+                path[1] = "/home/d4ryus/coding/Project_Icarus/Icarus/d4ryus_config";
                 break;
             case "alarmpi":
                 path[0] = "/home/vault/Project_Icarus/Icarus/test.st";
@@ -80,13 +80,16 @@ public class main
                 System.out.print("no case for hostname: " + hostname + "\n");
                 System.exit(0);
         }
+
         System.out.print("your st file path:     " + path[0] + "\n");
         System.out.print("your config file path: " + path[1] + "\n");
 
         Config_Reader config = new Config_Reader(path[1]);
         LogWriter logger = new LogWriter(config, 4);
 
-        InfoCollector container     = new InfoCollector(path, logger);
+        String[] workaround = new String[1];
+        workaround[0] = path[0];
+        InfoCollector container     = new InfoCollector(workaround, logger);
         Engine_Warmup warmup        = new Engine_Warmup(logger);
         ScriptEngine  engine        = warmup.engine_warmup();
         Interpreter   interpreter   = new Interpreter(container, logger, engine);
