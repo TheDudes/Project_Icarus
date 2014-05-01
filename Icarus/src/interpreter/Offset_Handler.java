@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2014, HAW-Landshut
  *
  * Permission to use, copy, modify, and/or distribute this software for any
@@ -16,6 +16,7 @@
  * file: Icarus/src/interpreter/Offset.java
  * @author: d4ryus - https://github.com/d4ryus/
  * @version 0.2
+ * vim: foldmethod=syntax:foldcolumn=5:
  */
 
 package interpreter;
@@ -35,6 +36,7 @@ public class Offset_Handler
 
         log.log(log_key, 4, "init Offset_Handler done.");
     }
+
     /**
      * will return the next keyword found, these are ELSEIF ELSE END_IF
      * @param INDEX starting point

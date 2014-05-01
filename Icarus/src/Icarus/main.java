@@ -20,8 +20,9 @@
 
 package Icarus;
 
-import vault.*;
+import vault.*;;
 import parser.*;
+import linc.*;
 import interpreter.*;
 import java.net.*;
 
@@ -62,6 +63,8 @@ public class main
         System.out.print("your st file path: "  + path[0] + "\n");
         System.out.print("your log file path: " + path[1] + "\n");
 
+        Config_Reader linc = new Config_Reader("/home/d4ryus/coding/Project_Icarus/linc/example_config");
+        System.out.println(linc.get_string("parser"));
 
         Log.init(path[1], 4);
 

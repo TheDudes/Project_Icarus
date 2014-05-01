@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2014, HAW-Landshut
  *
  * Permission to use, copy, modify, and/or distribute this software for any
@@ -16,6 +16,7 @@
  * file: Icarus/src/interpreter/Interpreter.java
  * @author: d4ryus - https://github.com/d4ryus/
  * @version 0.2
+ * vim: foldmethod=syntax:foldcolumn=5:
  */
 
 package interpreter;
