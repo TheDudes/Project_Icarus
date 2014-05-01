@@ -22,6 +22,7 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
+import linc.*;
 
 /**
  * @author Aleksej Weinberg <weinberg.aleksej@yahoo.de>
@@ -39,14 +40,16 @@ public class LogWriter {
     private SimpleDateFormat sdf; 
     private int verboseLevel;
     private Thread worker;
+    private Config_Reader confReader;
+
 
     /**
      * LogWriter Constructor
-     * @param pathToLogfile Path to where you want the logfile to be saved
-     * @param verboseLevel verboselevel
+     * @param pathToLogfile Path to where you want the log file to be saved
+     * @param verboseLevel this variable indicates how important the log message is
      */
     public LogWriter(String pathToLogfile, int verboseLevel){
-        worker = new Thread(new LogWriterWorker(lbq, pathToLogfile));
+        worker = new Thread(new LogWriterWorker(confReader, lbq));
         worker.start();
         this.verboseLevel = verboseLevel;
         getHostname();
@@ -75,11 +78,10 @@ public class LogWriter {
     }
 
     /**
-     * log generates one logline and adds it to the LinkeBlockingQueue lbq
-     *
-     * @param key Key 
-     * @param verboseLevel Verboselevel
-     * @param logMessage Message
+     * log generates one log line and adds it to the LinkeBlockingQueue lbq
+     * @param key this variable tells you where the log message is coming from
+     * @param verboseLevel this variable indicates how important the log message is
+     * @param logMessage this is the message that will be written in the log file 
      */
     public void log(String key, int verboseLevel, String logMessage) {
         if(verboseLevel <= this.verboseLevel){

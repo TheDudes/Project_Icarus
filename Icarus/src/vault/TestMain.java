@@ -7,7 +7,8 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
  * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FORimport static vault.Log.*;
+
  * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
@@ -15,11 +16,25 @@
  */
 package vault;
 
+
 /**
  * TestClass to test the features
  * @author Aleksej Weinberg <weinberg.aleksej@yahoo.de>
  * @version x.x
  */
 public class TestMain {
-
+    
+    /**
+     *
+     * @param args
+     */
+    public static void main(String[] args){
+        
+        LogWriter logger = new LogWriter("/home/vault/", 3);
+        logger.log("vault", 3, "Hallo es funzt");
+        
+    }
+    
+    
 }
+

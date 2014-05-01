@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import linc.*;
 
 /**
  * @author Aleksej Weinberg <weinberg.aleksej@yahoo.de>
@@ -44,14 +45,20 @@ public class LogWriterWorker implements Runnable{
     private String tmpFilePath;
     private String pathToLogfiles;
 
+    
+    private FileWriter initFileWriter() throws IOException{
+        FileWriter fwriter = new FileWriter("path", true);
+        return fwriter;
+    }
+    
     /**
      * LogWriterWorker constructor
-     * @param lbq LinkedBlockingQueue 
-     * @param logFilePath Path to the logfile directory
+     * @param lbq LinkedBlockingQueue in which the log messages will be added
+     * @param configReader gets the Path from the configfile and returns it
      */
-    public LogWriterWorker(LinkedBlockingQueue<String> lbq, String logFilePath) {
+    public LogWriterWorker(Config_Reader configReader, LinkedBlockingQueue<String> lbq) {
         this.lbq = lbq;
-        this.tmpFilePath = logFilePath;
+        this.tmpFilePath = configReader.get_path("LogWriter");
         pathToLogfiles = tmpFilePath+getTimestamp()+".log";
     }
 
