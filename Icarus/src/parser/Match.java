@@ -65,9 +65,9 @@ public class Match {
 
     // logger
     private boolean logstat;
-    private String mainkey = "parser";
-    private String subkey = "match";
-    private String key = mainkey+"-"+subkey;
+    private final String mainkey = "parser";
+    private final String subkey = "match";
+    private final String key = mainkey+"-"+subkey;
     
     /**
      * Matcher needs the Analyser object with the results from his analyses of
@@ -156,7 +156,7 @@ public class Match {
      * @return int
      */
     public int getEndIf(int a) {
-	return (int)ifmatching.get(new Integer(a));
+	return (int)ifmatching.get(a);
     }
     
     /**
@@ -195,7 +195,7 @@ public class Match {
     private void findCaseEndCasePairs() {
 	tmp = new ArrayList<>();
 	stack = new Stack<>();
-	for (Integer item : new TreeSet<Integer>(caseendcase.keySet())) {
+	for (Integer item : new TreeSet<>(caseendcase.keySet())) {
 	    if ( caseendcase.get(item).equals("CASE") ) {
 		stack.push(item);
 		tmp.add(item);
@@ -392,7 +392,7 @@ public class Match {
     private void findVarEndVarPairs() {
 	tmp = new ArrayList<>();
 	stack = new Stack<>();
-	for (Integer item : new TreeSet<Integer>(varendvar.keySet())) {
+	for (Integer item : new TreeSet<>(varendvar.keySet())) {
 	    if (Pattern.matches( "VAR.*", varendvar.get(item))) {
 		stack.push(item);
 		tmp.add(item);
@@ -478,7 +478,7 @@ public class Match {
      * @return int
      */
     public int getEndProgram(int a) {
-	return (int)programmatching.get(new Integer(a));
+	return (int)programmatching.get(a);
     }
     
     /**

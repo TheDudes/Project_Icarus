@@ -47,7 +47,7 @@ public class Symbols {
     
     // logger
     //private boolean logstat;
-    private LogWriter log;
+    private final LogWriter log;
     private final String mainkey = "parser";
     private final String subkey = "symbols";
     private final String key = mainkey + "-" + subkey;
