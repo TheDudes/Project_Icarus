@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import linc.*;
 
 /**
  * @author Aleksej Weinberg <weinberg.aleksej@yahoo.de>
@@ -36,14 +37,15 @@ import java.util.logging.Logger;
 public class LogWriterWorker implements Runnable{
 
     private LinkedBlockingQueue<String> lbq;
-
+    private Config_Reader confReader;
     private Date date;
     private SimpleDateFormat sdf;
     private boolean alive = true;
     //needs to be implemented//
     private String tmpFilePath;
     private String pathToLogfiles;
-
+    private String message;
+    private int verboseLevel = confReader.get_int("verbosity_level");
     /**
      * LogWriterWorker constructor
      * @param  pathToLogfile Path to where the log file is being saved
@@ -72,7 +74,13 @@ public class LogWriterWorker implements Runnable{
     @Override
     public void run() {
         try (Writer fWriter = new BufferedWriter(new FileWriter(pathToLogfiles, true))) {
+            
             while (alive || !lbq.isEmpty()) {
+                if(verboseLevel == 4){
+                    message = lbq.size() + " " + lbq.take();
+                    fWriter.write(message);
+                    fWriter.flush();
+                }
                 fWriter.write(lbq.take());
                 fWriter.flush();
             }

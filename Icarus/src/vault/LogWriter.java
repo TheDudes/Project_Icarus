@@ -49,13 +49,13 @@ public class LogWriter {
      * @param confReader gets the Path from the configfile and returns it
      * @param verboseLevel this variable indicates how important the log message is
      */
-    public LogWriter(Config_Reader confReader, int verboseLevel){
+    public LogWriter(Config_Reader confReader){
         configReader = confReader;
         this.LogWorker = new LogWriterWorker(configReader.get_path("LogWriter"), lbq);
         silent = configReader.get_boolean("silent");
         worker = new Thread(LogWorker);
         worker.start();
-        this.verboseLevel = verboseLevel;
+        this.verboseLevel = configReader.get_int("verbosity_level");
         getHostname();
     }
 
