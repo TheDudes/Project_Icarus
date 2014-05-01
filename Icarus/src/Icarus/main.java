@@ -38,34 +38,34 @@ public class main
         /*
          * To make testing easyer for all of us, add your hostname to this logic
          */
-        String hostname    = InetAddress.getLocalHost().getHostName();
+        String hostname = InetAddress.getLocalHost().getHostName();
 
         switch (hostname)
         {
             case "beelzebub":
                 path[0] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/Icarus/test.st";
-                path[1] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/Icarus/logs/";
+                path[1] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/Icarus/example_config";
                 break;
             case "d4ryus":
             case "cubie":
                 path[0] = "/home/d4ryus/coding/Project_Icarus/Icarus/test.st";
-                path[1] = "/home/d4ryus/coding/Project_Icarus/Icarus/logs/";
+                path[1] = "/home/d4ryus/coding/Project_Icarus/Icarus/example_config";
                 break;
             case "alarmpi":
                 path[0] = "/home/vault/Project_Icarus/Icarus/test.st";
-                path[1] = "/home/vault/Project_Icarus/Icarus/logs/";
+                path[1] = "/home/vault/Project_Icarus/Icarus/example_config";
                 break;
             case "vault":
                 path[0] = "/home/vault/programing/NetBeansProjects/Project_Icarus/Icarus/test.st";
-                path[1] = "/home/vault/programing/NetBeansProjects/Project_Icarus/Icarus/logs/";
+                path[1] = "/home/vault/programing/NetBeansProjects/Project_Icarus/Icarus/example_config";
                 break;
             case "csb.local":
                 path[0] = "/home/ninti/NetBeansProject/Project_Icarus/Icarus/test.st";
-                path[1] = "/home/ninti/NetbeansProject/Project_Icarus/Icarus/logs/";
+                path[1] = "/home/ninti/NetbeansProject/Project_Icarus/Icarus/example_config";
                 break;
             case "link":
                 path[0] = "/home/linc/NetBeansProject/Project_Icarus/Icarus/test.st";
-                path[1] = "/home/linc/NetBeansProject/Project_Icarus/Icarus/logs/";
+                path[1] = "/home/linc/NetBeansProject/Project_Icarus/Icarus/example_config";
                 break;
             /*
              case "yourhostname":
@@ -80,12 +80,10 @@ public class main
         System.out.print("your st file path: "  + path[0] + "\n");
         System.out.print("your log file path: " + path[1] + "\n");
 
-        Config_Reader linc = new Config_Reader("/home/d4ryus/coding/Project_Icarus/linc/example_config");
-        System.out.println(linc.get_path("parser"));
-
         Log.init(path[1], 4);
 
-        LogWriter log = Log.get_log();
+        Config_Reader config = new Config_Reader(path[1]);
+        LogWriter log = new LogWriter(config);
 
         InfoCollector container     = new InfoCollector(path);
         Engine_Warmup warmup        = new Engine_Warmup(log);
