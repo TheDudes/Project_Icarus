@@ -73,7 +73,7 @@ public class InfoCollector {
         log.log(key, 2, "Matched.");
         
         log.log(key, 2, "find all symbols in the code ...");
-	symb = new Symbols(allthecode, match);
+	symb = new Symbols(allthecode, match, log);
         log.log(key, 2, "Symbols stored.");
         
         log.log(key, 1, "file parsed.");
@@ -343,6 +343,7 @@ public class InfoCollector {
      * and sets the new value in the right containers depending on there context.
      * @param input String with variable line.
      * @param context String representing the context
+     * @throws java.lang.Exception
      */
     public void setValue(String input, String context) throws Exception {
         log.log(key, 4, "setValue called.");
@@ -353,6 +354,7 @@ public class InfoCollector {
      * addVar will add a variable to a context like setValue
      * @param input String with variable line.
      * @param context String representing the context
+     * @throws java.lang.Exception
      */
     public void addVar(String input, String context) throws Exception {
         log.log(key, 4, "addVar called.");

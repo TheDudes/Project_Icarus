@@ -66,7 +66,7 @@ public class Match {
     // logger
     private boolean logstat;
     private String mainkey = "parser";
-    private String subkey = "Match";
+    private String subkey = "match";
     private String key = mainkey+"-"+subkey;
     
     /**

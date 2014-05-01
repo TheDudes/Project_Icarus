@@ -29,10 +29,10 @@ public class MergeFiles {
     
     // logger
     //private static boolean logstat;
-    private LogWriter log;
-    private String mainkey = "parser";
-    private String subkey = "MergeFiles";
-    private String key = mainkey+"-"+subkey;
+    private final LogWriter log;
+    private final String mainkey = "parser";
+    private final String subkey = "MergeFiles";
+    private final String key = mainkey+"-"+subkey;
     
     
     public MergeFiles(LogWriter log) {
@@ -104,7 +104,7 @@ public class MergeFiles {
 		System.err.println("Can't read from file: " + item);
 	    }
 	}
-	r = null;
+	// r = null;
         log.log(key, 4, "Merged code: \n"+builder.toString());
 	return builder;
     }

@@ -16,7 +16,7 @@
 
 package parser;
 
-import java.util.*;
+
 import Ninti.*;
 
 /**
@@ -31,19 +31,20 @@ public class TYPES {
      * it then creates a new Object of this type and returns it.
      * @param type typeString like DINT, SINT, TIME ...
      * @return Object of the right type
+     * @throws Ninti.UnsignedException
      */
     public static Object getType(String type) throws UnsignedException {
 	switch(type) {
 	case "BOOL":
-	    return new Boolean(false);
+	    return false;
 	case "SINT":
-	    return new Byte((byte)0);
+	    return (byte)0;
 	case "INT":
-	    return new Short((short)0);
+	    return (short)0;
 	case "DINT":
-	    return new Integer(0);
+	    return 0;
 	case "LINT":
-	    return new Long(0);
+	    return (long) 0;
 	case "USINT":
 	    return new USINT("0");
 	case "UINT":
@@ -53,19 +54,19 @@ public class TYPES {
 	case "ULINT":
 	    return new ULINT("0");
 	case "REAL":
-	    return new Float(0.0);
+	    return (float) 0.0;
 	case "LREAL":
-	    return new Double(0.0);
+	    return 0.0;
 	case "TIME":
 	case "DATE":
 	case "TIME_OF_DAY":
 	case "TOD":
 	case "DATE_AND_TIME":
 	case "DT":
-	    return new Integer((int) (System.currentTimeMillis() / 1000L));
+	    return (int) (System.currentTimeMillis() / 1000L);
 	case "STRING":
 	case "WSTRING":
-	    return new String("");
+	    return "";
         case "BYTE":
 	    return new Boolean[8];
 	case "WORD":
@@ -85,11 +86,12 @@ public class TYPES {
      * @param type typeString like DINT, SINT, TIME ...
      * @param value valueString like "2.3", "32323" ...
      * @return Object of the right type with the new value
+     * @throws Ninti.UnsignedException
      */
     public static Object getType(String type, String value) throws UnsignedException {
 	switch(type) {
 	case "BOOL":
-	    return new Boolean(value);
+	    return Boolean.valueOf(value);
 	case "SINT":
 	    return new Byte(value);
 	case "INT":
@@ -119,7 +121,7 @@ public class TYPES {
 	    return new Integer(value);
 	case "STRING":
 	case "WSTRING":
-	    return new String(value);
+	    return value;
         case "BYTE":
 	    return new Boolean[8];
 	case "WORD":

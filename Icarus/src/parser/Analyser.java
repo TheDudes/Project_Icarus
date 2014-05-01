@@ -27,25 +27,25 @@ import vault.*;
  */
 public class Analyser {
 
-    private ArrayList<Integer> program_cursor = new ArrayList<>();
-    private ArrayList<Integer> function_cursor = new ArrayList<>();
-    private ArrayList<Integer> function_block_cursor = new ArrayList<>();
-    private ArrayList<Integer> global_cursor = new ArrayList<>();
-    private ArrayList<Integer> config_cursor = new ArrayList<>();
-    private ArrayList<Integer> var_all = new ArrayList<>();
-    private ArrayList<Integer> if_all = new ArrayList<>();
-    private ArrayList<Integer> case_all = new ArrayList<>();
-    private ArrayList<Integer> for_all = new ArrayList<>();
-    private ArrayList<Integer> while_all = new ArrayList<>();
-    private ArrayList<Integer> repeat_all = new ArrayList<>();
-    private ArrayList<Integer> exit_all = new ArrayList<>();
-    private ArrayList<Integer> var_input_all = new ArrayList<>();
-    private ArrayList<Integer> var_output_all = new ArrayList<>();
+    private final ArrayList<Integer> program_cursor = new ArrayList<>();
+    private final ArrayList<Integer> function_cursor = new ArrayList<>();
+    private final ArrayList<Integer> function_block_cursor = new ArrayList<>();
+    private final ArrayList<Integer> global_cursor = new ArrayList<>();
+    private final ArrayList<Integer> config_cursor = new ArrayList<>();
+    private final ArrayList<Integer> var_all = new ArrayList<>();
+    private final ArrayList<Integer> if_all = new ArrayList<>();
+    private final ArrayList<Integer> case_all = new ArrayList<>();
+    private final ArrayList<Integer> for_all = new ArrayList<>();
+    private final ArrayList<Integer> while_all = new ArrayList<>();
+    private final ArrayList<Integer> repeat_all = new ArrayList<>();
+    private final ArrayList<Integer> exit_all = new ArrayList<>();
+    private final ArrayList<Integer> var_input_all = new ArrayList<>();
+    private final ArrayList<Integer> var_output_all = new ArrayList<>();
 
     private final StringBuilder builder;
 
     private final int LISTCOUNT = 13;
-    private List<ArrayList<Integer>> blocks = new ArrayList<>();
+    private final List<ArrayList<Integer>> blocks = new ArrayList<>();
     private final String[][] keywords = {
         {"PROGRAM", "END_PROGRAM"},
         {"FUNCTION", "END_FNUNCTION"},
@@ -64,14 +64,14 @@ public class Analyser {
 
     // logger
     //private boolean logstat;
-    private LogWriter log;
-    private String mainkey = "parser";
-    private String subkey = "Analyser";
-    private String key = mainkey + "-" + subkey;
+    private final LogWriter log;
+    private final String mainkey = "parser";
+    private final String subkey = "analyser";
+    private final String key = mainkey + "-" + subkey;
 
     private void findAllKeywords() { // think of the IF, its a special case
         
-            log.log(key, 3, "findAllKeywords called.");
+        log.log(key, 3, "findAllKeywords called.");
         
         int i;
         for (i = 0; i < LISTCOUNT; i++) {
@@ -81,9 +81,9 @@ public class Analyser {
             int endpointer;
             if (i < 11) {
                 for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, endpointer + stop.length())) {
-                    block.add(new Integer(pointer));
+                    block.add(pointer);
                     endpointer = builder.indexOf(stop, pointer);
-                    block.add(new Integer(endpointer));
+                    block.add(endpointer);
                 }
                 //blocks.add(i, block);
                 
@@ -98,11 +98,11 @@ public class Analyser {
                 stop = keywords[i][1];
                 for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, pointer + start.length())) {
                     if (builder.charAt(pointer - 1) == '_') {
-                        block.add(new Integer(pointer - 4));
+                        block.add(pointer - 4);
                     } else if (builder.charAt(pointer - 1) == 'E') {
                         
                     } else {
-                        block.add(new Integer(pointer));
+                        block.add(pointer);
                     }
                 }
                 //blocks.add(i, block);
@@ -118,11 +118,10 @@ public class Analyser {
                 stop = keywords[i][1];
                 for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, pointer + start.length())) {
                     if (builder.charAt(pointer - 1) == '_') {
-                        block.add(new Integer(pointer - 4));
+                        block.add(pointer - 4);
                     } else if (builder.charAt(pointer + 1) == '_') {
-                        continue;
                     } else {
-                        block.add(new Integer(pointer));
+                        block.add(pointer);
                     }
                 }
                 //blocks.add(i, block);

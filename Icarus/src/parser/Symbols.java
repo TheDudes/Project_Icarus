@@ -17,6 +17,7 @@ package parser;
 
 import java.util.*;
 import java.util.regex.*;
+import vault.*;
 
 /**
  * This finds all var block and the corresponding context in which they life an
@@ -28,21 +29,29 @@ import java.util.regex.*;
 public class Symbols {
 
     private StringBuilder temp; // a temporary StringBuilder to save something in some functions
-    private StringBuilder builder; // the whole programm code
-    private Match match; // the matcher, this class holds some importand Informations
-    private ArrayList<Integer[]> deleteme;  // the list of all marked var blocks as arrays with first index and very last index
-    private ArrayList<String> symbolnames;  // list with all the symbolnames
+    private final StringBuilder builder; // the whole programm code
+    private final Match match; // the matcher, this class holds some importand Informations
+    private final ArrayList<Integer[]> deleteme;  // the list of all marked var blocks as arrays with first index and very last index
+    private final ArrayList<String> symbolnames;  // list with all the symbolnames
     private int id = 0; // the global variable id
-    private ArrayList<Integer> variableIndexes; // olds getVars() from match
+    private final ArrayList<Integer> variableIndexes; // olds getVars() from match
 
     //***
     // Fucked up containers are my bussines
     //***
-    private HashMap<String, HashMap<String, Integer>> contextstore; // String for context, String for variable name, Integer for variable id
-    private HashMap<Integer, String> typebyid; // Integer id, String variable type
-    private HashMap<Integer, Object> valuebyid; // Integer id, Object variable value
+    private final HashMap<String, HashMap<String, Integer>> contextstore; // String for context, String for variable name, Integer for variable id
+    private final HashMap<Integer, String> typebyid; // Integer id, String variable type
+    private final HashMap<Integer, Object> valuebyid; // Integer id, Object variable value
     private HashMap<Integer, Integer[]> deviceidwithpins; // Integer device id and the pins as Integer[] pin is null if not defined.
 
+    
+    // logger
+    //private boolean logstat;
+    private LogWriter log;
+    private final String mainkey = "parser";
+    private final String subkey = "symbols";
+    private final String key = mainkey + "-" + subkey;
+    
     /**
      * findContextVars adds, depending on the context type, all the vars to the
      * correct container
@@ -200,7 +209,7 @@ public class Symbols {
                     //System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): bevor for loop");
                     percontext = contextstore.get(context);
                     if (percontext == null) {
-                        percontext = new HashMap<>();
+                        percontext = new HashMap<>();  //hmmm ...
                     }
                     for (String name : names) {
                         //System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside inner loop in second if");
@@ -235,7 +244,7 @@ public class Symbols {
                 }
             }
         } catch (StringIndexOutOfBoundsException e) {
-            // no vars left, just du nothing and go on
+            // no vars left, just du nothing and go on, very dirty, i will change this
         }
     }
 
@@ -336,7 +345,8 @@ public class Symbols {
      * there context.
      *
      * @param input String with variable line.
-     * @param context String representing the context
+     * @param context String representing
+     * @throws java.lang.Exception the context
      */
     public void setValue(String input, String context) throws Exception {
         System.out.println(input);
@@ -348,6 +358,7 @@ public class Symbols {
      *
      * @param input String with variable line.
      * @param context String representing the context
+     * @throws java.lang.Exception
      */
     public void addVar(String input, String context) throws Exception {
         // type integer all the time
@@ -378,8 +389,11 @@ public class Symbols {
      *
      * @param builder the whole program code
      * @param match the match class with preprosesd informations
+     * @param log logwriter from abouve
+     * @throws java.lang.Exception
      */
-    public Symbols(StringBuilder builder, Match match) throws Exception {
+    public Symbols(StringBuilder builder, Match match, LogWriter log) throws Exception {
+        this.log = log;
         this.builder = builder;
         this.match = match;
 
@@ -387,7 +401,7 @@ public class Symbols {
         
         deleteme = new ArrayList<>();
         symbolnames = new ArrayList<>();
-        contextstore = new HashMap<String, HashMap<String, Integer>>();
+        contextstore = new HashMap<>();
         typebyid = new HashMap<>();
         valuebyid = new HashMap<>();
 
