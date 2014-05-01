@@ -1,35 +1,35 @@
 ######################################################################
 ######################################################################
-##	Default Config File for the Config_Reader 						##
-##	Class of the Icarus Project										##
-##	Config_Reader by:	Michael Kaspera/linc						##
-##	Icarus Project by:												##
-##	currently only supports the linux newline						##
+##  Default Config File for the Config_Reader                       ##
+##  Class of the Icarus Project                                     ##
+##  Config_Reader by:   Michael Kaspera/linc                        ##
+##  Icarus Project by:                                              ##
+##  currently only supports the linux newline                       ##
 ######################################################################
 ######################################################################
 
 ######################################################################
 ######################################################################
-##	The Config_Reader will throw out all unneeded symbols such as:	##
-##	-space															##
-##	-several newlines after each other without a sign between them	##
-##	-tabs															##
-##																	##
-##	Comment signs are:												##
-##	-the # sign														##
-##	-the // signs													##
-## 	Comments will throw out everything following 					##
-##	them until a newLine symbol is read								##
-##																	##
-##	Default Values are at the moment:								##
-##	takt_frequency = 100;											##
-##	verbosity_level = 0;											##
+##  The Config_Reader will throw out all unneeded symbols such as:  ##
+##  -space                                                          ##
+##  -several newlines after each other without a sign between them  ##
+##  -tabs                                                           ##
+##                                                                  ##
+##  Comment signs are:                                              ##
+##  -the # sign                                                     ##
+##  -the // signs                                                   ##
+##  Comments will throw out everything following                    ##
+##  them until a newLine symbol is read                             ##
+##                                                                  ##
+##  Default Values are at the moment:                               ##
+##  takt_frequency = 100;                                           ##
+##  verbosity_level = 0;                                            ##
 ######################################################################
 ######################################################################
 
-						##################
-						## 	Variables	##
-						##################
+                        ##################
+                        ##  Variables   ##
+                        ##################
 
 ## verbosity_level 0: standard value
 ## verbosity_level 1: some additional informations
@@ -56,22 +56,22 @@
 
 ######################################################################
 ######################################################################
-## Setting the path for where which log will be written to			##
-## The key for telling the porgramm that there 						##
-## will now be a path for an output is:								##
-## key_																##
-## there can be several paths assigned to the output of an object, 	##
-## each path is simply seperated by a ,								##
-## This means that key_Parser will signal the Config_Reader that	##
-## the paths to where the output from the Parser shall be written	##
-## to will follow now (see example below)							##
+## Setting the path for where which log will be written to          ##
+## The key for telling the porgramm that there                      ##
+## will now be a path for an output is:                             ##
+## key_                                                             ##
+## there can be several paths assigned to the output of an object,  ##
+## each path is simply seperated by a ,                             ##
+## This means that key_Parser will signal the Config_Reader that    ##
+## the paths to where the output from the Parser shall be written   ##
+## to will follow now (see example below)                           ##
 ######################################################################
 ######################################################################
 
-					##############################
-					##	logs and paths to them	##
-					##############################
-						
+                    ##############################
+                    ##  logs and paths to them  ##
+                    ##############################
+                        
 ## will assign the path /home/linc/Documents/ParseLog to the Parser 
 ## output
 #key_parser = /home/linc/Documents/ParseLog;
