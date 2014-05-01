@@ -180,7 +180,17 @@ public class Config_Reader {
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "jumping in get_int");
         }
-        Integer toReturn = (Integer)container.get(key);
+        Integer toReturn;
+        if(container.containsKey(key)){
+            toReturn = (Integer)container.get(key);
+        }
+        else{
+            toReturn = -1;
+            if(logWriterInit){
+                logWriter.log("Config_Reader", 0, "in get_int could not find a match for the key provided");
+                System.exit(0);
+            }
+        }
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "leaving get_int");
         }
@@ -198,7 +208,17 @@ public class Config_Reader {
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "jumping in get_double");
         }
-        Double toReturn = (Double)container.get(key);
+        Double toReturn;
+        if(container.containsKey(key)){
+            toReturn = (Double)container.get(key);
+        }
+        else{
+            toReturn = -1.0;
+            if(logWriterInit){
+                logWriter.log("Config_Reader", 0, "in get_double could not find a match for the key provided");
+                System.exit(0);
+            }
+        }
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "leaving get_double");
         }
@@ -216,7 +236,17 @@ public class Config_Reader {
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "jumping in get_boolean");
         }
-        Boolean toReturn = (Boolean)container.get(key);
+        Boolean toReturn;
+        if(container.containsKey(key)){
+            toReturn = (Boolean)container.get(key);
+        }
+        else{
+            toReturn = false;
+            if(logWriterInit){
+                logWriter.log("Config_Reader", 0, "in get_boolean could not find a match for the key provided");
+                System.exit(0);
+            }
+        }
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "leaving get_boolean");
         }
@@ -269,7 +299,7 @@ public class Config_Reader {
     private void set_default_values(){
         container.put("takt_frequency", 100);
         container.put("verbosity_level", 0);
-        container.put("silent", true);
+        container.put("silent", false);
     }
     
     
