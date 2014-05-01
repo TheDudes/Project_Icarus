@@ -42,7 +42,7 @@ public class LogWriter {
     private LogWriterWorker LogWorker;
     private Thread worker;
     private Config_Reader configReader;
-    private final boolean silent = configReader.get_boolean("silent");
+    private boolean silent;
 
     /**
      * LogWriter Constructor
@@ -50,15 +50,10 @@ public class LogWriter {
      * @param verboseLevel this variable indicates how important the log message is
      */
     public LogWriter(Config_Reader confReader, int verboseLevel){
-        this.LogWorker = new LogWriterWorker(confReader.get_path("LogWriter"), lbq);
+        configReader = confReader;
+        this.LogWorker = new LogWriterWorker(configReader.get_path("LogWriter"), lbq);
+        silent = configReader.get_boolean("silent");
         worker = new Thread(LogWorker);
-        worker.start();
-        this.verboseLevel = verboseLevel;
-        getHostname();
-    }
-
-    public LogWriter(String path, int verboseLevel){
-        worker = new Thread(new LogWriterWorker(path, lbq));
         worker.start();
         this.verboseLevel = verboseLevel;
         getHostname();
