@@ -45,7 +45,6 @@ public class Engine_Warmup
 
     /**
      * used to warmup the Java ScriptEngine.
-     * @param engine the engine which will be used
      * @throws ScriptException Exception
      */
     public ScriptEngine engine_warmup() throws Exception

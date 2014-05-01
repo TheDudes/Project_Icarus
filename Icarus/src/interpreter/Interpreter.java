@@ -49,7 +49,7 @@ public class Interpreter
 
     /**
      * will interpret given code from given start till end INDEX.
-     * @param string structure text code after parser
+     * @param code structure text code after parser
      * @param start INDEX where interpreter will start
      * @param end INDEX where interpreter will stop
      * @param engine ScriptEngine which will be used.

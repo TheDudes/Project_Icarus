@@ -29,6 +29,7 @@ import interpreter.*;
 import java.net.*;
 
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 
 public class main
 {
@@ -84,17 +85,20 @@ public class main
         System.out.print("your st file path:     " + path[0] + "\n");
         System.out.print("your config file path: " + path[1] + "\n");
 
-        Config_Reader config = new Config_Reader(path[1]);
-        LogWriter logger = new LogWriter(config, 4);
+        /* init */
+        Config_Reader config    = new Config_Reader(path[1]);
+        LogWriter     logger    = new LogWriter(config);
+        STFileFinder  stfinder  = new STFileFinder(config, logger);
+        InfoCollector container = new InfoCollector(stfinder.get_file_names(), logger);
+        ScriptEngine  engine;
 
-        String[] workaround = new String[1];
-        workaround[0] = path[0];
-        InfoCollector container     = new InfoCollector(workaround, logger);
-        Engine_Warmup warmup        = new Engine_Warmup(logger);
-        ScriptEngine  engine        = warmup.engine_warmup();
-        Interpreter   interpreter   = new Interpreter(container, logger, engine);
+        if(config.get_boolean("Engine_Warmup"))
+            engine               = new Engine_Warmup(logger).engine_warmup();
+        else
+            engine = new ScriptEngineManager().getEngineByName("JavaScript");
 
-        String code = container.getAllTheCode().toString();
+        Interpreter interpreter = new Interpreter(container, logger, engine);
+        String code             = container.getAllTheCode().toString();
         interpreter.interpret(code, 0, code.length(), engine);
 
         logger.kill();
