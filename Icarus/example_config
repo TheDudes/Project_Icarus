@@ -40,19 +40,19 @@
 
 ## will add the variable testvar in the container map and assign 
 ## the value 1 to it - the testvar will be a Integer Object
-#testvar = 1;
+testvar = 1;
 
 ## will add the variable testvar in the container map and assign
 ## the value 1.5 to it - the testvar will be a Double Object
-#testvar2 = 1.5;
+testvar2 = 1.5;
 
 ## will add the variable testvar in the container map and assign
 ## the value true to it - the testvar will be a Boolean Object
-#testvar3 = true;
+testvar3 = true;
 
 ## will add the variable testvar in the container map and assign
 ## the value asdf to it - the testvar will be a String
-#testvar4 = asdf;
+testvar4 = asdf;
 
 ######################################################################
 ######################################################################
@@ -77,7 +77,10 @@
 #key_parser = /home/linc/Documents/ParseLog;
 path = /home/d4ryus/coding/Project_Icarus/franzke_files/plc_prg.st
 
-## will assign the path /home/linc/Icarus/Logs/LogAll as well as
-## the path /home/linc/Icarus/Logs/SyntaxCheck to the output 
+## will assign the path /home/linc/Icarus/Logs/LogAll to the output 
 ## of the Syntax checker
-#key_syntax_checker = /home/linc/Icarus/Logs/LogAll, /home/linc/Icarus/Logs/SyntaxCheck;
+#key_syntax_checker = /home/linc/Icarus/Logs/LogAll;
+
+
+## asign a default path for the LogWriter
+key_LogWriter = /tmp;
