@@ -468,7 +468,10 @@ public class Config_Reader {
             "\n" +
             "## will assign the path /home/linc/Icarus/Logs/LogAll to the output \n" +
             "## of the Syntax checker\n" +
-            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll;";
+            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll; \n" +
+            "\n " + 
+            "## set the path for the LogWriter: \n" +
+            "key_LogWriter = /tmp";
         try(
             BufferedWriter writer = new BufferedWriter(new FileWriter(path));
         ){
@@ -565,7 +568,10 @@ public class Config_Reader {
             "\n" +
             "## will assign the path /home/linc/Icarus/Logs/LogAll to the output \n" +
             "## of the Syntax checker\n" +
-            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll;";
+            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll; \n" +
+            "\n " + 
+            "## set the path for the LogWriter: \n" +
+            "key_LogWriter = /tmp";
         try(
             BufferedWriter writer = new BufferedWriter(new FileWriter("example_config"));
         ){
