@@ -29,17 +29,17 @@ import vault.*;
  */
 
 public class InfoCollector {
-    private StringBuilder allthecode;
-    private Analyser analyser;
-    private Match match;
-    private Symbols symb;
-    private LogWriter log;
+    private final StringBuilder allthecode;
+    private final Analyser analyser;
+    private final Match match;
+    private final Symbols symb;
+    private final LogWriter log;
     
     // logger
     //private boolean logstat;
-    private String mainkey = "parser";
-    private String subkey = "InfoCollector";
-    private String key = mainkey+"-"+subkey;
+    private final String mainkey = "parser";
+    private final String subkey = "InfoCollector";
+    private final String key = mainkey+"-"+subkey;
     
     /**
      * InfoCollector is a Interfaceclass which has all the functions from a
