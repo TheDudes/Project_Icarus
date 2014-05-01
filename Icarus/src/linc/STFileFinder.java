@@ -57,6 +57,7 @@ public class STFileFinder {
     private void getSTFiles(){
         logWriter.log("STFileFinder", 4, "jumping in getSTFiles");
         for(int i = 0; i < files.length; i++) {
+            System.out.println(files[i]);
             if(Pattern.matches(".?\\.st", files[i])) {
                 stFiles.add(fileDirectory + files[i]);
             }
