@@ -45,15 +45,17 @@ public class LogWriterWorker implements Runnable{
     private String tmpFilePath;
     private String pathToLogfiles;
     private String message;
-    private int verboseLevel = confReader.get_int("verbosity_level");
+    private int verboseLevel;
     /**
      * LogWriterWorker constructor
      * @param  pathToLogfile Path to where the log file is being saved
      * @param lbq LinkedBlockingQueue in which the log messages will be added
      */
-    public LogWriterWorker(String pathToLogfile, LinkedBlockingQueue<String> lbq) {
+    public LogWriterWorker(Config_Reader confReader, LinkedBlockingQueue<String> lbq) {
         this.lbq = lbq;
-        this.tmpFilePath = pathToLogfile;
+        this.tmpFilePath = confReader.get_path("LogWriter");
+        this.confReader = confReader;
+        verboseLevel = confReader.get_int("verbosity_level");
         pathToLogfiles = tmpFilePath+getTimestamp()+".log";
     }
 

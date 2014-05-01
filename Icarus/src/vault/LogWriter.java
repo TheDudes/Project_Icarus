@@ -51,7 +51,7 @@ public class LogWriter {
      */
     public LogWriter(Config_Reader confReader){
         configReader = confReader;
-        this.LogWorker = new LogWriterWorker(configReader.get_path("LogWriter"), lbq);
+        this.LogWorker = new LogWriterWorker(configReader, lbq);
         silent = configReader.get_boolean("silent");
         worker = new Thread(LogWorker);
         worker.start();
