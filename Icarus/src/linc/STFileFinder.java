@@ -56,9 +56,9 @@ public class STFileFinder {
      */
     private void getSTFiles(){
         logWriter.log("STFileFinder", 4, "jumping in getSTFiles");
-        for (String file : files) {
-            if(Pattern.matches(".?\\.st", file)) {
-                stFiles.add(fileDirectory + file);
+        for(int i = 0; i < files.length; i++) {
+            if(Pattern.matches(".?\\.st", files[i])) {
+                stFiles.add(fileDirectory + files[i]);
             }
         }
         logWriter.log("STFileFinder", 4, "leaving getSTFiles");
