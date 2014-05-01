@@ -71,8 +71,6 @@ public class Config_Reader {
     public String[] get_variables(){
         int i = 0;
         String[] toReturn = new String[container.size()];
-        /* --warning-- map.entry is a raw type. References to generic
-         * type Map<K,V>.Entry<K,V> should be parameterized */
         for(Map.Entry<String, Object> e : container.entrySet()){
             toReturn[i] = (String) e.getKey();
             i++;
@@ -98,8 +96,6 @@ public class Config_Reader {
     public String[] get_keys(){
         int i = 0;
         String[] toReturn = new String[key_container.size()];
-        /* --warning-- map.entry is a raw type. References to generic 
-         * type Map<K,V>.Entry<K,V> should be parameterized */
         for(Map.Entry<String, String> e : key_container.entrySet()){
             toReturn[i] = (String) e.getKey();
             i++;
