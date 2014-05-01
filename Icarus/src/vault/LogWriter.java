@@ -41,7 +41,8 @@ public class LogWriter {
     private int verboseLevel;
     private LogWriterWorker LogWorker;
     private Thread worker;
-
+    private Config_Reader configReader;
+    private final boolean silent = configReader.get_boolean("silent");
 
     /**
      * LogWriter Constructor
@@ -92,8 +93,13 @@ public class LogWriter {
      * @param logMessage this is the message that will be written in the log file 
      */
     public void log(String key, int verboseLevel, String logMessage) {
+       
+        if(!silent && (verboseLevel==0)){
+            System.out.println(logMessage);
+        }
+        
         if(verboseLevel <= this.verboseLevel){
-
+            
             String logLine ="["+getTimestamp()+"]"+" ["+
                                 host+"] "+"["+
                                 key+"]"+": "+
