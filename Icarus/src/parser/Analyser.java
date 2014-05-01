@@ -17,8 +17,7 @@
 package parser;
 
 import java.util.*;
-import vault.Log;
-import vault.LogWriter;
+import vault.*;
 
 /**
  * This class locates all block beginnings and endings
@@ -525,6 +524,7 @@ public class Analyser {
      * the Constructor takes a StringBuilder, which was prepared by MergeAllFiles
      *
      * @param builder StringBuilder prepared by MergeAllFiles
+     * @param log LogWriter from above
      */
     public Analyser(StringBuilder builder, LogWriter log) {
         //logstat = log.isInitialized();     // get status of the logger

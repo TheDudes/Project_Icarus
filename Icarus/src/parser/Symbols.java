@@ -17,7 +17,6 @@ package parser;
 
 import java.util.*;
 import java.util.regex.*;
-import vault.Log;
 
 /**
  * This finds all var block and the corresponding context in which they life an
