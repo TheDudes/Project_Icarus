@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2014, HAW-Landshut
  *
  * Permission to use, copy, modify, and/or distribute this software for any
@@ -16,6 +16,7 @@
  * file: Icarus/src/Icarus/main.java
  * @author: d4ryus - https://github.com/d4ryus/
  * @version 0.2
+ * vim: foldmethod=syntax:foldcolumn=5:
  */
 
 package Icarus;
@@ -24,12 +25,14 @@ import vault.*;
 import parser.*;
 import linc.*;
 import interpreter.*;
+
 import java.net.*;
 
 import javax.script.ScriptEngine;
 
 public class main
 {
+
 
     public static void main(String[] args) throws Exception
     {
@@ -83,20 +86,23 @@ public class main
                 System.out.print("no case for hostname: " + hostname + "\n");
                 System.exit(0);
         }
-        System.out.print("your st file path: "  + path[0] + "\n");
-        System.out.print("your log file path: " + path[1] + "\n");
+        System.out.print("your st file path:     " + path[0] + "\n");
+        System.out.print("your config file path: " + path[1] + "\n");
+        System.out.print("your log file path:    " + path[2] + "\n");
 
         Log.init(path[2], 4);
 
         Config_Reader config = new Config_Reader(path[1]);
-        LogWriter log = new LogWriter(config, 4);
+        LogWriter logger = new LogWriter(config, 4);
 
         InfoCollector container     = new InfoCollector(path);
-        Engine_Warmup warmup        = new Engine_Warmup(log);
+        Engine_Warmup warmup        = new Engine_Warmup(logger);
         ScriptEngine  engine        = warmup.engine_warmup();
-        Interpreter   interpreter   = new Interpreter(container, log, engine);
+        Interpreter   interpreter   = new Interpreter(container, logger, engine);
 
         String code = container.getAllTheCode().toString();
         interpreter.interpret(code, 0, code.length(), engine);
+
+        logger.kill();
     }
 }

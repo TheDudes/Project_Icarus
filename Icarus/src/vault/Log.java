@@ -71,4 +71,9 @@ public class Log {
     public static boolean isInitialized() {
         return initialized;
     }
+
+    public static void kill()
+    {
+        log.kill();
+    }
 }
