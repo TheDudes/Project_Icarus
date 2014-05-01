@@ -157,6 +157,7 @@ public class Config_Reader {
             prep = "";
         if(logWriterInit){
             logWriter.log("Config_Reader", 0, "in get_path could not find a match for the key provided");
+            System.exit(0);
         }
         }
         //only one path allowed not so this is not needed any more
