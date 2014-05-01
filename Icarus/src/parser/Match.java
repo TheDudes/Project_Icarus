@@ -243,23 +243,18 @@ public class Match {
 			intlist.add(intstart);
 		    }
 		    series = false;
-		    continue;
 		} else {
 		    intlist.add(inttmp);
-		    continue;
 		}
 	    } else if (c == '.') {
 		if (series) {
-		    continue;
 		} else {
 		    intstart = inttmp;
 		    series = true;
-		    continue;
 		}
 	    } else {
 		inttmp *= 10;
 		inttmp += Character.getNumericValue(c);
-		continue;
 	    }
 	}
 	return intlist;
@@ -337,7 +332,7 @@ public class Match {
      * @return int
      */
     public int getEndCase(int a) {
-	return (int)casematching.get(new Integer(a));
+	return (int)casematching.get(a);
     }
 
     /**
@@ -417,7 +412,7 @@ public class Match {
     public int getEndVar(int a) {
         System.out.println("getEndVar called in Match.java");
         System.out.println(varmatching.toString());
-	return (int)varmatching.get(new Integer(a));
+	return (int)varmatching.get(a);
     }
 
     /**
@@ -465,7 +460,7 @@ public class Match {
     private void findProgramEndProgramPairs() {
 	tmp = new ArrayList<>();
 	stack = new Stack<>();
-	for (Integer item : new TreeSet<Integer>(programendprogram.keySet())) {
+	for (Integer item : new TreeSet<>(programendprogram.keySet())) {
 	    if (programendprogram.get(item).equals("PROGRAM")) {
 		stack.push(item);
 		tmp.add(item);
@@ -521,7 +516,7 @@ public class Match {
     private void findFunctionEndFunctionPairs() {
 	tmp = new ArrayList<>();
 	stack = new Stack<>();
-	for (Integer item : new TreeSet<Integer>(functionendfunction.keySet())) {
+	for (Integer item : new TreeSet<>(functionendfunction.keySet())) {
 	    if(functionendfunction.get(item).equals("FUNCTION")) {
 		stack.push(item);
 		tmp.add(item);
@@ -539,7 +534,7 @@ public class Match {
      * @return int
      */
     public int getEndFunction(int a) {
-	return (int)functionmatching.get(new Integer(a));
+	return (int)functionmatching.get(a);
     }
 
     /**
@@ -577,7 +572,7 @@ public class Match {
     private void findFunctionBlockEndFunctionBlockPairs() {
 	tmp = new ArrayList<>();
 	stack = new Stack<>();
-	for (Integer item : new TreeSet<Integer>(functionblockendfunctionblock.keySet())) {
+	for (Integer item : new TreeSet<>(functionblockendfunctionblock.keySet())) {
 	    if(functionblockendfunctionblock.get(item).equals("FUNCTION_BLOCK")) {
 		stack.push(item);
 		tmp.add(item);
@@ -595,7 +590,7 @@ public class Match {
      * @return int
      */
     public int getEndFunctionBlock(int a) {
-	return (int)functionblockmatching.get(new Integer(a));
+	return (int)functionblockmatching.get(a);
     }
 
     /**
@@ -633,7 +628,7 @@ public class Match {
     private void findForEndForPairs() {
 	tmp = new ArrayList<>();
 	stack = new Stack<>();
-	for (Integer item : new TreeSet<Integer>(forendfor.keySet())) {
+	for (Integer item : new TreeSet<>(forendfor.keySet())) {
 	    if (forendfor.get(item).equals("FOR")) {
 		stack.push(item);
 		tmp.add(item);
@@ -651,7 +646,7 @@ public class Match {
      * @return int
      */
     public int getEndFor(int a) {
-	return (int)formatching.get(new Integer(a));
+	return (int)formatching.get(a);
     }
 
     /**
@@ -689,7 +684,7 @@ public class Match {
     private void findWhileEndWhilePairs() {
 	tmp = new ArrayList<>();
 	stack = new Stack<>();
-	for (Integer item : new TreeSet<Integer>(whileendwhile.keySet())) {
+	for (Integer item : new TreeSet<>(whileendwhile.keySet())) {
 	    if (whileendwhile.get(item).equals("WHILE")) {
 		stack.push(item);
 		tmp.add(item);
@@ -707,7 +702,7 @@ public class Match {
      * @return int
      */
     public int getEndWhile(int a) {
-	return (int)whilematching.get(new Integer(a));
+	return (int)whilematching.get(a);
     }
 
     /**
@@ -745,7 +740,7 @@ public class Match {
     private void findRepeatEndRepeatPairs() {
 	tmp = new ArrayList<>();
 	stack = new Stack<>();
-	for (Integer item : new TreeSet<Integer>(repeatendrepeat.keySet())) {
+	for (Integer item : new TreeSet<>(repeatendrepeat.keySet())) {
 	    if (repeatendrepeat.get(item).equals("REPEAT")) {
 		stack.push(item);
 		tmp.add(item);
@@ -763,7 +758,7 @@ public class Match {
      * @return int
      */
     public int getEndRepeat(int a) {
-	return (int)repeatmatching.get(new Integer(a));
+	return (int)repeatmatching.get(a);
     }
 
     /**
