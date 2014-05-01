@@ -148,8 +148,17 @@ public class Config_Reader {
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "jumping in get_path");
         }
+        String prep;
         //removes the ; from the path Strings
-        String prep = key_container.get(key).replace(";", "");
+        if(key_container.containsKey(key)){
+            prep = key_container.get(key).replace(";", "");
+        }
+        else{
+            prep = "";
+        if(logWriterInit){
+            logWriter.log("Config_Reader", 0, "in get_path could not find a match for the key provided");
+        }
+        }
         //only one path allowed not so this is not needed any more
         //splits the String after each , thereby seperating the different paths from each other
         //String[] toReturn = prep.split(",");
