@@ -41,9 +41,10 @@ public class STFileFinder {
     public STFileFinder(Config_Reader cfReader, LogWriter logWriter){
         this.cfReader = cfReader;
         this.logWriter = logWriter;
-        fileDirectory = cfReader.get_string("path");
+        fileDirectory = cfReader.get_path("path");
         directory = new File(fileDirectory);
         files = directory.list();
+        this.stFiles = new ArrayList(files.length);
         getSTFiles();
         logWriter.log("STFileFinder", 4, "leaving constructor");
     }
@@ -57,8 +58,7 @@ public class STFileFinder {
     private void getSTFiles(){
         logWriter.log("STFileFinder", 4, "jumping in getSTFiles");
         for(int i = 0; i < files.length; i++) {
-            System.out.println(files[i]);
-            if(Pattern.matches(".?\\.st", files[i])) {
+            if(Pattern.matches(".*?\\.st", files[i])) {
                 stFiles.add(fileDirectory + files[i]);
             }
         }
