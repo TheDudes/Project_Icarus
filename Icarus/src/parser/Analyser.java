@@ -18,6 +18,7 @@ package parser;
 
 import java.util.*;
 import vault.Log;
+import vault.LogWriter;
 
 /**
  * This class locates all block beginnings and endings
@@ -63,15 +64,16 @@ public class Analyser {
     };
 
     // logger
-    private boolean logstat;
+    //private boolean logstat;
+    private LogWriter log;
     private String mainkey = "parser";
     private String subkey = "Analyser";
     private String key = mainkey + "-" + subkey;
 
     private void findAllKeywords() { // think of the IF, its a special case
-        if (logstat) {
-            Log.log(key, 3, "findAllKeywords called.");
-        }
+        
+            log.log(key, 3, "findAllKeywords called.");
+        
         int i;
         for (i = 0; i < LISTCOUNT; i++) {
             ArrayList<Integer> block = blocks.get(i);
@@ -85,12 +87,12 @@ public class Analyser {
                     block.add(new Integer(endpointer));
                 }
                 //blocks.add(i, block);
-                if (logstat) {
-                    Log.log(key, 3, "Found " + block.size() + " " + start + " and " + stop);
-                }
-                if (logstat) {
-                    Log.log(key, 4, start + " and " + stop + " Indexes: " + Arrays.toString(block.toArray()));
-                }
+                
+                    log.log(key, 3, "Found " + block.size() + " " + start + " and " + stop);
+                
+                
+                    log.log(key, 4, start + " and " + stop + " Indexes: " + Arrays.toString(block.toArray()));
+                
             } else if (i == 11) { // normaly not needed, should work anyway
                 block = blocks.get(i);
                 start = keywords[i][0];
@@ -105,12 +107,12 @@ public class Analyser {
                     }
                 }
                 //blocks.add(i, block);
-                if (logstat) {
-                    Log.log(key, 3, "Found " + block.size() + " " + start + " and " + stop);
-                }
-                if (logstat) {
-                    Log.log(key, 4, start + " and " + stop + " Indexes: " + Arrays.toString(block.toArray()));
-                }
+                
+                    log.log(key, 3, "Found " + block.size() + " " + start + " and " + stop);
+                
+                
+                    log.log(key, 4, start + " and " + stop + " Indexes: " + Arrays.toString(block.toArray()));
+                
             } else if (i == 12) {
                 block = blocks.get(i);
                 start = keywords[i][0];
@@ -125,12 +127,12 @@ public class Analyser {
                     }
                 }
                 //blocks.add(i, block);
-                if (logstat) {
-                    Log.log(key, 3, "Found " + block.size() + " " + start + " and " + stop);
-                }
-                if (logstat) {
-                    Log.log(key, 4, start + " and " + stop + " Indexes: " + Arrays.toString(block.toArray()));
-                }
+                
+                    log.log(key, 3, "Found " + block.size() + " " + start + " and " + stop);
+                
+                
+                    log.log(key, 4, start + " and " + stop + " Indexes: " + Arrays.toString(block.toArray()));
+                
             }
         }
     }
@@ -142,7 +144,7 @@ public class Analyser {
      * This function is private.
      */
     /*private void findAllPrograms() {
-        if (logstat) { Log.log(key, 3, "findAllPrograms called."); }
+        if (logstat) { log.log(key, 3, "findAllPrograms called."); }
 	String start = "PROGRAM";
 	String stop = "END_PROGRAM";
 	int endpointer;
@@ -151,8 +153,8 @@ public class Analyser {
 	    endpointer = builder.indexOf(stop, pointer);
 	    program_cursor.add(new Integer(endpointer));
 	}
-        if (logstat) { Log.log(key, 4, "Program Indexes: "+Arrays.toString(program_cursor.toArray())); }
-        if (logstat) { Log.log(key, 3, "Found "+program_cursor.size()/2+" Programs."); }
+        if (logstat) { log.log(key, 4, "Program Indexes: "+Arrays.toString(program_cursor.toArray())); }
+        if (logstat) { log.log(key, 3, "Found "+program_cursor.size()/2+" Programs."); }
     }
     */
     /**
@@ -162,7 +164,7 @@ public class Analyser {
      * This function is private.
      */
     /*private void findAllFunctions() {
-        if (logstat) { Log.log(key, 3, "findAllFunctions called."); }
+        if (logstat) { log.log(key, 3, "findAllFunctions called."); }
 	String start = "FUNCTION";
 	String stop = "END_FUNCTION";
 	int endpointer;
@@ -176,8 +178,8 @@ public class Analyser {
       	    function_cursor.add(new Integer(pointer));
 	    function_cursor.add(new Integer(endpointer));
 	}
-        if (logstat) { Log.log(key, 4, "Function Indexes: "+Arrays.toString(function_cursor.toArray())); }
-        if (logstat) { Log.log(key, 3, "Found "+function_block_cursor.size()/2+" Functions."); }
+        if (logstat) { log.log(key, 4, "Function Indexes: "+Arrays.toString(function_cursor.toArray())); }
+        if (logstat) { log.log(key, 3, "Found "+function_block_cursor.size()/2+" Functions."); }
     }
     */
      /**
@@ -188,7 +190,7 @@ public class Analyser {
      */
     /*
     private void findAllFunctionBlocks() {
-        if (logstat) { Log.log(key, 3, "findAllFunctionBlocks called."); }
+        if (logstat) { log.log(key, 3, "findAllFunctionBlocks called."); }
 	String start = "FUNCTION_BLOCK";
 	String stop = "END_FUNCTION_BLOCK";
 	int endpointer;
@@ -197,8 +199,8 @@ public class Analyser {
 	    endpointer = builder.indexOf(stop, pointer);
 	    function_block_cursor.add(new Integer(endpointer));
 	}
-        if (logstat) { Log.log(key, 4, "Function Block Indexes: "+Arrays.toString(function_block_cursor.toArray())); }
-        if (logstat) { Log.log(key, 3, "Found "+function_block_cursor.size()/2+" Function Blocks"); }
+        if (logstat) { log.log(key, 4, "Function Block Indexes: "+Arrays.toString(function_block_cursor.toArray())); }
+        if (logstat) { log.log(key, 3, "Found "+function_block_cursor.size()/2+" Function Blocks"); }
     }
     */
      /**
@@ -209,7 +211,7 @@ public class Analyser {
      */
     /*
     private void findAllGlobals() {
-        if (logstat) { Log.log(key, 3, "findAllGlobals called."); }
+        if (logstat) { log.log(key, 3, "findAllGlobals called."); }
 	String start = "VAR_GLOBAL";
 	String stop = "END_VAR";
 	int endpointer;
@@ -218,8 +220,8 @@ public class Analyser {
 	    endpointer = builder.indexOf(stop, pointer);
 	    global_cursor.add(new Integer(endpointer));
 	}
-        if (logstat) { Log.log(key, 4, "Var Global Indexes: "+Arrays.toString(global_cursor.toArray())); }
-        if (logstat) { Log.log(key, 3, "Found "+global_cursor.size()/2+" Var Global"); }
+        if (logstat) { log.log(key, 4, "Var Global Indexes: "+Arrays.toString(global_cursor.toArray())); }
+        if (logstat) { log.log(key, 3, "Found "+global_cursor.size()/2+" Var Global"); }
     }
     */
     /**
@@ -230,7 +232,7 @@ public class Analyser {
      */
     /*
     private void findAllConfigs() {
-        if (logstat) { Log.log(key, 3, "findAllConfigs called."); }
+        if (logstat) { log.log(key, 3, "findAllConfigs called."); }
 	String start = "VAR_CONFIG";
 	String stop = "END_VAR";
 	int endpointer;
@@ -239,8 +241,8 @@ public class Analyser {
 	    endpointer = builder.indexOf(stop, pointer);
 	    config_cursor.add(new Integer(endpointer));
 	}
-        if (logstat) { Log.log(key, 4, "Var Config Indexes: "+Arrays.toString(config_cursor.toArray())); }
-        if (logstat) { Log.log(key, 3, "Found "+config_cursor.size()/2+" Var Config"); }
+        if (logstat) { log.log(key, 4, "Var Config Indexes: "+Arrays.toString(config_cursor.toArray())); }
+        if (logstat) { log.log(key, 3, "Found "+config_cursor.size()/2+" Var Config"); }
     }
     */
     /**
@@ -251,7 +253,7 @@ public class Analyser {
      */
     /*
     private void findAllVars() {
-        if (logstat) { Log.log(key, 3, "findAllVars called."); }
+        if (logstat) { log.log(key, 3, "findAllVars called."); }
 	String start = "VAR";
 	String stop = "END_VAR";
 	int endpointer;
@@ -264,8 +266,8 @@ public class Analyser {
 	    var_all.add(new Integer(pointer));
 	    var_all.add(new Integer(endpointer));
 	}
-        if (logstat) { Log.log(key, 4, "Var Indexes: "+Arrays.toString(var_all.toArray())); }
-        if (logstat) { Log.log(key, 3, "Found "+var_all.size()/2+" Var"); }
+        if (logstat) { log.log(key, 4, "Var Indexes: "+Arrays.toString(var_all.toArray())); }
+        if (logstat) { log.log(key, 3, "Found "+var_all.size()/2+" Var"); }
     }
     */
     /**
@@ -276,7 +278,7 @@ public class Analyser {
      */
     /*
     private void findAllIfs() {
-        if (logstat) { Log.log(key, 3, "findAllIfs called."); }
+        if (logstat) { log.log(key, 3, "findAllIfs called."); }
 	String start = "IF";
 	String stop = "END_IF";
 	System.out.println("Parser: Analyser: findAllIfs(): bevor for loop");
@@ -293,8 +295,8 @@ public class Analyser {
 	    //if_all.add(new Integer(pointer));
 	    //if_all.add(new Integer(endpointer));
 	}
-        if (logstat) { Log.log(key, 4, "If Indexes: "+Arrays.toString(if_all.toArray())); }
-        if (logstat) { Log.log(key, 3, "Found "+if_all.size()/2+" If"); }
+        if (logstat) { log.log(key, 4, "If Indexes: "+Arrays.toString(if_all.toArray())); }
+        if (logstat) { log.log(key, 3, "Found "+if_all.size()/2+" If"); }
     }
     */
     /**
@@ -305,7 +307,7 @@ public class Analyser {
      */
     /*
     private void findAllCases() {
-        if (logstat) { Log.log(key, 3, "findAllCases called."); }
+        if (logstat) { log.log(key, 3, "findAllCases called."); }
 	String start = "CASE";
 	String stop = "END_CASE";
 	int endpointer;
@@ -314,8 +316,8 @@ public class Analyser {
 	    endpointer = builder.indexOf(stop, pointer);
 	    case_all.add(new Integer(endpointer));
 	}
-        if (logstat) { Log.log(key, 4, "Case Indexes: "+Arrays.toString(case_all.toArray())); }
-        if (logstat) { Log.log(key, 3, "Found "+case_all.size()/2+" If"); }
+        if (logstat) { log.log(key, 4, "Case Indexes: "+Arrays.toString(case_all.toArray())); }
+        if (logstat) { log.log(key, 3, "Found "+case_all.size()/2+" If"); }
     }
     */
     /**
@@ -524,8 +526,10 @@ public class Analyser {
      *
      * @param builder StringBuilder prepared by MergeAllFiles
      */
-    public Analyser(StringBuilder builder) {
-        logstat = Log.isInitialized();     // get status of the logger
+    public Analyser(StringBuilder builder, LogWriter log) {
+        //logstat = log.isInitialized();     // get status of the logger
+        
+        this.log = log;
         
         blocks.add(program_cursor); //0
         blocks.add(function_cursor); //1
