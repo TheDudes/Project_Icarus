@@ -3,8 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-package test;
+package linc;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -72,7 +71,7 @@ public class Config_Reader {
     public String[] get_variables(){
         int i = 0;
         String[] toReturn = new String[container.size()];
-        for(Map.Entry e : container.entrySet()){
+        for(Map.Entry<String, Object> e : container.entrySet()){
             toReturn[i] = (String) e.getKey();
             i++;
         }
@@ -97,7 +96,7 @@ public class Config_Reader {
     public String[] get_keys(){
         int i = 0;
         String[] toReturn = new String[key_container.size()];
-        for(Map.Entry e : key_container.entrySet()){
+        for(Map.Entry<String, String> e : key_container.entrySet()){
             toReturn[i] = (String) e.getKey();
             i++;
         }
@@ -110,12 +109,13 @@ public class Config_Reader {
      * @param key the key from which we want to get the value from
      * @return the value stored under the key
      */
-    public String[] get_path(String key){
+    public String get_path(String key){
         //removes the ; from the path Strings
         String prep = key_container.get(key).replace(";", "");
+        //only one path allowed not so this is not needed any more
         //splits the String after each , thereby seperating the different paths from each other
-        String[] toReturn = prep.split(",");
-        return toReturn;
+        //String[] toReturn = prep.split(",");
+        return prep;
     }
     
     
@@ -123,7 +123,7 @@ public class Config_Reader {
      * first casts the object in the Map to an Integer (we assume the one calling this method knows there is an Integer stored in there)
      * and we then get the int value of it
      * @param key the key of the entry in which the data you want are stored in
-     * @return
+     * @return value of given key
      */
     public int get_int(String key){
         Integer toReturn = (Integer)container.get(key);
@@ -135,7 +135,7 @@ public class Config_Reader {
      * first casts the object in the Map to a Double (we assume the one calling this method knows there is a Double stored in there)
      * and we then get the double value of it
      * @param key the key of the entry in which the data you want are stored in
-     * @return 
+     * @return value of given key
      */
     public double get_double(String key){
         Double toReturn = (Double)container.get(key);
@@ -147,7 +147,7 @@ public class Config_Reader {
      * first casts the object in the Map to a Boolean (we assume the one calling this method knows there is a Boolean stored in there)
      * and we then get the boolean value of it
      * @param key the key of the entry in which the data you want are stored in
-     * @return 
+     * @return value of given key
      */
     public boolean get_boolean(String key){
         Boolean toReturn = (Boolean)container.get(key);
@@ -158,7 +158,7 @@ public class Config_Reader {
     /**
      * we cast the object in the Map to a String which we then return
      * @param key the key of the entry in which the data you want are stored in
-     * @return 
+     * @return value of given key
      */
     public String get_string(String key){
         return (String)container.get(key);
@@ -251,50 +251,52 @@ public class Config_Reader {
      * @throws IOException 
      */
     private String read_Linux() throws FileNotFoundException, IOException{
-        BufferedReader reader = new BufferedReader(new FileReader (filePath));
-        String toReturn = "";
-        char sign = (char)reader.read();
-        while(sign != (char)-1){
-            //read over the comment line without attaching it to the string
-            if(sign == '#'){
-                while(sign != '\n'){
-                    sign = (char)reader.read();
-                }
-            }
-            //throws out everything after //, if there is only one / it appends it plus the next sign
-            else if(sign == '/'){
-                sign = (char)reader.read();
-                if(sign == '/'){
+        String toReturn;
+        try (BufferedReader reader = new BufferedReader(new FileReader (filePath))) {
+            toReturn = "";
+            char sign = (char)reader.read();
+            while(sign != (char)-1){
+                //read over the comment line without attaching it to the string
+                if(sign == '#'){
                     while(sign != '\n'){
                         sign = (char)reader.read();
                     }
                 }
+                //throws out everything after //, if there is only one / it appends it plus the next sign
+                else if(sign == '/'){
+                    sign = (char)reader.read();
+                    if(sign == '/'){
+                        while(sign != '\n'){
+                            sign = (char)reader.read();
+                        }
+                    }
+                    else{
+                        toReturn += "/";
+                    }
+                }
+                //remove spaces (they are not attached to the string, that's all)
+                else if(sign == ' '){
+                    sign = (char)reader.read();
+                }
+                //reads over tabs aswell, they are not needed
+                else if(sign == '\t'){
+                    sign = (char)reader.read();
+                }
+                //if there are several newLines after each other only one is attached
+                else if(sign == '\n'){
+                    toReturn += sign;
+                    sign = (char)reader.read();
+                    while(sign == '\n'){
+                        sign = (char)reader.read();
+                    }if(sign == '\n'){
+                        sign = (char)reader.read();
+                    }
+                }
+                //every other symbol is attached to the string
                 else{
-                    toReturn += "/";
-                }
-            }
-            //remove spaces (they are not attached to the string, that's all)
-            else if(sign == ' '){
-                sign = (char)reader.read();
-            }
-            //reads over tabs aswell, they are not needed
-            else if(sign == '\t'){
-                sign = (char)reader.read();
-            }
-            //if there are several newLines after each other only one is attached
-            else if(sign == '\n'){
-                toReturn += sign;
-                sign = (char)reader.read();
-                while(sign == '\n'){
-                    sign = (char)reader.read();
-                }if(sign == '\n'){
+                    toReturn += sign;
                     sign = (char)reader.read();
                 }
-            }
-            //every other symbol is attached to the string
-            else{
-                toReturn += sign;
-                sign = (char)reader.read();
             }
         }
         return toReturn;
@@ -308,26 +310,14 @@ public class Config_Reader {
      * @throws IOException 
      */
      private String read_Windows() throws FileNotFoundException, IOException{
-        BufferedReader reader = new BufferedReader(new FileReader (filePath));
-        String toReturn = "";
-        char sign = (char)reader.read();
-        while(sign != (char)-1){
-            //read over the comment line without attaching it to the string
-            if(sign == '#'){
-                while(true){
-                    if(sign == '\r'){
-                        sign = (char)reader.read();
-                        if(sign == '\n'){
-                            break;
-                        }
-                    }
-                    sign = (char)reader.read();
-                }
-            }
-            //throws out everything after //, if there is only one / it appends it plus the next sign
-            else if(sign == '/'){
-                sign = (char)reader.read();
-                if(sign == '/'){
+
+         String toReturn;
+        try (BufferedReader reader = new BufferedReader(new FileReader (filePath))) {
+            toReturn = "";
+            char sign = (char)reader.read();
+            while(sign != (char)-1){
+                //read over the comment line without attaching it to the string
+                if(sign == '#'){
                     while(true){
                         if(sign == '\r'){
                             sign = (char)reader.read();
@@ -338,40 +328,55 @@ public class Config_Reader {
                         sign = (char)reader.read();
                     }
                 }
-                else{
-                    toReturn += "/";
-                }
-            }
-            //remove spaces (they are not attached to the string, that's all)
-            else if(sign == ' '){
-                sign = (char)reader.read();
-            }
-            //reads over tabs aswell, they are not needed
-            else if(sign == '\t'){
-                sign = (char)reader.read();
-            }
-            //if there are several newLines after each other only one is attached
-            else if(sign == '\r'){
-                toReturn += sign;
-                sign = (char)reader.read();
-                if(sign == '\n'){
-                    toReturn += sign;
+                //throws out everything after //, if there is only one / it appends it plus the next sign
+                else if(sign == '/'){
                     sign = (char)reader.read();
-                    while(sign == '\r'){
-                        sign = (char)reader.read();
-                        if(sign == '\n'){
+                    if(sign == '/'){
+                        while(true){
+                            if(sign == '\r'){
+                                sign = (char)reader.read();
+                                if(sign == '\n'){
+                                    break;
+                                }
+                            }
                             sign = (char)reader.read();
                         }
-                        else{
-                            break;
+                    }
+                    else{
+                        toReturn += "/";
+                    }
+                }
+                //remove spaces (they are not attached to the string, that's all)
+                else if(sign == ' '){
+                    sign = (char)reader.read();
+                }
+                //reads over tabs aswell, they are not needed
+                else if(sign == '\t'){
+                    sign = (char)reader.read();
+                }
+                //if there are several newLines after each other only one is attached
+                else if(sign == '\r'){
+                    toReturn += sign;
+                    sign = (char)reader.read();
+                    if(sign == '\n'){
+                        toReturn += sign;
+                        sign = (char)reader.read();
+                        while(sign == '\r'){
+                            sign = (char)reader.read();
+                            if(sign == '\n'){
+                                sign = (char)reader.read();
+                            }
+                            else{
+                                break;
+                            }
                         }
                     }
                 }
-            }
-            //every other symbol is attached to the string
-            else{
-                toReturn += sign;
-                sign = (char)reader.read();
+                //every other symbol is attached to the string
+                else{
+                    toReturn += sign;
+                    sign = (char)reader.read();
+                }
             }
         }
         return toReturn;
@@ -384,37 +389,37 @@ public class Config_Reader {
      */
     private void create_example_config(String path){
         String hugeAssExampleString = "######################################################################\n" +
-            "######################################################################\n" +
-            "##	Default Config File for the Config_Reader 						##\n" +
-            "##	Class of the Icarus Project										##\n" +
-            "##	Config_Reader by:	Michael Kaspera/linc						##\n" +
-            "##	Icarus Project by:												##\n" +
-            "##	currently only supports the linux newline						##\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
+            "#####################################################################\n" +
+            "## Default Config File for the Config_Reader                       ##\n" +
+            "## Class of the Icarus Project                                     ##\n" +
+            "## Config_Reader by:   Michael Kaspera/linc                        ##\n" +
+            "## Icarus Project by:                                              ##\n" +
+            "## currently only supports the linux newline                       ##\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
             "\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
-            "##	The Config_Reader will throw out all unneeded symbols such as:	##\n" +
-            "##	-space															##\n" +
-            "##	-several newlines after each other without a sign between them	##\n" +
-            "##	-tabs															##\n" +
-            "##																	##\n" +
-            "##	Comment signs are:												##\n" +
-            "##	-the # sign														##\n" +
-            "##	-the // signs													##\n" +
-            "## 	Comments will throw out everything following 					##\n" +
-            "##	them until a newLine symbol is read								##\n" +
-            "##																	##\n" +
-            "##	Default Values are at the moment:								##\n" +
-            "##	takt_frequency = 100;											##\n" +
-            "##	verbosity_level = 0;											##\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
+            "## The Config_Reader will throw out all unneeded symbols such as:  ##\n" +
+            "## -space                                                          ##\n" +
+            "## -several newlines after each other without a sign between them  ##\n" +
+            "## -tabs                                                           ##\n" +
+            "##                                                                 ##\n" +
+            "## Comment signs are:                                              ##\n" +
+            "## -the # sign                                                     ##\n" +
+            "## -the // signs                                                   ##\n" +
+            "##     Comments will throw out everything following                ##\n" +
+            "## them until a newLine symbol is read                             ##\n" +
+            "##                                                                 ##\n" +
+            "## Default Values are at the moment:                               ##\n" +
+            "## takt_frequency = 100;                                           ##\n" +
+            "## verbosity_level = 0;                                            ##\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
             "\n" +
-            "						##################\n" +
-            "						## 	Variables	##\n" +
-            "						##################\n" +
+            "                       ##################\n" +
+            "                       ##  Variables   ##\n" +
+            "                       ##################\n" +
             "\n" +
             "## verbosity_level 0: standard value\n" +
             "## verbosity_level 1: some additional informations\n" +
@@ -439,36 +444,37 @@ public class Config_Reader {
             "## the value asdf to it - the testvar will be a String\n" +
             "#testvar4 = asdf;\n" +
             "\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
-            "## Setting the path for where which log will be written to			##\n" +
-            "## The key for telling the porgramm that there 						##\n" +
-            "## will now be a path for an output is:								##\n" +
-            "## key_																##\n" +
-            "## there can be several paths assigned to the output of an object, 	##\n" +
-            "## each path is simply seperated by a ,								##\n" +
-            "## This means that key_Parser will signal the Config_Reader that	##\n" +
-            "## the paths to where the output from the Parser shall be written	##\n" +
-            "## to will follow now (see example below)							##\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
+            "## Setting the path for where which log will be written to         ##\n" +
+            "## The key for telling the porgramm that there                     ##\n" +
+            "## will now be a path for an output is:                            ##\n" +
+            "## key_                                                            ##\n" +
+            "## there can be several paths assigned to the output of an object, ##\n" +
+            "## each path is simply seperated by a ,                            ##\n" +
+            "## This means that key_Parser will signal the Config_Reader that   ##\n" +
+            "## the paths to where the output from the Parser shall be written  ##\n" +
+            "## to will follow now (see example below)                          ##\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
             "\n" +
-            "					##############################\n" +
-            "					##	logs and paths to them	##\n" +
-            "					##############################\n" +
-            "						\n" +
+            "                   ##############################\n" +
+            "                   ##  logs and paths to them  ##\n" +
+            "                   ##############################\n" +
+            "                       \n" +
             "## will assign the path /home/linc/Documents/ParseLog to the Parser \n" +
             "## output\n" +
             "#key_parser = /home/linc/Documents/ParseLog;\n" +
             "\n" +
-            "## will assign the path /home/linc/Icarus/Logs/LogAll\n" +
-            "## to the output of the Syntax checker\n" +
+            "## will assign the path /home/linc/Icarus/Logs/LogAll to the output \n" +
+            "## of the Syntax checker\n" +
             "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll;";
-        try{
+        try(
             BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+        ){
             writer.write(hugeAssExampleString);
             writer.flush();
-        }
+        }   
         catch(IOException e){
             System.err.println("could not create example_config");
         }
@@ -480,37 +486,37 @@ public class Config_Reader {
      */
     public void create_example_config(){
         String hugeAssExampleString = "######################################################################\n" +
-            "######################################################################\n" +
-            "##	Default Config File for the Config_Reader 						##\n" +
-            "##	Class of the Icarus Project										##\n" +
-            "##	Config_Reader by:	Michael Kaspera/linc						##\n" +
-            "##	Icarus Project by:												##\n" +
-            "##	currently only supports the linux newline						##\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
+            "#####################################################################\n" +
+            "## Default Config File for the Config_Reader                       ##\n" +
+            "## Class of the Icarus Project                                     ##\n" +
+            "## Config_Reader by:   Michael Kaspera/linc                        ##\n" +
+            "## Icarus Project by:                                              ##\n" +
+            "## currently only supports the linux newline                       ##\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
             "\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
-            "##	The Config_Reader will throw out all unneeded symbols such as:	##\n" +
-            "##	-space															##\n" +
-            "##	-several newlines after each other without a sign between them	##\n" +
-            "##	-tabs															##\n" +
-            "##																	##\n" +
-            "##	Comment signs are:												##\n" +
-            "##	-the # sign														##\n" +
-            "##	-the // signs													##\n" +
-            "## 	Comments will throw out everything following 					##\n" +
-            "##	them until a newLine symbol is read								##\n" +
-            "##																	##\n" +
-            "##	Default Values are at the moment:								##\n" +
-            "##	takt_frequency = 100;											##\n" +
-            "##	verbosity_level = 0;											##\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
+            "## The Config_Reader will throw out all unneeded symbols such as:  ##\n" +
+            "## -space                                                          ##\n" +
+            "## -several newlines after each other without a sign between them  ##\n" +
+            "## -tabs                                                           ##\n" +
+            "##                                                                 ##\n" +
+            "## Comment signs are:                                              ##\n" +
+            "## -the # sign                                                     ##\n" +
+            "## -the // signs                                                   ##\n" +
+            "##     Comments will throw out everything following                ##\n" +
+            "## them until a newLine symbol is read                             ##\n" +
+            "##                                                                 ##\n" +
+            "## Default Values are at the moment:                               ##\n" +
+            "## takt_frequency = 100;                                           ##\n" +
+            "## verbosity_level = 0;                                            ##\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
             "\n" +
-            "						##################\n" +
-            "						## 	Variables	##\n" +
-            "						##################\n" +
+            "                       ##################\n" +
+            "                       ##  Variables   ##\n" +
+            "                       ##################\n" +
             "\n" +
             "## verbosity_level 0: standard value\n" +
             "## verbosity_level 1: some additional informations\n" +
@@ -535,24 +541,24 @@ public class Config_Reader {
             "## the value asdf to it - the testvar will be a String\n" +
             "#testvar4 = asdf;\n" +
             "\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
-            "## Setting the path for where which log will be written to			##\n" +
-            "## The key for telling the porgramm that there 						##\n" +
-            "## will now be a path for an output is:								##\n" +
-            "## key_																##\n" +
-            "## there can be several paths assigned to the output of an object, 	##\n" +
-            "## each path is simply seperated by a ,								##\n" +
-            "## This means that key_Parser will signal the Config_Reader that	##\n" +
-            "## the paths to where the output from the Parser shall be written	##\n" +
-            "## to will follow now (see example below)							##\n" +
-            "######################################################################\n" +
-            "######################################################################\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
+            "## Setting the path for where which log will be written to         ##\n" +
+            "## The key for telling the porgramm that there                     ##\n" +
+            "## will now be a path for an output is:                            ##\n" +
+            "## key_                                                            ##\n" +
+            "## there can be several paths assigned to the output of an object, ##\n" +
+            "## each path is simply seperated by a ,                            ##\n" +
+            "## This means that key_Parser will signal the Config_Reader that   ##\n" +
+            "## the paths to where the output from the Parser shall be written  ##\n" +
+            "## to will follow now (see example below)                          ##\n" +
+            "#####################################################################\n" +
+            "#####################################################################\n" +
             "\n" +
-            "					##############################\n" +
-            "					##	logs and paths to them	##\n" +
-            "					##############################\n" +
-            "						\n" +
+            "                   ##############################\n" +
+            "                   ##  logs and paths to them  ##\n" +
+            "                   ##############################\n" +
+            "                       \n" +
             "## will assign the path /home/linc/Documents/ParseLog to the Parser \n" +
             "## output\n" +
             "#key_parser = /home/linc/Documents/ParseLog;\n" +
@@ -560,8 +566,9 @@ public class Config_Reader {
             "## will assign the path /home/linc/Icarus/Logs/LogAll to the output \n" +
             "## of the Syntax checker\n" +
             "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll;";
-        try{
+        try(
             BufferedWriter writer = new BufferedWriter(new FileWriter("example_config"));
+        ){
             writer.write(hugeAssExampleString);
             writer.flush();
         }
