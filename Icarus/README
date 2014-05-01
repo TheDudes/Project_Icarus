@@ -1,20 +1,22 @@
-Compile and Create Javadoc:
-- execute './make.sh' (zsh and apache-ant needed)
-- or execute 'ant -f build.xml' (apache-ant needed)
-
 Only Compile:
 - execute './make.sh compile' (zsh and apache-ant needed)
 - or execute 'ant -f build.xml compile' (apache-ant needed)
+
+Only Run:
+- execute 'make.sh run'
+- or execute 'cd build/classes && java Icarus.main'
 
 Only create Javadoc:
 - execute './make.sh javadoc' (zsh and apache-ant needed)
 - or execute 'ant -f build.xml compile' (apache-ant needed)
 
-Run:
-- execute 'cd build/classes && java Icarus.main'
+Only clean:
+- execute './make.sh clean' (zsh and apache-ant needed)
+- or execute 'ant -f build.xml clean' (apache-ant needed)
 
-Magic: (compile and run)
-- './magic.sh' will execute:
-  './make.sh && cd build/classes && java Icarus.main && cd ../..'
-- './magic.sh compile' will execute:
-  './make.sh compile && cd build/classes && java Icarus.main && cd ../..'
+All: (Clean/Javadoc/Compile)
+- execute './make.sh all'
+- or execute 'ant -f build.xml clean javadoc compile'
+
+Magic: (clean, compile and run)
+- execute './make.sh magic' (zsh and apache-ant needed)

@@ -26,4 +26,15 @@ then
     exit 1
 fi
 
-$ANT -f $BUILD $1
+case $1 in
+    compile) $ANT -f $BUILD compile ;;
+    javadoc) $ANT -f $BUILD javadoc ;;
+    clean)   $ANT -f $BUILD clean   ;;
+    all)     $ANT -f $BUILD clean javadoc compile;;
+    run)     cd build/classes && java Icarus.main ;;
+    magic)   $ANT -f $BUILD clean compile && cd build/classes && java Icarus.main $$ cd ../.. ;;
+    *) echo "read the README for information"
+       echo "usage: ./make.sh [compile|javadoc|clean|all|run|magic]" ;;
+esac
+
+exit 0
