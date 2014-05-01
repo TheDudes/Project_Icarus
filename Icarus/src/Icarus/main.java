@@ -67,6 +67,10 @@ public class main
                 path[0] = "/home/linc/NetBeansProject/Project_Icarus/Icarus/test.st";
                 path[1] = "/home/linc/NetBeansProject/Project_Icarus/Icarus/example_config";
                 break;
+            case "vault":
+                path[0] = "/home/vault/programing/NetbeansProjects/Project_Icarus/Icarus/test.st";
+                path[1] = "/home/vault/progrmming/NetbeansProjects/Project_Icarus/Icarus/logs/";
+                break;
             /*
              case "yourhostname":
              path[0] = "/your/path/to/the/st/file";

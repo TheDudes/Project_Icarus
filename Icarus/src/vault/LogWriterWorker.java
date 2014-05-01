@@ -53,12 +53,12 @@ public class LogWriterWorker implements Runnable{
     
     /**
      * LogWriterWorker constructor
+     * @param  pathToLogfile Path to where the log file is being saved
      * @param lbq LinkedBlockingQueue in which the log messages will be added
-     * @param configReader gets the Path from the configfile and returns it
      */
-    public LogWriterWorker(Config_Reader configReader, LinkedBlockingQueue<String> lbq) {
+    public LogWriterWorker(String pathToLogfile, LinkedBlockingQueue<String> lbq) {
         this.lbq = lbq;
-        this.tmpFilePath = configReader.get_path("LogWriter");
+        this.tmpFilePath = pathToLogfile;
         pathToLogfiles = tmpFilePath+getTimestamp()+".log";
     }
 

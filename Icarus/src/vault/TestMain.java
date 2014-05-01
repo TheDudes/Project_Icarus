@@ -29,9 +29,7 @@ public class TestMain {
      * @param args
      */
     public static void main(String[] args){
-        
-        LogWriter logger = new LogWriter("/home/vault/", 3);
-        logger.log("vault", 3, "Hallo es funzt");
+ 
         
     }
     

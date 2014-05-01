@@ -40,16 +40,15 @@ public class LogWriter {
     private SimpleDateFormat sdf; 
     private int verboseLevel;
     private Thread worker;
-    private Config_Reader confReader;
 
 
     /**
      * LogWriter Constructor
-     * @param pathToLogfile Path to where you want the log file to be saved
+     * @param confReader gets the Path from the configfile and returns it
      * @param verboseLevel this variable indicates how important the log message is
      */
-    public LogWriter(String pathToLogfile, int verboseLevel){
-        worker = new Thread(new LogWriterWorker(confReader, lbq));
+    public LogWriter(Config_Reader confReader, int verboseLevel){
+        worker = new Thread(new LogWriterWorker(confReader.get_path("LogWriter"), lbq));
         worker.start();
         this.verboseLevel = verboseLevel;
         getHostname();
