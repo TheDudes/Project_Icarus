@@ -113,12 +113,13 @@ public class Config_Reader {
      * @param key the key from which we want to get the value from
      * @return the value stored under the key
      */
-    public String[] get_path(String key){
+    public String get_path(String key){
         //removes the ; from the path Strings
         String prep = key_container.get(key).replace(";", "");
+        //only one path allowed not so this is not needed any more
         //splits the String after each , thereby seperating the different paths from each other
-        String[] toReturn = prep.split(",");
-        return toReturn;
+        //String[] toReturn = prep.split(",");
+        return prep;
     }
     
     
@@ -254,51 +255,52 @@ public class Config_Reader {
      * @throws IOException 
      */
     private String read_Linux() throws FileNotFoundException, IOException{
-        /* --warning-- this reader is never closed */
-        BufferedReader reader = new BufferedReader(new FileReader (filePath));
-        String toReturn = "";
-        char sign = (char)reader.read();
-        while(sign != (char)-1){
-            //read over the comment line without attaching it to the string
-            if(sign == '#'){
-                while(sign != '\n'){
-                    sign = (char)reader.read();
-                }
-            }
-            //throws out everything after //, if there is only one / it appends it plus the next sign
-            else if(sign == '/'){
-                sign = (char)reader.read();
-                if(sign == '/'){
+        String toReturn;
+        try (BufferedReader reader = new BufferedReader(new FileReader (filePath))) {
+            toReturn = "";
+            char sign = (char)reader.read();
+            while(sign != (char)-1){
+                //read over the comment line without attaching it to the string
+                if(sign == '#'){
                     while(sign != '\n'){
                         sign = (char)reader.read();
                     }
                 }
+                //throws out everything after //, if there is only one / it appends it plus the next sign
+                else if(sign == '/'){
+                    sign = (char)reader.read();
+                    if(sign == '/'){
+                        while(sign != '\n'){
+                            sign = (char)reader.read();
+                        }
+                    }
+                    else{
+                        toReturn += "/";
+                    }
+                }
+                //remove spaces (they are not attached to the string, that's all)
+                else if(sign == ' '){
+                    sign = (char)reader.read();
+                }
+                //reads over tabs aswell, they are not needed
+                else if(sign == '\t'){
+                    sign = (char)reader.read();
+                }
+                //if there are several newLines after each other only one is attached
+                else if(sign == '\n'){
+                    toReturn += sign;
+                    sign = (char)reader.read();
+                    while(sign == '\n'){
+                        sign = (char)reader.read();
+                    }if(sign == '\n'){
+                        sign = (char)reader.read();
+                    }
+                }
+                //every other symbol is attached to the string
                 else{
-                    toReturn += '/' + sign;
-                }
-            }
-            //remove spaces (they are not attached to the string, that's all)
-            else if(sign == ' '){
-                sign = (char)reader.read();
-            }
-            //reads over tabs aswell, they are not needed
-            else if(sign == '\t'){
-                sign = (char)reader.read();
-            }
-            //if there are several newLines after each other only one is attached
-            else if(sign == '\n'){
-                toReturn += sign;
-                sign = (char)reader.read();
-                while(sign == '\n'){
-                    sign = (char)reader.read();
-                }if(sign == '\n'){
+                    toReturn += sign;
                     sign = (char)reader.read();
                 }
-            }
-            //every other symbol is attached to the string
-            else{
-                toReturn += sign;
-                sign = (char)reader.read();
             }
         }
         return toReturn;
@@ -312,27 +314,14 @@ public class Config_Reader {
      * @throws IOException 
      */
      private String read_Windows() throws FileNotFoundException, IOException{
-        /* --warning-- this reader is never closed */
-        BufferedReader reader = new BufferedReader(new FileReader (filePath));
-        String toReturn = "";
-        char sign = (char)reader.read();
-        while(sign != (char)-1){
-            //read over the comment line without attaching it to the string
-            if(sign == '#'){
-                while(true){
-                    if(sign == '\r'){
-                        sign = (char)reader.read();
-                        if(sign == '\n'){
-                            break;
-                        }
-                    }
-                    sign = (char)reader.read();
-                }
-            }
-            //throws out everything after //, if there is only one / it appends it plus the next sign
-            else if(sign == '/'){
-                sign = (char)reader.read();
-                if(sign == '/'){
+
+         String toReturn;
+        try (BufferedReader reader = new BufferedReader(new FileReader (filePath))) {
+            toReturn = "";
+            char sign = (char)reader.read();
+            while(sign != (char)-1){
+                //read over the comment line without attaching it to the string
+                if(sign == '#'){
                     while(true){
                         if(sign == '\r'){
                             sign = (char)reader.read();
@@ -343,40 +332,55 @@ public class Config_Reader {
                         sign = (char)reader.read();
                     }
                 }
-                else{
-                    toReturn += '/' + sign;
-                }
-            }
-            //remove spaces (they are not attached to the string, that's all)
-            else if(sign == ' '){
-                sign = (char)reader.read();
-            }
-            //reads over tabs aswell, they are not needed
-            else if(sign == '\t'){
-                sign = (char)reader.read();
-            }
-            //if there are several newLines after each other only one is attached
-            else if(sign == '\r'){
-                toReturn += sign;
-                sign = (char)reader.read();
-                if(sign == '\n'){
-                    toReturn += sign;
+                //throws out everything after //, if there is only one / it appends it plus the next sign
+                else if(sign == '/'){
                     sign = (char)reader.read();
-                    while(sign == '\r'){
-                        sign = (char)reader.read();
-                        if(sign == '\n'){
+                    if(sign == '/'){
+                        while(true){
+                            if(sign == '\r'){
+                                sign = (char)reader.read();
+                                if(sign == '\n'){
+                                    break;
+                                }
+                            }
                             sign = (char)reader.read();
                         }
-                        else{
-                            break;
+                    }
+                    else{
+                        toReturn += "/";
+                    }
+                }
+                //remove spaces (they are not attached to the string, that's all)
+                else if(sign == ' '){
+                    sign = (char)reader.read();
+                }
+                //reads over tabs aswell, they are not needed
+                else if(sign == '\t'){
+                    sign = (char)reader.read();
+                }
+                //if there are several newLines after each other only one is attached
+                else if(sign == '\r'){
+                    toReturn += sign;
+                    sign = (char)reader.read();
+                    if(sign == '\n'){
+                        toReturn += sign;
+                        sign = (char)reader.read();
+                        while(sign == '\r'){
+                            sign = (char)reader.read();
+                            if(sign == '\n'){
+                                sign = (char)reader.read();
+                            }
+                            else{
+                                break;
+                            }
                         }
                     }
                 }
-            }
-            //every other symbol is attached to the string
-            else{
-                toReturn += sign;
-                sign = (char)reader.read();
+                //every other symbol is attached to the string
+                else{
+                    toReturn += sign;
+                    sign = (char)reader.read();
+                }
             }
         }
         return toReturn;
@@ -470,12 +474,12 @@ public class Config_Reader {
             "## the path /home/linc/Icarus/Logs/SyntaxCheck to the output \n" +
             "## of the Syntax checker\n" +
             "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll, /home/linc/Icarus/Logs/SyntaxCheck;";
-        try{
-        /* --warning-- this writer is never closed */
+        try(
             BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+        ){
             writer.write(hugeAssExampleString);
             writer.flush();
-        }
+        }   
         catch(IOException e){
             System.err.println("could not create example_config");
         }
@@ -568,9 +572,9 @@ public class Config_Reader {
             "## the path /home/linc/Icarus/Logs/SyntaxCheck to the output \n" +
             "## of the Syntax checker\n" +
             "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll, /home/linc/Icarus/Logs/SyntaxCheck;";
-        try{
-            /* --warning-- this writer is never closed */
+        try(
             BufferedWriter writer = new BufferedWriter(new FileWriter("example_config"));
+        ){
             writer.write(hugeAssExampleString);
             writer.flush();
         }
