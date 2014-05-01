@@ -69,7 +69,7 @@ public class main
                 break;
             case "link":
                 path[0] = "/home/linc/NetBeansProject/Project_Icarus/Icarus/test.st";
-                path[1] = "/home/linc/NetBeansProject/Project_Icarus/Icarus/example_config";
+                path[1] = "/home/linc/Documents/defaultConfig";
                 break;
             /*
              case "yourhostname":
