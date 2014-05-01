@@ -23,6 +23,14 @@ package interpreter;
 
 import vault.*;
 
+/**
+ * @author: d4ryus - https://github.com/d4ryus/
+ * <p>
+ * class which holds all the offset related Functions, these are used
+ * to get the index of the next Keyword, for example.
+ * <p>
+ * @version: 0.2
+ */
 public class Offset_Handler
 {
     String    log_key = "Interpreter-Offset";

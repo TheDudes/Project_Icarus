@@ -14,12 +14,17 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * file: Icarus/src/interpreter/Container_LOOP.java
- * @author: d4ryus - https://github.com/d4ryus/
- * @version: 0.2
  * vim: foldmethod=syntax:foldcolumn=5:
  */
 package interpreter;
 
+/**
+ * @author: d4ryus - https://github.com/d4ryus/
+ * <p>
+ * class/struct to hold Loop values.
+ * <p>
+ * @version: 0.2
+ */
 public class Container_LOOP
 {
 

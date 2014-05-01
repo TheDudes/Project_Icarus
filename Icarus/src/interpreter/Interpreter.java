@@ -26,6 +26,13 @@ import parser.*;
 
 import javax.script.ScriptEngine;
 
+/**
+ * @author: d4ryus - https://github.com/d4ryus/
+ * <p>
+ * class where the main interpret function is located.
+ * <p>
+ * @version: 0.2
+ */
 public class Interpreter
 {
     String log_key = "Interpreter";

@@ -26,6 +26,14 @@ import vault.*;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
+/**
+ * @author: d4ryus - https://github.com/d4ryus/
+ * <p>
+ * class which is used to warmup the JavaScript engine, the engine
+ * is used to evaluate conditions.
+ * <p>
+ * @version: 0.2
+ */
 public class Engine_Warmup
 {
 

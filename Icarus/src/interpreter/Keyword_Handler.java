@@ -27,6 +27,14 @@ import parser.*;
 import java.util.Stack;
 import javax.script.ScriptEngine;
 
+/**
+ * @author: d4ryus - https://github.com/d4ryus/
+ * <p>
+ * class which holds all the keyword related Functions, these are used
+ * to handle found Keywords.
+ * <p>
+ * @version: 0.2
+ */
 public class Keyword_Handler
 {
     String log_key = "Interpreter-Keyword_Handler";
