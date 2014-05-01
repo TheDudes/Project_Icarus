@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import linc.*;
 
 /**
  * @author Aleksej Weinberg <weinberg.aleksej@yahoo.de>
@@ -45,12 +44,6 @@ public class LogWriterWorker implements Runnable{
     private String tmpFilePath;
     private String pathToLogfiles;
 
-    
-    private FileWriter initFileWriter() throws IOException{
-        FileWriter fwriter = new FileWriter("path", true);
-        return fwriter;
-    }
-    
     /**
      * LogWriterWorker constructor
      * @param  pathToLogfile Path to where the log file is being saved

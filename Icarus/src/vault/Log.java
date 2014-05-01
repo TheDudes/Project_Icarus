@@ -16,8 +16,6 @@
  */
 package vault;
 
-import linc.*;
-
 /**
  *
  * @author apfel
@@ -41,8 +39,8 @@ public class Log {
      * @param pathToLogfile Path to where you want the logfile to be saved as String
      * @param verboseLevel here you can configure the loglevel of the messages
      */
-    public static void init(Config_Reader confReader, int verboseLevel) {
-        log = new LogWriter(confReader, verboseLevel);
+    public static void init(String path, int verboseLevel) {
+        log = new LogWriter(path, verboseLevel);
         initialized = true;
     }
 

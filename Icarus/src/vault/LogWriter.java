@@ -54,6 +54,13 @@ public class LogWriter {
         getHostname();
     }
 
+    public LogWriter(String path, int verboseLevel){
+        worker = new Thread(new LogWriterWorker(path, lbq));
+        worker.start();
+        this.verboseLevel = verboseLevel;
+        getHostname();
+    }
+
     /**
      * getHostname gets the name of the host
      */
