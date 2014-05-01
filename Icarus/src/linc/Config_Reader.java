@@ -268,7 +268,8 @@ public class Config_Reader {
      */
     private void set_default_values(){
         container.put("takt_frequency", 100);
-        container.put("verbosity_level", 0);        
+        container.put("verbosity_level", 0);
+        container.put("silent", true);
     }
     
     
