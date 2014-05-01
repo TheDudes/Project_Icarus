@@ -68,29 +68,29 @@ public class Symbols {
         int tmpint;
         switch (kind) {
             case "PROGRAM":
-                System.out.println("Parser: Symbols: findContextVars(PROGRAM): bevor loop");
+                //System.out.println("Parser: Symbols: findContextVars(PROGRAM): bevor loop");
                 for (int k : match.getPrograms()) {
-                    System.out.println("Parser: Symbols: findContextVars(PROGRAM): inside loop, k: " + k);
+                    //System.out.println("Parser: Symbols: findContextVars(PROGRAM): inside loop, k: " + k);
                     varlist = new ArrayList<>();
                     for (int j : variableIndexes) {
-                        System.out.println("Parser: Symbols: findContextVars(PROGRAM): inside first inner loop, j: " + j);
+                        //System.out.println("Parser: Symbols: findContextVars(PROGRAM): inside first inner loop, j: " + j);
                         if (j < match.getEndProgram(k) && j > k) { // room for improvement here! but, fuck it.
-                            System.out.println("Parser: Symbols: findContextVars(PROGRAM): inside first inner loop, inside if");
+                            //System.out.println("Parser: Symbols: findContextVars(PROGRAM): inside first inner loop, inside if");
                             varlist.add(j);
                         }
                         //variableIndexes.remove(j);
                     }
                     context = builder.substring(k + 7, varlist.get(0));  // +7 == "PROGRAM".length(), i should replace all these with final constants, btw. finds out name of the context
-                    System.out.println("Parser: Symbols: findContextVars(PROGRAM): between the inner loops, context: " + context);
+                    //System.out.println("Parser: Symbols: findContextVars(PROGRAM): between the inner loops, context: " + context);
                     for (int i : varlist) {
-                        System.out.println("Parser: Symbols: findContextVars(PROGRAM): inside inner loop 2, i: " + i);
+                        //System.out.println("Parser: Symbols: findContextVars(PROGRAM): inside inner loop 2, i: " + i);
                         tmpint = match.getEndVar(i);
                         block.append(builder.substring(i + match.getVarStart(i).length(), tmpint));
                         deleteme.add(new Integer[]{i, tmpint + 7});  // +7 == "END_VAR".length()
                     }
-                    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers()");
-                    System.out.println(" --- Context: " + context);
-                    System.out.println(" --- block: " + block);
+                    //System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers()");
+                    //System.out.println(" --- Context: " + context);
+                    //System.out.println(" --- block: " + block);
                     fillUpTheContainers(context, block);
                     varlist = null;
                 }
@@ -163,16 +163,16 @@ public class Symbols {
         String type;
         String[] names;
         String value;
-        System.out.println("block: " + block);
+        //System.out.println("block: " + block);
         try {
             for (StringBuilder b = new StringBuilder(block.substring(0, block.indexOf(";") + 1)); true; b = new StringBuilder(block.substring(0, block.indexOf(";") + 1))) {
                 block.delete(0, block.indexOf(";") + 1);
-                System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside loop");
+                //System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside loop");
                 tmpint = b.indexOf(":=");
-                System.out.println("block: " + block);
-                System.out.println("b: " + b.toString());
+                //System.out.println("block: " + block);
+                //System.out.println("b: " + b.toString());
                 if (tmpint == -1) {
-                    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside first if");
+                    //println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside first if");
                     tmpint = b.indexOf(":");
 		    //if (tmpint == -1)
                     // throw the wrong variablen deklaration error or so 
@@ -184,7 +184,7 @@ public class Symbols {
                         percontext = new HashMap<>();
                     }
                     for (String name : names) {
-                        System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside inner loop in if");
+                        //println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside inner loop in if");
                         percontext.put(name, id);
                         typebyid.put(id, type);
                         valuebyid.put(id, TYPES.getType(type));
@@ -195,7 +195,7 @@ public class Symbols {
                 } else if (Pattern.matches("@", block.toString())) {
                     //String tmp[] = b.toString().split("@");
                     //b = new StringBuilder(tmp[0]);
-                    System.out.println("b Stringbuilder without @:" + b);
+                    //println("b Stringbuilder without @:" + b);
                     //System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside second if");
                     //System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): names");
                     names = b.substring(0, b.indexOf(":")).split(",");
@@ -222,7 +222,7 @@ public class Symbols {
                         }
                     }
                 } else {
-                    System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside else");
+                    //println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside else");
                     tmpint2 = b.indexOf(":");
 		    //if (tmpint == -1)
                     // throw the wrong variablen deklaration error or so 
@@ -234,7 +234,7 @@ public class Symbols {
                         percontext = new HashMap<>();
                     }
                     for (String name : names) {
-                        System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside loop in else");
+                        //System.out.println("Parser: Symbols: findContextVars(PROGRAM): fillUpTheContainers(): inside loop in else");
                         percontext.put(name, id);
                         typebyid.put(id, type);
                         valuebyid.put(id, TYPES.getType(type, value));
@@ -349,7 +349,7 @@ public class Symbols {
      * @throws java.lang.Exception the context
      */
     public void setValue(String input, String context) throws Exception {
-        System.out.println(input);
+        // System.out.println(input);
         fillUpTheContainers(context, new StringBuilder(input + "@"));
     }
 
@@ -405,13 +405,13 @@ public class Symbols {
         typebyid = new HashMap<>();
         valuebyid = new HashMap<>();
 
-        System.out.println("Parser: Symbols: findContextVars(PROGRAM)");
+        // System.out.println("Parser: Symbols: findContextVars(PROGRAM)");
         findContextVars("PROGRAM");
-        System.out.println("Parser: Symbols: findContextVars(FUNCTION)");
+        // System.out.println("Parser: Symbols: findContextVars(FUNCTION)");
         findContextVars("FUNCTION");
-        System.out.println("Parser: Symbols: findContextVars(FUNCTION_BLOCK)");
+        // System.out.println("Parser: Symbols: findContextVars(FUNCTION_BLOCK)");
         findContextVars("FUNCTION_BLOCK");
-        System.out.println("Parser: Symbols: findContextVars(GLOBAL)");
+        // System.out.println("Parser: Symbols: findContextVars(GLOBAL)");
         //findContextVars("GLOBAL");
         //System.out.println("Parser: Symbols: generateSymbolsList()");
         
