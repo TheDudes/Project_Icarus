@@ -108,7 +108,7 @@ public class Config_Reader {
     /**
      * just used for debugging, Object isn't a really good return value
      * @param key 
-     * @return 
+     * @return the Object stored under the key in the variable container
      */
     public Object get_val(String key){
         if(logWriterInit){
