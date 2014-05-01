@@ -1,5 +1,4 @@
-
-/*
+/**
  * Copyright (c) 2014, HAW-Landshut
  *
  * Permission to use, copy, modify, and/or distribute this software for any
@@ -75,7 +74,8 @@ public class LogWriter {
      *
      * @return String
      */
-    private String getTimestamp(){ 
+    private String getTimestamp()
+    {
         date = new Date(System.currentTimeMillis());
         sdf = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
         return sdf.format(date);
@@ -87,14 +87,15 @@ public class LogWriter {
      * @param verboseLevel this variable indicates how important the log message is
      * @param logMessage this is the message that will be written in the log file 
      */
-    public void log(String key, int verboseLevel, String logMessage) {
-       
-        if(!silent && (verboseLevel==0)){
+    public void log(String key, int verboseLevel, String logMessage)
+    {
+        if (!silent && ( verboseLevel == 0 ) )
+        {
             System.out.println(logMessage);
         }
-        
-        if(verboseLevel <= this.verboseLevel){
-            
+
+        if ( verboseLevel <= this.verboseLevel )
+        {
             String logLine ="["+getTimestamp()+"]"+" ["+
                                 host+"] "+"["+
                                 key+"]"+": "+
@@ -106,7 +107,9 @@ public class LogWriter {
     /**
      * kill will stop the thread
      */
-    public void kill(){
-        LogWorker.setAliveStatus();
+    public void kill()
+    {
+        LogWorker.kill();
+        log("LogWriter", 0, "exiting LogWriter.");
     }
 }

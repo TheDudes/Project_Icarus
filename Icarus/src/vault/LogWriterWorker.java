@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2014, HAW-Landshut
  *
  * Permission to use, copy, modify, and/or distribute this software for any
@@ -34,29 +34,30 @@ import linc.*;
  * <p>
  * @version 1.0
  */
-public class LogWriterWorker implements Runnable{
-
+public class LogWriterWorker implements Runnable
+{
     private LinkedBlockingQueue<String> lbq;
     private Config_Reader confReader;
     private Date date;
     private SimpleDateFormat sdf;
     private boolean alive = true;
-    //needs to be implemented//
     private String tmpFilePath;
     private String pathToLogfiles;
     private String message;
     private int verboseLevel;
+
     /**
      * LogWriterWorker constructor
      * @param  pathToLogfile Path to where the log file is being saved
      * @param lbq LinkedBlockingQueue in which the log messages will be added
      */
-    public LogWriterWorker(Config_Reader confReader, LinkedBlockingQueue<String> lbq) {
-        this.lbq = lbq;
-        this.tmpFilePath = confReader.get_path("LogWriter");
+    public LogWriterWorker(Config_Reader confReader, LinkedBlockingQueue<String> lbq)
+    {
         this.confReader = confReader;
-        verboseLevel = confReader.get_int("verbosity_level");
-        pathToLogfiles = tmpFilePath+getTimestamp()+".log";
+        this.lbq        = lbq;
+        tmpFilePath     = confReader.get_path("LogWriter");
+        verboseLevel    = confReader.get_int("verbosity_level");
+        pathToLogfiles  = tmpFilePath+getTimestamp() + ".log";
     }
 
     /**
@@ -68,28 +69,36 @@ public class LogWriterWorker implements Runnable{
         sdf  = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss");
         return sdf.format(date);
     }
-    
-    public void setAliveStatus(){
-        alive = false;
-    }
 
     @Override
     public void run() {
         try (Writer fWriter = new BufferedWriter(new FileWriter(pathToLogfiles, true))) {
-            
-            while (alive || !lbq.isEmpty()) {
-                if(verboseLevel == 4){
+            while( !lbq.isEmpty() || alive )
+            {
+                if(verboseLevel == 4)
+                {
                     message = lbq.size() + " " + lbq.take();
                     fWriter.write(message);
                     fWriter.flush();
                 }
-                fWriter.write(lbq.take());
-                fWriter.flush();
+                else
+                {
+                    fWriter.write(lbq.take());
+                    fWriter.flush();
+                }
             }
         } catch (IOException e) {
             System.out.println("Error while writing File!");
         } catch (InterruptedException ex) {
             Logger.getLogger(LogWriterWorker.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * kill will stop the thread
+     */
+    public void kill()
+    {
+        alive = false;
     }
 }
