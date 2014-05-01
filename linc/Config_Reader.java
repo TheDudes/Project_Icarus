@@ -270,7 +270,7 @@ public class Config_Reader {
                     }
                 }
                 else{
-                    toReturn += '/' + sign;
+                    toReturn += "/";
                 }
             }
             //remove spaces (they are not attached to the string, that's all)
@@ -339,7 +339,7 @@ public class Config_Reader {
                     }
                 }
                 else{
-                    toReturn += '/' + sign;
+                    toReturn += "/";
                 }
             }
             //remove spaces (they are not attached to the string, that's all)
@@ -461,10 +461,9 @@ public class Config_Reader {
             "## output\n" +
             "#key_parser = /home/linc/Documents/ParseLog;\n" +
             "\n" +
-            "## will assign the path /home/linc/Icarus/Logs/LogAll as well as\n" +
-            "## the path /home/linc/Icarus/Logs/SyntaxCheck to the output \n" +
-            "## of the Syntax checker\n" +
-            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll, /home/linc/Icarus/Logs/SyntaxCheck;";
+            "## will assign the path /home/linc/Icarus/Logs/LogAll\n" +
+            "## to the output of the Syntax checker\n" +
+            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll;";
         try{
             BufferedWriter writer = new BufferedWriter(new FileWriter(path));
             writer.write(hugeAssExampleString);
@@ -558,10 +557,9 @@ public class Config_Reader {
             "## output\n" +
             "#key_parser = /home/linc/Documents/ParseLog;\n" +
             "\n" +
-            "## will assign the path /home/linc/Icarus/Logs/LogAll as well as\n" +
-            "## the path /home/linc/Icarus/Logs/SyntaxCheck to the output \n" +
+            "## will assign the path /home/linc/Icarus/Logs/LogAll to the output \n" +
             "## of the Syntax checker\n" +
-            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll, /home/linc/Icarus/Logs/SyntaxCheck;";
+            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll;";
         try{
             BufferedWriter writer = new BufferedWriter(new FileWriter("example_config"));
             writer.write(hugeAssExampleString);
