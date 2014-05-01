@@ -41,7 +41,7 @@ public class STFileFinder {
     public STFileFinder(Config_Reader cfReader, LogWriter logWriter){
         this.cfReader = cfReader;
         this.logWriter = logWriter;
-        fileDirectory = cfReader.get_path("fileDirectory");
+        fileDirectory = cfReader.get_string("path");
         directory = new File(fileDirectory);
         files = directory.list();
         getSTFiles();
