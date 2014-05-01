@@ -39,7 +39,7 @@ public class LogWriterWorker implements Runnable{
 
     private Date date;
     private SimpleDateFormat sdf;
-
+    private boolean alive = true;
     //needs to be implemented//
     private String tmpFilePath;
     private String pathToLogfiles;
@@ -64,11 +64,15 @@ public class LogWriterWorker implements Runnable{
         sdf  = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss");
         return sdf.format(date);
     }
+    
+    public void setAliveStatus(){
+        alive = false;
+    }
 
     @Override
     public void run() {
         try (Writer fWriter = new BufferedWriter(new FileWriter(pathToLogfiles, true))) {
-            while (true) {
+            while (alive || !lbq.isEmpty()) {
                 fWriter.write(lbq.take());
                 fWriter.flush();
             }

@@ -39,6 +39,7 @@ public class LogWriter {
     private Date date; 
     private SimpleDateFormat sdf; 
     private int verboseLevel;
+    private LogWriterWorker LogWorker;
     private Thread worker;
 
 
@@ -48,7 +49,8 @@ public class LogWriter {
      * @param verboseLevel this variable indicates how important the log message is
      */
     public LogWriter(Config_Reader confReader, int verboseLevel){
-        worker = new Thread(new LogWriterWorker(confReader.get_path("LogWriter"), lbq));
+        this.LogWorker = new LogWriterWorker(confReader.get_path("LogWriter"), lbq);
+        worker = new Thread(LogWorker);
         worker.start();
         this.verboseLevel = verboseLevel;
         getHostname();
@@ -100,15 +102,10 @@ public class LogWriter {
         }
     }
 
-    /* --warning--
-     * thread.kill() is deprecated, more information:
-     * http://docs.oracle.com/javase/1.5.0/docs/guide/misc/threadPrimitiveDeprecation.html
-     */
     /**
      * kill will stop the thread
      */
-    public void kill()
-    {
-        worker.stop();
+    public void kill(){
+        LogWorker.setAliveStatus();
     }
 }
