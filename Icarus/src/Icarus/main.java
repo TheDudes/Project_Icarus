@@ -89,7 +89,7 @@ public class main
         STFileFinder  stfinder  = new STFileFinder(config, logger);
 	/* 
 	 * New Class LegacyWrapper provides legacy function calls for InfoCollector.
-	 * In the main Programm the function
+	 * In the other parts the function calls should be replaced some time.
 	 */
 	InfoCollector container = new InfoCollector(stfinder.get_file_names(), logger);
         ScriptEngine  engine;
