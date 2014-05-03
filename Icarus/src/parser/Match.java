@@ -34,39 +34,39 @@ public class Match {
 	
 	List<ArrayList<Integer>> list; /* list with all lists from Analyser */
 	
-	TreeMap<Integer,Integer> ifmatching            = new TreeMap<>(); /* map with if - end_if pairs */
-	TreeMap<Integer,Integer> casematching          = new TreeMap<>(); /* map with case - end_case pairs */
-	TreeMap<Integer,Integer> varmatching           = new TreeMap<>(); /* map with var* - end_var pairs */
-	TreeMap<Integer,Integer> programmatching       = new TreeMap<>(); /* map with programm - end_programm pairs */
-	TreeMap<Integer,Integer> functionmatching      = new TreeMap<>(); /* map with function - end_function pairs */
-	TreeMap<Integer,Integer> functionblockmatching = new TreeMap<>(); /* map with funcion_block - end_function_block pairs */
-	TreeMap<Integer,Integer> formatching           = new TreeMap<>(); /* map with for - end_for pairs */
-	TreeMap<Integer,Integer> whilematching         = new TreeMap<>(); /* map with while - end_while pairs */
-	TreeMap<Integer,Integer> repeatmatching        = new TreeMap<>(); /* map with repeat - end_repeat pairs */
+	TreeMap<Integer,Integer>  ifmatching            = new TreeMap<>(); /* map with if - end_if pairs */
+	TreeMap<Integer,Integer>  casematching          = new TreeMap<>(); /* map with case - end_case pairs */
+	TreeMap<Integer,Integer>  varmatching           = new TreeMap<>(); /* map with var* - end_var pairs */
+	TreeMap<Integer,Integer>  programmatching       = new TreeMap<>(); /* map with programm - end_programm pairs */
+	TreeMap<Integer,Integer>  functionmatching      = new TreeMap<>(); /* map with function - end_function pairs */
+	TreeMap<Integer,Integer>  functionblockmatching = new TreeMap<>(); /* map with funcion_block - end_function_block pairs */
+	TreeMap<Integer,Integer>  formatching           = new TreeMap<>(); /* map with for - end_for pairs */
+	TreeMap<Integer,Integer>  whilematching         = new TreeMap<>(); /* map with while - end_while pairs */
+	TreeMap<Integer,Integer>  repeatmatching        = new TreeMap<>(); /* map with repeat - end_repeat pairs */
 
-	Stack<Integer> stack; /* a temp stack to find the pairs */
+	Stack<Integer>  stack; /* a temp stack to find the pairs */
 
-	ArrayList<Integer> ifs;            /* list with all the ifs */
-	ArrayList<Integer> cases;          /* list with all the cases */
-	ArrayList<Integer> vars;           /* list with all the vars */
-	ArrayList<Integer> programs;       /* list with all the programs */
-	ArrayList<Integer> functions;      /* list with all the functions */
-	ArrayList<Integer> functionblocks; /* list with all the function_blocks */
-	ArrayList<Integer> fors;           /* list with all the fors */
-	ArrayList<Integer> whiles;         /* list with all the whiles */
-	ArrayList<Integer> repeats;        /* list with all the repeats */
+	ArrayList<Integer>  ifs;            /* list with all the ifs */
+	ArrayList<Integer>  cases;          /* list with all the cases */
+	ArrayList<Integer>  vars;           /* list with all the vars */
+	ArrayList<Integer>  programs;       /* list with all the programs */
+	ArrayList<Integer>  functions;      /* list with all the functions */
+	ArrayList<Integer>  functionblocks; /* list with all the function_blocks */
+	ArrayList<Integer>  fors;           /* list with all the fors */
+	ArrayList<Integer>  whiles;         /* list with all the whiles */
+	ArrayList<Integer>  repeats;        /* list with all the repeats */
 
-	TreeMap<Integer,String> ifendif;                       /* map with if index and if keyword */
-	TreeMap<Integer,String> caseendcase;                   /* map with case index and case keyword */
-	TreeMap<Integer,String> varendvar;                     /* map with var index and var keyword */
-	TreeMap<Integer,String> programendprogram;             /* map with program index and programm keyword */
-	TreeMap<Integer,String> functionendfunction;           /* map with function index and function keyword */
-	TreeMap<Integer,String> functionblockendfunctionblock; /* map with function_block index and function_block keyword */
-	TreeMap<Integer,String> forendfor;                     /* map with for index and for keyword */
-	TreeMap<Integer,String> whileendwhile;                 /* map with while index and while keyword */
-	TreeMap<Integer,String> repeatendrepeat;               /* map with repeat index and repeat keyword */
+	TreeMap<Integer,String>  ifendif;                       /* map with if index and if keyword */
+	TreeMap<Integer,String>  caseendcase;                   /* map with case index and case keyword */
+	TreeMap<Integer,String>  varendvar;                     /* map with var index and var keyword */
+	TreeMap<Integer,String>  programendprogram;             /* map with program index and programm keyword */
+	TreeMap<Integer,String>  functionendfunction;           /* map with function index and function keyword */
+	TreeMap<Integer,String>  functionblockendfunctionblock; /* map with function_block index and function_block keyword */
+	TreeMap<Integer,String>  forendfor;                     /* map with for index and for keyword */
+	TreeMap<Integer,String>  whileendwhile;                 /* map with while index and while keyword */
+	TreeMap<Integer,String>  repeatendrepeat;               /* map with repeat index and repeat keyword */
 
-	ArrayList<Integer> tmp; /* temp list to reorder the old lists */
+	ArrayList<Integer>  tmp; /* temp list to reorder the old lists */
 
 	/* aditional structures to make the case handling more comfortable */
 	TreeMap<Integer,Integer>                     allcases   = new TreeMap<>();
@@ -76,7 +76,7 @@ public class Match {
 	// private boolean logstat;
 	private final LogWriter  log;
 	private final String     mainkey  = "parser";
-	private final String     subkey   = "match";
+	private final String     subkey   = "Match";
 	private final String     key      = mainkey+"-"+subkey;
     
 	/**
@@ -88,40 +88,50 @@ public class Match {
 	 */
 	public
 	Match(Analyser anal, StringBuilder builder, LogWriter log)
-	{
+ 	{
 		this.log = log;
 		this.builder = builder;
-		list = anal.give_me_all_the_lists();
-	
-		gether_if_list();
-		find_if_end_if_pairs();
-	
-		gether_case_list();
-		find_case_end_case_pairs();
+
+		log.log(key, 3, "Match ...");
 		
-		find_all_casees();
-		create_case_structure();
+		list = anal.give_me_all_the_lists();
+		log.log(key, 4, "got all lists from the analyser.");
+
+		try {
+			gether_if_list();
+			find_if_end_if_pairs();
 	
-		gether_all_var_list();
-		find_var_end_var_pairs();
+			gether_case_list();
+			find_case_end_case_pairs();
+		
+			find_all_casees();
+			create_case_structure();
 	
-		gether_all_program_list();
-		find_program_end_program_pairs();
-
-		gether_all_function_list();
-		find_function_end_function_pairs();
-
-		gether_all_function_block_list();
-		find_function_block_end_function_block_pairs();
-
-		gether_all_for_list();
-		find_for_end_for_pairs();
+			gether_all_var_list();
+			find_var_end_var_pairs();
 	
-		gether_all_while_list();
-		find_while_end_while_pairs();
+			gether_all_program_list();
+			find_program_end_program_pairs();
 
-		gether_all_repeat_list();
-		find_repeat_end_repeat_pairs();
+			gether_all_function_list();
+			find_function_end_function_pairs();
+
+			gether_all_function_block_list();
+			find_function_block_end_function_block_pairs();
+
+			gether_all_for_list();
+			find_for_end_for_pairs();
+	
+			gether_all_while_list();
+			find_while_end_while_pairs();
+
+			gether_all_repeat_list();
+			find_repeat_end_repeat_pairs();
+		} catch (Exception e) {
+			System.out.println(e);
+			System.exit(1);
+		}
+		log.log(key, 3, "Match finisched.");
 	}
 
 	// if
@@ -134,9 +144,9 @@ public class Match {
 	private void
 	gether_if_list()
 	{
-		ifs = list.get(11);
+		log.log(key, 4, "gether_if_list called.");
+		ifs = list.get(11); /* 11 is hardcoded here, should find a better solution */
 		ifendif = new TreeMap<>();
-		//String ifendif;
 		for (Integer item : ifs) {
 			if (builder.substring(item, item+2).equals("IF")) {
 				ifendif.put(item, "IF");
@@ -153,20 +163,28 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	find_if_end_if_pairs()
+	find_if_end_if_pairs() throws Exception
 	{
+		log.log(key, 4, "find_if_end_if_pairs called.");
 		tmp = new ArrayList<>();
 		stack = new Stack<>();
-		//for (Integer item : ifendif.keySet()) {
 		for (Integer item : new TreeSet<Integer>(ifendif.keySet())) {
 			if ( ifendif.get(item).equals("IF") ) {
 				stack.push(item);
 				tmp.add(item);
 			} else {
 				ifmatching.put(stack.pop(), item);
-			} // will throw, if_not_closed_exception
+			}
 		}
-		ifs = tmp;
+		if (stack.size() == 0) {
+			ifs = tmp;
+			log.log(key, 4, "Found end Sorted IF-END_IF#: "+ifs.size());
+		}
+		else
+		{
+			log.log(key, 0, "IF not closed or END_IF to much!");
+			throw new Exception("IF not closed or END_IF to much!");
+		}
 	}
     
 	/**
@@ -219,7 +237,7 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	find_case_end_case_pairs()
+	find_case_end_case_pairs() throws Exception
 	{
 		tmp = new ArrayList<>();
 		stack = new Stack<>();
@@ -229,9 +247,17 @@ public class Match {
 				tmp.add(item);
 			} else {
 				casematching.put(stack.pop(), item);
-			} // will throw, case_not_closed_exception
+			}
 		}
-		cases = tmp;
+		if (stack.size() == 0) {
+			cases = tmp;
+			log.log(key, 4, "Found end Sorted CASE-END_CASE#: "+cases.size());
+		}
+		else
+		{
+			log.log(key, 0, "CASE not closed or END_CASE to much!");
+			throw new Exception("CASE not closed or END_CASE to much!");
+		}
 	}
 
 	/**
@@ -432,7 +458,7 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	find_var_end_var_pairs()
+	find_var_end_var_pairs() throws Exception
 	{
 		tmp = new ArrayList<>();
 		stack = new Stack<>();
@@ -442,9 +468,17 @@ public class Match {
 				tmp.add(item);
 			} else {
 				varmatching.put(stack.pop(), item);
-			} // will throw, var_not_closed_exception
+			}
 		}
-		vars = tmp;
+		if (stack.size() == 0) {
+			vars = tmp;
+			log.log(key, 4, "Found end Sorted VAR*-END_VAR#: "+vars.size());
+		}
+		else
+		{
+			log.log(key, 0, "VAR not closed or END_VAR to much!");
+			throw new Exception("VAR not closed or END_VAR to much!");
+		}
 	}
 
 	/**
@@ -508,7 +542,7 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	find_program_end_program_pairs()
+	find_program_end_program_pairs() throws Exception
 	{
 		tmp = new ArrayList<>();
 		stack = new Stack<>();
@@ -518,9 +552,17 @@ public class Match {
 				tmp.add(item);
 			} else {
 				programmatching.put(stack.pop(), item);
-			} // will throw, program_not_closed_exception
+			}
 		}
-		programs = tmp;
+		if (stack.size() == 0) {
+			programs = tmp;
+			log.log(key, 4, "Found end Sorted PROGRAM-END_PROGRAM#: "+programs.size());
+		}
+		else
+		{
+			log.log(key, 0, "PROGRAM not closed or END_PROGRAM to much!");
+			throw new Exception("PROGRAM not closed or END_PROGRAM to much!");
+		}
 	}
 
 	/**
@@ -572,7 +614,7 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	find_function_end_function_pairs()
+	find_function_end_function_pairs() throws Exception
 	{
 		tmp = new ArrayList<>();
 		stack = new Stack<>();
@@ -584,7 +626,15 @@ public class Match {
 				functionmatching.put(stack.pop(), item);
 			}
 		}
-		functions = tmp;
+		if (stack.size() == 0) {
+			functions = tmp;
+			log.log(key, 4, "Found end Sorted FUNCTION-END_FUNCTION#: "+functions.size());
+		}
+		else
+		{
+			log.log(key, 0, "FUNCTION not closed or END_FUNCTION to much!");
+			throw new Exception("FUNCTION not closed or END_FUNCTION to much!");
+		}
 	}
 
 	/**
@@ -636,7 +686,7 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	find_function_block_end_function_block_pairs()
+	find_function_block_end_function_block_pairs() throws Exception
 	{
 		tmp = new ArrayList<>();
 		stack = new Stack<>();
@@ -647,8 +697,16 @@ public class Match {
 			} else {
 				functionblockmatching.put(stack.pop(), item);
 			}
+		} 
+		if (stack.size() == 0) {
+			functionblocks = tmp;
+			log.log(key, 4, "Found end Sorted FUNCTION_BLOCK-END_FUNCTION_BLOCK#: "+functionblocks.size());
 		}
-		functionblocks = tmp;
+		else
+		{
+			log.log(key, 0, "FUNCTION_BLOCK not closed or END_FUNCTION_BLOCK to much!");
+			throw new Exception("FUNCTION_BLOCK not closed or END_FUNCTION_BLOCK to much!");
+		}
 	}
 
 	/**
@@ -700,7 +758,7 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	find_for_end_for_pairs()
+	find_for_end_for_pairs() throws Exception
 	{
 		tmp = new ArrayList<>();
 		stack = new Stack<>();
@@ -712,7 +770,15 @@ public class Match {
 				formatching.put(stack.pop(), item);
 			}
 		}
-		fors = tmp;
+		if (stack.size() == 0) {
+			fors = tmp;
+			log.log(key, 4, "Found end Sorted FOR-END_FOR#: "+fors.size());
+		}
+		else
+		{
+			log.log(key, 0, "FOR not closed or END_FOR to much!");
+			throw new Exception("FOR not closed or END_FOR to much!");
+		}
 	}
 
 	/**
@@ -764,7 +830,7 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	find_while_end_while_pairs()
+	find_while_end_while_pairs() throws Exception
 	{
 		tmp = new ArrayList<>();
 		stack = new Stack<>();
@@ -776,7 +842,15 @@ public class Match {
 				whilematching.put(stack.pop(), item);
 			}
 		}
-		whiles = tmp;
+		if (stack.size() == 0) {
+			whiles = tmp;
+			log.log(key, 4, "Found end Sorted WHILE-END_WHILE#: "+whiles.size());
+		}
+		else
+		{
+			log.log(key, 0, "WHILE not closed or END_WHILE to much!");
+			throw new Exception("WHILE not closed or END_WHILE to much!");
+		}
 	}
 
 	/**
@@ -828,7 +902,7 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	find_repeat_end_repeat_pairs()
+	find_repeat_end_repeat_pairs() throws Exception
 	{
 		tmp = new ArrayList<>();
 		stack = new Stack<>();
@@ -840,7 +914,15 @@ public class Match {
 				repeatmatching.put(stack.pop(), item);
 			}
 		}
-		repeats = tmp;
+		if (stack.size() == 0) {
+			repeats = tmp;
+			log.log(key, 4, "Found end Sorted REPEAT-END_REPEAT#: "+repeats.size());
+		}
+		else
+		{
+			log.log(key, 0, "REPEAT not closed or END_REPEAT to much!");
+			throw new Exception("REPEAT not closed or END_REPEAT to much!");
+		}
 	}
 
 	/**

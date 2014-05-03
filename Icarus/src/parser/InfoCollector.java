@@ -57,9 +57,9 @@ public class InfoCollector extends LegacyWrapper {
 	 * @see Symbols
 	 */
 	public InfoCollector (String[] files, LogWriter log) throws FileNotFoundException, IOException, Exception {
-		super(files, log);
+		super(files, log); /* legacy inteface initializer */
 		this.log = log;
-		//logstat = log.isInitialized();     // get status of the logger
+
 		log.log(key, 1, "parsing file ...");
         
 		log.log(key, 2, "merge all Files ...");

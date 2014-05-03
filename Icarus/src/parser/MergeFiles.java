@@ -47,7 +47,7 @@ public class MergeFiles {
 	}
 	
 	/**
-	 * mergeAll goes through all the files byte by byte and filters out the unneeded
+	 * merge_all goes through all the files byte by byte and filters out the unneeded
 	 * charakters. The final String will be saved in a StringBuilder. StringBuilder should
 	 * be faster then String.
 	 *
@@ -58,22 +58,22 @@ public class MergeFiles {
 	public StringBuilder
 	merge_all() throws FileNotFoundException, IOException, Exception
 	{
-		StringBuilder builder = new StringBuilder();
-		FileReader filereader;
-		boolean flag = false;
-		log.log(key, 3, "Inside mergeAll()");
+		StringBuilder  builder     = new StringBuilder();
+		FileReader     filereader;
+		boolean        flag        = false;
+		log.log(key, 3, "Inside merge_all()");
 		if (args.length <= 0) {
 			log.log(key, 0, "No files ... array is empty: "+Arrays.toString(args));
 			throw new Exception("No files ....");
 		} else {
 			filereader = new FileReader(args[0]);
-		} /* dirty if here, will think about it ... */
+		} /* dirty, but it fixes a warning, will think about it ... */
 		
 		for (String item : args) {
 			try { 
 				filereader = new FileReader(item); 
 				/*
-				 * Loop through all bytes of "item" an check every byte
+				 * Loop through all bytes of "item" and check every byte
 				 */
 				for(int i = filereader.read(); i != -1; i = filereader.read()) {
 					switch (i) {
@@ -113,16 +113,18 @@ public class MergeFiles {
 				}
 			}
 			catch (FileNotFoundException fnfe) {
+				log.log(key, 0, "File not found: "+ item);
 				System.err.println("File not found: " + item);
 			}
 			catch (IOException ioe) {
+				log.log(key, 0, "Can't read from file: "+item);
 				System.err.println("Can't read from file: " + item);
 			}
 		}
 		
 		filereader.close();
 		
-		log.log(key, 4, "Merged code: \n"+builder.toString());
+		log.log(key, 3, "Merged code: "+builder.toString());
 		return builder;
 	}
 }
