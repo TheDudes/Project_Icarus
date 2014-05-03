@@ -25,7 +25,8 @@ import vault.LogWriter;
  * @author linc
  */
 public class STFileFinder {
-    private Config_Reader cfReader;
+	
+	// private Config_Reader cfReader; /* delete me ;) */
     private String fileDirectory;
     private String files[];
     private File directory;
@@ -39,12 +40,12 @@ public class STFileFinder {
      * @param logWriter logWriter so we can spam the shit out of people
      */
     public STFileFinder(Config_Reader cfReader, LogWriter logWriter){
-        this.cfReader = cfReader;
+	    // this.cfReader = cfReader; /* delete me ;) */
         this.logWriter = logWriter;
         fileDirectory = cfReader.get_path("path");
         directory = new File(fileDirectory);
         files = directory.list();
-        this.stFiles = new ArrayList(files.length);
+        this.stFiles = new ArrayList<>(files.length);
         getSTFiles();
         logWriter.log("STFileFinder", 4, "leaving constructor");
     }

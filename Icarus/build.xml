@@ -1,31 +1,57 @@
-<project name="Icarus" basedir="." default="clean-build">
-    <property name="src.dir"     value="src"/>
-    <property name="build.dir"   value="build"/>
-    <property name="classes.dir" value="${build.dir}/classes"/>
-    <property name="javadoc.dir" value="${build.dir}/doc"/>
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-    </target>
-    <!--verbose="true"-->
-    <target name="compile">
-        <mkdir dir="${classes.dir}"/>
-        <javac 
+<project name="Icarus" basedir="." default="magic">
+
+  <property name="project"     value="Project_Icarus"/>
+  <property name="packages"    value="parser,Ninti,linc,Icarus,vault,interpreter"/>
+  <property name="main.class"  value="Icarus.main"/>
+  
+  <property name="src.dir"     value="src"/>
+  <property name="build.dir"   value="build"/>
+  <property name="classes.dir" value="${build.dir}/classes"/>
+  <property name="javadoc.dir" value="${build.dir}/doc"/>
+  <property name="jar.dir"     value="${build.dir}/jar"/>
+  
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+  </target>
+  <!--verbose="true"-->
+
+  <target name="compile">
+    <mkdir dir="${classes.dir}"/>
+    <javac 
         srcdir="${src.dir}" 
         destdir="${classes.dir}"
         includeantruntime="false"/>
-    </target>
-    <!--verbose="true"-->
-    <target name="javadoc">
-      <mkdir dir="${javadoc.dir}"/>
-      <javadoc packagenames="parser,Ninti,linc,Icarus,vault,interpreter"
-           sourcepath="${src.dir}"
-               destdir="${javadoc.dir}"
-           version="true"
-           author="true"
-           use="true"
-           windowtitle="InfoCollector API"
-           doctitle="&lt;h1&gt;InfoCollector&lt;/h1&gt;">
-      </javadoc> 
-    </target>
-    <target name="clean-build" depends="clean,compile,javadoc"/>
+  </target>
+
+  <!--verbose="true"-->
+  <target name="javadoc">
+    <mkdir dir="${javadoc.dir}"/>
+    <javadoc packagenames="${packages}"
+             sourcepath="${src.dir}"
+             destdir="${javadoc.dir}"
+             version="true"
+             author="true"
+             use="true"
+             windowtitle="${project} Documentation"
+             doctitle="&lt;h1&gt;${project}&lt;/h1&gt;">
+    </javadoc> 
+  </target>
+  
+  <target name="jar">
+    <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${project}.jar" basedir="${classes.dir}">
+          <manifest>
+              <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
+        </jar>
+  </target>
+
+  <target name="run">
+    <java jar="${jar.dir}/${project}.jar" fork="true"/>
+  </target>
+
+  <target name="clean-build" depends="clean,compile,javadoc,jar"/>
+
+  <target name="magic" depends="clean,compile,javadoc,jar,run"/>
+  
 </project>

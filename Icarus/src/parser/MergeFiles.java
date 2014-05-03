@@ -17,6 +17,8 @@
 package parser;
 
 import java.io.*;
+import java.util.Arrays;
+
 import vault.*;
 /**
  * This class merges all files together and removes the unneeded chars
@@ -26,86 +28,101 @@ import vault.*;
  */
 
 public class MergeFiles {
+
+	private final String[] args;
+	
+	// logger
+	//private static boolean logstat;
+	private final LogWriter log;
+	private final String mainkey = "parser";
+	private final String subkey = "MergeFiles";
+	private final String key = mainkey+"-"+subkey;
     
-    // logger
-    //private static boolean logstat;
-    private final LogWriter log;
-    private final String mainkey = "parser";
-    private final String subkey = "MergeFiles";
-    private final String key = mainkey+"-"+subkey;
     
-    
-    public MergeFiles(LogWriter log) {
-        this.log = log;
-    }
-    
-    /**
-     * mergeAll goes through all the files byte by byte and filters out the unneeded
-     * charakters. The final String will be saved in a StringBuilder. StringBuilder should
-     * be faster then String.
-     *
-     * @param args String[], file names+paths
-     * @return StringBuilder
-     * @throws FileNotFoundException, IOException
-     */
-    public StringBuilder mergeAll(String[] args) throws FileNotFoundException, IOException {
-        //logstat = log.isInitialized();     // get status of the logger
-        log.log(key, 3, "Inside mergeAll()");
-	StringBuilder builder = new StringBuilder();
-	FileReader r;
-	boolean flag = false;
-	for (String item : args) {
-	    try { 
-		r = new FileReader(item); 
-		/*
-		 * Loop through all bytes of "item" an check every byte
-		 */
-		for(int i = r.read(); i != -1; i = r.read()) {
-		    switch (i) {
-		    case 10: //newline
-		    case 13: //carriagereturn
-			break;
-		    case 32: //space
-			break;
-		    case 9: //tabulator
-			break;
-		    case 40: //parentesis open
-			i = r.read();
-			if ( i == 42 ) //asterisk
-			    {
-				flag = true;
-			    }
-			else
-			    {
-				builder.append('(');
-				builder.append((char)i);
-			    }
-			break;
-		    case 42: //asterisk
-			i = r.read();
-			if ( i == 41 ) //parentesis close
-			    {
-				flag = false;
-			    }
-			break;
-		    default:
-			if(!flag)
-			    {
-				builder.append((char)i);
-			    }
-			break;
-		    }
-		}
-	    }
-	    catch (FileNotFoundException fnfe) {
-		System.err.println("File not found: " + item);
-	    }
-	    catch (IOException ioe) {
-		System.err.println("Can't read from file: " + item);
-	    }
+	public
+	MergeFiles(LogWriter log, String[] args)
+	{
+		this.log = log;
+		this.args = args;
 	}
-	r = null;
-        log.log(key, 4, "Merged code: \n"+builder.toString());
-	return builder;
-    }
+	
+	/**
+	 * mergeAll goes through all the files byte by byte and filters out the unneeded
+	 * charakters. The final String will be saved in a StringBuilder. StringBuilder should
+	 * be faster then String.
+	 *
+	 * @param args String[], file names+paths
+	 * @return StringBuilder
+	 * @throws FileNotFoundException, IOException
+	 */
+	public StringBuilder
+	merge_all() throws FileNotFoundException, IOException, Exception
+	{
+		StringBuilder builder = new StringBuilder();
+		FileReader filereader;
+		boolean flag = false;
+		log.log(key, 3, "Inside mergeAll()");
+		if (args.length <= 0) {
+			log.log(key, 0, "No files ... array is empty: "+Arrays.toString(args));
+			throw new Exception("No files ....");
+		} else {
+			filereader = new FileReader(args[0]);
+		} /* dirty if here, will think about it ... */
+		
+		for (String item : args) {
+			try { 
+				filereader = new FileReader(item); 
+				/*
+				 * Loop through all bytes of "item" an check every byte
+				 */
+				for(int i = filereader.read(); i != -1; i = filereader.read()) {
+					switch (i) {
+					case 10: //newline
+					case 13: //carriagereturn
+						break;
+					case 32: //space
+						break;
+					case 9: //tabulator
+						break;
+					case 40: //parentesis open
+						i = filereader.read();
+						if ( i == 42 ) //asterisk
+						{
+							flag = true;
+						}
+						else
+						{
+							builder.append('(');
+							builder.append((char)i);
+						}
+						break;
+					case 42: //asterisk
+						i = filereader.read();
+						if ( i == 41 ) //parentesis close
+						{
+							flag = false;
+						}
+						break;
+					default:
+						if(!flag)
+						{
+							builder.append((char)i);
+						}
+						break;
+					}
+				}
+			}
+			catch (FileNotFoundException fnfe) {
+				System.err.println("File not found: " + item);
+			}
+			catch (IOException ioe) {
+				System.err.println("Can't read from file: " + item);
+			}
+		}
+		
+		filereader.close();
+		
+		log.log(key, 4, "Merged code: \n"+builder.toString());
+		return builder;
+	}
 }
