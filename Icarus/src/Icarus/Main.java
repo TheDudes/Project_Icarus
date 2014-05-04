@@ -77,10 +77,10 @@ public class Main
         Config_Reader config   = new Config_Reader(path);
         LogWriter     logger   = new LogWriter(config);
         logger.log(log_key, 0, "Staring Icarus Structure Text Interpreter!");
-        logger.log(log_key, 0, "verion: 0.8 (Alpha!)");
+        logger.log(log_key, 0, "verion:           0.8 (Alpha!)");
         logger.log(log_key, 0, "hostname:         " + hostname);
-        logger.log(log_key, 0, "config file path: " + path);
         logger.log(log_key, 0, "st file path:     " + config.get_path("path"));
+        logger.log(log_key, 0, "config file path: " + path);
         config.setLogWriter(logger);
 
         STFileFinder  stfinder = new STFileFinder(config, logger);

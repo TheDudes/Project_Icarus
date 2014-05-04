@@ -51,7 +51,7 @@
   </target>
 
   <target name="clean-build" depends="clean,compile,javadoc,jar"/>
-
   <target name="magic" depends="clean,compile,jar,run"/>
+  <target name="all" depends="clean,compile,javadoc,jar,run"/>
   
 </project>

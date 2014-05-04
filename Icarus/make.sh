@@ -55,6 +55,9 @@ case $1 in
     magic|magic:)
 	$ANT -f $BUILD magic
 	;;
+    all|all:)
+	$ANT -f $BUILD all
+	;;
     *)
 	print "usage: ./make.sh [clean|compile|javadoc|jar|clean-build|run|magic]"
 	print " "
