@@ -36,6 +36,7 @@ public class main
     public static void main(String[] args) throws Exception
     {
 
+        String  log_key = "main";
         String path;
         /*
          * To make testing easyer for all of us, add your hostname to this logic
@@ -75,19 +76,15 @@ public class main
                 System.exit(0);
         }
 
-        System.out.print("your config file path: " + path + "\n");
 
         /* init */
-        Config_Reader config    = new Config_Reader(path);
-        LogWriter     logger    = new LogWriter(config);
-        STFileFinder  stfinder  = new STFileFinder(config, logger);
+        Config_Reader config   = new Config_Reader(path);
+        LogWriter     logger   = new LogWriter(config);
+        STFileFinder  stfinder = new STFileFinder(config, logger);
 
-        System.out.print("your st file path:     " + config.get_path("path") + "\n");
+        logger.log(log_key, 0, "config file path: " + path);
+        logger.log(log_key, 0, "st file path:     " + config.get_path("path"));
 
-        /*
-         * New Class LegacyWrapper provides legacy function calls for InfoCollector.
-         * In the other parts the function calls should be replaced some time.
-         */
         InfoCollector container = new InfoCollector(stfinder.get_file_names(), logger);
         ScriptEngine  engine;
 
@@ -97,7 +94,7 @@ public class main
             engine = new ScriptEngineManager().getEngineByName("JavaScript");
 
         Interpreter interpreter = new Interpreter(container, logger, engine);
-	String code             = container.get_all_the_code().toString();
+        String      code        = container.get_all_the_code().toString();
         interpreter.interpret(code, 0, code.length(), engine);
 
         logger.kill();
