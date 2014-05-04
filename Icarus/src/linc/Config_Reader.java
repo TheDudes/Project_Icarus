@@ -40,6 +40,7 @@ public class Config_Reader {
     /**
      * 
      * @param path the file path of the config file, must be given when the Config_Reader is created
+     * @throws java.io.IOException in case no there is no config found under the path provided
      */
     public Config_Reader(String path) throws IOException {
         logWriterInit = false;
@@ -51,7 +52,8 @@ public class Config_Reader {
                 read_config();
             }
             catch(IOException e){
-                System.err.println("could not access the config file");       
+                System.err.println("could not access the config file");
+                throw e;
             }
         }
         else{
@@ -67,6 +69,9 @@ public class Config_Reader {
     public void setLogWriter(LogWriter logger){
         logWriter = logger;
         logWriterInit = true;
+        for(Map.Entry<String, Object> e : container.entrySet()){
+            logWriter.log("Config_Reader", 4, "Key: " + (String) e.getKey() + "Value: " + e.getValue());
+        }
     }
     
     /**
@@ -75,7 +80,7 @@ public class Config_Reader {
      */
     public void setFilePath(String filePath) {
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in setFilePath");
+            logWriter.log("Config_Reader", 4, "jumping in setFilePath and setting path to" + filePath);
         }
         this.filePath = filePath;
         if(logWriterInit){
@@ -112,9 +117,12 @@ public class Config_Reader {
      */
     public Object get_val(String key){
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in get_val, leaving it now :D");
+            logWriter.log("Config_Reader", 4, "jumping in get_val with key" + key);
         }
         if(container.containsKey(key)){
+            if(logWriterInit){
+                logWriter.log("Config_Reader", 4, "leaving get_val");
+            }
             return container.get(key);
         }
         else{
@@ -159,7 +167,7 @@ public class Config_Reader {
      */
     public String get_path(String key){
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in get_path");
+            logWriter.log("Config_Reader", 4, "jumping in get_path with key" + key);
         }
         String prep;
         //removes the ; from the path Strings
@@ -195,7 +203,7 @@ public class Config_Reader {
      */
     public int get_int(String key){
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in get_int");
+            logWriter.log("Config_Reader", 4, "jumping in get_int with key" + key);
         }
         Integer toReturn;
         if(container.containsKey(key)){
@@ -227,7 +235,7 @@ public class Config_Reader {
      */
     public double get_double(String key){
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in get_double");
+            logWriter.log("Config_Reader", 4, "jumping in get_double with key" + key);
         }
         Double toReturn;
         if(container.containsKey(key)){
@@ -259,7 +267,7 @@ public class Config_Reader {
      */
     public boolean get_boolean(String key){
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in get_boolean");
+            logWriter.log("Config_Reader", 4, "jumping in get_boolean with key" + key);
         }
         Boolean toReturn;
         if(container.containsKey(key)){
@@ -290,7 +298,7 @@ public class Config_Reader {
      */
     public String get_string(String key){
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in get_string");
+            logWriter.log("Config_Reader", 4, "jumping in get_string with key" + key);
         }
         String prep = "";
         if(container.containsKey(key)){
@@ -560,7 +568,7 @@ public class Config_Reader {
      */
     private void create_example_config(String path) throws IOException{
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in create_example_config(String)");
+            logWriter.log("Config_Reader", 4, "jumping in create_example_config(String) with path" + path);
         }
         String hugeAssExampleString = "######################################################################\n" +
             "#####################################################################\n" +
