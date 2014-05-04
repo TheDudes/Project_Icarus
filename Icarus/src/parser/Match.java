@@ -285,9 +285,10 @@ public class Match {
 		while(matcher.find()) {
 			cases[0] = matcher.start();
 			cases[1] = matcher.end();
-			log.log(key, 4, "found: "+builder.substring(cases[0], cases[1]));
+			log.log(key, 4, "found: "+builder.substring(cases[0], cases[1])+" @ "+cases[0]+","+cases[1]);
 			allcases.put(cases[0], cases[1]);
 		}
+		/* finds all things matching the regex, but this doesn't matter because he knows where the cases are  */
 		log.log(key, 4, "cases found#: "+allcases.size());
 	}
     
@@ -304,12 +305,16 @@ public class Match {
 	eval_cases(int start, int stop)
 	{
 		log.log(key, 4, "eval_cases called.");
+
 		ArrayList<Integer>  intlist   = new ArrayList<>();
-		String              tmp       = builder.substring(start, stop);
-		boolean             series    = false;
-		int                 inttmp    = 0;
-		int                 intstart  = 0;
+
+		String   tmp       = builder.substring(start, stop);
+		boolean  series    = false;
+		int      inttmp    = 0;
+		int      intstart  = 0;
+
 		log.log(key, 4, "case: "+tmp);
+
 		for (char c : tmp.toCharArray()) {
 			if (c == ',' || c == ':') {
 				if (series) {
@@ -330,7 +335,9 @@ public class Match {
 				inttmp += Character.getNumericValue(c);
 			}
 		}
+
 		log.log(key, 4, "evals to: "+Arrays.toString(intlist.toArray()));
+
 		return intlist;
 	}
 

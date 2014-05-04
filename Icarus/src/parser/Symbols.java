@@ -426,7 +426,7 @@ public class Symbols {
 			  percontext = contextstore.get(context);
 			  percontext.remove(splitted[0]);
 			  contextstore.put(context, percontext);  // aaaah fuck it, tooo late man .... */
-			fill_up_the_containers(context, new StringBuilder(input));
+			fill_up_the_containers(context, new StringBuilder(input + "@" ));
 		}
 		generate_symbols_list();
 	}
