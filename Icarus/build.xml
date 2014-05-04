@@ -22,7 +22,7 @@
         destdir="${classes.dir}"
         includeantruntime="false"
 	fork="true">
-      <compilerarg line="-g -verbose"/>
+      <compilerarg line="-g"/>
     </javac>
   </target>
 
