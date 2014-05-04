@@ -51,7 +51,6 @@ public class MergeFiles {
 	 * charakters. The final String will be saved in a StringBuilder. StringBuilder should
 	 * be faster then String.
 	 *
-	 * @param args String[], file names+paths
 	 * @return StringBuilder
 	 * @throws FileNotFoundException, IOException
 	 */
