@@ -47,7 +47,8 @@ public class Interpreter
         log.log(log_key, 4, "init Interpreter...");
 
         this.log       = log;
-        handler = new Keyword_Handler(container, log, config, this);
+        this.container = container;
+        handler        = new Keyword_Handler(container, log, config, this);
 
         log.log(log_key, 4, "init Interpreter done.");
     }
