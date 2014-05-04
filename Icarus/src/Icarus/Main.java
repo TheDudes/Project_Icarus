@@ -52,8 +52,7 @@ public class Main
 
         config      = new Config_Reader(config_path);
         logger      = new LogWriter(config);
-        stfinder    = new STFileFinder(config, logger);
-        container   = new InfoCollector(stfinder.get_file_names(), logger);
+        container   = new InfoCollector(config, logger);
         interpreter = new Interpreter(container, logger, config);
 
         interpreter.start();
