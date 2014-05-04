@@ -445,6 +445,62 @@ public class Keyword_Handler
     }
 
     /**
+     * function to Handle found CASE
+     * @param INDEX current Position
+     * @param code current working code
+     * @return INDEX after handling Keyword
+     */
+    public int found_CASE(int INDEX, String code)
+    {
+        log.log(log_key, 4, "call   found_CASE, INDEX = " + INDEX);
+
+        log.log(log_key, 4, "return found_CASE, INDEX = " + INDEX);
+        return INDEX;
+    }
+
+    /**
+     * function to Handle found END_CASE
+     * @param INDEX current Position
+     * @param code current working code
+     * @return INDEX after handling Keyword
+     */
+    public int found_END_CASE(int INDEX, String code)
+    {
+        log.log(log_key, 4, "call   found_END_CASE, INDEX = " + INDEX);
+
+        log.log(log_key, 4, "return found_END_CASE, INDEX = " + INDEX);
+        return INDEX;
+    }
+
+    /**
+     * function to Handle found FUNCTION
+     * @param INDEX current Position
+     * @param code current working code
+     * @return INDEX after handling Keyword
+     */
+    public int found_FUNCTION(int INDEX, String code)
+    {
+        log.log(log_key, 4, "call   found_FUNCTION, INDEX = " + INDEX);
+
+        log.log(log_key, 4, "return found_FUNCTION, INDEX = " + INDEX);
+        return INDEX;
+    }
+
+    /**
+     * function to Handle found END_FUNCTION
+     * @param INDEX current Position
+     * @param code current working code
+     * @return INDEX after handling Keyword
+     */
+    public int found_END_FUNCTION(int INDEX, String code)
+    {
+        log.log(log_key, 4, "call   found_END_FUNCTION, INDEX = " + INDEX);
+
+        log.log(log_key, 4, "return found_END_FUNCTION, INDEX = " + INDEX);
+        return INDEX;
+    }
+
+    /**
      * function if no keyword was found
      * @param INDEX current Position
      * @param code current working code
