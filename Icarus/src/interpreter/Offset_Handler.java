@@ -235,7 +235,6 @@ public class Offset_Handler
         log.log(log_key, 4, "call   get_DO, INDEX = " + INDEX);
         for(;;INDEX++)
         {
-            log.log(log_key, 4, "for again get_DO, INDEX = " + code.charAt(INDEX));
             if ( (code.charAt(INDEX)     == 'D') &&
                  (code.charAt(INDEX + 1) == 'O') )
             {
@@ -359,7 +358,7 @@ public class Offset_Handler
      */
     public String convert_condition(String code)
     {
-
+        log.log(log_key, 4, "convert_condition call with: " + code);
         String final_condition = "";
         int spot = 0;
 
@@ -505,6 +504,7 @@ public class Offset_Handler
             }
             final_condition += code.charAt(spot);
         }
+        log.log(log_key, 4, "convert_condition return with: " + final_condition);
         return final_condition;
     }
 }

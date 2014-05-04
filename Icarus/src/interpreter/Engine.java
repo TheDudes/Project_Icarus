@@ -115,6 +115,7 @@ public class Engine
      */
     public Object eval(String condition)
     {
+        log.log(log_key, 4, "call_engine_eval with: " + condition);
         Object obj = new Object();
         try
         {
@@ -132,6 +133,7 @@ public class Engine
             log.kill();
             System.exit(1);
         }
+        log.log(log_key, 4, "return_engine_eval with: " + condition);
         return obj;
     }
 }

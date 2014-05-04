@@ -400,7 +400,7 @@ public class Keyword_Handler
 
         values = container.replace_vars(values, context_stack.peek());
 
-        log.log("PRINT", 0, text + values);
+        log.log("PRINT", 1, text + values);
         INDEX = semicolon_position;
 
         log.log(log_key, 4, "return found_PRINT, INDEX = " + INDEX);
