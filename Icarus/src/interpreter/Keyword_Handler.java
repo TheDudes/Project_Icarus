@@ -264,7 +264,6 @@ public class Keyword_Handler
         }
         else
         {
-
             int count = Integer.parseInt(container.replace_vars(condition, context_stack.peek()));
             obj.count = count;
             if (condition.equals(Integer.toString(count)))
@@ -278,21 +277,17 @@ public class Keyword_Handler
             }
         }
 
-        int do_position;
         if (by_position == -1)
         {
-            do_position = offset.get_DO(to_position + 2, code);
-            obj.limit   = Integer.parseInt(container.replace_vars(code.substring(to_position + 2, do_position), context_stack.peek()));
+            obj.limit   = Integer.parseInt(container.replace_vars(code.substring(to_position + 2, obj.do_index), context_stack.peek()));
             obj.by      = 1;
         }
         else
         {
-            do_position = offset.get_DO(by_position + 2, code);
             obj.limit   = Integer.parseInt(container.replace_vars(code.substring(to_position + 2, by_position), context_stack.peek()));
-            obj.by      = Integer.parseInt(container.replace_vars(code.substring(by_position + 2, do_position), context_stack.peek()));
+            obj.by      = Integer.parseInt(container.replace_vars(code.substring(by_position + 2, obj.do_index), context_stack.peek()));
         }
         loop_stack.push(obj);
-
         if (loop_stack.peek().count >= loop_stack.peek().limit)
             INDEX = loop_stack.pop().end_index;
         else

@@ -206,23 +206,20 @@ public class Offset_Handler
     public int get_BY(int INDEX, String code)
     {
         log.log(log_key, 4, "call   get_BY, INDEX = " + INDEX);
-        for(;;INDEX++) {
+        for(;;INDEX++)
+        {
             if ( (code.charAt(INDEX)     == 'D') &&
                  (code.charAt(INDEX + 1) == 'O') )
             {
                 log.log(log_key, 4, "return get_BY (DO found): -1");
                 return -1;
             }
-            if ( (code.charAt(INDEX)     == 'B') &&
-                 (code.charAt(INDEX + 1) == 'Y') )
+            else if ( (code.charAt(INDEX)     == 'B') &&
+                      (code.charAt(INDEX + 1) == 'Y') )
             {
                 log.log(log_key, 4, "return get_BY , (BY found) INDEX = "
                                                                       + INDEX);
                 return INDEX;
-            }
-            else
-            {
-                INDEX++;
             }
         }
     }
@@ -236,7 +233,9 @@ public class Offset_Handler
     public int get_DO(int INDEX, String code)
     {
         log.log(log_key, 4, "call   get_DO, INDEX = " + INDEX);
-        for(;;INDEX++) {
+        for(;;INDEX++)
+        {
+            log.log(log_key, 4, "for again get_DO, INDEX = " + code.charAt(INDEX));
             if ( (code.charAt(INDEX)     == 'D') &&
                  (code.charAt(INDEX + 1) == 'O') )
             {

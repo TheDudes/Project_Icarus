@@ -8,7 +8,7 @@ VAR
 END_VAR
 
 FOR hihihi := 0 TO 10 BY 2 DO
-    FOR asdf := 0 TO 5 DO
+    FOR asdf:=0 TO 5 BY 1 DO
         PRINT(inner_loop=, asdf);
     END_FOR 
     IF blah = 3 THEN

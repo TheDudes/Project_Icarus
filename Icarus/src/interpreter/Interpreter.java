@@ -56,7 +56,7 @@ public class Interpreter
     /**
      * starts the Interpreter
      */
-    public void start() throws Exception
+    public void lets_get_this_party_started() throws Exception
     {
         log.log(log_key, 4, "starting Interpreter...");
         String code = container.get_all_the_code().toString();
