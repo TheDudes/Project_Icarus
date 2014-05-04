@@ -53,6 +53,8 @@ public class LogWriter {
         worker       = new Thread(LogWorker);
         get_hostname();
         worker.start();
+        log("LogWriter", 0, "initialized LogWriter");
+        configReader.setLogWriter(this);
     }
 
     /**

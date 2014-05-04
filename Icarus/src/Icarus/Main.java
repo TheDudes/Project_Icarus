@@ -58,8 +58,6 @@ public class Main
         logger.log(log_key, 0, "st file path:     " + config.get_path("path"));
         logger.log(log_key, 0, "config file path: " + config_path);
 
-        config.setLogWriter(logger);
-
         stfinder    = new STFileFinder(config, logger);
 
         container   = new InfoCollector(stfinder.get_file_names(), logger);
