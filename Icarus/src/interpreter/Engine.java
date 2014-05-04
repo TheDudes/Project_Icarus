@@ -20,6 +20,7 @@
 package interpreter;
 
 import vault.*;
+import linc.*;
 
 import javax.script.*;
 
@@ -33,25 +34,27 @@ import javax.script.*;
  */
 public class Engine
 {
-    ScriptEngine engine;
-    LogWriter log;
+    ScriptEngine  engine;
+    LogWriter     log;
+    Config_Reader config;
     String log_key = "engine";
 
     /**
      * @param log LogWriter Object
      */
-    public Engine(LogWriter log)
+    public Engine(LogWriter log, Config_Reader config)
     {
         this.log = log;
         ScriptEngineManager factory = new ScriptEngineManager();
         engine                      = factory.getEngineByName("JavaScript");
+        if(config.get_boolean("Engine_Warmup"))
+            warmup();
     }
 
     /**
      * used to warmup the Java ScriptEngine.
-     * @throws ScriptException Exception
      */
-    public ScriptEngine warmup() throws Exception
+    public ScriptEngine warmup()
     {
 
         int total_evaluations = 2000;
@@ -75,16 +78,16 @@ public class Engine
 
             long now = System.currentTimeMillis();
 
-            engine.eval(test0);
-            engine.eval(test1);
-            engine.eval(test2);
-            engine.eval(test3);
-            engine.eval(test4);
-            engine.eval(test5);
-            engine.eval(test6);
-            engine.eval(test7);
-            engine.eval(test8);
-            engine.eval(test9);
+            eval(test0);
+            eval(test1);
+            eval(test2);
+            eval(test3);
+            eval(test4);
+            eval(test5);
+            eval(test6);
+            eval(test7);
+            eval(test8);
+            eval(test9);
 
             now = System.currentTimeMillis() - now;
 

@@ -21,6 +21,7 @@ package interpreter;
 
 import vault.*;
 import parser.*;
+import linc.*;
 
 import java.util.Stack;
 
@@ -47,15 +48,15 @@ public class Keyword_Handler
     Stack<Boolean>        if_stack;
     Stack<Integer>        if_position_stack;
 
-    public Keyword_Handler(InfoCollector container, LogWriter log, Engine engine, Interpreter interpreter)
+    public Keyword_Handler(InfoCollector container, LogWriter log, Config_Reader config, Interpreter interpreter)
     {
         log.log(log_key, 4, "init Keyword_Handler...");
 
         this.container   = container;
         this.log         = log;
-        this.engine      = engine;
         this.interpreter = interpreter;
 
+        engine = new Engine(log, config);
         offset = new Offset_Handler(log);
 
         log.log(log_key, 4, "init stacks...");

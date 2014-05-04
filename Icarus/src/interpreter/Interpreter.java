@@ -21,6 +21,7 @@ package interpreter;
 
 import vault.*;
 import parser.*;
+import linc.*;
 
 /**
  * @author d4ryus - https://github.com/d4ryus/
@@ -40,12 +41,12 @@ public class Interpreter
      * @param log used LogWriter
      * @param engine Script engine to evaluate
      */
-    public Interpreter(InfoCollector container, LogWriter log, Engine engine)
+    public Interpreter(InfoCollector container, LogWriter log, Config_Reader config)
     {
         log.log(log_key, 4, "init Interpreter...");
         this.log       = log;
+        handler = new Keyword_Handler(container, log, config, this);
 
-        handler = new Keyword_Handler(container, log, engine, this);
         log.log(log_key, 4, "init Interpreter done.");
     }
 
@@ -268,179 +269,4 @@ public class Interpreter
             }
         } /* end main for loop   */
     }
-    /* thats some nice code right there.
-    public void interpret_case (String code, int start, int end, ScriptEngine engine) throws Exception
-    {
-        log.log(log_key, 4, "started with start: " + start + ", end: " + end);
-        for(int INDEX = start; INDEX < end; INDEX++)
-        {
-            switch( code.charAt(INDEX) )
-            {
-                case 'B':
-                    if( (code.charAt(INDEX + 1) == 'R') &&
-                        (code.charAt(INDEX + 2) == 'E') &&
-                        (code.charAt(INDEX + 3) == 'A') &&
-                        (code.charAt(INDEX + 4) == 'K') )
-                    {
-                        INDEX = handler.found_BREAK(INDEX, code);
-                        continue;
-                    }
-                case 'C':
-                    if( (code.charAt(INDEX + 1) == 'A') &&
-                        (code.charAt(INDEX + 2) == 'S') &&
-                        (code.charAt(INDEX + 3) == 'E') )
-                    {
-                        INDEX = handler.found_CASE(INDEX, code);
-                        continue;
-                    }
-                case 'F':
-                    if( (code.charAt(INDEX + 1) == 'O') &&
-                        (code.charAt(INDEX + 2) == 'R') )
-                    {
-                        INDEX = handler.found_FOR(INDEX, code);
-                        continue;
-                    }
-                    else if( (code.charAt(INDEX + 1) == 'U') &&
-                             (code.charAt(INDEX + 2) == 'N') &&
-                             (code.charAt(INDEX + 3) == 'C') &&
-                             (code.charAt(INDEX + 4) == 'T') &&
-                             (code.charAt(INDEX + 5) == 'I') &&
-                             (code.charAt(INDEX + 6) == 'O') &&
-                             (code.charAt(INDEX + 7) == 'N') )
-                    {
-                        INDEX = handler.found_FUNCTION(INDEX, code);
-                        continue;
-                    }
-                case 'I':
-                    if( (code.charAt(INDEX + 1) == 'F') )
-                    {
-                        INDEX = handler.found_IF(INDEX, code);
-                        continue;
-                    }
-                case 'P':
-                    if( (code.charAt(INDEX + 1) == 'R') &&
-                        (code.charAt(INDEX + 2) == 'I') &&
-                        (code.charAt(INDEX + 3) == 'N') &&
-                        (code.charAt(INDEX + 4) == 'T') )
-                    {
-                        INDEX = handler.found_PRINT(INDEX, code);
-                        continue;
-                    }
-                case 'R':
-                    if( (code.charAt(INDEX + 1) == 'E') &&
-                        (code.charAt(INDEX + 2) == 'P') &&
-                        (code.charAt(INDEX + 3) == 'E') &&
-                        (code.charAt(INDEX + 4) == 'A') &&
-                        (code.charAt(INDEX + 5) == 'T') )
-                    {
-                        INDEX = handler.found_REPEAT(INDEX, code);
-                        continue;
-                    }
-                case 'U':
-                    if( (code.charAt(INDEX + 1) == 'N') &&
-                        (code.charAt(INDEX + 2) == 'T') &&
-                        (code.charAt(INDEX + 3) == 'I') &&
-                        (code.charAt(INDEX + 4) == 'L') )
-                    {
-                        INDEX = handler.found_UNTIL(INDEX, code);
-                        continue;
-                    }
-                case 'V':
-                    if( (code.charAt(INDEX + 1) == 'A') &&
-                        (code.charAt(INDEX + 2) == 'R') )
-                    {
-                        INDEX = handler.found_VAR(INDEX, code);
-                        continue;
-                    }
-                case 'W':
-                    if( (code.charAt(INDEX + 1) == 'H') &&
-                        (code.charAt(INDEX + 2) == 'I') &&
-                        (code.charAt(INDEX + 3) == 'L') &&
-                        (code.charAt(INDEX + 4) == 'E') )
-                    {
-                        INDEX = handler.found_WHILE(INDEX, code);
-                        continue;
-                    }
-                case 'E':
-                    switch (code.charAt(INDEX + 1))
-                    {
-                        case 'L':
-                            if( (code.charAt(INDEX + 2) == 'S') &&
-                                (code.charAt(INDEX + 3) == 'E') )
-                            {
-                                if( (code.charAt(INDEX + 4) == 'I') &&
-                                    (code.charAt(INDEX + 5) == 'F') )
-                                {
-                                    handler.found_ELSIF(INDEX, code);
-                                    continue;
-                                }
-                                INDEX = handler.found_ELSE(INDEX, code);
-                                continue;
-                            }
-                        case 'N':
-                            if( (code.charAt(INDEX + 2) == 'D') &&
-                                (code.charAt(INDEX + 3) == '_') )
-                            {
-                                switch (code.charAt(INDEX + 4))
-                                {
-                                    case 'C':
-                                        if( (code.charAt(INDEX + 5) == 'A') &&
-                                            (code.charAt(INDEX + 6) == 'S') &&
-                                            (code.charAt(INDEX + 7) == 'E') )
-                                        {
-                                            handler.found_END_CASE(INDEX, code);
-                                            continue;
-                                        }
-                                    case 'F':
-                                        if( (code.charAt(INDEX + 5) == 'O') &&
-                                            (code.charAt(INDEX + 6) == 'R') )
-                                         {
-                                             handler.found_FOR(INDEX, code);
-                                             continue;
-                                         }
-                                         else if( (code.charAt(INDEX + 5) == 'U') &&
-                                                  (code.charAt(INDEX + 6) == 'N') &&
-                                                  (code.charAt(INDEX + 7) == 'C') &&
-                                                  (code.charAt(INDEX + 8) == 'T') &&
-                                                  (code.charAt(INDEX + 9) == 'I') &&
-                                                  (code.charAt(INDEX + 10)== 'O') &&
-                                                  (code.charAt(INDEX + 11)== 'N') )
-                                         {
-                                            handler.found_END_FUNCTION(INDEX, code);
-                                            continue;
-                                         }
-                                    case 'I':
-                                        if( (code.charAt(INDEX + 5) == 'F') )
-                                        {
-                                            handler.found_END_IF(INDEX, code);
-                                            continue;
-                                        }
-                                    case 'P':
-                                        if( (code.charAt(INDEX + 5)  == 'R') &&
-                                            (code.charAt(INDEX + 6)  == 'O') &&
-                                            (code.charAt(INDEX + 7)  == 'G') &&
-                                            (code.charAt(INDEX + 8)  == 'R') &&
-                                            (code.charAt(INDEX + 9)  == 'A') &&
-                                            (code.charAt(INDEX + 10) == 'M') )
-                                        {
-                                            handler.found_END_PROGRAM(INDEX, code);
-                                            continue;
-                                        }
-                                    case 'W':
-                                        if( (code.charAt(INDEX + 5)  == 'H') &&
-                                            (code.charAt(INDEX + 6)  == 'I') &&
-                                            (code.charAt(INDEX + 7)  == 'L') &&
-                                            (code.charAt(INDEX + 8)  == 'E') )
-                                            {
-                                                handler.found_END_WHILE(INDEX, code);
-                                                continue;
-                                            }
-                                }
-                            }
-                    }
-                default:
-            }
-        }
-    }
-    */
 }

@@ -33,13 +33,14 @@ public class Main
     static String        log_key = "main";
     static String        config_path;
     static String        hostname;
+    static String        code;
+
     static Config_Reader config;
     static LogWriter     logger;
-    static STFileFinder  stfinder;
     static InfoCollector container;
-    static Engine        engine;
     static Interpreter   interpreter;
-    static String        code;
+
+    static STFileFinder  stfinder;
     /**
      * main funcion which will start Icarus
      */
@@ -60,13 +61,9 @@ public class Main
 
         stfinder    = new STFileFinder(config, logger);
         container   = new InfoCollector(stfinder.get_file_names(), logger);
-        engine      = new Engine(logger);
-        interpreter = new Interpreter(container, logger, engine);
+        interpreter = new Interpreter(container, logger, config);
 
-        if(config.get_boolean("Engine_Warmup"))
-            engine.warmup();
-
-        code        = container.get_all_the_code().toString();
+        code = container.get_all_the_code().toString();
         interpreter.interpret(code, 0, code.length());
 
         logger.log(log_key, 0, "exiting Icarus.");
