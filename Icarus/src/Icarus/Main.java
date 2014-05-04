@@ -76,7 +76,6 @@ public class Main
                 System.exit(0);
         }
 
-
         /* init */
         Config_Reader config   = new Config_Reader(path);
         LogWriter     logger   = new LogWriter(config);

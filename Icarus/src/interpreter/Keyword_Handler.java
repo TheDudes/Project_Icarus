@@ -35,10 +35,11 @@ import javax.script.ScriptEngine;
  */
 public class Keyword_Handler
 {
-    String log_key = "Interpreter-Keyword_Handler";
+    String         log_key = "Interpreter-Keyword_Handler";
     InfoCollector  container;
     ScriptEngine   engine;
     LogWriter      log;
+    Interpreter    interpreter;
     Offset_Handler offset;
 
     /* stacks */
@@ -47,13 +48,14 @@ public class Keyword_Handler
     Stack<Boolean>        if_stack;
     Stack<Integer>        if_position_stack;
 
-    public Keyword_Handler(InfoCollector container, LogWriter log, ScriptEngine engine)
+    public Keyword_Handler(InfoCollector container, LogWriter log, ScriptEngine engine, Interpreter interpreter)
     {
         log.log(log_key, 4, "init Keyword_Handler...");
 
-        this.container = container;
-        this.log       = log;
-        this.engine    = engine;
+        this.container   = container;
+        this.log         = log;
+        this.engine      = engine;
+        this.interpreter = interpreter;
 
         offset = new Offset_Handler(log);
 
@@ -200,11 +202,11 @@ public class Keyword_Handler
         obj.INDEX          = INDEX;
         obj.do_index       = offset.get_DO(INDEX, code);
         obj.end_index      = container.get_end_while(INDEX) + 8;
-        obj.condition      = code.substring(INDEX + 5, obj.do_index);
+        obj.condition      = offset.convert_condition(code.substring(INDEX + 5, obj.do_index));
 
         loop_stack.push(obj);
 
-        if((Boolean)engine.eval(offset.convert_condition(container.replace_vars(obj.condition, context_stack.peek()))))
+        if((Boolean)engine.eval(container.replace_vars(obj.condition, context_stack.peek())))
             INDEX = obj.do_index + 1;
         else
             INDEX = loop_stack.pop().end_index;
@@ -226,7 +228,7 @@ public class Keyword_Handler
 
         INDEX += 8;
 
-        if((Boolean)engine.eval(offset.convert_condition(container.replace_vars(loop_stack.peek().condition, context_stack.peek()))))
+        if((Boolean)engine.eval(container.replace_vars(loop_stack.peek().condition, context_stack.peek())))
             INDEX = loop_stack.peek().do_index + 1;
         else
             INDEX = loop_stack.pop().end_index;
@@ -449,26 +451,20 @@ public class Keyword_Handler
      * @param INDEX current Position
      * @param code current working code
      * @return INDEX after handling Keyword
+     * @throws Exception
      */
-    public int found_CASE(int INDEX, String code)
+    public int found_CASE(int INDEX, String code) throws Exception
     {
         log.log(log_key, 4, "call   found_CASE, INDEX = " + INDEX);
 
+        String condition = code.substring(INDEX + 4, offset.get_OF(INDEX, code));
+        int value = Integer.parseInt(offset.convert_condition(container.replace_vars(condition, context_stack.peek())));
+        Integer[] recursive_positions = new Integer[2];
+        recursive_positions = container.get_case_coordinates(INDEX, value);
+        interpreter.interpret(code, recursive_positions[0], recursive_positions[1], engine);
+        INDEX = container.get_end_case(INDEX) + 7;
+
         log.log(log_key, 4, "return found_CASE, INDEX = " + INDEX);
-        return INDEX;
-    }
-
-    /**
-     * function to Handle found END_CASE
-     * @param INDEX current Position
-     * @param code current working code
-     * @return INDEX after handling Keyword
-     */
-    public int found_END_CASE(int INDEX, String code)
-    {
-        log.log(log_key, 4, "call   found_END_CASE, INDEX = " + INDEX);
-
-        log.log(log_key, 4, "return found_END_CASE, INDEX = " + INDEX);
         return INDEX;
     }
 

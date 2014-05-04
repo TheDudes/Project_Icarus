@@ -47,7 +47,7 @@ public class Interpreter
         log.log(log_key, 4, "init Interpreter...");
         this.log       = log;
 
-        handler = new Keyword_Handler(container, log, engine);
+        handler = new Keyword_Handler(container, log, engine, this);
         log.log(log_key, 4, "init Interpreter done.");
     }
 
@@ -247,19 +247,6 @@ public class Interpreter
             {
                 log.log(log_key, 3, "found Keyword END_FUNCTION, INDEX = " + INDEX);
                 handler.found_END_FUNCTION(INDEX, code);
-                break;
-            }
-            else if ( (code.charAt(INDEX)     == 'E') &&
-                      (code.charAt(INDEX + 1) == 'N') &&
-                      (code.charAt(INDEX + 2) == 'D') &&
-                      (code.charAt(INDEX + 3) == '_') &&
-                      (code.charAt(INDEX + 4) == 'C') &&
-                      (code.charAt(INDEX + 5) == 'A') &&
-                      (code.charAt(INDEX + 6) == 'S') &&
-                      (code.charAt(INDEX + 7) == 'E') )
-            {
-                log.log(log_key, 3, "found Keyword END_CASE,     INDEX = " + INDEX);
-                handler.found_END_CASE(INDEX, code);
                 break;
             }
             else if ( (code.charAt(INDEX)     == 'E') &&

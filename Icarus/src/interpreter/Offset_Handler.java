@@ -102,6 +102,25 @@ public class Offset_Handler
     }
 
     /**
+     * will return next OF index
+     * @param INDEX starting point
+     * @param code code from parser
+     * @return INDEX of found DO
+     */
+    public int get_OF(int INDEX, String code)
+    {
+        log.log(log_key, 4, "call   get_OF, INDEX = " + INDEX);
+        for(;;INDEX++) {
+            if ( (code.charAt(INDEX)     == 'O') &&
+                 (code.charAt(INDEX + 1) == 'F') )
+            {
+                log.log(log_key, 4, "return get_OF, INDEX = " + INDEX);
+                return INDEX;
+            }
+        }
+    }
+
+    /**
      * will return next VAR index
      * @param INDEX starting point
      * @param code code from parser
