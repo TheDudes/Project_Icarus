@@ -46,7 +46,7 @@ public class main
         switch (hostname)
         {
             case "beelzebub":
-                path = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/Icarus/example_config";
+                path = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/Icarus/superduper_config";
                 break;
             case "d4ryus":
             case "cubie":

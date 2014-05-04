@@ -90,7 +90,7 @@ public class InfoCollector {
 	public List<ArrayList<Integer>>
 	give_me_all_the_lists()
 	{
-		log.log(key, 4, "giveMeAllTheLists called.");
+		log.log(key, 4, "give_meAllTheLists called.");
 		return analyser.give_me_all_the_lists();
 	}
 
