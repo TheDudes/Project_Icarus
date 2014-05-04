@@ -30,70 +30,92 @@ import java.net.*;
 
 public class Main
 {
+    static String        log_key = "main";
+    static String        config_path;
+    static String        hostname;
+    static Config_Reader config;
+    static LogWriter     logger;
+    static STFileFinder  stfinder;
+    static InfoCollector container;
+    static Engine        engine;
+    static Interpreter   interpreter;
+    static String        code;
+    /**
+     * main funcion which will start Icarus
+     */
     public static void main(String[] args) throws Exception
     {
+        set_config_file_path();
 
-        String  log_key = "main";
-        String path;
-        /*
-         * To make testing easier for all of us, add your hostname to this logic
-         */
-        String hostname = InetAddress.getLocalHost().getHostName();
+        config   = new Config_Reader(config_path);
+        logger   = new LogWriter(config);
 
-        switch (hostname)
-        {
-            case "beelzebub":
-                path = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/Icarus/superduper_config";
-                break;
-            case "d4ryus":
-            case "cubie":
-                path = "/home/d4ryus/coding/Project_Icarus/Icarus/d4ryus_config";
-                break;
-            case "alarmpi":
-                path = "/home/vault/Project_Icarus/Icarus/example_config";
-                break;
-            case "vault":
-                path = "/home/vault/programing/NetBeansProjects/Project_Icarus/Icarus/example_config";
-                break;
-            case "csb.local":
-                path = "/home/ninti/NetbeansProjects/Project_Icarus/Icarus/example_config";
-                break;
-            case "link":
-                path = "/home/linc/Documents/defaultConfig";
-                break;
-            /*
-             case "yourhostname":
-             path[0] = "/your/path/to/the/st/file";
-             path[1] = "/your/path/to/the/logfolder/";
-             break;
-             */
-            default:
-                System.out.print("no case for hostname: " + hostname + "\n");
-                path = "";
-                System.exit(0);
-        }
-
-        /* init */
-        Config_Reader config   = new Config_Reader(path);
-        LogWriter     logger   = new LogWriter(config);
         logger.log(log_key, 0, "Staring Icarus Structure Text Interpreter!");
         logger.log(log_key, 0, "verion:           0.8 (Alpha!)");
         logger.log(log_key, 0, "hostname:         " + hostname);
         logger.log(log_key, 0, "st file path:     " + config.get_path("path"));
-        logger.log(log_key, 0, "config file path: " + path);
+        logger.log(log_key, 0, "config file path: " + config_path);
+
         config.setLogWriter(logger);
 
-        STFileFinder  stfinder = new STFileFinder(config, logger);
-        InfoCollector container = new InfoCollector(stfinder.get_file_names(), logger);
+        stfinder    = new STFileFinder(config, logger);
+        container   = new InfoCollector(stfinder.get_file_names(), logger);
+        engine      = new Engine(logger);
+        interpreter = new Interpreter(container, logger, engine);
 
-        Engine engine = new Engine(logger);
         if(config.get_boolean("Engine_Warmup"))
             engine.warmup();
 
-        Interpreter interpreter = new Interpreter(container, logger, engine);
-        String      code        = container.get_all_the_code().toString();
+        code        = container.get_all_the_code().toString();
         interpreter.interpret(code, 0, code.length());
 
+        logger.log(log_key, 0, "exiting Icarus.");
         logger.kill();
+    }
+
+    private static void set_config_file_path()
+    {
+        try
+        {
+            hostname = InetAddress.getLocalHost().getHostName();
+        }
+        catch (UnknownHostException e)
+        {
+            System.out.println("UnknownHostException: " + e);
+            hostname = "";
+            System.exit(1);
+        }
+
+        switch (hostname)
+        {
+            case "beelzebub":
+                config_path = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/Icarus/superduper_config";
+                break;
+            case "d4ryus":
+            case "cubie":
+                config_path = "/home/d4ryus/coding/Project_Icarus/Icarus/d4ryus_config";
+                break;
+            case "alarmpi":
+                config_path = "/home/vault/Project_Icarus/Icarus/example_config";
+                break;
+            case "vault":
+                config_path = "/home/vault/programing/NetBeansProjects/Project_Icarus/Icarus/example_config";
+                break;
+            case "csb.local":
+                config_path = "/home/ninti/NetbeansProjects/Project_Icarus/Icarus/example_config";
+                break;
+            case "link":
+                config_path = "/home/linc/Documents/defaultConfig";
+                break;
+            /*
+             case "yourhostname":
+             config_path = "/path/to/your/config_file";
+             break;
+             */
+            default:
+                System.out.print("no case for hostname: " + hostname + "\n");
+                config_path = "";
+                System.exit(0);
+        }
     }
 }
