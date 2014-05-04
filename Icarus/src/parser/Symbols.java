@@ -31,7 +31,7 @@ public class Symbols {
 	private final StringBuilder         builder;         /* the whole programm code */
 	private final Match                 match;           /* the matcher, this class holds some importand Informations */
 	private final ArrayList<Integer[]>  deleteme;        /* the list of all marked var blocks as arrays with first index and very last index */
-	private final ArrayList<String>     symbolnames;     /* list with all the symbolnames */
+	private       ArrayList<String>     symbolnames;     /* list with all the symbolnames */
 	private final ArrayList<Integer>    variableIndexes; /* olds getVars() from match */
 	private       int                   id = 0;          /* the global variable id */
 
@@ -311,6 +311,8 @@ public class Symbols {
 	private void
 	generate_symbols_list()
 	{
+		symbolnames = null;
+		
 		log.log(key, 4, "generate_symbols_list called.");
 		// String context;
 		for (Map.Entry<String, HashMap<String, Integer>> percontext : contextstore.entrySet()) {
@@ -407,7 +409,7 @@ public class Symbols {
 	add_var(String input, String context) throws Exception
 	{
 		log.log(key, 4, "add_var called.");
-		log.log(key, 4, "input: "+input);
+		log.log(key, 4, "input: "  +input);
 		log.log(key, 4, "context: "+context);
 		
 		/* type is integer all the time */
