@@ -36,7 +36,7 @@ public class main
     public static void main(String[] args) throws Exception
     {
 
-        String[] path = new String[3];
+        String path;
         /*
          * To make testing easyer for all of us, add your hostname to this logic
          */
@@ -45,29 +45,23 @@ public class main
         switch (hostname)
         {
             case "beelzebub":
-                path[0] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/Icarus/test.st";
-                path[1] = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/Icarus/example_config";
+                path = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/Icarus/example_config";
                 break;
             case "d4ryus":
             case "cubie":
-                path[0] = "/home/d4ryus/coding/Project_Icarus/Icarus/test.st";
-                path[1] = "/home/d4ryus/coding/Project_Icarus/Icarus/d4ryus_config";
+                path = "/home/d4ryus/coding/Project_Icarus/Icarus/d4ryus_config";
                 break;
             case "alarmpi":
-                path[0] = "/home/vault/Project_Icarus/Icarus/test.st";
-                path[1] = "/home/vault/Project_Icarus/Icarus/example_config";
+                path = "/home/vault/Project_Icarus/Icarus/example_config";
                 break;
             case "vault":
-                path[0] = "/home/vault/programing/NetBeansProjects/Project_Icarus/Icarus/test.st";
-                path[1] = "/home/vault/programing/NetBeansProjects/Project_Icarus/Icarus/example_config";
+                path = "/home/vault/programing/NetBeansProjects/Project_Icarus/Icarus/example_config";
                 break;
             case "csb.local":
-                path[0] = "/home/ninti/NetBeansProjects/Project_Icarus/Icarus/test.st";
-                path[1] = "/home/ninti/NetbeansProjects/Project_Icarus/Icarus/example_config";
+                path = "/home/ninti/NetbeansProjects/Project_Icarus/Icarus/example_config";
                 break;
             case "link":
-                path[0] = "/home/linc/NetBeansProject/Project_Icarus/Icarus/test.st";
-                path[1] = "/home/linc/Documents/defaultConfig";
+                path = "/home/linc/Documents/defaultConfig";
                 break;
             /*
              case "yourhostname":
@@ -77,13 +71,14 @@ public class main
              */
             default:
                 System.out.print("no case for hostname: " + hostname + "\n");
+                path = "";
                 System.exit(0);
         }
 
-        System.out.print("your config file path: " + path[1] + "\n");
+        System.out.print("your config file path: " + path + "\n");
 
         /* init */
-        Config_Reader config    = new Config_Reader(path[1]);
+        Config_Reader config    = new Config_Reader(path);
         LogWriter     logger    = new LogWriter(config);
         STFileFinder  stfinder  = new STFileFinder(config, logger);
 
