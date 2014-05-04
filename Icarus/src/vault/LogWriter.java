@@ -44,7 +44,7 @@ public class LogWriter {
 
     /**
      * LogWriter Constructor
-     * @param confReader gets the Path from the configfile and returns it
+     * @param configReader gets the Path from the configfile and returns it
      */
     public LogWriter(Config_Reader configReader){
         silent       = configReader.get_boolean("silent");

@@ -35,15 +35,17 @@ public class Interpreter
     String log_key = "Interpreter";
     LogWriter       log;
     Keyword_Handler handler;
+    InfoCollector   container;
 
     /**
      * @param container used parser
      * @param log used LogWriter
-     * @param engine Script engine to evaluate
+     * @param config Config_Reader object which will be passed to Engine
      */
     public Interpreter(InfoCollector container, LogWriter log, Config_Reader config)
     {
         log.log(log_key, 4, "init Interpreter...");
+
         this.log       = log;
         handler = new Keyword_Handler(container, log, config, this);
 
@@ -51,11 +53,20 @@ public class Interpreter
     }
 
     /**
+     * starts the Interpreter
+     */
+    public void start() throws Exception
+    {
+        log.log(log_key, 4, "starting Interpreter...");
+        String code = container.get_all_the_code().toString();
+        interpret(code, 0, code.length());
+    }
+
+    /**
      * will interpret given code from given start till end INDEX.
      * @param code structure text code after parser
      * @param start INDEX where interpreter will start
      * @param end INDEX where interpreter will stop
-     * @throws exception Exception
      */
     public void interpret (String code, int start, int end) throws Exception
     {

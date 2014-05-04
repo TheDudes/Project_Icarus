@@ -47,27 +47,25 @@ public class Main
      */
     public static void main(String[] args) throws Exception
     {
+        print_startup_message();
         set_config_file_path();
 
-        config   = new Config_Reader(config_path);
-        logger   = new LogWriter(config);
-
-        logger.log(log_key, 0, "Staring Icarus Structure Text Interpreter!");
-        logger.log(log_key, 0, "verion:           0.8 (Alpha!)");
-        logger.log(log_key, 0, "hostname:         " + hostname);
-        logger.log(log_key, 0, "st file path:     " + config.get_path("path"));
-        logger.log(log_key, 0, "config file path: " + config_path);
-
+        config      = new Config_Reader(config_path);
+        logger      = new LogWriter(config);
         stfinder    = new STFileFinder(config, logger);
-
         container   = new InfoCollector(stfinder.get_file_names(), logger);
         interpreter = new Interpreter(container, logger, config);
 
-        code = container.get_all_the_code().toString();
-        interpreter.interpret(code, 0, code.length());
+        interpreter.start();
 
         logger.log(log_key, 0, "exiting Icarus.");
         logger.kill();
+    }
+
+    private static void print_startup_message()
+    {
+        System.out.println("Staring Icarus Structure Text Interpreter!");
+        System.out.println("verion: 0.8 (Alpha!)");
     }
 
     private static void set_config_file_path()
