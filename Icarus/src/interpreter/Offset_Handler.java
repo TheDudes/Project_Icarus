@@ -75,8 +75,9 @@ public class Offset_Handler
             {
                 log.log(log_key, 4, "return get_next_keyword, INDEX = " + INDEX);
                 return INDEX;
-            } else if ( (code.charAt(INDEX)     == 'I') &&
-                        (code.charAt(INDEX + 1) == 'F') )
+            }
+            else if ( (code.charAt(INDEX)     == 'I') &&
+                      (code.charAt(INDEX + 1) == 'F') )
             {
                 INDEX = get_END_IF(INDEX, code) + 5;
                 continue;
@@ -267,8 +268,9 @@ public class Offset_Handler
             {
                 log.log(log_key, 4, "return get_END_IF, INDEX = " + INDEX);
                 return INDEX;
-            } else if ( (code.charAt(INDEX)     == 'I') &&
-                        (code.charAt(INDEX + 1) == 'F') )
+            }
+            else if ( (code.charAt(INDEX)     == 'I') &&
+                      (code.charAt(INDEX + 1) == 'F') )
             {
                 log.log(log_key, 4, "recursive call get_END_IF, INDEX = " + INDEX);
                 INDEX = get_END_IF(INDEX, code) + 5;
