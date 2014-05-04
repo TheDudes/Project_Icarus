@@ -58,10 +58,14 @@ public class STFileFinder {
     /**
      * iterates through the inital Array and selects the filenames that end
      * on .st i.e. are Structured Text Files. Those will then be added to the
-     * ArrayList
+     * ArrayList.
+     * If the directory name does not end on a / the function will append that one aswell
      */
     private void getSTFiles(){
         logWriter.log("STFileFinder", 4, "jumping in getSTFiles");
+        if(!fileDirectory.endsWith("/")){
+            fileDirectory += "/";
+        }
         for(int i = 0; i < files.length; i++) {
             if(Pattern.matches(".*?\\.st", files[i])) {
                 stFiles.add(fileDirectory + files[i]);

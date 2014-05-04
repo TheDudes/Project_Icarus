@@ -34,7 +34,7 @@ public class Config_Reader {
     
     //the maps for the variables and stuff we get from the config file
     public static Map<String, Object> container = new HashMap<>();
-    public static Map<String, String> key_container = new HashMap<>();
+//    public static Map<String, String> key_container = new HashMap<>();
 
     
     /**
@@ -114,7 +114,20 @@ public class Config_Reader {
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "jumping in get_val, leaving it now :D");
         }
-        return container.get(key);
+        if(container.containsKey(key)){
+            return container.get(key);
+        }
+        else{
+            if(logWriterInit){
+                logWriter.log("Config_Reader", 0, "in get_val could not find a match for " + key + ", exiting");
+                System.exit(0);
+            }
+            else{
+                System.err.println("in function get_val could not find a match for " + key + ", exiting");
+                System.exit(0);
+            }
+            return -1;
+        }
     }
     
     
@@ -127,8 +140,8 @@ public class Config_Reader {
             logWriter.log("Config_Reader", 4, "jumping in get_keys");
         }
         int i = 0;
-        String[] toReturn = new String[key_container.size()];
-        for(Map.Entry<String, String> e : key_container.entrySet()){
+        String[] toReturn = new String[container.size()];
+        for(Map.Entry<String, Object> e : container.entrySet()){
             toReturn[i] = (String) e.getKey();
             i++;
         }
@@ -150,15 +163,19 @@ public class Config_Reader {
         }
         String prep;
         //removes the ; from the path Strings
-        if(key_container.containsKey(key)){
-            prep = key_container.get(key).replace(";", "");
+        if(container.containsKey(key)){
+            prep = (String)container.get(key);
         }
         else{
             prep = "";
-        if(logWriterInit){
-            logWriter.log("Config_Reader", 0, "in get_path could not find a match for the key provided");
-            System.exit(0);
-        }
+            if(logWriterInit){
+                logWriter.log("Config_Reader", 0, "in get_path could not find a match for " + key + ", exiting");
+                System.exit(0);
+            }
+            else{
+                System.err.println("in function get_path could not find a match for " + key + ", exiting");
+                System.exit(0);
+            }
         }
         //only one path allowed not so this is not needed any more
         //splits the String after each , thereby seperating the different paths from each other
@@ -187,7 +204,11 @@ public class Config_Reader {
         else{
             toReturn = -1;
             if(logWriterInit){
-                logWriter.log("Config_Reader", 0, "in get_int could not find a match for the key provided");
+                logWriter.log("Config_Reader", 0, "in get_int could not find a match for " + key + ", exiting");
+                System.exit(0);
+            }
+            else{
+                System.err.println("in function get_int could not find a match for " + key + ", exiting");
                 System.exit(0);
             }
         }
@@ -215,7 +236,11 @@ public class Config_Reader {
         else{
             toReturn = -1.0;
             if(logWriterInit){
-                logWriter.log("Config_Reader", 0, "in get_double could not find a match for the key provided");
+                logWriter.log("Config_Reader", 0, "in get_double could not find a match for " + key + ", exiting");
+                System.exit(0);
+            }
+            else{
+                System.err.println("in function get_double could not find a match for " + key + ", exiting");
                 System.exit(0);
             }
         }
@@ -243,7 +268,11 @@ public class Config_Reader {
         else{
             toReturn = false;
             if(logWriterInit){
-                logWriter.log("Config_Reader", 0, "in get_boolean could not find a match for the key provided");
+                logWriter.log("Config_Reader", 0, "in get_boolean could not find a match for " + key + ", exiting");
+                System.exit(0);
+            }
+            else{
+                System.err.println("in function get_boolean could not find a match for " + key + ", exiting");
                 System.exit(0);
             }
         }
@@ -263,11 +292,24 @@ public class Config_Reader {
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "jumping in get_string");
         }
+        String prep = "";
+        if(container.containsKey(key)){
+            prep = (String)container.get(key);
+        }
+        else{
+            if(logWriterInit){
+                logWriter.log("Config_Reader", 0, "in get_string could not find a match for " + key + ", exiting");
+                System.exit(0);
+            }
+            else{
+                System.err.println("in function get_string could not find a match for " + key + ", exiting");
+                System.exit(0);
+            }
+        }
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "leaving get_String");
         }
-        return (String)container.get(key);
-
+        return prep;
     }
     
     
@@ -301,6 +343,7 @@ public class Config_Reader {
         container.put("verbosity_level", 0);
         container.put("silent", (Boolean)false);
         container.put("Engine_Warmup", (Boolean)true);
+        container.put("path", "/home/linc/NetBeansProjects/Project_Icarus/Icarus/st_files");
     }
     
     
@@ -313,32 +356,23 @@ public class Config_Reader {
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "jumping in interpret_line");
         }
-        //does the key have the key attribute? (the key is used for assigning files to write their log in for the parser and other stuff)
-        if(Pattern.matches("key_.*?=.*?;", line)){
-            String[] split_line = line.split("=");
-            split_line[0] = split_line[0].substring(4);
-            key_container.put(split_line[0], split_line[1]);
-        }
-        else{
-            String[] split_line = line.split("=");
-            
-            if(split_line.length != 1){
-                //is the value a integer?
-                if(Pattern.matches("\\d*?;", split_line[1])){
-                    container.put(split_line[0], new Integer(split_line[1].replace(";", "")));
-                }
-                //is the value a double?
-                else if(Pattern.matches("\\d*?\\.\\d*?;", split_line[1])){
-                    container.put(split_line[0], new Double(split_line[1].replace(";", "")));
-                }
-                //is the value a boolean?
-                else if(Pattern.matches("(true;)|(false;)", split_line[1])){
-                    container.put(split_line[0], Boolean.valueOf(split_line[1].replace(";", "")));
-                }
-                //or is it a string?
-                else{
-                    container.put(split_line[0], split_line[1]);
-                }
+        String[] split_line = line.split("=");
+        if(split_line.length != 1){
+            //is the value a integer?
+            if(Pattern.matches("\\d*?;", split_line[1])){
+                container.put(split_line[0], new Integer(split_line[1].replace(";", "")));
+            }
+            //is the value a double?
+            else if(Pattern.matches("\\d*?\\.\\d*?;", split_line[1])){
+                container.put(split_line[0], new Double(split_line[1].replace(";", "")));
+            }
+            //is the value a boolean?
+            else if(Pattern.matches("(true;)|(false;)|(TRUE)|(FALSE)|(True)|(False)", split_line[1])){
+                container.put(split_line[0], Boolean.valueOf(split_line[1].replace(";", "")));
+            }
+            //or is it a string?
+            else{
+                container.put(split_line[0], split_line[1].replace(";", ""));
             }
         }
         if(logWriterInit){
@@ -587,14 +621,13 @@ public class Config_Reader {
             "#####################################################################\n" +
             "#####################################################################\n" +
             "## Setting the path for where which log will be written to         ##\n" +
-            "## The key for telling the porgramm that there                     ##\n" +
-            "## will now be a path for an output is:                            ##\n" +
-            "## key_                                                            ##\n" +
-            "## there can be several paths assigned to the output of an object, ##\n" +
-            "## each path is simply seperated by a ,                            ##\n" +
-            "## This means that key_Parser will signal the Config_Reader that   ##\n" +
-            "## the paths to where the output from the Parser shall be written  ##\n" +
-            "## to will follow now (see example below)                          ##\n" +
+            "## The key for telling the program where to write the logs is      ##\n" +
+            "## quite simple: You just write the keyword = directory            ##\n" +
+            "## The keyword for the logs is: LogWriter (see example below)      ##\n" +
+            "##                                                                 ##\n" +
+            "## The following keywords exist:                                   ##\n" +
+            "## LogWriter         tells the LogWriter where to put his logs     ##\n" +
+            "## path              this is the path to the ST File Directory     ##\n" +
             "#####################################################################\n" +
             "#####################################################################\n" +
             "\n" +
@@ -604,14 +637,17 @@ public class Config_Reader {
             "                       \n" +
             "## will assign the path /home/linc/Documents/ParseLog to the Parser \n" +
             "## output\n" +
-            "#key_parser = /home/linc/Documents/ParseLog;\n" +
+            "#parser = /home/linc/Documents/ParseLog;\n" +
             "\n" +
             "## will assign the path /home/linc/Icarus/Logs/LogAll to the output \n" +
             "## of the Syntax checker\n" +
-            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll; \n" +
+            "#syntax_checker = /home/linc/Icarus/Logs/LogAll; \n" +
             "\n " + 
             "## set the path for the LogWriter: \n" +
-            "key_LogWriter = /tmp";
+            "LogWriter = /tmp" +
+            "\n" +
+            "## set the path to the Structured Text Files Directory:" +
+            "path = /home/linc/NetBeansProjects/Project_Icarus/Icarus/st_files";
         try(
             BufferedWriter writer = new BufferedWriter(new FileWriter(path));
         ){
@@ -693,14 +729,13 @@ public class Config_Reader {
             "#####################################################################\n" +
             "#####################################################################\n" +
             "## Setting the path for where which log will be written to         ##\n" +
-            "## The key for telling the porgramm that there                     ##\n" +
-            "## will now be a path for an output is:                            ##\n" +
-            "## key_                                                            ##\n" +
-            "## there can be several paths assigned to the output of an object, ##\n" +
-            "## each path is simply seperated by a ,                            ##\n" +
-            "## This means that key_Parser will signal the Config_Reader that   ##\n" +
-            "## the paths to where the output from the Parser shall be written  ##\n" +
-            "## to will follow now (see example below)                          ##\n" +
+            "## The key for telling the program where to write the logs is      ##\n" +
+            "## quite simple: You just write the keyword = directory            ##\n" +
+            "## The keyword for the logs is: LogWriter (see example below)      ##\n" +
+            "##                                                                 ##\n" +
+            "## The following keywords exist:                                   ##\n" +
+            "## LogWriter         tells the LogWriter where to put his logs     ##\n" +
+            "## path              this is the path to the ST File Directory     ##\n" +
             "#####################################################################\n" +
             "#####################################################################\n" +
             "\n" +
@@ -710,14 +745,17 @@ public class Config_Reader {
             "                       \n" +
             "## will assign the path /home/linc/Documents/ParseLog to the Parser \n" +
             "## output\n" +
-            "#key_parser = /home/linc/Documents/ParseLog;\n" +
+            "#parser = /home/linc/Documents/ParseLog;\n" +
             "\n" +
             "## will assign the path /home/linc/Icarus/Logs/LogAll to the output \n" +
             "## of the Syntax checker\n" +
-            "#key_syntax_checker = /home/linc/Icarus/Logs/LogAll; \n" +
+            "#syntax_checker = /home/linc/Icarus/Logs/LogAll; \n" +
             "\n " + 
             "## set the path for the LogWriter: \n" +
-            "key_LogWriter = /tmp";
+            "LogWriter = /home/linc/Documents/logs" +
+            "\n" +
+            "## set the path to the Structured Text Files Directory:" +
+            "path = /home/linc/NetBeansProjects/Project_Icarus/Icarus/st_files";
         try(
             BufferedWriter writer = new BufferedWriter(new FileWriter("example_config"));
         ){
