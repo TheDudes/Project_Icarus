@@ -27,7 +27,7 @@ import vault.*;
  * class which holds all the offset related Functions, these are used
  * to get the index of the next Keyword, for example.
  * <p>
- * @version 0.2
+ * @version 0.8
  */
 public class Offset_Handler
 {
@@ -92,11 +92,30 @@ public class Offset_Handler
     public int get_colon(String string)
     {
         log.log(log_key, 4, "call   get_colon, string = " + string);
-        for(int i = 0;;i++) {
+        for(int i = 0;;i++)
+        {
             if (string.charAt(i) == ':')
             {
                 log.log(log_key, 4, "return get_colon, i = " + i);
                 return i;
+            }
+        }
+    }
+
+    /**
+     * will return next Semicolon index
+     * @param INDEX starting point
+     * @param code code from parser
+     * @return INDEX of found semicolon
+     */
+    public int get_semicolon(int INDEX, String code)
+    {
+        log.log(log_key, 4, "call   get_semicolon, INDEX = " + INDEX);
+        for(;;INDEX++) {
+            if ( (code.charAt(INDEX)     == ';') )
+            {
+                log.log(log_key, 4, "return get_semicolon , INDEX = " + INDEX);
+                return INDEX;
             }
         }
     }
@@ -185,24 +204,6 @@ public class Offset_Handler
             else
             {
                 INDEX++;
-            }
-        }
-    }
-
-    /**
-     * will return next Semicolon index
-     * @param INDEX starting point
-     * @param code code from parser
-     * @return INDEX of found semicolon
-     */
-    public int get_semicolon(int INDEX, String code)
-    {
-        log.log(log_key, 4, "call   get_semicolon, INDEX = " + INDEX);
-        for(;;INDEX++) {
-            if ( (code.charAt(INDEX)     == ';') )
-            {
-                log.log(log_key, 4, "return get_semicolon , INDEX = " + INDEX);
-                return INDEX;
             }
         }
     }

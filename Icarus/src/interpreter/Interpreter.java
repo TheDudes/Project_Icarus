@@ -29,7 +29,7 @@ import javax.script.ScriptEngine;
  * <p>
  * class where the main interpret function is located.
  * <p>
- * @version 0.2
+ * @version 0.8
  */
 public class Interpreter
 {

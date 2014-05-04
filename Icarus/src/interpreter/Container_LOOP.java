@@ -23,7 +23,7 @@ package interpreter;
  * <p>
  * class/struct to hold Loop values.
  * <p>
- * @version 0.2
+ * @version 0.8
  */
 public class Container_LOOP
 {

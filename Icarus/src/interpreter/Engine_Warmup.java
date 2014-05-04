@@ -30,7 +30,7 @@ import javax.script.ScriptEngineManager;
  * class which is used to warmup the JavaScript engine, the engine
  * is used to evaluate conditions.
  * <p>
- * @version 0.2
+ * @version 0.8
  */
 public class Engine_Warmup
 {

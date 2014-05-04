@@ -31,7 +31,7 @@ import javax.script.ScriptEngine;
  * class which holds all the keyword related Functions, these are used
  * to handle found Keywords.
  * <p>
- * @version 0.2
+ * @version 0.8
  */
 public class Keyword_Handler
 {
@@ -501,13 +501,20 @@ public class Keyword_Handler
      * @param INDEX current Position
      * @param code current working code
      * @return INDEX after handling Keyword
+     * @throws Exception
      */
-    public int found_nothing(int INDEX, String code)
+    public int found_nothing(int INDEX, String code) throws Exception
     {
         log.log(log_key, 4, "call   found_nothing, INDEX = " + INDEX);
 
+        /*
         log.log("error", 4, "no keyword was found, substring(INDEX, INDEX + 20):" +
                                     code.substring(INDEX, INDEX + 20));
+        */
+        int    semicolon_position = offset.get_semicolon(INDEX, code);
+        String condition          = code.substring(INDEX, semicolon_position + 1);
+        container.set_value(condition, context_stack.peek());
+        INDEX = semicolon_position;
 
         log.log(log_key, 4, "return found_nothing, INDEX = " + INDEX);
         return INDEX;
