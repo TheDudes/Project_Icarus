@@ -86,6 +86,7 @@ public class Config_Reader {
     public void setLogWriter(LogWriter logger){
         logWriter = logger;
         logWriterInit = true;
+        logWriter.log("Config_Reader", 0 , "\n  Values specified in the config file:\n");
         for(Map.Entry<String, Object> e : container.entrySet()){
             String formattedValues = String.format("%6s%-20s%8s", "Key: ", e.getKey(), "Value: ");
             logWriter.log("Config_Reader", 0, formattedValues + e.getValue());
