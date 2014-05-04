@@ -21,8 +21,7 @@ package interpreter;
 
 import vault.*;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
+import javax.script.*;
 
 /**
  * @author d4ryus - https://github.com/d4ryus/
@@ -32,28 +31,27 @@ import javax.script.ScriptEngineManager;
  * <p>
  * @version 0.8
  */
-public class Engine_Warmup
+public class Engine
 {
-
     ScriptEngine engine;
     LogWriter log;
+    String log_key = "engine";
 
     /**
      * @param log LogWriter Object
      */
-    public Engine_Warmup(LogWriter log)
+    public Engine(LogWriter log)
     {
         this.log = log;
         ScriptEngineManager factory = new ScriptEngineManager();
         engine                      = factory.getEngineByName("JavaScript");
     }
 
-
     /**
      * used to warmup the Java ScriptEngine.
      * @throws ScriptException Exception
      */
-    public ScriptEngine engine_warmup() throws Exception
+    public ScriptEngine warmup() throws Exception
     {
 
         int total_evaluations = 2000;
@@ -106,5 +104,30 @@ public class Engine_Warmup
                                     + (System.currentTimeMillis() - start)
                                     + "ms");
         return engine;
+    }
+
+    /**
+     * used to evaluate conditions.
+     */
+    public Object eval(String condition)
+    {
+        Object obj = new Object();
+        try
+        {
+            obj = engine.eval(condition);
+        }
+        catch(ScriptException e)
+        {
+            log.log(log_key, 0, "could not evalue condition:" + condition);
+            log.kill();
+            System.exit(1);
+        }
+        catch(NullPointerException e)
+        {
+            log.log(log_key, 0, "could not evalue condition:" + condition);
+            log.kill();
+            System.exit(1);
+        }
+        return obj;
     }
 }

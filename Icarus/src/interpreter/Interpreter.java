@@ -22,8 +22,6 @@ package interpreter;
 import vault.*;
 import parser.*;
 
-import javax.script.ScriptEngine;
-
 /**
  * @author d4ryus - https://github.com/d4ryus/
  * <p>
@@ -42,7 +40,7 @@ public class Interpreter
      * @param log used LogWriter
      * @param engine Script engine to evaluate
      */
-    public Interpreter(InfoCollector container, LogWriter log, ScriptEngine engine)
+    public Interpreter(InfoCollector container, LogWriter log, Engine engine)
     {
         log.log(log_key, 4, "init Interpreter...");
         this.log       = log;
@@ -50,7 +48,6 @@ public class Interpreter
         handler = new Keyword_Handler(container, log, engine, this);
         log.log(log_key, 4, "init Interpreter done.");
     }
-
 
     /**
      * will interpret given code from given start till end INDEX.
@@ -60,7 +57,7 @@ public class Interpreter
      * @param engine ScriptEngine which will be used.
      * @throws exception Exception
      */
-    public void interpret (String code, int start, int end, ScriptEngine engine) throws Exception
+    public void interpret (String code, int start, int end) throws Exception
     {
         log.log(log_key, 4, "started with start: " + start + ", end: " + end);
         for(int INDEX = start; INDEX < end; INDEX++)

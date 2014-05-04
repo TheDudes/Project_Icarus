@@ -23,7 +23,6 @@ import vault.*;
 import parser.*;
 
 import java.util.Stack;
-import javax.script.ScriptEngine;
 
 /**
  * @author d4ryus - https://github.com/d4ryus/
@@ -37,7 +36,7 @@ public class Keyword_Handler
 {
     String         log_key = "Interpreter-Keyword_Handler";
     InfoCollector  container;
-    ScriptEngine   engine;
+    Engine         engine;
     LogWriter      log;
     Interpreter    interpreter;
     Offset_Handler offset;
@@ -48,7 +47,7 @@ public class Keyword_Handler
     Stack<Boolean>        if_stack;
     Stack<Integer>        if_position_stack;
 
-    public Keyword_Handler(InfoCollector container, LogWriter log, ScriptEngine engine, Interpreter interpreter)
+    public Keyword_Handler(InfoCollector container, LogWriter log, Engine engine, Interpreter interpreter)
     {
         log.log(log_key, 4, "init Keyword_Handler...");
 
@@ -403,11 +402,15 @@ public class Keyword_Handler
         log.log(log_key, 4, "call   found_PRINT, INDEX = " + INDEX);
 
         int semicolon_position = offset.get_semicolon(INDEX + 6, code);
-        String print = code.substring(INDEX + 6, semicolon_position - 1);
+        String print_string    = code.substring(INDEX + 6, semicolon_position - 1);
 
-        print = container.replace_vars(print, context_stack.peek());
-        log.log("PRINT", 0, print);
-        System.out.println("PRINT: " + print + "\n");
+        int comma_position     = offset.get_comma(print_string);
+        String text            = print_string.substring(0, comma_position);
+        String values          = print_string.substring(comma_position + 1,print_string.length());
+
+        values = container.replace_vars(values, context_stack.peek());
+
+        log.log("PRINT", 0, text + values);
         INDEX = semicolon_position;
 
         log.log(log_key, 4, "return found_PRINT, INDEX = " + INDEX);
@@ -461,7 +464,7 @@ public class Keyword_Handler
         int value = Integer.parseInt(offset.convert_condition(container.replace_vars(condition, context_stack.peek())));
         Integer[] recursive_positions = new Integer[2];
         recursive_positions = container.get_case_coordinates(INDEX, value);
-        interpreter.interpret(code, recursive_positions[0], recursive_positions[1], engine);
+        interpreter.interpret(code, recursive_positions[0], recursive_positions[1]);
         INDEX = container.get_end_case(INDEX) + 7;
 
         log.log(log_key, 4, "return found_CASE, INDEX = " + INDEX);

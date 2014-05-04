@@ -28,9 +28,6 @@ import interpreter.*;
 
 import java.net.*;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-
 public class Main
 {
     public static void main(String[] args) throws Exception
@@ -39,7 +36,7 @@ public class Main
         String  log_key = "main";
         String path;
         /*
-         * To make testing easyer for all of us, add your hostname to this logic
+         * To make testing easier for all of us, add your hostname to this logic
          */
         String hostname = InetAddress.getLocalHost().getHostName();
 
@@ -89,16 +86,14 @@ public class Main
         STFileFinder  stfinder = new STFileFinder(config, logger);
 
         InfoCollector container = new InfoCollector(stfinder.get_file_names(), logger);
-        ScriptEngine  engine;
+        Engine engine = new Engine(logger);
 
         if(config.get_boolean("Engine_Warmup"))
-            engine               = new Engine_Warmup(logger).engine_warmup();
-        else
-            engine = new ScriptEngineManager().getEngineByName("JavaScript");
+            engine.warmup();
 
         Interpreter interpreter = new Interpreter(container, logger, engine);
         String      code        = container.get_all_the_code().toString();
-        interpreter.interpret(code, 0, code.length(), engine);
+        interpreter.interpret(code, 0, code.length());
 
         logger.kill();
     }

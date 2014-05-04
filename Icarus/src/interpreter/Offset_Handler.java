@@ -86,7 +86,7 @@ public class Offset_Handler
     }
 
     /**
-     * will return next colon index
+     * will return next colon index (only used by found_FOR)
      * @param string containing colon
      * @return ińdex of colon
      */
@@ -117,6 +117,24 @@ public class Offset_Handler
             {
                 log.log(log_key, 4, "return get_semicolon , INDEX = " + INDEX);
                 return INDEX;
+            }
+        }
+    }
+
+    /**
+     * will return next comma index (only used by found_PRINT)
+     * @param string containing colon
+     * @return ińdex of colon
+     */
+    public int get_comma(String string)
+    {
+        log.log(log_key, 4, "call   get_comma, string = " + string);
+        for(int i = 0;;i++)
+        {
+            if (string.charAt(i) == ',')
+            {
+                log.log(log_key, 4, "return get_comma, i = " + i);
+                return i;
             }
         }
     }
