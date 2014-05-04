@@ -34,10 +34,9 @@ import javax.script.*;
  */
 public class Engine
 {
-    ScriptEngine  engine;
-    LogWriter     log;
-    Config_Reader config;
-    String log_key = "engine";
+    ScriptEngine engine;
+    LogWriter    log;
+    String       log_key = "engine";
 
     /**
      * @param log LogWriter Object
@@ -45,10 +44,12 @@ public class Engine
     public Engine(LogWriter log, Config_Reader config)
     {
         this.log = log;
+        log.log(log_key, 4, "init Engine...");
         ScriptEngineManager factory = new ScriptEngineManager();
         engine                      = factory.getEngineByName("JavaScript");
         if(config.get_boolean("Engine_Warmup"))
             warmup();
+        log.log(log_key, 4, "init Engine done.");
     }
 
     /**

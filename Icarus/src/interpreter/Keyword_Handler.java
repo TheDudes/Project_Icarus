@@ -42,7 +42,6 @@ public class Keyword_Handler
     Interpreter    interpreter;
     Offset_Handler offset;
 
-    /* stacks */
     Stack<Container_LOOP> loop_stack;
     Stack<String>         context_stack;
     Stack<Boolean>        if_stack;
