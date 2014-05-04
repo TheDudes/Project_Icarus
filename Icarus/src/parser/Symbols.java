@@ -63,62 +63,90 @@ public class Symbols {
 	private void
 	find_context_vars(String kind) throws Exception
 	{
+		log.log(key, 4, "find_context_vars called.");
+		log.log(key, 4, "kind: "+kind);
+		
 		ArrayList<Integer>  varlist;
 		StringBuilder       block = new StringBuilder();
 		String              context;
 		int                 tmpint;
+		
 		switch (kind) {
 		case "PROGRAM":
 			for (int k : match.get_programs()) {
+
 				varlist = new ArrayList<>();
+
 				for (int j : variableIndexes) {
 					if (j < match.get_end_program(k) && j > k) { /* room for improvement here! i should take some minutes and think about the variable names .... */
 						varlist.add(j);
 					}
 				}
+				
 				context = builder.substring(k + 7, varlist.get(0));  /* +7 == "PROGRAM".length(), i should replace all these with final constants, btw. finds out name of the context */
+
+				log.log(key, 4, "Found context: "+context);
+				
 				for (int i : varlist) {
 					tmpint = match.get_end_var(i);
 					block.append(builder.substring(i + match.get_var_start(i).length(), tmpint));
 					deleteme.add(new Integer[]{i, tmpint + 7});  /* +7 == "END_VAR".length() */
 				}
+
 				fill_up_the_containers(context, block);
+
 				varlist = null;
 			}
 			break;
 		case "FUNCTION":
 			for (int k : match.get_functions()) {
+				
 				varlist = new ArrayList<>();
+
 				for (int j : variableIndexes) {
 					if (j < match.get_end_function(k) && j > k) { /* room for improvement here! but, fuck it. */
 						varlist.add(j);
 					}
 				}
+
 				context = builder.substring(k + 8, varlist.get(0));  /* +8 == "FUNCTION".length(), i should replace all these with final constants, btw. finds out name of the context */
+
+				log.log(key, 4, "Found context: "+context);
+				
 				for (int i : varlist) {
 					tmpint = match.get_end_var(i);
 					block.append(builder.substring(i + match.get_var_start(i).length(), tmpint));
 					deleteme.add(new Integer[]{i, tmpint + 7});  /* +7 == "END_VAR".length() */
 				}
+
 				fill_up_the_containers(context, block);
+
 				varlist = null;
 			}
 			break;
 		case "FUNCTION_BLOCK":
 			for (int k : match.get_function_blocks()) {
+
 				varlist = new ArrayList<>();
+
 				for (int j : variableIndexes) {
 					if (j < match.get_end_function_block(k) && j > k) { /* room for improvement again. */
 						varlist.add(j);
 					}
 				}
+				
 				context = builder.substring(k + 14, varlist.get(0));  /* +14 == "FUNCTION_BLOCK".length(), i should replace all these with final constants, btw. finds out name of the context */
+
+				log.log(key, 4, "Found context: "+context);
+				
 				for (int i : varlist) {
 					tmpint = match.get_end_var(i);
 					block.append(builder.substring(i + match.get_var_start(i).length(), tmpint));
 					deleteme.add(new Integer[]{i, tmpint + 7});  /* +7 == "END_VAR".length() */
 				}
+
 				fill_up_the_containers(context, block);
+
 				varlist = null;
 			}
 			break;
@@ -130,7 +158,8 @@ public class Symbols {
 			  fill_up_the_containers(context, block);
 			  break;*/
 		default:
-			System.err.println("What are you doing stupid FAG!?"); /* here should be some kind of Exception ... */
+		        log.log(key, 0, "Someting strange happen .... unknown kind: "+kind);
+			throw new Exception("Someting strange happen .... unknown kind: "+kind);
 		}
 
 	}
@@ -148,22 +177,34 @@ public class Symbols {
 	private void
 	fill_up_the_containers(String context, StringBuilder block) throws Exception
 	{
+		log.log(key, 4, "fill_up_the_containers called.");
+		
 		HashMap<String, Integer>  percontext;
+
 		int      tmpint;
 		Integer  tmpint2;
 		String   type;
 		String[] names;
 		String   value;
+
+		log.log(key, 4, "Current var block: "+block.toString());
+		
 		try {
 			for (StringBuilder b = new StringBuilder(block.substring(0, block.indexOf(";") + 1)); true; b = new StringBuilder(block.substring(0, block.indexOf(";") + 1))) {
 				block.delete(0, block.indexOf(";") + 1);
 				tmpint = b.indexOf(":=");
+
+				log.log(key, 0, "Current line: "+b);
+				
 				if (tmpint == -1) {
 					tmpint = b.indexOf(":");
-					/*
-					  if (tmpint == -1)
-					  throw the wrong variablen deklaration error or so 
-					*/
+
+					/* variable deklaration wrong */
+					if (tmpint == -1) {
+						log.log(key, 0, "Wrong variable Deklaration: "+b.toString());
+						throw new Exception("Wrong variable Deklaration: "+b.toString()); 
+					}
+					
 					names = b.substring(0, tmpint).split(",");
 					type = b.substring(tmpint + 1, b.indexOf(";"));
                     
@@ -180,10 +221,12 @@ public class Symbols {
 					}
 					contextstore.put(context, percontext);
 				} else if (Pattern.matches("@", block.toString())) {
-					names = b.substring(0, b.indexOf(":")).split(",");
-					type = typebyid.get(contextstore.get(context).get(names[0]));
-					value = b.substring(tmpint + 2, b.indexOf(";"));
-					percontext = contextstore.get(context);
+					
+					names       = b.substring(0, b.indexOf(":")).split(",");
+					type        = typebyid.get(contextstore.get(context).get(names[0]));
+					value       = b.substring(tmpint + 2, b.indexOf(";"));
+					percontext  = contextstore.get(context);
+
 					if (percontext == null) {
 						percontext = new HashMap<>();  /* hmmm ... */
 					}
@@ -198,14 +241,18 @@ public class Symbols {
 					}
 				} else {
 					tmpint2 = b.indexOf(":");
-					/*
-					  if (tmpint == -1)
-					  throw the wrong variablen deklaration error or so 
-					*/
-					names = b.substring(0, tmpint2).split(",");
-					type = b.substring(tmpint2 + 1, tmpint);
-					value = b.substring(tmpint + 2, b.indexOf(";"));
-					percontext = contextstore.get(context);
+					
+				        /* variable deklaration wrong */
+					if (tmpint == -1) {
+						log.log(key, 0, "Wrong variable Deklaration: "+b.toString());
+						throw new Exception("Wrong variable Deklaration: "+b.toString()); 
+					}
+					
+					names       = b.substring(0, tmpint2).split(",");
+					type        = b.substring(tmpint2 + 1, tmpint);
+					value       = b.substring(tmpint + 2, b.indexOf(";"));
+					percontext  = contextstore.get(context);
+
 					if (percontext == null) {
 						percontext = new HashMap<>();
 					}
@@ -220,6 +267,7 @@ public class Symbols {
 			}
 		} catch (StringIndexOutOfBoundsException e) {
 			/* no vars left, just du nothing and go on, very dirty, i will change this ... */
+			log.log(key, 4, "Active used Exception! Change/Delete me!!");
 		}
 	}
 
@@ -259,6 +307,7 @@ public class Symbols {
 	private void
 	generate_symbols_list()
 	{
+		log.log(key, 4, "generate_symbols_list called.");
 		// String context;
 		for (Map.Entry<String, HashMap<String, Integer>> percontext : contextstore.entrySet()) {
 			// context = percontext.getKey();
@@ -275,9 +324,9 @@ public class Symbols {
 		Collections.sort(symbolnames, new Comparator<String>() {
 				private int alen;
 				private int blen;
-
-				@Override
-					public int compare(String a, String b) {
+				
+				@Override public int
+					compare(String a, String b) {
 					alen = a.length();
 					blen = b.length();
 					if (alen > blen) {
@@ -289,6 +338,8 @@ public class Symbols {
 					}
 				}
 			});
+		
+		log.log(key, 4, "symbols list: "+Arrays.toString(symbolnames.toArray()));
 	}
 
 	/**
@@ -301,7 +352,12 @@ public class Symbols {
 	public String
 	replace_vars(String input, String context)
 	{
+		log.log(key, 4, "replace_vars called.");
+		log.log(key, 4, "input: "+input);
+		log.log(key, 4, "context: "+context);
+		
 		String tmp = null;
+
 		for (String item : symbolnames) {
 			if (tmp == null) {
 				tmp = input.replaceAll(item, valuebyid.get(contextstore.get(context).get(item)).toString());
@@ -310,9 +366,9 @@ public class Symbols {
                 
 			}
 		}
-		/*for (String item : symbolnames) {
-		  input.replaceAll(item, valuebyid.get(contextstore.get(context).get(item)).toString());
-		  }*/
+
+		log.log(key, 4, "return value: "+tmp);
+		
 		return tmp;
 	}
 
@@ -328,7 +384,12 @@ public class Symbols {
 	public void
 	set_value(String input, String context) throws Exception
 	{
+		log.log(key, 4, "set_value called.");
+		log.log(key, 4, "input: "+input);
+		log.log(key, 4, "context: "+context);
+		
 		fill_up_the_containers(context, new StringBuilder(input + "@"));
+		
 	}
 
 	/**
@@ -341,9 +402,14 @@ public class Symbols {
 	public void
 	add_var(String input, String context) throws Exception
 	{
+		log.log(key, 4, "add_var called.");
+		log.log(key, 4, "input: "+input);
+		log.log(key, 4, "context: "+context);
+		
 		/* type is integer all the time */
-		String[] splitted = input.split(":=");
-		Integer tmp = contextstore.get(context).get(splitted[0]);
+		String[]  splitted  = input.split(":=");
+		Integer   tmp       = contextstore.get(context).get(splitted[0]);
+
 		if (tmp == null) {
 			fill_up_the_containers(context, new StringBuilder(splitted[0] + ":INT:=" + splitted[1]));
 		} else {
@@ -370,17 +436,17 @@ public class Symbols {
 	public
 	Symbols(StringBuilder builder, Match match, LogWriter log) throws Exception
 	{
-		this.log = log;
-		this.builder = builder;
-		this.match = match;
+		this.log      = log;
+		this.builder  = builder;
+		this.match    = match;
 
 		variableIndexes = match.get_vars(); /* pulls out the vars from match */
         
-		deleteme = new ArrayList<>();
-		symbolnames = new ArrayList<>();
-		contextstore = new HashMap<>();
-		typebyid = new HashMap<>();
-		valuebyid = new HashMap<>();
+		deleteme      = new ArrayList<>();
+		symbolnames   = new ArrayList<>();
+		contextstore  = new HashMap<>();
+		typebyid      = new HashMap<>();
+		valuebyid     = new HashMap<>();
 
 		find_context_vars("PROGRAM");
 		find_context_vars("FUNCTION");

@@ -104,28 +104,28 @@ public class Match {
 			gether_case_list();
 			find_case_end_case_pairs();
 		
-			find_all_casees();
+			find_all_cases();
 			create_case_structure();
 	
-			gether_all_var_list();
+			gather_all_var_list();
 			find_var_end_var_pairs();
 	
-			gether_all_program_list();
+			gather_all_program_list();
 			find_program_end_program_pairs();
 
-			gether_all_function_list();
+			gather_all_function_list();
 			find_function_end_function_pairs();
 
-			gether_all_function_block_list();
+			gather_all_function_block_list();
 			find_function_block_end_function_block_pairs();
 
-			gether_all_for_list();
+			gather_all_for_list();
 			find_for_end_for_pairs();
 	
-			gether_all_while_list();
+			gather_all_while_list();
 			find_while_end_while_pairs();
 
-			gether_all_repeat_list();
+			gather_all_repeat_list();
 			find_repeat_end_repeat_pairs();
 		} catch (Exception e) {
 			System.out.println(e);
@@ -267,15 +267,15 @@ public class Match {
 	}
 
 	/**
-	 * findAllCasees loops through all the case statements and finds all cases which match
+	 * findAllCases loops through all the case statements and finds all cases which match
 	 * the given pattern.
 	 * <p>
 	 * the pattern is a regular expression.
 	 */
 	private void
-	find_all_casees()
+	find_all_cases()
 	{
-		log.log(key, 4, "find_all_casees called.");
+		log.log(key, 4, "find_all_cases called.");
 		String casedef = "((\\d+(,\\d+)*)+(...\\d+(,\\d+)*)*)+:";
 		log.log(key, 4, "case definition: "+casedef);
 		Pattern pattern = Pattern.compile(casedef);
@@ -283,11 +283,11 @@ public class Match {
 		while(matcher.find()) {
 			allcases.put(matcher.start(), matcher.end());
 		}
-		log.log(key, 4, "casees found#: "+allcases.size());
+		log.log(key, 4, "cases found#: "+allcases.size());
 	}
     
 	/**
-	 * evalCasees evaluates all found cases und returns all the values they can have
+	 * evalCases evaluates all found cases und returns all the values they can have
 	 * for example:
 	 * 3,5...7:
 	 * this will return a list with 3,5,6,7 in it.
@@ -296,9 +296,9 @@ public class Match {
 	 * @return list with all case values
 	 */
 	private ArrayList<Integer>
-	eval_casees(int start, int stop)
+	eval_cases(int start, int stop)
 	{
-		log.log(key, 4, "eval_casees called.");
+		log.log(key, 4, "eval_cases called.");
 		ArrayList<Integer>  intlist   = new ArrayList<>();
 		String              tmp       = builder.substring(start, stop);
 		boolean             series    = false;
@@ -337,7 +337,7 @@ public class Match {
 	private void
 	create_case_structure()
 	{
-		log.log(key, 4, "creat_case_structure called.");
+		log.log(key, 4, "create_case_structure called.");
 
 		int    caseposstart;
 		int    caseposstop;
@@ -358,7 +358,7 @@ public class Match {
 						casetoeval[1] = caseposstop;
 					} else {
 						startstop[1] = caseposstart;
-						for (Integer val : eval_casees(casetoeval[0], casetoeval[1])) {
+						for (Integer val : eval_cases(casetoeval[0], casetoeval[1])) {
 							valuecase.put(val, new Integer[] {startstop[0], startstop[1]});
 						}
 						startstop[0] = caseposstop;
@@ -367,7 +367,7 @@ public class Match {
 					}
 				}
 			}
-			for (Integer val : eval_casees(casetoeval[0], casetoeval[1])) {
+			for (Integer val : eval_cases(casetoeval[0], casetoeval[1])) {
 				valuecase.put(val, new Integer[] {startstop[0], casestruct.getValue()});
 			}
 			startstop[0] = -1;
@@ -421,8 +421,8 @@ public class Match {
 	}
 
 	/**
-	 * getCases returns a list of all the casees found in the code.
-	 * @return list of indexes of casees
+	 * getCases returns a list of all the cases found in the code.
+	 * @return list of indexes of cases
 	 */
 	public ArrayList<Integer>
 	get_cases()
@@ -440,9 +440,9 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	gether_all_var_list() throws Exception
+	gather_all_var_list() throws Exception
 	{
-		log.log(key, 4, "gether_all_var_list called.");
+		log.log(key, 4, "gather_all_var_list called.");
 		
 		varendvar  = new TreeMap<>();
 		vars       = new ArrayList<>();
@@ -564,9 +564,9 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	gether_all_program_list()
+	gather_all_program_list()
 	{
-		log.log(key, 4, "gether_all_program_list called.");
+		log.log(key, 4, "gather_all_program_list called.");
 		programs = list.get(0);
 		programendprogram = new TreeMap<>();
 		for (Integer item : programs) {
@@ -645,9 +645,9 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	gether_all_function_list()
+	gather_all_function_list()
 	{
-		log.log(key, 4, "gether_all_function_list called.");
+		log.log(key, 4, "gather_all_function_list called.");
 		functions = list.get(1);
 		functionendfunction = new TreeMap<>();
 		for (Integer item : functions) {
@@ -724,9 +724,9 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	gether_all_function_block_list()
+	gather_all_function_block_list()
 	{
-		log.log(key, 4, "gether_all_function_block_list called.");
+		log.log(key, 4, "gather_all_function_block_list called.");
 		functionblocks = list.get(2);
 		functionblockendfunctionblock = new TreeMap<>();
 		for (Integer item : functionblocks) {
@@ -805,9 +805,9 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	gether_all_for_list()
+	gather_all_for_list()
 	{
-		log.log(key, 4, "gether_all_for_list called.");
+		log.log(key, 4, "gather_all_for_list called.");
 
 		fors       = list.get(6);
 		forendfor  = new TreeMap<>();
@@ -888,9 +888,9 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	gether_all_while_list()
+	gather_all_while_list()
 	{
-		log.log(key, 4, "gether_all_while_list called");
+		log.log(key, 4, "gather_all_while_list called");
 		whiles = list.get(7);
 		whileendwhile = new TreeMap<>();
 		for (Integer item : whiles) {
@@ -969,9 +969,9 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	gether_all_repeat_list()
+	gather_all_repeat_list()
 	{
-		log.log(key, 4, "gether_all_repeat_list called.");
+		log.log(key, 4, "gather_all_repeat_list called.");
 
 		repeats          = list.get(8);
 		repeatendrepeat  = new TreeMap<>();
