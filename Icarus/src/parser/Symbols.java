@@ -47,7 +47,6 @@ public class Symbols {
 
     
 	/* logger */
-	//private boolean logstat;
 	private final LogWriter  log;
 	private final String     mainkey  = "parser";
 	private final String     subkey   = "Symbols";

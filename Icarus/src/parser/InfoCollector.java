@@ -28,7 +28,7 @@ import vault.*;
  * @version 1.0
  */
 
-public class InfoCollector extends LegacyWrapper {
+public class InfoCollector {
 	private final StringBuilder  allthecode;
 	private final Analyser       analyser;
 	private final Match          match;
@@ -57,7 +57,7 @@ public class InfoCollector extends LegacyWrapper {
 	 * @see Symbols
 	 */
 	public InfoCollector (String[] files, LogWriter log) throws FileNotFoundException, IOException, Exception {
-		super(files, log); /* legacy inteface initializer */
+//		super(files, log); /* legacy inteface initializer */
 		this.log = log;
 
 		log.log(key, 1, "parsing file ...");

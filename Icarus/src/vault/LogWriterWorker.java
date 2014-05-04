@@ -88,7 +88,7 @@ public class LogWriterWorker implements Runnable
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error while writing File!");
+            System.out.println("Error while writing File: "+e);
         } catch (InterruptedException ex) {
             Logger.getLogger(LogWriterWorker.class.getName()).log(Level.SEVERE, null, ex);
         }

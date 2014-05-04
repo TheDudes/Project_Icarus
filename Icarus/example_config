@@ -83,4 +83,5 @@ path = /home/d4ryus/coding/Project_Icarus/franzke_files/plc_prg.st
 
 
 ## asign a default path for the LogWriter
-key_LogWriter = /home/d4ryus/coding/Project_Icarus/Icarus/logs/;
+#key_LogWriter = /home/d4ryus/coding/Project_Icarus/Icarus/logs/;
+key_LogWriter = /tmp/;

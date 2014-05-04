@@ -196,9 +196,11 @@ public class Match {
 	public int
 	get_end_if(int a)
 	{
-		return (int)ifmatching.get(a);
+		int tmp = (int)ifmatching.get(a);
+		log.log(key, 4, "get_end_if called: "+tmp);
+		return tmp;
 	}
-    
+	
 	/**
 	 * getIfs returns a list of all the ifs found in the code.
 	 * @return list of indexes of ifs
@@ -206,6 +208,7 @@ public class Match {
 	public ArrayList<Integer>
 	get_ifs()
 	{
+		log.log(key, 4, "get_ifs called: "+Arrays.toString(ifs.toArray()));
 		return ifs;
 	}
 	// case
@@ -218,9 +221,9 @@ public class Match {
 	private void
 	gether_case_list()
 	{
+		log.log(key, 4, "gether_case_list called.");
 		cases = list.get(5);
 		caseendcase = new TreeMap<>();
-		//String ifendif;
 		for (Integer item : cases) {
 			if (builder.substring(item, item+4).equals("CASE")) {
 				caseendcase.put(item, "CASE");		
@@ -239,6 +242,7 @@ public class Match {
 	private void
 	find_case_end_case_pairs() throws Exception
 	{
+		log.log(key, 4, "find_case_end_case_pairs called.");
 		tmp = new ArrayList<>();
 		stack = new Stack<>();
 		for (Integer item : new TreeSet<>(caseendcase.keySet())) {

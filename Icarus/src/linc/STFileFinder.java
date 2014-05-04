@@ -43,7 +43,11 @@ public class STFileFinder {
 	    // this.cfReader = cfReader; /* delete me ;) */
         this.logWriter = logWriter;
         fileDirectory = cfReader.get_path("path");
-        directory = new File(fileDirectory);
+	/* 
+	   NullPointerException when path is not set correctly in
+	   config file you should catch this error and print a nice output
+	*/
+	directory = new File(fileDirectory);
         files = directory.list();
         this.stFiles = new ArrayList<>(files.length);
         getSTFiles();
