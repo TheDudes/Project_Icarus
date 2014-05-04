@@ -26,7 +26,6 @@ import vault.LogWriter;
  */
 public class STFileFinder {
 	
-	// private Config_Reader cfReader; /* delete me ;) */
     private String fileDirectory;
     private String files[];
     private File directory;
@@ -40,13 +39,8 @@ public class STFileFinder {
      * @param logWriter logWriter so we can spam the shit out of people
      */
     public STFileFinder(Config_Reader cfReader, LogWriter logWriter){
-	    // this.cfReader = cfReader; /* delete me ;) */
         this.logWriter = logWriter;
         fileDirectory = cfReader.get_path("path");
-	/* 
-	   NullPointerException when path is not set correctly in
-	   config file you should catch this error and print a nice output
-	*/
 	directory = new File(fileDirectory);
         files = directory.list();
         this.stFiles = new ArrayList<>(files.length);
@@ -93,7 +87,7 @@ public class STFileFinder {
      * 
      * @param fileDir the new directory we shall search
      */
-    public void set_file_directory(String fileDir){
+    public void set_stfile_directory(String fileDir){
         logWriter.log("STFileFinder", 4, "jumping in set_file_directory");
         directory = new File(fileDir);
         files = directory.list();

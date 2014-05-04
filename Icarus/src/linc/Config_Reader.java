@@ -26,15 +26,32 @@ public class Config_Reader {
     //stores the path to the config file
     private String filePath = "";
     
-    //used for storing the String we get from the 
+    /*
+    used for storing the String we get from the read() Method
+    is initialised in the constructor and used in the interpret_line function
+    */
     private String workWithThat = "";
     
+    /*
+    LogWriter so we can log our stuff, the boolean is a flag that tells
+    us if the LogWriter has been initialised since that is not the case at
+    the beginning
+    */
     private LogWriter logWriter;
     private boolean logWriterInit;
     
-    //the maps for the variables and stuff we get from the config file
-    public static Map<String, Object> container = new HashMap<>();
-//    public static Map<String, String> key_container = new HashMap<>();
+    //the map for the variables and stuff we get from the config file
+    private Map<String, Object> container = new HashMap<>();
+    
+    /*
+    we need this one to get all the Structured Text files (or the paths to them)
+    from the directory the path variable in the config file points to, aka the 
+    directory the ST files are supposed to be in
+    the StringArray is for the storage of the Array we get from the STFileFinder,
+    it has the paths to all the ST files in the directory stored in it
+    */
+    private STFileFinder findEmFiles;
+    private String stFiles[];
 
     
     /**
@@ -70,7 +87,8 @@ public class Config_Reader {
         logWriter = logger;
         logWriterInit = true;
         for(Map.Entry<String, Object> e : container.entrySet()){
-            logWriter.log("Config_Reader", 4, "Key: " + (String) e.getKey() + "Value: " + e.getValue());
+            String formattedValues = String.format("%6s%-20s%8s", "Key: ", e.getKey(), "Value: ");
+            logWriter.log("Config_Reader", 0, formattedValues + e.getValue());
         }
     }
     
@@ -78,9 +96,9 @@ public class Config_Reader {
      * 
      * @param filePath the path the config file is in
      */
-    public void setFilePath(String filePath) {
+    public void setConfigFilePath(String filePath) {
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in setFilePath and setting path to" + filePath);
+            logWriter.log("Config_Reader", 4, "jumping in setConfigFilePath and setting path to" + filePath);
         }
         this.filePath = filePath;
         if(logWriterInit){
@@ -136,27 +154,6 @@ public class Config_Reader {
             }
             return -1;
         }
-    }
-    
-    
-    /**
-     * 
-     * @return StringArray with all the keys stored in the key_container
-     */
-    public String[] get_keys(){
-        if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in get_keys");
-        }
-        int i = 0;
-        String[] toReturn = new String[container.size()];
-        for(Map.Entry<String, Object> e : container.entrySet()){
-            toReturn[i] = (String) e.getKey();
-            i++;
-        }
-        if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "leaving get_keys");
-        }
-        return toReturn;
     }
     
     
@@ -318,6 +315,19 @@ public class Config_Reader {
             logWriter.log("Config_Reader", 4, "leaving get_String");
         }
         return prep;
+    }
+    
+    public String[] get_st_filepaths(){
+        if(logWriterInit){
+            logWriter.log("Config_Reader", 4, "jumping in get_st_filepaths");
+            findEmFiles = new STFileFinder(this, logWriter);
+            stFiles = findEmFiles.get_file_names();
+            for(int i = 0; i < stFiles.length; i++){
+                logWriter.log("Config_Reader", 0, "path to ST File" + i + ".  " + stFiles[i]);
+            }
+            logWriter.log("Config_Reader", 4, "leaving get_st_filepaths");
+        }
+        return stFiles;
     }
     
     
