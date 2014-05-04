@@ -37,7 +37,6 @@ import linc.*;
 public class LogWriterWorker implements Runnable
 {
     private LinkedBlockingQueue<String> lbq;
-	// private Config_Reader confReader; /* not needed */
     private Date date;
     private SimpleDateFormat sdf;
     private boolean alive = true;
@@ -53,7 +52,6 @@ public class LogWriterWorker implements Runnable
      */
     public LogWriterWorker(Config_Reader confReader, LinkedBlockingQueue<String> lbq)
     {
-	    // this.confReader = confReader; /* not needed */
         this.lbq        = lbq;
         tmpFilePath     = confReader.get_path("LogWriter");
         verboseLevel    = confReader.get_int("verbosity_level");

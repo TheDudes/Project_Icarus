@@ -41,6 +41,7 @@ public class Main
     static Interpreter   interpreter;
 
     static STFileFinder  stfinder;
+
     /**
      * main funcion which will start Icarus
      */
@@ -60,6 +61,7 @@ public class Main
         config.setLogWriter(logger);
 
         stfinder    = new STFileFinder(config, logger);
+
         container   = new InfoCollector(stfinder.get_file_names(), logger);
         interpreter = new Interpreter(container, logger, config);
 

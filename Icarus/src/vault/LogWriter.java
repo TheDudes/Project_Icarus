@@ -40,27 +40,25 @@ public class LogWriter {
     private int verboseLevel;
     private LogWriterWorker LogWorker;
     private Thread worker;
-    private Config_Reader configReader;
     private boolean silent;
 
     /**
      * LogWriter Constructor
      * @param confReader gets the Path from the configfile and returns it
      */
-    public LogWriter(Config_Reader confReader){
-        configReader = confReader;
-        this.LogWorker = new LogWriterWorker(configReader, lbq);
-        silent = configReader.get_boolean("silent");
-        worker = new Thread(LogWorker);
+    public LogWriter(Config_Reader configReader){
+        silent       = configReader.get_boolean("silent");
+        verboseLevel = configReader.get_int("verbosity_level");
+        LogWorker    = new LogWriterWorker(configReader, lbq);
+        worker       = new Thread(LogWorker);
+        get_hostname();
         worker.start();
-        this.verboseLevel = configReader.get_int("verbosity_level");
-        getHostname();
     }
 
     /**
-     * getHostname gets the name of the host
+     * get_hostname gets the name of the host
      */
-    private void getHostname() {
+    private void get_hostname() {
         try {
             host = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException ex) {
