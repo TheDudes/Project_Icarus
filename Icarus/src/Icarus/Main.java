@@ -40,8 +40,6 @@ public class Main
     static InfoCollector container;
     static Interpreter   interpreter;
 
-    static STFileFinder  stfinder;
-
     /**
      * main funcion which will start Icarus
      */
