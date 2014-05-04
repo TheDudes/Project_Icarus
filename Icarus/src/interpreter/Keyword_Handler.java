@@ -79,7 +79,7 @@ public class Keyword_Handler
 
         int var = offset.get_VAR(INDEX, code);
         String context = code.substring(INDEX + 7, var);
-        INDEX   = container.getEndVar(var) + 6;
+        INDEX   = container.get_end_var(var) + 6;
         context_stack.push(context);
 
         log.log(log_key, 4, "return found_PROGRAM, INDEX = " + INDEX);
@@ -100,7 +100,7 @@ public class Keyword_Handler
         if_position_stack.push(INDEX);
         int then_position = offset.get_THEN(INDEX, code);
         String condition = code.substring(INDEX + 2, then_position);
-        if_stack.push((Boolean)engine.eval(offset.convert_condition(container.replaceVars(condition, context_stack.peek()))));
+        if_stack.push((Boolean)engine.eval(offset.convert_condition(container.replace_vars(condition, context_stack.peek()))));
 
         if (if_stack.peek())
             INDEX = then_position + 3;
@@ -140,7 +140,7 @@ public class Keyword_Handler
         log.log(log_key, 4, "call   found_ELSE, INDEX = " + INDEX);
 
         if(if_stack.peek())
-            INDEX = container.getEndIf(if_position_stack.peek()) - 1;
+            INDEX = container.get_end_if(if_position_stack.peek()) - 1;
         else
             INDEX += 3;
 
@@ -161,7 +161,7 @@ public class Keyword_Handler
 
         if(if_stack.peek())
         {
-            INDEX = container.getEndIf(if_position_stack.pop()) + 5;
+            INDEX = container.get_end_if(if_position_stack.pop()) + 5;
         }
         else
         {
@@ -169,7 +169,7 @@ public class Keyword_Handler
             int then_position = offset.get_THEN(INDEX, code);
             String condition = code.substring(INDEX + 2, then_position);
             if_stack.pop();
-            if_stack.push((Boolean)engine.eval(offset.convert_condition(container.replaceVars(condition, context_stack.peek()))));
+            if_stack.push((Boolean)engine.eval(offset.convert_condition(container.replace_vars(condition, context_stack.peek()))));
             if (if_stack.peek())
             {
                 INDEX = then_position + 3;
@@ -199,12 +199,12 @@ public class Keyword_Handler
         obj.type           = 0;
         obj.INDEX          = INDEX;
         obj.do_index       = offset.get_DO(INDEX, code);
-        obj.end_index      = container.getEndWhile(INDEX) + 8;
+        obj.end_index      = container.get_end_while(INDEX) + 8;
         obj.condition      = code.substring(INDEX + 5, obj.do_index);
 
         loop_stack.push(obj);
 
-        if((Boolean)engine.eval(offset.convert_condition(container.replaceVars(obj.condition, context_stack.peek()))))
+        if((Boolean)engine.eval(offset.convert_condition(container.replace_vars(obj.condition, context_stack.peek()))))
             INDEX = obj.do_index + 1;
         else
             INDEX = loop_stack.pop().end_index;
@@ -226,7 +226,7 @@ public class Keyword_Handler
 
         INDEX += 8;
 
-        if((Boolean)engine.eval(offset.convert_condition(container.replaceVars(loop_stack.peek().condition, context_stack.peek()))))
+        if((Boolean)engine.eval(offset.convert_condition(container.replace_vars(loop_stack.peek().condition, context_stack.peek()))))
             INDEX = loop_stack.peek().do_index + 1;
         else
             INDEX = loop_stack.pop().end_index;
@@ -250,7 +250,7 @@ public class Keyword_Handler
         obj.type           = 1;
         obj.INDEX          = INDEX;
         obj.do_index       = offset.get_DO(INDEX, code);
-        obj.end_index      = container.getEndFor(INDEX) + 6;
+        obj.end_index      = container.get_end_for(INDEX) + 6;
 
         int to_position    = offset.get_TO(INDEX, code);
         int by_position    = offset.get_BY(to_position + 2, code);
@@ -263,12 +263,12 @@ public class Keyword_Handler
             obj.name_given = true;
             obj.name       = condition.substring(0, colon);
             obj.count      = Integer.parseInt(condition.substring(colon + 2, condition.length()));
-            container.addVar(condition + ";", context_stack.peek());
+            container.add_var(condition + ";", context_stack.peek());
         }
         else
         {
 
-            int count = Integer.parseInt(container.replaceVars(condition, context_stack.peek()));
+            int count = Integer.parseInt(container.replace_vars(condition, context_stack.peek()));
             obj.count = count;
             if (condition.equals(Integer.toString(count)))
             {
@@ -285,14 +285,14 @@ public class Keyword_Handler
         if (by_position == -1)
         {
             do_position = offset.get_DO(to_position + 2, code);
-            obj.limit   = Integer.parseInt(container.replaceVars(code.substring(to_position + 2, do_position), context_stack.peek()));
+            obj.limit   = Integer.parseInt(container.replace_vars(code.substring(to_position + 2, do_position), context_stack.peek()));
             obj.by      = 1;
         }
         else
         {
             do_position = offset.get_DO(by_position + 2, code);
-            obj.limit   = Integer.parseInt(container.replaceVars(code.substring(to_position + 2, by_position), context_stack.peek()));
-            obj.by      = Integer.parseInt(container.replaceVars(code.substring(by_position + 2, do_position), context_stack.peek()));
+            obj.limit   = Integer.parseInt(container.replace_vars(code.substring(to_position + 2, by_position), context_stack.peek()));
+            obj.by      = Integer.parseInt(container.replace_vars(code.substring(by_position + 2, do_position), context_stack.peek()));
         }
         loop_stack.push(obj);
 
@@ -319,7 +319,7 @@ public class Keyword_Handler
         loop_stack.peek().count += loop_stack.peek().by;
 
         if (loop_stack.peek().name_given)
-            container.setValue(loop_stack.peek().name + ":=" + loop_stack.peek().count + ";", context_stack.peek());
+            container.set_value(loop_stack.peek().name + ":=" + loop_stack.peek().count + ";", context_stack.peek());
 
         if (loop_stack.peek().count >= loop_stack.peek().limit)
             INDEX = loop_stack.pop().end_index;
@@ -344,7 +344,7 @@ public class Keyword_Handler
         obj.type           = 2;
         obj.INDEX          = INDEX;
         obj.do_index       = INDEX + 5;
-        obj.end_index      = container.getEndRepeat(INDEX) + 9;
+        obj.end_index      = container.get_end_repeat(INDEX) + 9;
         loop_stack.push(obj);
         INDEX += 5;
 
@@ -365,7 +365,7 @@ public class Keyword_Handler
 
         String condition = code.substring(INDEX + 6, loop_stack.peek().end_index - 9);
 
-        if((Boolean)engine.eval(offset.convert_condition(container.replaceVars(condition, context_stack.peek()))))
+        if((Boolean)engine.eval(offset.convert_condition(container.replace_vars(condition, context_stack.peek()))))
             INDEX = loop_stack.peek().do_index;
         else
             INDEX = loop_stack.pop().end_index;
@@ -403,7 +403,7 @@ public class Keyword_Handler
         int semicolon_position = offset.get_semicolon(INDEX + 6, code);
         String print = code.substring(INDEX + 6, semicolon_position - 1);
 
-        print = container.replaceVars(print, context_stack.peek());
+        print = container.replace_vars(print, context_stack.peek());
         log.log("PRINT", 0, print);
         System.out.println("PRINT: " + print + "\n");
         INDEX = semicolon_position;
@@ -422,7 +422,7 @@ public class Keyword_Handler
     {
         log.log(log_key, 4, "call   found_VAR, INDEX = " + INDEX);
 
-        INDEX = container.getEndVar(INDEX) + 6;
+        INDEX = container.get_end_var(INDEX) + 6;
 
         log.log(log_key, 4, "return found_VAR, INDEX = " + INDEX);
         return INDEX;

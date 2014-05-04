@@ -87,11 +87,11 @@ public class main
         Config_Reader config    = new Config_Reader(path[1]);
         LogWriter     logger    = new LogWriter(config);
         STFileFinder  stfinder  = new STFileFinder(config, logger);
-	/* 
-	 * New Class LegacyWrapper provides legacy function calls for InfoCollector.
-	 * In the other parts the function calls should be replaced some time.
-	 */
-	InfoCollector container = new InfoCollector(stfinder.get_file_names(), logger);
+        /*
+         * New Class LegacyWrapper provides legacy function calls for InfoCollector.
+         * In the other parts the function calls should be replaced some time.
+         */
+        InfoCollector container = new InfoCollector(stfinder.get_file_names(), logger);
         ScriptEngine  engine;
 
         if(config.get_boolean("Engine_Warmup"))
