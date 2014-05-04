@@ -20,7 +20,10 @@
     <javac 
         srcdir="${src.dir}" 
         destdir="${classes.dir}"
-        includeantruntime="false"/>
+        includeantruntime="false"
+	fork="true">
+      <compilerarg line="-g -verbose"/>
+    </javac>
   </target>
 
   <!--verbose="true"-->

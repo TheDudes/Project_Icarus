@@ -18,6 +18,8 @@ package parser;
 
 import java.util.*;
 import java.io.*;
+
+import linc.Config_Reader;
 import vault.*;
 
 /**
@@ -55,13 +57,13 @@ public class InfoCollector {
 	 * @see Match
 	 * @see Symbols
 	 */
-	public InfoCollector (String[] files, LogWriter log) throws FileNotFoundException, IOException, Exception {
+	public InfoCollector (Config_Reader configreader, LogWriter log) throws FileNotFoundException, IOException, Exception {
 		this.log = log;
 
 		log.log(key, 1, "parsing file ...");
-        
+
 		log.log(key, 2, "merge all Files ...");
-		allthecode = new MergeFiles(log, files).merge_all();
+		allthecode = new MergeFiles(log, configreader.get_st_filepaths()).merge_all();
 		log.log(key, 2, "Files merged.");
         
 		log.log(key, 2, "analyse the code ...");

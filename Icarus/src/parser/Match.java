@@ -145,6 +145,8 @@ public class Match {
 	{
 		log.log(key, 4, "gather_if_list called.");
 		ifs = list.get(11); /* 11 is hardcoded here, should find a better solution */
+		log.log(key, 4, "ifs: "+Arrays.toString(ifs.toArray()));
+		
 		ifendif = new TreeMap<>();
 		for (Integer item : ifs) {
 			if (builder.substring(item, item+2).equals("IF")) {
@@ -279,8 +281,12 @@ public class Match {
 		log.log(key, 4, "case definition: "+casedef);
 		Pattern pattern = Pattern.compile(casedef);
 		Matcher matcher = pattern.matcher(builder);
+		int[] cases = new int[2];
 		while(matcher.find()) {
-			allcases.put(matcher.start(), matcher.end());
+			cases[0] = matcher.start();
+			cases[1] = matcher.end();
+			log.log(key, 4, "found: "+builder.substring(cases[0], cases[1]));
+			allcases.put(cases[0], cases[1]);
 		}
 		log.log(key, 4, "cases found#: "+allcases.size());
 	}
@@ -620,7 +626,7 @@ public class Match {
 				programmatching.put(stack.pop(), item);
 			}
 		}
-		if (stack.size() == 0) {
+		if (stack.empty()) {
 			programs = tmp;
 			log.log(key, 4, "Found end Sorted PROGRAM-END_PROGRAM#: "+programs.size());
 		}

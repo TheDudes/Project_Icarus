@@ -78,42 +78,72 @@ public class Analyser {
 
 		ArrayList<Integer>  block;
 		int  i;
+
+		log.log(key, 4, "String: "+builder.toString());
 		
 		for (i = 0; i < LISTCOUNT; i++) {
 			block = blocks.get(i);
-			String start = keywords[i][0];
-			String stop = keywords[i][1];
-			int endpointer;
-			log.log(key, 4, "Keyword pair: "+start+","+stop);
-			if (i < 11) {
-				for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, endpointer + stop.length())) {
-					block.add(pointer);
-					endpointer = builder.indexOf(stop, pointer);
-					block.add(endpointer);
-					log.log(key, 4, "Keyword pair: "+pointer+","+endpointer);
+			String  start  = keywords[i][0];
+			String  stop   = keywords[i][1];
+			// int     endpointer;
+			log.log(key, 4, "Keyword pair: "+start+","+stop+",count:"+i);
+			if (i == 0) {
+				boolean flag = true;
+			        log.log(key, 4, "count: "+i);
+				for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, pointer + start.length())) {
+					if (flag) {
+						flag = false;
+						block.add(pointer);
+						log.log(key, 4, start+" index: "+(pointer));
+					} else if (builder.charAt(pointer - 1) == '_') {
+						block.add(pointer - 4);
+						log.log(key, 4, stop+" index: "+(pointer-4));
+					} else {
+						block.add(pointer);
+						log.log(key, 4, start+" index: "+pointer);
+					}
 				}
-		        } else if (i == 11) { // normaly not needed, should work anyway
+			} else if (i == 11) { 
 				for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, pointer + start.length())) {
 					if (builder.charAt(pointer - 1) == '_') {
 						block.add(pointer - 4);
+						log.log(key, 4, stop+ " index "+(pointer-4));
 					} else if (builder.charAt(pointer - 1) == 'E') {
                         
 					} else {
 						block.add(pointer);
+						log.log(key, 4, start+ " index " + (pointer -4 ));
 					}
 				}
 		        } else if (i == 12) {
+				log.log(key, 4, "count: "+i);
 				for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, pointer + start.length())) {
 					if (builder.charAt(pointer - 1) == '_') {
 						block.add(pointer - 4);
+						log.log(key, 4, stop+" index: "+(pointer-4));
 					} else if (builder.charAt(pointer + 1) == '_') {
+						
 					} else {
 						block.add(pointer);
+						log.log(key, 4, start+" index: "+pointer);
+					}
+				}
+		        } else if (i<11 && i > 0/*i == 0 || i == 1 || i == 5 || i == 6 || i == 7 || i == 8*/) {
+				log.log(key, 4, "count: "+i);
+				for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, pointer + start.length())) {
+					if (builder.charAt(pointer - 1) == '_') {
+						block.add(pointer - 4);
+						log.log(key, 4, stop+" index: "+(pointer-4));
+					} else {
+						block.add(pointer);
+						log.log(key, 4, start+" index: "+pointer);
 					}
 				}
 		        }
-			log.log(key, 3, "Found " + block.size() + " " + start + " and " + stop);
-			log.log(key, 4, start + " and " + stop + " Indexes: " + Arrays.toString(block.toArray()));
+			
+			log.log(key, 3, "Found " + block.size()/2 + " " + start + " and " + stop + " pairs");
+			log.log(key, 4, "All " + start + " and " + stop + " Indexes: " + Arrays.toString(block.toArray()));
+			log.log(key, 4, "Next -----------");
 		}
 	}
     

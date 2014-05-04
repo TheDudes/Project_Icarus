@@ -54,7 +54,7 @@ public class Main
         logger      = new LogWriter(config);
         container   = new InfoCollector(config, logger);
         interpreter = new Interpreter(container, logger, config);
-
+	
         interpreter.start();
 
         logger.log(log_key, 0, "exiting Icarus.");

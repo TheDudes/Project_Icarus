@@ -415,9 +415,12 @@ public class Symbols {
 		Integer   tmp       = contextstore.get(context).get(splitted[0]);
 
 		if (tmp == null) {
+			log.log(key, 4, "variable not yet defined.");
 			fill_up_the_containers(context, new StringBuilder(splitted[0] + ":INT:=" + splitted[1]));
 		} else {
-			/*HashMap<String, Integer> percontext; //= new HashMap<>();
+			log.log(key, 4, "variable allready defined");
+
+/*HashMap<String, Integer> percontext; //= new HashMap<>();
 			  typebyid.remove(tmp);
 			  valuebyid.remove(tmp);
 			  percontext = contextstore.get(context);
