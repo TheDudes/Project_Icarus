@@ -191,19 +191,19 @@ public class Symbols {
 		
 		try {
 			for (StringBuilder b = new StringBuilder(block.substring(0, block.indexOf(";") + 1)); true; b = new StringBuilder(block.substring(0, block.indexOf(";") + 1))) {
-				block.delete(0, block.indexOf(";") + 1);
+				block.delete(4, block.indexOf(";") + 1);
 				tmpint = b.indexOf(":=");
 
-				log.log(key, 0, "Current line: "+b);
+				log.log(key, 4, "Current line: "+b);
 				
 				if (tmpint == -1) {
 					tmpint = b.indexOf(":");
 
 					/* variable deklaration wrong */
-					if (tmpint == -1) {
+					/*if (tmpint == -1) {
 						log.log(key, 0, "Wrong variable Deklaration: "+b.toString());
 						throw new Exception("Wrong variable Deklaration: "+b.toString()); 
-					}
+						}*/
 					
 					names = b.substring(0, tmpint).split(",");
 					type = b.substring(tmpint + 1, b.indexOf(";"));
@@ -236,6 +236,7 @@ public class Symbols {
 							valuebyid.put(tmpint2, TYPES.get_type(type, value));
 						} else {
 							/* throw unknown symbol in this context exception */
+							log.log(key, 4, "Unknown Symbol \"" + name + "\" in: " + context);
 							throw new Exception("Unknown Symbol \"" + name + "\" in: " + context);
 						}
 					}
@@ -243,10 +244,10 @@ public class Symbols {
 					tmpint2 = b.indexOf(":");
 					
 				        /* variable deklaration wrong */
-					if (tmpint == -1) {
+					/*if (tmpint == -1) {
 						log.log(key, 0, "Wrong variable Deklaration: "+b.toString());
 						throw new Exception("Wrong variable Deklaration: "+b.toString()); 
-					}
+						}*/
 					
 					names       = b.substring(0, tmpint2).split(",");
 					type        = b.substring(tmpint2 + 1, tmpint);
