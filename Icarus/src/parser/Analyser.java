@@ -112,7 +112,7 @@ public class Analyser {
                         
 					} else {
 						block.add(pointer);
-						log.log(key, 4, start+ " index " + (pointer -4 ));
+						log.log(key, 4, start+ " index " + pointer);
 					}
 				}
 		        } else if (i == 12) {
