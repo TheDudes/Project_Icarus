@@ -1,4 +1,3 @@
-
 /**
  * Copyright (c) 2014, HAW-Landshut
  *
@@ -16,7 +15,7 @@
  *
  * file: Icarus/src/Icarus/main.java
  * @author d4ryus - https://github.com/d4ryus/
- * @version 0.2
+ * @version 0.8
  * vim: foldmethod=syntax:foldcolumn=5:
  */
 
