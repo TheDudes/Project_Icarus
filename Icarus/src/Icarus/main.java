@@ -80,13 +80,15 @@ public class main
                 System.exit(0);
         }
 
-        System.out.print("your st file path:     " + path[0] + "\n");
         System.out.print("your config file path: " + path[1] + "\n");
 
         /* init */
         Config_Reader config    = new Config_Reader(path[1]);
         LogWriter     logger    = new LogWriter(config);
         STFileFinder  stfinder  = new STFileFinder(config, logger);
+
+        System.out.print("your st file path:     " + config.get_path("path") + "\n");
+
         /*
          * New Class LegacyWrapper provides legacy function calls for InfoCollector.
          * In the other parts the function calls should be replaced some time.
