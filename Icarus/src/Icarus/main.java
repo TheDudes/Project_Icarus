@@ -83,9 +83,9 @@ public class main
         logger.log(log_key, 0, "hostname:         " + hostname);
         logger.log(log_key, 0, "config file path: " + path);
         logger.log(log_key, 0, "st file path:     " + config.get_path("path"));
+        config.setLogWriter(logger);
 
         STFileFinder  stfinder = new STFileFinder(config, logger);
-        config.setLogWriter(logger);
 
         InfoCollector container = new InfoCollector(stfinder.get_file_names(), logger);
         ScriptEngine  engine;

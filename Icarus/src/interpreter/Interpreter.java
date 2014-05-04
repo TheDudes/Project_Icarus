@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * file: Icarus/src/interpreter/Interpreter.java
- * vim: foldmethod=syntax:foldcolumn=4:
+ * vim: foldmethod=syntax:foldcolumn=5:
  */
 
 package interpreter;
