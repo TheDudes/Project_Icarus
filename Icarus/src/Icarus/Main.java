@@ -84,10 +84,9 @@ public class Main
         config.setLogWriter(logger);
 
         STFileFinder  stfinder = new STFileFinder(config, logger);
-
         InfoCollector container = new InfoCollector(stfinder.get_file_names(), logger);
-        Engine engine = new Engine(logger);
 
+        Engine engine = new Engine(logger);
         if(config.get_boolean("Engine_Warmup"))
             engine.warmup();
 
