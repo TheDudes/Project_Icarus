@@ -317,6 +317,12 @@ public class Config_Reader {
         return prep;
     }
     
+    
+    /**
+     * will create a STFileFinder that is used to get all the Structured Text files
+     * from the directory specified in the path variable from the config file
+     * @return a StringArray with the paths to all the ST files in the directory specified in the path variable in the config file
+     */
     public String[] get_st_filepaths(){
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "jumping in get_st_filepaths");
