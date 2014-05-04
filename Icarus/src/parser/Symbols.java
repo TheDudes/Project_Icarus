@@ -311,7 +311,7 @@ public class Symbols {
 	private void
 	generate_symbols_list()
 	{
-		symbolnames = null;
+		symbolnames = new ArrayList<>();
 		
 		log.log(key, 4, "generate_symbols_list called.");
 		// String context;
