@@ -48,7 +48,7 @@ public class LogWriterWorker implements Runnable
 
     /**
      * LogWriterWorker constructor
-     * @param  pathToLogfile Path to where the log file is being saved
+     * @param confReader config reader object with all parsed config values
      * @param lbq LinkedBlockingQueue in which the log messages will be added
      */
     public LogWriterWorker(Config_Reader confReader, LinkedBlockingQueue<String> lbq)

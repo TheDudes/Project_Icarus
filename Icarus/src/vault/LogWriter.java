@@ -46,7 +46,6 @@ public class LogWriter {
     /**
      * LogWriter Constructor
      * @param confReader gets the Path from the configfile and returns it
-     * @param verboseLevel this variable indicates how important the log message is
      */
     public LogWriter(Config_Reader confReader){
         configReader = confReader;
