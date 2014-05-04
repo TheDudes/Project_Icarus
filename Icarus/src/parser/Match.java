@@ -196,8 +196,9 @@ public class Match {
 	public int
 	get_end_if(int a)
 	{
+		log.log(key, 4, "get_end_if called.");
 		int tmp = (int)ifmatching.get(a);
-		log.log(key, 4, "get_end_if called: "+tmp);
+		log.log(key, 4, "end_if: "+tmp);
 		return tmp;
 	}
 	
@@ -208,7 +209,8 @@ public class Match {
 	public ArrayList<Integer>
 	get_ifs()
 	{
-		log.log(key, 4, "get_ifs called: "+Arrays.toString(ifs.toArray()));
+		log.log(key, 4, "get_ifs called.");
+		log.log(key, 4, "ifs: "+Arrays.toString(ifs.toArray()));
 		return ifs;
 	}
 	// case
@@ -273,12 +275,15 @@ public class Match {
 	private void
 	find_all_casees()
 	{
+		log.log(key, 4, "find_all_casees called.");
 		String casedef = "((\\d+(,\\d+)*)+(...\\d+(,\\d+)*)*)+:";
+		log.log(key, 4, "case definition: "+casedef);
 		Pattern pattern = Pattern.compile(casedef);
 		Matcher matcher = pattern.matcher(builder);
 		while(matcher.find()) {
 			allcases.put(matcher.start(), matcher.end());
 		}
+		log.log(key, 4, "casees found#: "+allcases.size());
 	}
     
 	/**
@@ -293,11 +298,13 @@ public class Match {
 	private ArrayList<Integer>
 	eval_casees(int start, int stop)
 	{
-		ArrayList<Integer> intlist = new ArrayList<>();
-		String tmp = builder.substring(start, stop);
-		boolean series = false;
-		int inttmp = 0;
-		int intstart = 0;
+		log.log(key, 4, "eval_casees called.");
+		ArrayList<Integer>  intlist   = new ArrayList<>();
+		String              tmp       = builder.substring(start, stop);
+		boolean             series    = false;
+		int                 inttmp    = 0;
+		int                 intstart  = 0;
+		log.log(key, 4, "case: "+tmp);
 		for (char c : tmp.toCharArray()) {
 			if (c == ',' || c == ':') {
 				if (series) {
@@ -309,8 +316,7 @@ public class Match {
 					intlist.add(inttmp);
 				}
 			} else if (c == '.') {
-				if (series) {
-				} else {
+				if (!series) {
 					intstart = inttmp;
 					series = true;
 				}
@@ -319,6 +325,7 @@ public class Match {
 				inttmp += Character.getNumericValue(c);
 			}
 		}
+		log.log(key, 4, "evals to: "+Arrays.toString(intlist.toArray()));
 		return intlist;
 	}
 
@@ -330,11 +337,15 @@ public class Match {
 	private void
 	create_case_structure()
 	{
-		int caseposstart;
-		int caseposstop;
-		int[] startstop = {-1, -1};
-		int[] casetoeval = {-1, -1};
-		TreeMap<Integer,Integer[]> valuecase;
+		log.log(key, 4, "creat_case_structure called.");
+
+		int    caseposstart;
+		int    caseposstop;
+		int[]  startstop   = {-1, -1};
+		int[]  casetoeval  = {-1, -1};
+
+		TreeMap<Integer,Integer[]>  valuecase;
+
 		for (Map.Entry<Integer,Integer> casestruct : casematching.entrySet()) {
 			valuecase = new TreeMap<>();
 			for (Map.Entry<Integer,Integer> evalcase : allcases.entrySet()) {
@@ -388,7 +399,10 @@ public class Match {
 	public Integer[]
 	get_case_coordinates(int caseopen, int value)
 	{
-		return casevalue.get(caseopen).get(value);
+		log.log(key, 4, "get_case_coordinates called.");
+		Integer[] tmp = casevalue.get(caseopen).get(value);
+		log.log(key, 4, "case coordinates: "+Arrays.toString(tmp));
+		return tmp;
 	}
 
 	/**
@@ -400,7 +414,10 @@ public class Match {
 	public int
 	get_end_case(int a)
 	{
-		return (int)casematching.get(a);
+		log.log(key, 4, "get_end_case called.");
+		int tmp = (int)casematching.get(a);
+		log.log(key, 4, "end_case: "+ tmp);
+		return tmp;
 	}
 
 	/**
@@ -410,6 +427,8 @@ public class Match {
 	public ArrayList<Integer>
 	get_cases()
 	{
+		log.log(key, 4, "get_cases called.");
+		log.log(key, 4, "cases: "+Arrays.toString(cases.toArray()));
 		return cases;
 	}
 
@@ -421,37 +440,48 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	gether_all_var_list()
+	gether_all_var_list() throws Exception
 	{
-		// String var;
-		vars = new ArrayList<>();
+		log.log(key, 4, "gether_all_var_list called.");
+		
+		varendvar  = new TreeMap<>();
+		vars       = new ArrayList<>();
+		
 		vars.addAll(list.get(3));
 		vars.addAll(list.get(4));
 		vars.addAll(list.get(9));
 		vars.addAll(list.get(10));
 		vars.addAll(list.get(12));
-		varendvar = new TreeMap<>();
+		
 		for (Integer item : vars) {
 			if (builder.substring(item, item+4).equals("VAR_")) {
-				// inner if block
+				/* inner if block */
 				if (builder.substring(item, item+9).equals("VAR_INPUT")) {
+					log.log(key, 4, "found VAR_INPUT @ "+item);
 					varendvar.put(item, "VAR_INPUT");
 				} else if (builder.substring(item, item+10).equals("VAR_OUTPUT")) {
+					log.log(key, 4, "found VAR_OUTPUT @ "+item);
 					varendvar.put(item, "VAR_OUTPUT");
 				} else if (builder.substring(item, item+10).equals("VAR_GLOBAL")) {
+					log.log(key, 4, "found VAR_GLOBAL @ "+item);
 					varendvar.put(item, "VAR_GLOBAL");
 				} else if (builder.substring(item, item+10).equals("VAR_CONFIG")) {
+					log.log(key, 4, "found VAR_CONFIG @ "+item);
 					varendvar.put(item, "VAR_CONFIG");
 				} else {
-					//throws, you realy fucked it up!
+					/* throws, you realy fucked it up! */
+					log.log(key, 0, "Your realy fucked it up! Undefined VAR block, ten char cut: \""+builder.substring(item, item+10)+"\" @ "+item);
+					throw new Exception("Your realy fucked it up! Undefined VAR block, ten char cut: \""+builder.substring(item, item+10)+"\" @ "+item);
 				}
-				// end inner if block
+				/* end inner if block */
 			} else if (builder.substring(item, item+3).equals("VAR")) {
+				log.log(key, 4, "found VAR @ "+item);
 				varendvar.put(item, "VAR");
 			} else {
 				varendvar.put(item, "END_VAR");
 			}
 		}
+		log.log(key, 4, "found VAR-END_VAR#: "+varendvar.size());
 	}
 
 
@@ -464,8 +494,9 @@ public class Match {
 	private void
 	find_var_end_var_pairs() throws Exception
 	{
-		tmp = new ArrayList<>();
-		stack = new Stack<>();
+		log.log(key, 4, "find_var_end_var_pairs called.");
+		tmp    = new ArrayList<>();
+		stack  = new Stack<>();
 		for (Integer item : new TreeSet<>(varendvar.keySet())) {
 			if (Pattern.matches( "VAR.*", varendvar.get(item))) {
 				stack.push(item);
@@ -476,7 +507,7 @@ public class Match {
 		}
 		if (stack.size() == 0) {
 			vars = tmp;
-			log.log(key, 4, "Found end Sorted VAR*-END_VAR#: "+vars.size());
+			log.log(key, 4, "Found Sorted VAR*-END_VAR#: "+vars.size());
 		}
 		else
 		{
@@ -494,7 +525,10 @@ public class Match {
 	public int
 	get_end_var(int a)
 	{
-		return (int)varmatching.get(a);
+		log.log(key, 4, "get_end_var called.");
+		int tmp = (int)varmatching.get(a);
+		log.log(key, 4, "end_var: "+tmp);
+		return tmp;
 	}
 
 	/**
@@ -504,6 +538,8 @@ public class Match {
 	public ArrayList<Integer>
 	get_vars()
 	{
+		log.log(key, 4, "get_vars called.");
+		log.log(key, 4, "vars: "+Arrays.toString(vars.toArray()));
 		return vars;
 	}
 
@@ -515,7 +551,10 @@ public class Match {
 	public String
 	get_var_start(int a)
 	{
-		return varendvar.get(a);
+		log.log(key, 4, "get_var_start called.");
+		String tmp = varendvar.get(a);
+		log.log(key, 4, "var open: "+tmp);
+		return tmp;
 	}
 
 	/**
@@ -527,9 +566,9 @@ public class Match {
 	private void
 	gether_all_program_list()
 	{
+		log.log(key, 4, "gether_all_program_list called.");
 		programs = list.get(0);
 		programendprogram = new TreeMap<>();
-		//String ifendif;
 		for (Integer item : programs) {
 			if (builder.substring(item, item+7).equals("PROGRAM")) {
 				programendprogram.put(item, "PROGRAM");
@@ -548,8 +587,11 @@ public class Match {
 	private void
 	find_program_end_program_pairs() throws Exception
 	{
-		tmp = new ArrayList<>();
-		stack = new Stack<>();
+		log.log(key, 4, "find_program_end_program_pairs called.");
+
+		tmp    = new ArrayList<>();
+		stack  = new Stack<>();
+
 		for (Integer item : new TreeSet<>(programendprogram.keySet())) {
 			if (programendprogram.get(item).equals("PROGRAM")) {
 				stack.push(item);
@@ -578,7 +620,10 @@ public class Match {
 	public int
 	get_end_program(int a)
 	{
-		return (int)programmatching.get(a);
+		log.log(key, 4, "get_end_program called.");
+		int tmp = (int)programmatching.get(a);
+		log.log(key, 4, "end_program: "+tmp);
+		return tmp;
 	}
     
 	/**
@@ -588,6 +633,8 @@ public class Match {
 	public ArrayList<Integer>
 	get_programs()
 	{
+		log.log(key, 4, "get_programs called.");
+		log.log(key, 4, "programs: "+Arrays.toString(programs.toArray()));
 		return programs;
 	}
 
@@ -600,6 +647,7 @@ public class Match {
 	private void
 	gether_all_function_list()
 	{
+		log.log(key, 4, "gether_all_function_list called.");
 		functions = list.get(1);
 		functionendfunction = new TreeMap<>();
 		for (Integer item : functions) {
@@ -620,6 +668,7 @@ public class Match {
 	private void
 	find_function_end_function_pairs() throws Exception
 	{
+		log.log(key, 4, "find_function_end_function_pairs called.");
 		tmp = new ArrayList<>();
 		stack = new Stack<>();
 		for (Integer item : new TreeSet<>(functionendfunction.keySet())) {
@@ -650,7 +699,10 @@ public class Match {
 	public int
 	get_end_function(int a)
 	{
-		return (int)functionmatching.get(a);
+		log.log(key, 4, "get_end_function called.");
+		int tmp = (int)functionmatching.get(a);
+		log.log(key, 4, "end_function: "+tmp);
+		return tmp;
 	}
 
 	/**
@@ -660,6 +712,8 @@ public class Match {
 	public ArrayList<Integer>
 	get_functions()
 	{
+		log.log(key, 4, "get_functions called.");
+		log.log(key, 4, "functions#: "+Arrays.toString(functions.toArray()));
 		return functions;
 	}
 
@@ -672,6 +726,7 @@ public class Match {
 	private void
 	gether_all_function_block_list()
 	{
+		log.log(key, 4, "gether_all_function_block_list called.");
 		functionblocks = list.get(2);
 		functionblockendfunctionblock = new TreeMap<>();
 		for (Integer item : functionblocks) {
@@ -692,8 +747,11 @@ public class Match {
 	private void
 	find_function_block_end_function_block_pairs() throws Exception
 	{
-		tmp = new ArrayList<>();
-		stack = new Stack<>();
+		log.log(key, 4, "find_function_block_end_function_block_pairs called.");
+
+		tmp    = new ArrayList<>();
+		stack  = new Stack<>();
+		
 		for (Integer item : new TreeSet<>(functionblockendfunctionblock.keySet())) {
 			if(functionblockendfunctionblock.get(item).equals("FUNCTION_BLOCK")) {
 				stack.push(item);
@@ -722,7 +780,10 @@ public class Match {
 	public int
 	get_end_function_block(int a)
 	{
-		return (int)functionblockmatching.get(a);
+		log.log(key, 4, "get_end_function_block called.");
+		int tmp = (int)functionblockmatching.get(a);
+		log.log(key, 4, "end_function_block: "+tmp);
+		return tmp;
 	}
 
 	/**
@@ -732,6 +793,8 @@ public class Match {
 	public ArrayList<Integer>
 	get_function_blocks()
 	{
+		log.log(key, 4, "get_function_block called");
+		log.log(key, 4, "function_block#: "+Arrays.toString(functionblocks.toArray()));
 		return functionblocks;
 	}
 
@@ -744,8 +807,11 @@ public class Match {
 	private void
 	gether_all_for_list()
 	{
-		fors = list.get(6);
-		forendfor = new TreeMap<>();
+		log.log(key, 4, "gether_all_for_list called.");
+
+		fors       = list.get(6);
+		forendfor  = new TreeMap<>();
+
 		for (Integer item : fors) {
 			if (builder.substring(item, item+3).equals("FOR")) {
 				forendfor.put(item, "FOR");
@@ -764,8 +830,11 @@ public class Match {
 	private void
 	find_for_end_for_pairs() throws Exception
 	{
-		tmp = new ArrayList<>();
-		stack = new Stack<>();
+		log.log(key, 4, "find_for_end_for_pairs called.");
+
+		tmp    = new ArrayList<>();
+		stack  = new Stack<>();
+
 		for (Integer item : new TreeSet<>(forendfor.keySet())) {
 			if (forendfor.get(item).equals("FOR")) {
 				stack.push(item);
@@ -794,7 +863,10 @@ public class Match {
 	public int
 	get_end_for(int a)
 	{
-		return (int)formatching.get(a);
+		log.log(key, 4, "get_end_for called.");
+		int tmp = (int)formatching.get(a);
+		log.log(key, 4, "end_for: "+tmp);
+		return tmp;
 	}
 
 	/**
@@ -804,6 +876,8 @@ public class Match {
 	public ArrayList<Integer>
 	get_fors()
 	{
+		log.log(key, 4, "get_fors called.");
+		log.log(key, 4, "fors#: "+Arrays.toString(fors.toArray()));
 		return fors;
 	}
 
@@ -816,6 +890,7 @@ public class Match {
 	private void
 	gether_all_while_list()
 	{
+		log.log(key, 4, "gether_all_while_list called");
 		whiles = list.get(7);
 		whileendwhile = new TreeMap<>();
 		for (Integer item : whiles) {
@@ -836,8 +911,11 @@ public class Match {
 	private void
 	find_while_end_while_pairs() throws Exception
 	{
-		tmp = new ArrayList<>();
-		stack = new Stack<>();
+		log.log(key, 4, "find_while_end_while_pairs called");
+
+		tmp    = new ArrayList<>();
+		stack  = new Stack<>();
+
 		for (Integer item : new TreeSet<>(whileendwhile.keySet())) {
 			if (whileendwhile.get(item).equals("WHILE")) {
 				stack.push(item);
@@ -866,7 +944,10 @@ public class Match {
 	public int
 	get_end_while(int a)
 	{
-		return (int)whilematching.get(a);
+		log.log(key, 4, "get_end_while called.");
+		int tmp = (int)whilematching.get(a);
+		log.log(key, 4, "end_while: "+tmp);
+		return tmp;
 	}
 
 	/**
@@ -876,6 +957,8 @@ public class Match {
 	public ArrayList<Integer>
 	get_whiles()
 	{
+		log.log(key, 4, "get_whiles called.");
+		log.log(key, 4, "whiles#: "+Arrays.toString(whiles.toArray()));
 		return whiles;
 	}
 
@@ -888,8 +971,11 @@ public class Match {
 	private void
 	gether_all_repeat_list()
 	{
-		repeats = list.get(8);
-		repeatendrepeat = new TreeMap<>();
+		log.log(key, 4, "gether_all_repeat_list called.");
+
+		repeats          = list.get(8);
+		repeatendrepeat  = new TreeMap<>();
+
 		for (Integer item : repeats) {
 			if (builder.substring(item, item+5).equals("REPEAT")) {
 				repeatendrepeat.put(item, "REPEAT");
@@ -908,8 +994,11 @@ public class Match {
 	private void
 	find_repeat_end_repeat_pairs() throws Exception
 	{
-		tmp = new ArrayList<>();
-		stack = new Stack<>();
+		log.log(key, 4, "find_repeat_end_repeat_pairs called.");
+
+		tmp    = new ArrayList<>();
+		stack  = new Stack<>();
+
 		for (Integer item : new TreeSet<>(repeatendrepeat.keySet())) {
 			if (repeatendrepeat.get(item).equals("REPEAT")) {
 				stack.push(item);
@@ -938,7 +1027,10 @@ public class Match {
 	public int
 	get_end_repeat(int a)
 	{
-		return (int)repeatmatching.get(a);
+		log.log(key, 4, "get_end_repeat called.");
+		int tmp = (int)repeatmatching.get(a);
+		log.log(key, 4, "end_repeat: "+tmp);
+		return tmp;
 	}
 
 	/**
@@ -948,6 +1040,8 @@ public class Match {
 	public ArrayList<Integer>
 	get_repeats()
 	{
+		log.log(key, 4, "get_repeats called.");
+		log.log(key, 4, "repeats#: "+Arrays.toString(repeats.toArray()));
 		return repeats;
 	}
 }

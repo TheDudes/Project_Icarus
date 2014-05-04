@@ -34,9 +34,8 @@ public class InfoCollector {
 	private final Match          match;
 	private final Symbols        symb;
 	private final LogWriter      log;
-    
+	
 	/* logger */
-	//private boolean logstat;
 	private final String  mainkey = "parser";
 	private final String  subkey = "InfoCollector";
 	private final String  key = mainkey+"-"+subkey;
@@ -57,7 +56,6 @@ public class InfoCollector {
 	 * @see Symbols
 	 */
 	public InfoCollector (String[] files, LogWriter log) throws FileNotFoundException, IOException, Exception {
-//		super(files, log); /* legacy inteface initializer */
 		this.log = log;
 
 		log.log(key, 1, "parsing file ...");

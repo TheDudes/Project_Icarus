@@ -97,7 +97,7 @@ public class main
             engine = new ScriptEngineManager().getEngineByName("JavaScript");
 
         Interpreter interpreter = new Interpreter(container, logger, engine);
-        String code             = container.get_all_the_code().toString();
+	String code             = container.get_all_the_code().toString();
         interpreter.interpret(code, 0, code.length(), engine);
 
         logger.kill();
