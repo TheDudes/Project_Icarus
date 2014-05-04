@@ -41,7 +41,7 @@ public class Config_Reader {
      * 
      * @param path the file path of the config file, must be given when the Config_Reader is created
      */
-    public Config_Reader(String path) {
+    public Config_Reader(String path) throws IOException {
         logWriterInit = false;
         filePath = path;
         File checkFile = new File(filePath);
@@ -558,7 +558,7 @@ public class Config_Reader {
      * will created an example config file at the specified path
      * @param path the path at which the example config will be created
      */
-    private void create_example_config(String path){
+    private void create_example_config(String path) throws IOException{
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "jumping in create_example_config(String)");
         }
@@ -656,6 +656,7 @@ public class Config_Reader {
         }   
         catch(IOException e){
             System.err.println("could not create example_config");
+            throw e;
         }
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "leaving create_example_config(String)");
@@ -666,7 +667,7 @@ public class Config_Reader {
     /**
      * 
      */
-    public void create_example_config(){
+    public void create_example_config() throws IOException{
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "jumping in create_example_config");
         }
@@ -764,6 +765,7 @@ public class Config_Reader {
         }
         catch(IOException e){
             System.err.println("could not create example_config");
+            throw e;
         }
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "leaving create_example_config");
