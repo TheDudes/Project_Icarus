@@ -89,8 +89,7 @@ public class MergeFiles {
 						{
 							flag = true;
 						}
-						else
-						{
+						else if (!flag) {
 							builder.append('(');
 							builder.append((char)i);
 						}
@@ -100,6 +99,8 @@ public class MergeFiles {
 						if ( i == 41 ) //parentesis close
 						{
 							flag = false;
+						} else if (!flag) {
+							builder.append('*');
 						}
 						break;
 					default:

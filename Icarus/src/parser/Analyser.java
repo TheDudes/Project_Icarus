@@ -67,7 +67,7 @@ public class Analyser {
 	/* logger */
 	private final LogWriter  log;
 	private final String     mainkey  = "parser";
-	private final String     subkey   = "analyser";
+	private final String     subkey   = "Analyser";
 	private final String     key      = mainkey + "-" + subkey;
 
 	private void
