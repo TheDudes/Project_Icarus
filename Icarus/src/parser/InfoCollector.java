@@ -144,7 +144,7 @@ public class InfoCollector {
 	 * @see Match
 	 */
 	public Integer[]
-	get_case_coordinates(int caseopen, int value)
+	get_case_coordinates(int caseopen, int value) throws Exception
 	{
 		log.log(key, 4, "getCaseCoordinates called.");
 		return match.get_case_coordinates(caseopen, value);
@@ -154,6 +154,7 @@ public class InfoCollector {
 	 * getEndCase takes the index of the CASE and returns the index of the END_CASE
 	 * @param a index of a CASE
 	 * @return index of the END_CASE
+
 	 * @see Match
 	 */
 	public int

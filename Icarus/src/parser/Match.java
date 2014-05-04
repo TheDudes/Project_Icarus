@@ -73,7 +73,6 @@ public class Match {
 	TreeMap<Integer,TreeMap<Integer,Integer[]>>  casevalue  = new TreeMap<>();
 
 	/* logger */
-	// private boolean logstat;
 	private final LogWriter  log;
 	private final String     mainkey  = "parser";
 	private final String     subkey   = "Match";
@@ -341,35 +340,46 @@ public class Match {
 
 		int    caseposstart;
 		int    caseposstop;
-		int[]  startstop   = {-1, -1};
+		int[]  startstop   = {-1, -1}; /* */
 		int[]  casetoeval  = {-1, -1};
 
 		TreeMap<Integer,Integer[]>  valuecase;
 
 		for (Map.Entry<Integer,Integer> casestruct : casematching.entrySet()) {
+
 			valuecase = new TreeMap<>();
+
 			for (Map.Entry<Integer,Integer> evalcase : allcases.entrySet()) {
-				caseposstart = evalcase.getKey();
-				caseposstop = evalcase.getValue();
+
+				caseposstart  = evalcase.getKey();
+				caseposstop   = evalcase.getValue();
+
 				if (caseposstart > casestruct.getKey() && caseposstart < casestruct.getValue()) {
+
 					if (startstop[0] == -1) {
-						startstop[0] = caseposstop;
-						casetoeval[0] = caseposstart;
-						casetoeval[1] = caseposstop;
+						startstop[0]   = caseposstop;
+						casetoeval[0]  = caseposstart;
+						casetoeval[1]  = caseposstop;
 					} else {
-						startstop[1] = caseposstart;
+
+						startstop[1]  = caseposstart;
+
 						for (Integer val : eval_cases(casetoeval[0], casetoeval[1])) {
 							valuecase.put(val, new Integer[] {startstop[0], startstop[1]});
 						}
-						startstop[0] = caseposstop;
-						casetoeval[0] = caseposstart;
-						casetoeval[1] = caseposstop;
+
+						startstop[0]   = caseposstop;
+						casetoeval[0]  = caseposstart;
+						casetoeval[1]  = caseposstop;
 					}
 				}
 			}
+			
 			for (Integer val : eval_cases(casetoeval[0], casetoeval[1])) {
+
 				valuecase.put(val, new Integer[] {startstop[0], casestruct.getValue()});
 			}
+			
 			startstop[0] = -1;
 			casevalue.put(casestruct.getKey(), valuecase);
 		}
@@ -397,12 +407,22 @@ public class Match {
 	 * @return an Integer array, [0] is the startindex and [1] is the endindex
 	 */
 	public Integer[]
-	get_case_coordinates(int caseopen, int value)
+	get_case_coordinates(int caseopen, int value) throws Exception
 	{
 		log.log(key, 4, "get_case_coordinates called.");
 		Integer[] tmp = casevalue.get(caseopen).get(value);
-		log.log(key, 4, "case coordinates: "+Arrays.toString(tmp));
-		return tmp;
+		if (tmp != null) {
+			log.log(key, 4, "case coordinates: "+Arrays.toString(tmp));
+			return tmp;
+		} else {
+			int elseincase = builder.toString().indexOf("ELSE", caseopen);
+			if (elseincase < get_end_case(caseopen)) {
+				return new Integer[] {elseincase+4, builder.toString().indexOf("END_CASE", caseopen) };
+			} else {
+				log.log(key, 4, "Case is fucked up");
+				throw new Exception("Case is facked up");
+			}
+		}
 	}
 
 	/**
