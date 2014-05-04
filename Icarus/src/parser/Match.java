@@ -98,10 +98,10 @@ public class Match {
 		log.log(key, 4, "got all lists from the analyser.");
 
 		try {
-			gether_if_list();
+			gather_if_list();
 			find_if_end_if_pairs();
 	
-			gether_case_list();
+			gather_case_list();
 			find_case_end_case_pairs();
 		
 			find_all_cases();
@@ -142,9 +142,9 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	gether_if_list()
+	gather_if_list()
 	{
-		log.log(key, 4, "gether_if_list called.");
+		log.log(key, 4, "gather_if_list called.");
 		ifs = list.get(11); /* 11 is hardcoded here, should find a better solution */
 		ifendif = new TreeMap<>();
 		for (Integer item : ifs) {
@@ -221,9 +221,9 @@ public class Match {
 	 * This function is private.
 	 */
 	private void
-	gether_case_list()
+	gather_case_list()
 	{
-		log.log(key, 4, "gether_case_list called.");
+		log.log(key, 4, "gather_case_list called.");
 		cases = list.get(5);
 		caseendcase = new TreeMap<>();
 		for (Integer item : cases) {

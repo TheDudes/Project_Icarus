@@ -31,7 +31,7 @@ import java.net.*;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
-public class main
+public class Main
 {
     public static void main(String[] args) throws Exception
     {

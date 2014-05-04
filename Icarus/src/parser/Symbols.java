@@ -191,7 +191,7 @@ public class Symbols {
 		
 		try {
 			for (StringBuilder b = new StringBuilder(block.substring(0, block.indexOf(";") + 1)); true; b = new StringBuilder(block.substring(0, block.indexOf(";") + 1))) {
-				block.delete(4, block.indexOf(";") + 1);
+				block.delete(0, block.indexOf(";") + 1);
 				tmpint = b.indexOf(":=");
 
 				log.log(key, 4, "Current line: "+b);
@@ -204,6 +204,7 @@ public class Symbols {
 						log.log(key, 0, "Wrong variable Deklaration: "+b.toString());
 						throw new Exception("Wrong variable Deklaration: "+b.toString()); 
 						}*/
+					log.log(key, 4, "Without Initialization.");
 					
 					names = b.substring(0, tmpint).split(",");
 					type = b.substring(tmpint + 1, b.indexOf(";"));
@@ -242,6 +243,8 @@ public class Symbols {
 					}
 				} else {
 					tmpint2 = b.indexOf(":");
+
+					log.log(key, 4, "With Initialization.");
 					
 				        /* variable deklaration wrong */
 					/*if (tmpint == -1) {
