@@ -2,7 +2,7 @@
 
   <property name="project"     value="Project_Icarus"/>
   <property name="packages"    value="parser,Ninti,linc,Icarus,vault,interpreter"/>
-  <property name="main.class"  value="Icarus.main"/>
+  <property name="main.class"  value="Icarus.Main"/>
   
   <property name="src.dir"     value="src"/>
   <property name="build.dir"   value="build"/>
