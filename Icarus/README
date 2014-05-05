@@ -7,10 +7,12 @@ do not forget to configure ur OWN! (which is NOT under version control) config
 file, and specify it inside the Main.java file (/Icarus/src/Icarus/Main.java).
 
 Usage:
-    ant [compile|javadoc|run|all|magic]
+    ant [compile|javadoc|clean|clean-build|run|all|magic]
 
-compile -> will compile
-javadoc -> creates javadoc
-run     -> run
-all     -> compile, javadoc, create jar and run
-magic   -> compile, create jar and run
+compile     -> will compile
+javadoc     -> creates javadoc
+clean       -> deletes .class files
+clean-build -> clean, compile, javadoc and create jar
+run         -> run
+all         -> clean, compile, javadoc, create jar and run
+magic       -> clean, compile, create jar and run
