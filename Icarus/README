@@ -1,22 +1,16 @@
-Only Compile:
-- execute './make.sh compile' (zsh and apache-ant needed)
-- or execute 'ant -f build.xml compile' (apache-ant needed)
+-README from Icarus interpreter-
 
-Only Run:
-- execute 'make.sh run'
-- or execute 'cd build/classes && java Icarus.main'
+to build/run/... apache-ant is needed.
 
-Only create Javadoc:
-- execute './make.sh javadoc' (zsh and apache-ant needed)
-- or execute 'ant -f build.xml compile' (apache-ant needed)
+you have to be inside the Icarus folder, where the build.xml is located.
+do not forget to configure ur OWN! (which is NOT under version control) config
+file, and specify it inside the Main.java file (/Icarus/src/Icarus/Main.java).
 
-Only clean:
-- execute './make.sh clean' (zsh and apache-ant needed)
-- or execute 'ant -f build.xml clean' (apache-ant needed)
+Usage:
+    ant [compile|javadoc|run|all|magic]
 
-All: (Clean/Javadoc/Compile)
-- execute './make.sh all'
-- or execute 'ant -f build.xml clean javadoc compile'
-
-Magic: (clean, compile and run)
-- execute './make.sh magic' (zsh and apache-ant needed)
+compile -> will compile
+javadoc -> creates javadoc
+run     -> run
+all     -> compile, javadoc, create jar and run
+magic   -> compile, create jar and run
