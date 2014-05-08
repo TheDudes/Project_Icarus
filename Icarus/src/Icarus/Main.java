@@ -48,12 +48,27 @@ public class Main
         print_startup_message();
         set_config_file_path();
 
-        config      = new Config_Reader(config_path);
-        logger      = new LogWriter(config);
-        container   = new InfoCollector(config, logger);
-        interpreter = new Interpreter(container, logger, config);
-
         double blub = System.currentTimeMillis();
+        config      = new Config_Reader(config_path);
+        System.out.println((System.currentTimeMillis() - blub) + "ms. conf");
+
+        blub = System.currentTimeMillis();
+        logger      = new LogWriter(config);
+        System.out.println((System.currentTimeMillis() - blub) + "ms. log");
+
+        blub = System.currentTimeMillis();
+        container   = new InfoCollector(config, logger);
+        System.out.println((System.currentTimeMillis() - blub) + "ms. container");
+
+        blub = System.currentTimeMillis();
+        interpreter = new Interpreter(container, logger, config);
+        System.out.println((System.currentTimeMillis() - blub) + "ms. interpr");
+
+        blub = System.currentTimeMillis();
+        interpreter.lets_get_this_party_started();
+        System.out.println((System.currentTimeMillis() - blub) + "ms.");
+
+        blub = System.currentTimeMillis();
         interpreter.lets_get_this_party_started();
         System.out.println((System.currentTimeMillis() - blub) + "ms.");
 
@@ -87,7 +102,7 @@ public class Main
                 break;
             case "d4ryus":
             case "cubie":
-                config_path = "/home/d4ryus/coding/Project_Icarus/Icarus/d4ryus_config";
+                config_path = "/home/d4ryus/Project_Icarus/Icarus/d4ryus_config";
                 break;
             case "alarmpi":
                 config_path = "/home/vault/Project_Icarus/Icarus/example_config";

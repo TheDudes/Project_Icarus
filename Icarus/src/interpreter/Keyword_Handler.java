@@ -434,6 +434,7 @@ public class Keyword_Handler
         log.log(log_key, 4, "call   found_END_PROGRAM, INDEX = " + INDEX);
 
         log.log("interpreter-end", 4, "end of Program Reached, Breaking for Loop." + INDEX);
+        context_stack.pop();
 
         log.log(log_key, 4, "return found_END_PROGRAM, INDEX = " + INDEX);
         return INDEX;

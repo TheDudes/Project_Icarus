@@ -35,7 +35,6 @@ public class LogWriter {
 
     private LinkedBlockingQueue<String> lbq = new LinkedBlockingQueue<>(1024);
     private String host; //Hostname
-    private Date date; 
     private SimpleDateFormat sdf; 
     private int verboseLevel;
     private LogWriterWorker LogWorker;
@@ -51,6 +50,7 @@ public class LogWriter {
         verboseLevel = configReader.get_int("verbosity_level");
         LogWorker    = new LogWriterWorker(configReader, lbq);
         worker       = new Thread(LogWorker);
+        sdf          = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
         get_hostname();
         worker.start();
         log("LogWriter", 0, "initialized LogWriter");
@@ -69,18 +69,6 @@ public class LogWriter {
     }
 
     /**
-     * getTimeStamp returns the current time to use it in the timestamp
-     *
-     * @return String
-     */
-    private String getTimestamp()
-    {
-        date = new Date(System.currentTimeMillis());
-        sdf = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
-        return sdf.format(date);
-    }
-
-    /**
      * log generates one log line and adds it to the LinkeBlockingQueue lbq
      * @param key this variable tells you where the log message is coming from
      * @param verboseLevel this variable indicates how important the log message is
@@ -91,16 +79,14 @@ public class LogWriter {
         if (!silent && ( verboseLevel == 0 ) )
         {
             System.out.println(logMessage);
+            lbq.offer("[" + sdf.format(new Date().getTime()) + "] [" + host + "] [" + key + "]: " + logMessage + "\n");
         }
-
-        if ( verboseLevel <= this.verboseLevel )
+        else if ( verboseLevel <= this.verboseLevel )
         {
-            String logLine ="["+getTimestamp()+"]"+" ["+
-                                host+"] "+"["+
-                                key+"]"+": "+
-                                logMessage+"\n";
-            lbq.offer(logLine);
+            lbq.offer("[" + sdf.format(new Date().getTime()) + "] [" + host + "] [" + key + "]: " + logMessage + "\n");
         }
+        //sdf.format(new Date(System.currentTimeMillis()))
+
     }
 
     /**
