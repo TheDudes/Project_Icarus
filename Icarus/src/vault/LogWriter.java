@@ -86,7 +86,6 @@ public class LogWriter {
             lbq.offer("[" + sdf.format(new Date().getTime()) + "] [" + host + "] [" + key + "]: " + logMessage + "\n");
         }
         //sdf.format(new Date(System.currentTimeMillis()))
-
     }
 
     /**

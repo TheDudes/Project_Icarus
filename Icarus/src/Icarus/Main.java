@@ -64,13 +64,16 @@ public class Main
         interpreter = new Interpreter(container, logger, config);
         System.out.println((System.currentTimeMillis() - blub) + "ms. interpr");
 
-        blub = System.currentTimeMillis();
-        interpreter.lets_get_this_party_started();
-        System.out.println((System.currentTimeMillis() - blub) + "ms.");
+        for(int i = 0; i < 40; i++ )
+        {
+            blub = System.currentTimeMillis();
 
-        blub = System.currentTimeMillis();
-        interpreter.lets_get_this_party_started();
-        System.out.println((System.currentTimeMillis() - blub) + "ms.");
+            logger.log(log_key, 4, "starting Interpreter...");
+            code = container.get_all_the_code().toString();
+            interpreter.interpret(code, 0, code.length());
+
+            System.out.println((System.currentTimeMillis() - blub) + "ms.");
+        }
 
         logger.log(log_key, 0, "exiting Icarus.");
         logger.kill();

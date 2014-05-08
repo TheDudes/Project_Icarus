@@ -99,13 +99,13 @@ public class Keyword_Handler
 
         if_position_stack.push(INDEX);
         int then_position = offset.get_THEN(INDEX, code);
-        String condition = code.substring(INDEX + 2, then_position);
+        String condition  = code.substring(INDEX + 2, then_position);
         if_stack.push((Boolean)engine.eval(offset.convert_condition(container.replace_vars(condition, context_stack.peek()))));
 
         if (if_stack.peek())
             INDEX = then_position + 3;
         else
-            INDEX = offset.get_next_keyword(INDEX, code) - 1;
+            INDEX = offset.get_next_keyword(INDEX + 2, code) - 1;
 
         log.log(log_key, 4, "return found_IF, INDEX = " + INDEX);
         return INDEX;
@@ -140,7 +140,10 @@ public class Keyword_Handler
         log.log(log_key, 4, "call   found_ELSE, INDEX = " + INDEX);
 
         if(if_stack.peek())
-            INDEX = container.get_end_if(if_position_stack.peek()) - 1;
+        {
+            if_stack.pop();
+            INDEX = container.get_end_if(if_position_stack.pop()) + 5;
+        }
         else
             INDEX += 3;
 
@@ -160,13 +163,14 @@ public class Keyword_Handler
 
         if(if_stack.peek())
         {
+            if_stack.pop();
             INDEX = container.get_end_if(if_position_stack.pop()) + 5;
         }
         else
         {
             INDEX += 5;
             int then_position = offset.get_THEN(INDEX, code);
-            String condition = code.substring(INDEX + 2, then_position);
+            String condition = code.substring(INDEX, then_position);
             if_stack.pop();
             if_stack.push((Boolean)engine.eval(offset.convert_condition(container.replace_vars(condition, context_stack.peek()))));
             if (if_stack.peek())
@@ -175,7 +179,7 @@ public class Keyword_Handler
             }
             else
             {
-                INDEX = offset.get_next_keyword(INDEX, code) - 1;
+                INDEX = offset.get_next_keyword(then_position, code) - 1;
             }
         }
 
@@ -501,10 +505,6 @@ public class Keyword_Handler
     {
         log.log(log_key, 4, "call   found_nothing, INDEX = " + INDEX);
 
-        /*
-        log.log("error", 4, "no keyword was found, substring(INDEX, INDEX + 20):" +
-                                    code.substring(INDEX, INDEX + 20));
-        */
         int    semicolon_position = offset.get_semicolon(INDEX, code);
         String condition          = code.substring(INDEX, semicolon_position + 1);
         container.set_value(condition, context_stack.peek());
