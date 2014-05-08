@@ -67,6 +67,14 @@ public class LogWriter {
             host = "localhost";
         }
     }
+    /*
+    private String getTimestamp()
+    {
+        date = new Date(System.currentTimeMillis());
+        sdf = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+        return sdf.format(date);
+    }
+    */
 
     /**
      * log generates one log line and adds it to the LinkeBlockingQueue lbq
@@ -76,6 +84,21 @@ public class LogWriter {
      */
     public void log(String key, int verboseLevel, String logMessage)
     {
+        /*
+        if (!silent && ( verboseLevel == 0 ) )
+        {
+            System.out.println(logMessage);
+        }
+
+        if ( verboseLevel <= this.verboseLevel )
+        {
+            String logLine ="["+getTimestamp()+"]"+" ["+
+                                host+"] "+"["+
+                                key+"]"+": "+
+                                logMessage+"\n";
+            lbq.offer(logLine);
+        }
+        */
         if (!silent && ( verboseLevel == 0 ) )
         {
             System.out.println(logMessage);
@@ -85,7 +108,6 @@ public class LogWriter {
         {
             lbq.offer("[" + sdf.format(new Date().getTime()) + "] [" + host + "] [" + key + "]: " + logMessage + "\n");
         }
-        //sdf.format(new Date(System.currentTimeMillis()))
     }
 
     /**
