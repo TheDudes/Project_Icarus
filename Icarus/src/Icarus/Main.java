@@ -53,8 +53,17 @@ public class Main
         container   = new InfoCollector(config, logger);
         interpreter = new Interpreter(container, logger, config);
 
-        double blub = System.currentTimeMillis();
-        interpreter.lets_get_this_party_started();
+        double blub = 0.0;
+        for(int i = 0; i < 25; i++ )
+        {
+            blub = System.currentTimeMillis();
+
+            logger.log(log_key, 4, "starting Interpreter...");
+            code = container.get_all_the_code().toString();
+            interpreter.interpret(code, 0, code.length());
+
+            System.out.println((System.currentTimeMillis() - blub) + "ms.");
+        }
         System.out.println((System.currentTimeMillis() - blub) + "ms.");
 
         logger.log(log_key, 0, "exiting Icarus.");

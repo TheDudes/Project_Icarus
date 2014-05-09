@@ -54,16 +54,6 @@ public class Interpreter
     }
 
     /**
-     * starts the Interpreter
-     */
-    public void lets_get_this_party_started() throws Exception
-    {
-        log.log(log_key, 4, "starting Interpreter...");
-        String code = container.get_all_the_code().toString();
-        interpret(code, 0, code.length());
-    }
-
-    /**
      * will interpret given code from given start till end INDEX.
      * @param code structure text code after parser
      * @param start INDEX where interpreter will start
