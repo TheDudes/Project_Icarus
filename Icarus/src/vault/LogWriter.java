@@ -36,7 +36,7 @@ public class LogWriter {
     private LinkedBlockingQueue<String> lbq = new LinkedBlockingQueue<>(1024);
     private String host; //Hostname
     private SimpleDateFormat sdf; 
-    private int verboseLevel;
+    private int localVerboseLevel;
     private LogWriterWorker LogWorker;
     private Thread worker;
     private boolean silent;
@@ -47,7 +47,7 @@ public class LogWriter {
      */
     public LogWriter(Config_Reader configReader){
         silent       = configReader.get_boolean("silent");
-        verboseLevel = configReader.get_int("verbosity_level");
+        localVerboseLevel = configReader.get_int("verbosity_level");
         LogWorker    = new LogWriterWorker(configReader, lbq);
         worker       = new Thread(LogWorker);
         sdf          = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
@@ -88,25 +88,11 @@ public class LogWriter {
         if (!silent && ( verboseLevel == 0 ) )
         {
             System.out.println(logMessage);
+            lbq.offer("[" + sdf.format(new Long(new Date().getTime())) + "] [" + host + "] [" + key + "]: " + logMessage + "\n");
         }
-
-        if ( verboseLevel <= this.verboseLevel )
+        else if ( verboseLevel <= this.localVerboseLevel )
         {
-            String logLine ="["+getTimestamp()+"]"+" ["+
-                                host+"] "+"["+
-                                key+"]"+": "+
-                                logMessage+"\n";
-            lbq.offer(logLine);
-        }
-        */
-        if (!silent && ( verboseLevel == 0 ) )
-        {
-            System.out.println(logMessage);
-            lbq.offer("[" + sdf.format(new Date().getTime()) + "] [" + host + "] [" + key + "]: " + logMessage + "\n");
-        }
-        else if ( verboseLevel <= this.verboseLevel )
-        {
-            lbq.offer("[" + sdf.format(new Date().getTime()) + "] [" + host + "] [" + key + "]: " + logMessage + "\n");
+		lbq.offer("[" + sdf.format(new Long(new Date().getTime())) + "] [" + host + "] [" + key + "]: " + logMessage + "\n");
         }
     }
 

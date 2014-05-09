@@ -4,8 +4,9 @@ VAR
     blub : BOOL := FALSE;
     blah : INT := 3;
     test : INT := 133;
-    test2 : INT := 4432;
-    (*test3 : ULINT := 18446744073709551614;*)
+    testint : INT := 4432;
+    (*testuling :ULINT := 1234;*)
+    testulint : ULINT := 18446744073709551614;
 END_VAR
 
 FOR hihihi := 0 TO 100 BY 1 DO
@@ -21,7 +22,7 @@ END_FOR
 
 PRINT(between=,blub);
 PRINT(between=, test);
-PRINT(between=,test2);
+PRINT(between=,testint);
 
 blah := 4;
 
@@ -30,8 +31,8 @@ CASE blah OF
         PRINT(case_3=, blah);
     4:
         PRINT(case_4=, blah);
-    5:
-        PRINT(case_5=, blah);
+    (*5:
+        PRINT(case_5=, blah);*)
     ELSE
         PRINT(case_else=, blah);
 END_CASE

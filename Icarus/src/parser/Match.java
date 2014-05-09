@@ -277,19 +277,30 @@ public class Match {
 	find_all_cases()
 	{
 		log.log(key, 4, "find_all_cases called.");
+
 		String casedef = "((\\d+(,\\d+)*)+(...\\d+(,\\d+)*)*)+:";
 		log.log(key, 4, "case definition: "+casedef);
-		Pattern pattern = Pattern.compile(casedef);
-		Matcher matcher = pattern.matcher(builder);
-		int[] cases = new int[2];
-		while(matcher.find()) {
-			cases[0] = matcher.start();
-			cases[1] = matcher.end();
-			log.log(key, 4, "found: "+builder.substring(cases[0], cases[1])+" @ "+cases[0]+","+cases[1]);
-			allcases.put(cases[0], cases[1]);
+
+		Pattern  pattern = Pattern.compile(casedef);
+		int[]    cases = new int[2];
+		String   a_case;
+		Matcher  matcher;
+		
+			
+		for ( int item : get_cases())
+		{
+			a_case = builder.substring(item, get_end_case(item));
+			log.log(key, 4, "a_case: "+a_case);
+			matcher = pattern.matcher(a_case);
+			while(matcher.find()) {
+				cases[0] = matcher.start()+item;
+				cases[1] = matcher.end(  )+item;
+				log.log(key, 4, "found: "+builder.substring(cases[0], cases[1])+" @ "+cases[0]+","+cases[1]);
+				allcases.put(cases[0], cases[1]);
+			}
+			/* finds all things matching the regex, but this doesn't matter because he knows where the cases are  */
+			log.log(key, 4, "cases found#: "+allcases.size());
 		}
-		/* finds all things matching the regex, but this doesn't matter because he knows where the cases are  */
-		log.log(key, 4, "cases found#: "+allcases.size());
 	}
     
 	/**
