@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * file: Icarus/src/interpreter/Engine_Warmup.java
- * vim: foldmethod=syntax:foldcolumn=5:
+ * vim: foldmethod=syntax:foldcolumn=4:
  */
 
 package interpreter;
@@ -66,7 +66,8 @@ public class Engine
         log.log("engine", 1,"starting engine warmup...");
         long start = System.currentTimeMillis();
 
-        for(int i = 0; i < total_evaluations; i++) {
+        for(int i = 0; i < total_evaluations; i++)
+        {
 
             String test0 = "true == false != true && false";
             String test1 = "true";
@@ -95,7 +96,8 @@ public class Engine
             now = System.currentTimeMillis() - now;
 
             avg += now;
-            if (i % 100 == 0 && i != 0) {
+            if (i % 100 == 0 && i != 0)
+            {
                 avg = avg / 100;
                 log.log("engine", 2,"100 evaluations done, avg time: (" + avg + "ms avg)");
             }

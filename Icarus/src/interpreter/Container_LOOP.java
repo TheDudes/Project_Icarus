@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * file: Icarus/src/interpreter/Container_LOOP.java
- * vim: foldmethod=syntax:foldcolumn=5:
+ * vim: foldmethod=syntax:foldcolumn=1:
  */
 package interpreter;
 

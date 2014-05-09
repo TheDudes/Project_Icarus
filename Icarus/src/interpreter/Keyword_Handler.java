@@ -29,7 +29,7 @@ import java.util.Stack;
  * @author d4ryus - https://github.com/d4ryus/
  * <p>
  * class which holds all the keyword related Functions, these are used
- * to handle found Keywords.
+ * to handle found Keywords, for example push and pop stacks.
  * <p>
  * @version 0.8
  */
@@ -436,7 +436,8 @@ public class Keyword_Handler
     {
         log.log(log_key, 4, "call   found_END_PROGRAM, INDEX = " + INDEX);
 
-        log.log("interpreter-end", 4, "end of Program Reached, Breaking for Loop." + INDEX);
+        log.log("interpreter-end", 4, "end of Program Reached, Breaking for Loop, poping context_stack");
+        context_stack.pop();
 
         log.log(log_key, 4, "return found_END_PROGRAM, INDEX = " + INDEX);
         return INDEX;

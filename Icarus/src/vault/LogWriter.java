@@ -79,11 +79,15 @@ public class LogWriter {
         if (( msgVerboseLevel == 0 ) && !silent )
         {
             System.out.println(logMessage);
-            lbq.offer("[" + sdf.format(new Date().getTime()) + "] [" + key + "]: " + logMessage + "\n");
+            lbq.offer("[" + sdf.format(new Date().getTime())
+                  + "] [" + key
+                  + "]: " + logMessage + "\n");
         }
         else if ( msgVerboseLevel <= this.verboseLevel )
         {
-            lbq.offer("[" + sdf.format(new Date().getTime()) + "] [" + key + "]: " + logMessage + "\n");
+            lbq.offer("[" + sdf.format(new Date().getTime())
+                  + "] [" + key
+                  + "]: " + logMessage + "\n");
         }
     }
 
