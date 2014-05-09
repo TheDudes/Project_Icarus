@@ -29,20 +29,21 @@ import linc.*;
  * <p>
  * @version 1.0
  */
-public class LogWriter {
-
+public class LogWriter
+{
     private LinkedBlockingQueue<String> lbq = new LinkedBlockingQueue<>(1024);
-    private SimpleDateFormat sdf; 
-    private int verboseLevel;
+    private SimpleDateFormat sdf;
     private LogWriterWorker LogWorker;
-    private Thread worker;
-    private boolean silent;
+    private boolean         silent;
+    private Thread          worker;
+    private int             verboseLevel;
 
     /**
      * LogWriter Constructor
      * @param configReader gets the Path from the configfile and returns it
      */
-    public LogWriter(Config_Reader configReader){
+    public LogWriter(Config_Reader configReader)
+    {
         silent       = configReader.get_boolean("silent");
         verboseLevel = configReader.get_int("verbosity_level");
         LogWorker    = new LogWriterWorker(configReader, lbq);

@@ -37,13 +37,13 @@ import linc.*;
 public class LogWriterWorker implements Runnable
 {
     private LinkedBlockingQueue<String> lbq;
-    private Date date;
     private SimpleDateFormat sdf;
+    private Date    date;
     private boolean alive = true;
-    private String tmpFilePath;
-    private String pathToLogfiles;
-    private String message;
-    private int verboseLevel;
+    private String  tmpFilePath;
+    private String  pathToLogfiles;
+    private String  message;
+    private int     verboseLevel;
 
     /**
      * LogWriterWorker constructor
@@ -62,16 +62,19 @@ public class LogWriterWorker implements Runnable
      * getTimeStamp returns the current time to use it in the timestamp
      * @return String
      */
-    private String getTimestamp() {
+    private String getTimestamp()
+    {
         date = new Date(System.currentTimeMillis());
         sdf  = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss");
         return sdf.format(date);
     }
 
     @Override
-    public void run() {
-        try (Writer fWriter = new BufferedWriter(new FileWriter(pathToLogfiles, true))) {
-            while( !lbq.isEmpty() || alive )
+    public void run()
+    {
+        try (Writer fWriter = new BufferedWriter(new FileWriter(pathToLogfiles, true)))
+        {
+            while( alive || !lbq.isEmpty() )
             {
                 if(verboseLevel == 4)
                 {
@@ -85,9 +88,14 @@ public class LogWriterWorker implements Runnable
                     fWriter.flush();
                 }
             }
-        } catch (IOException e) {
-            System.out.println("Error while writing File: "+e);
-        } catch (InterruptedException ex) {
+        }
+        catch (IOException e)
+        {
+            System.out.println("LogWriter Error (exiting): " + e);
+            System.exit(1);
+        }
+        catch (InterruptedException ex)
+        {
             Logger.getLogger(LogWriterWorker.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
