@@ -31,16 +31,16 @@ import java.net.*;
 /**
  * @author d4ryus - https://github.com/d4ryus/
  * <p>
- * Main
+ * Main, here is where the magic happens.
  * <p>
  * @version 0.8
  */
 public class Main
 {
-    static String        log_key = "main";
-    static String        config_path;
-    static String        hostname;
-    static String        code;
+    static String log_key = "main";
+    static String config_path;
+    static String hostname;
+    static String code;
 
     static Config_Reader config;
     static LogWriter     logger;
@@ -73,7 +73,6 @@ public class Main
 
             System.out.println((System.currentTimeMillis() - blub) + "ms.");
         }
-        System.out.println((System.currentTimeMillis() - blub) + "ms.");
 
         logger.log(log_key, 0, "exiting Icarus.");
         logger.kill();
@@ -97,7 +96,6 @@ public class Main
             hostname = "";
             System.exit(1);
         }
-
         switch (hostname)
         {
             case "beelzebub":
