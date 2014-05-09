@@ -35,8 +35,9 @@ public class LogWriter {
 
     private LinkedBlockingQueue<String> lbq = new LinkedBlockingQueue<>(1024);
     private String host; //Hostname
+    private Date date; 
     private SimpleDateFormat sdf; 
-    private int localVerboseLevel;
+    private int verboseLevel;
     private LogWriterWorker LogWorker;
     private Thread worker;
     private boolean silent;
@@ -47,10 +48,9 @@ public class LogWriter {
      */
     public LogWriter(Config_Reader configReader){
         silent       = configReader.get_boolean("silent");
-        localVerboseLevel = configReader.get_int("verbosity_level");
+        verboseLevel = configReader.get_int("verbosity_level");
         LogWorker    = new LogWriterWorker(configReader, lbq);
         worker       = new Thread(LogWorker);
-        sdf          = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
         get_hostname();
         worker.start();
         log("LogWriter", 0, "initialized LogWriter");
@@ -67,14 +67,18 @@ public class LogWriter {
             host = "localhost";
         }
     }
-    /*
+
+    /**
+     * getTimeStamp returns the current time to use it in the timestamp
+     *
+     * @return String
+     */
     private String getTimestamp()
     {
         date = new Date(System.currentTimeMillis());
         sdf = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
         return sdf.format(date);
     }
-    */
 
     /**
      * log generates one log line and adds it to the LinkeBlockingQueue lbq
@@ -84,15 +88,18 @@ public class LogWriter {
      */
     public void log(String key, int verboseLevel, String logMessage)
     {
-        /*
         if (!silent && ( verboseLevel == 0 ) )
         {
             System.out.println(logMessage);
-            lbq.offer("[" + sdf.format(new Long(new Date().getTime())) + "] [" + host + "] [" + key + "]: " + logMessage + "\n");
         }
-        else if ( verboseLevel <= this.localVerboseLevel )
+
+        if ( verboseLevel <= this.verboseLevel )
         {
-		lbq.offer("[" + sdf.format(new Long(new Date().getTime())) + "] [" + host + "] [" + key + "]: " + logMessage + "\n");
+            String logLine ="["+getTimestamp()+"]"+" ["+
+                                host+"] "+"["+
+                                key+"]"+": "+
+                                logMessage+"\n";
+            lbq.offer(logLine);
         }
     }
 

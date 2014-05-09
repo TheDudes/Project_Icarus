@@ -29,7 +29,6 @@ import vault.*;
 public class Symbols {
 
 	private final StringBuilder         builder;         /* the whole programm code */
-	private final TYPES                 types;
 	private final Match                 match;           /* the matcher, this class holds some importand Informations */
 	private final ArrayList<Integer[]>  deleteme;        /* the list of all marked var blocks as arrays with first index and very last index */
 	private       ArrayList<String>     symbolnames;     /* list with all the symbolnames */
@@ -217,7 +216,7 @@ public class Symbols {
 					for (String name : names) {
 						percontext.put(name, id);
 						typebyid.put(id, type);
-						valuebyid.put(id, types.get_type(type));
+						valuebyid.put(id, TYPES.get_type(type));
 						//contextstore.put(context, percontext); /* i leave this for a moment, till i remember what i did there ... */
 						id++;
 					}
@@ -235,7 +234,7 @@ public class Symbols {
 					for (String name : names) {
 						tmpint2 = contextstore.get(context).get(name);
 						if (!(tmpint2 == null)) {
-							valuebyid.put(tmpint2, types.get_type(type, value));
+							valuebyid.put(tmpint2, TYPES.get_type(type, value));
 						} else {
 							/* throw unknown symbol in this context exception */
 							log.log(key, 4, "Unknown Symbol \"" + name + "\" in: " + context);
@@ -264,7 +263,7 @@ public class Symbols {
 					for (String name : names) {
 						percontext.put(name, id);
 						typebyid.put(id, type);
-						valuebyid.put(id, types.get_type(type, value));
+						valuebyid.put(id, TYPES.get_type(type, value));
 						id++;
 					}
 					contextstore.put(context, percontext);
@@ -370,6 +369,7 @@ public class Symbols {
 				tmp = input.replaceAll(item, valuebyid.get(contextstore.get(context).get(item)).toString());
 			} else {
 				tmp = tmp.replaceAll(item, valuebyid.get(contextstore.get(context).get(item)).toString());
+                
 			}
 		}
 
@@ -443,12 +443,11 @@ public class Symbols {
 	 * @throws java.lang.Exception
 	 */
 	public
-	Symbols(StringBuilder builder, Match match, TYPES types,  LogWriter log) throws Exception
+	Symbols(StringBuilder builder, Match match, LogWriter log) throws Exception
 	{
 		this.log      = log;
 		this.builder  = builder;
 		this.match    = match;
-		this.types    = types;
 
 		variableIndexes = match.get_vars(); /* pulls out the vars from match */
         

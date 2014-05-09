@@ -48,32 +48,14 @@ public class Main
         print_startup_message();
         set_config_file_path();
 
-        double blub = System.currentTimeMillis();
         config      = new Config_Reader(config_path);
-        System.out.println((System.currentTimeMillis() - blub) + "ms. conf");
-
-        blub = System.currentTimeMillis();
         logger      = new LogWriter(config);
-        System.out.println((System.currentTimeMillis() - blub) + "ms. log");
-
-        blub = System.currentTimeMillis();
         container   = new InfoCollector(config, logger);
-        System.out.println((System.currentTimeMillis() - blub) + "ms. container");
-
-        blub = System.currentTimeMillis();
         interpreter = new Interpreter(container, logger, config);
-        System.out.println((System.currentTimeMillis() - blub) + "ms. interpr");
 
-        for(int i = 0; i < 25; i++ )
-        {
-            blub = System.currentTimeMillis();
-
-            logger.log(log_key, 4, "starting Interpreter...");
-            code = container.get_all_the_code().toString();
-            interpreter.interpret(code, 0, code.length());
-
-            System.out.println((System.currentTimeMillis() - blub) + "ms.");
-        }
+        double blub = System.currentTimeMillis();
+        interpreter.lets_get_this_party_started();
+        System.out.println((System.currentTimeMillis() - blub) + "ms.");
 
         logger.log(log_key, 0, "exiting Icarus.");
         logger.kill();

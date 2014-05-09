@@ -36,7 +36,6 @@ public class InfoCollector {
 	private final Match          match;
 	private final Symbols        symb;
 	private final LogWriter      log;
-	private final TYPES          types;
 	
 	/* logger */
 	private final String  mainkey = "parser";
@@ -74,13 +73,9 @@ public class InfoCollector {
 		log.log(key, 2, "matching open and close tags ...");
 		match = new Match(analyser, allthecode, log);
 		log.log(key, 2, "Matched.");
-
-		log.log(key, 2, "init TYPES subsystem ...");
-		types = new TYPES(log);
-		log.log(key, 2, "initialation done.");
-		
+        
 		log.log(key, 2, "find all symbols in the code ...");
-		symb = new Symbols(allthecode, match, types, log);
+		symb = new Symbols(allthecode, match, log);
 		log.log(key, 2, "Symbols stored.");
         
 		log.log(key, 1, "file parsed.");
