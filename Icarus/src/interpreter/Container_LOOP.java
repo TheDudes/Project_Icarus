@@ -27,21 +27,24 @@ package interpreter;
  */
 public class Container_LOOP
 {
+    /** INDEX of Loop Starting Point */
+    public int INDEX;
+    /** INDEX of Loop jump in Point, DO for example  */
+    public int do_index;
+    /** INDEX of Loop END_ Keyword Point, END_WHILE for example  */
+    public int end_index;
 
-    /* WHILE, REPEAT and FOR values */
-    /* loop type 0 = WHILE, 1 = FOR, 2 = REPEAT */
-    public int type;                // loop type
-    public int INDEX;               // loop position
-    public int do_index;            // loop entry point
-    public int end_index;           // loop end point
+    /** only used by WHILE loop, holds the condtition String */
+    public String condition;
 
-    /* WHILE value */
-    public String condition;        // loop condition
-
-    /* FOR values */
-    public int limit;               // max FOR count
-    public int count;               // FOR count
-    public int by;                  // FOR + value
-    public Boolean name_given;      // name given or not
-    public String name;             // value name
+    /** only used by FOR loop, holds the limit */
+    public int limit;
+    /** only used by FOR loop, holds the current count */
+    public int count;
+    /** only used by FOR loop, holds the by value */
+    public int by;
+    /** only used by FOR loop, if true a variable name was given */
+    public Boolean name_given;
+    /** only used by FOR loop, if flag true this holds the name */
+    public String name;
 }

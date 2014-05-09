@@ -47,6 +47,12 @@ public class Keyword_Handler
     Stack<Boolean>        if_stack;
     Stack<Integer>        if_position_stack;
 
+    /**
+     * @param container used InfoCollector object
+     * @param log used LogWriter object
+     * @param config used Config_Reader
+     * @param interpreter used Interpreter, need for recursive calls (CASE, ...)
+     */
     public Keyword_Handler(InfoCollector container, LogWriter log, Config_Reader config, Interpreter interpreter)
     {
         log.log(log_key, 4, "init Keyword_Handler...");
@@ -79,9 +85,8 @@ public class Keyword_Handler
         log.log(log_key, 4, "call   found_PROGRAM, INDEX = " + INDEX);
 
         int var = offset.get_VAR(INDEX, code);
-        String context = code.substring(INDEX + 7, var);
+        context_stack.push(code.substring(INDEX + 7, var));
         INDEX   = container.get_end_var(var) + 6;
-        context_stack.push(context);
 
         log.log(log_key, 4, "return found_PROGRAM, INDEX = " + INDEX);
         return INDEX;
@@ -194,7 +199,6 @@ public class Keyword_Handler
         log.log(log_key, 4, "call   found_WHILE, INDEX = " + INDEX);
 
         Container_LOOP obj = new Container_LOOP();
-        obj.type           = 0;
         obj.INDEX          = INDEX;
         obj.do_index       = offset.get_DO(INDEX, code);
         obj.end_index      = container.get_end_while(INDEX) + 8;
@@ -216,6 +220,7 @@ public class Keyword_Handler
      * @param INDEX current Position
      * @param code current working code
      * @return INDEX after handling Keyword
+     * @throws Exception --fixme--
      */
     public int found_END_WHILE(int INDEX, String code) throws Exception
     {
@@ -237,14 +242,13 @@ public class Keyword_Handler
      * @param INDEX current Position
      * @param code current working code
      * @return INDEX after handling Keyword
-     * @throws exception
+     * @throws Exception --fixme--
      */
     public int found_FOR(int INDEX, String code) throws Exception
     {
         log.log(log_key, 4, "call   found_FOR, INDEX = " + INDEX);
 
         Container_LOOP obj = new Container_LOOP();
-        obj.type           = 1;
         obj.INDEX          = INDEX;
         obj.do_index       = offset.get_DO(INDEX, code);
         obj.end_index      = container.get_end_for(INDEX) + 6;
@@ -302,7 +306,7 @@ public class Keyword_Handler
      * @param INDEX current Position
      * @param code current working code
      * @return INDEX after handling Keyword
-     * @throws exception
+     * @throws Exception --fixme--
      */
     public int found_END_FOR(int INDEX, String code) throws Exception
     {
@@ -333,7 +337,6 @@ public class Keyword_Handler
         log.log(log_key, 4, "call   found_REPEAT, INDEX = " + INDEX);
 
         Container_LOOP obj = new Container_LOOP();
-        obj.type           = 2;
         obj.INDEX          = INDEX;
         obj.do_index       = INDEX + 5;
         obj.end_index      = container.get_end_repeat(INDEX) + 9;
@@ -444,7 +447,7 @@ public class Keyword_Handler
      * @param INDEX current Position
      * @param code current working code
      * @return INDEX after handling Keyword
-     * @throws exception
+     * @throws Exception --fixme--
      */
     public int found_CASE(int INDEX, String code) throws Exception
     {
@@ -494,7 +497,7 @@ public class Keyword_Handler
      * @param INDEX current Position
      * @param code current working code
      * @return INDEX after handling Keyword
-     * @throws Exception
+     * @throws Exception --fixme--
      */
     public int found_nothing(int INDEX, String code) throws Exception
     {

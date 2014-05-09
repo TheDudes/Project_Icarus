@@ -34,6 +34,9 @@ public class Offset_Handler
     String    log_key = "Interpreter-Offset";
     LogWriter log;
 
+    /**
+     * @param log used LogWriter
+     */
     public Offset_Handler(LogWriter log)
     {
         log.log(log_key, 4, "init Offset_Handler...");

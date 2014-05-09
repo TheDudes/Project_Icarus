@@ -40,6 +40,7 @@ public class Engine
 
     /**
      * @param log LogWriter Object
+     * @param config Config_Reader Object
      */
     public Engine(LogWriter log, Config_Reader config)
     {
@@ -54,6 +55,7 @@ public class Engine
 
     /**
      * used to warmup the Java ScriptEngine.
+     * @return ScriptEngine after warmup
      */
     public ScriptEngine warmup()
     {
@@ -95,10 +97,7 @@ public class Engine
             avg += now;
             if (i % 100 == 0 && i != 0) {
                 avg = avg / 100;
-                try {
-                    log.log("engine", 2,"100 evaluations done, avg time: (" + avg + "ms avg)");
-                } catch (Exception e) {
-                }
+                log.log("engine", 2,"100 evaluations done, avg time: (" + avg + "ms avg)");
             }
         }
         log.log("engine", 2, "100 evaluations done, avg time: (" + avg / 100 + "ms avg)");
@@ -112,6 +111,8 @@ public class Engine
 
     /**
      * used to evaluate conditions.
+     * @param condition String with the condition
+     * @return Object which holds the evaluated value
      */
     public Object eval(String condition)
     {

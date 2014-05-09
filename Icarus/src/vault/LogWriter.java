@@ -16,8 +16,6 @@
 
 package vault;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -34,8 +32,6 @@ import linc.*;
 public class LogWriter {
 
     private LinkedBlockingQueue<String> lbq = new LinkedBlockingQueue<>(1024);
-    private String host; //Hostname
-    private Date date; 
     private SimpleDateFormat sdf; 
     private int verboseLevel;
     private LogWriterWorker LogWorker;
@@ -51,43 +47,21 @@ public class LogWriter {
         verboseLevel = configReader.get_int("verbosity_level");
         LogWorker    = new LogWriterWorker(configReader, lbq);
         worker       = new Thread(LogWorker);
-        get_hostname();
+        sdf          = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
         worker.start();
         log("LogWriter", 0, "initialized LogWriter");
         configReader.setLogWriter(this);
     }
 
     /**
-     * get_hostname gets the name of the host
-     */
-    private void get_hostname() {
-        try {
-            host = InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException ex) {
-            host = "localhost";
-        }
-    }
-
-    /**
-     * getTimeStamp returns the current time to use it in the timestamp
-     *
-     * @return String
-     */
-    private String getTimestamp()
-    {
-        date = new Date(System.currentTimeMillis());
-        sdf = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
-        return sdf.format(date);
-    }
-
-    /**
      * log generates one log line and adds it to the LinkeBlockingQueue lbq
      * @param key this variable tells you where the log message is coming from
-     * @param verboseLevel this variable indicates how important the log message is
+     * @param msgVerboseLevel this variable indicates how important the log message is
      * @param logMessage this is the message that will be written in the log file 
      */
-    public void log(String key, int verboseLevel, String logMessage)
+    public void log(String key, int msgVerboseLevel, String logMessage)
     {
+        /*
         if (!silent && ( verboseLevel == 0 ) )
         {
             System.out.println(logMessage);
@@ -100,6 +74,16 @@ public class LogWriter {
                                 key+"]"+": "+
                                 logMessage+"\n";
             lbq.offer(logLine);
+        }
+        */
+        if (( msgVerboseLevel == 0 ) && !silent )
+        {
+            System.out.println(logMessage);
+            lbq.offer("[" + sdf.format(new Date().getTime()) + "] [" + key + "]: " + logMessage + "\n");
+        }
+        else if ( msgVerboseLevel <= this.verboseLevel )
+        {
+            lbq.offer("[" + sdf.format(new Date().getTime()) + "] [" + key + "]: " + logMessage + "\n");
         }
     }
 

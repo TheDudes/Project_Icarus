@@ -28,6 +28,13 @@ import interpreter.*;
 
 import java.net.*;
 
+/**
+ * @author d4ryus - https://github.com/d4ryus/
+ * <p>
+ * Main
+ * <p>
+ * @version 0.8
+ */
 public class Main
 {
     static String        log_key = "main";
@@ -42,6 +49,8 @@ public class Main
 
     /**
      * main funcion which will start Icarus
+     * @param args not used yet
+     * @throws Exception --fixme--
      */
     public static void main(String[] args) throws Exception
     {

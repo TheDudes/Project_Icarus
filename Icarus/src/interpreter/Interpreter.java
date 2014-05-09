@@ -58,6 +58,7 @@ public class Interpreter
      * @param code structure text code after parser
      * @param start INDEX where interpreter will start
      * @param end INDEX where interpreter will stop
+     * @throws Exception --fixme--
      */
     public void interpret (String code, int start, int end) throws Exception
     {
