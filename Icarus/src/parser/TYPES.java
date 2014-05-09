@@ -18,22 +18,37 @@ package parser;
 
 
 import Ninti.*;
-
+import vault.*;
 /**
  * This class only creates objects of different types to return them.
  *
  * @author Simon Mages <mages.simon@googlemail.com>
  * @version 1.0
  */
-public class TYPES {
-	/**
-	 * getType only need a String representing a type, like DINT
-	 * it then creates a new Object of this type and returns it.
-	 * @param type typeString like DINT, SINT, TIME ...
-	 * @return Object of the right type
-	 * @throws Ninti.UnsignedException
-	 */
-	public static Object
+public class
+TYPES
+{
+	
+	/* logger */
+	private final LogWriter  log;
+	private final String     mainkey  = "parser";
+	private final String     subkey   = "TYPES";
+	private final String     key      = mainkey+"-"+subkey;
+	
+	public
+	TYPES(LogWriter log)
+	{
+		this.log = log;
+	}
+
+/**
+ * getType only need a String representing a type, like DINT
+ * it then creates a new Object of this type and returns it.
+ * @param type typeString like DINT, SINT, TIME ...
+ * @return Object of the right type
+ * @throws Ninti.UnsignedException
+ */
+	public Object
 	get_type(String type) throws UnsignedException
 	{
 		switch(type) {
@@ -54,6 +69,7 @@ public class TYPES {
 		case "UDINT":
 			return new UDINT("0");
 		case "ULINT":
+			log.log(key, 4, "New ULINT with 0");
 			return new ULINT("0");
 		case "REAL":
 			return (float) 0.0;
@@ -90,7 +106,7 @@ public class TYPES {
 	 * @return Object of the right type with the new value
 	 * @throws Ninti.UnsignedException
 	 */
-	public static Object
+	public Object
 	get_type(String type, String value) throws UnsignedException
 	{
 		switch(type) {
@@ -111,6 +127,7 @@ public class TYPES {
 		case "UDINT":
 			return new UDINT(value);
 		case "ULINT":
+			log.log(key, 4, "New ULINT with "+value);
 			return new ULINT(value);
 		case "REAL":
 			return new Float(value);
