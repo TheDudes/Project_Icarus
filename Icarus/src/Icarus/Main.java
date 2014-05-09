@@ -64,7 +64,7 @@ public class Main
         interpreter = new Interpreter(container, logger, config);
         System.out.println((System.currentTimeMillis() - blub) + "ms. interpr");
 
-        for(int i = 0; i < 40; i++ )
+        for(int i = 0; i < 25; i++ )
         {
             blub = System.currentTimeMillis();
 
