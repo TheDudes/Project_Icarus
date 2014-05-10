@@ -542,6 +542,7 @@ public class Symbols {
 				log.log(key, 4, "variable_and_device_with_pin: "+Arrays.toString(item));
 				if(item[2].equals(device))
 				{
+					log.log(key, 4, "device choosen: " + item[2]);
 					if (!(device_deviceid.get(device)==null))
 					{
 						pin_to_var = deviceid_pinid_valueid.get(device_id);
