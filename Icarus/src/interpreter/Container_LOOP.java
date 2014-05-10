@@ -44,7 +44,7 @@ public class Container_LOOP
     /** only used by FOR loop, holds the by value */
     public int by;
     /** only used by FOR loop, if true a variable name was given */
-    public Boolean name_given;
+    public boolean name_given;
     /** only used by FOR loop, if flag true this holds the name */
     public String name;
 }
