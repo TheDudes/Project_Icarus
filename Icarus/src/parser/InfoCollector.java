@@ -17,9 +17,11 @@
 package parser;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.io.*;
 
 import linc.Config_Reader;
+
 import vault.*;
 
 /**
@@ -421,5 +423,20 @@ public class InfoCollector {
 		log.log(key, 4, "getAllTheCode called.");
 		return allthecode;
 	}
-	
+
+	/**
+         * get_com_channel_queue returns the linkedblockingqueue for the IOInterface
+	 * communikation.
+	 * <p>
+	 * the LinkedBlockingQueue with the type IO_Package
+	 * @return LinkedBlockingQueue with IO_Package Type
+	 * @see LinkedBlockingQueue
+	 * @see IO_Package
+         */
+	public LinkedBlockingQueue<IO_Package>
+	get_com_channel_queue()
+	{
+		return symb.get_com_channel_queue();
+	}
+
 }

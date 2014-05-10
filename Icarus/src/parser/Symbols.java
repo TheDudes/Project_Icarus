@@ -105,22 +105,6 @@ public class Symbols {
         
 		generate_symbols_list();
 	}
-
-        /**
-         * get_com_channel_queue returns the linkedblockingqueue for the IOInterface
-	 * communikation.
-	 * <p>
-	 * the LinkedBlockingQueue with the type IO_Package
-	 * @return LinkedBlockingQueue with IO_Package Type
-	 * @see LinkedBlockingQueue
-	 * @see IO_Package
-         */
-	public LinkedBlockingQueue<IO_Package>
-	get_com_channel_queue()
-	{
-		return com_channel_queue;
-	}
-
 	
 	/**
 	 * findContextVars adds, depending on the context type, all the vars to the
@@ -502,4 +486,21 @@ public class Symbols {
 		}
 		generate_symbols_list();
 	}
+	
+        /**
+         * get_com_channel_queue returns the linkedblockingqueue for the IOInterface
+	 * communikation.
+	 * <p>
+	 * the LinkedBlockingQueue with the type IO_Package
+	 * @return LinkedBlockingQueue with IO_Package Type
+	 * @see LinkedBlockingQueue
+	 * @see IO_Package
+         */
+	public LinkedBlockingQueue<IO_Package>
+	get_com_channel_queue()
+	{
+		return com_channel_queue;
+	}
+
+	
 }
