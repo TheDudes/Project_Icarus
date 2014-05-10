@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * file: Icarus/src/interpreter/Interpreter.java
- * vim: foldmethod=syntax:foldcolumn=5:
+ * vim: foldmethod=syntax:foldcolumn=6:
  */
 
 package interpreter;
@@ -73,14 +73,71 @@ public class Interpreter
                 INDEX = handler.found_IF(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'C') &&
-                      (code.charAt(INDEX + 1) == 'A') &&
-                      (code.charAt(INDEX + 2) == 'S') &&
-                      (code.charAt(INDEX + 3) == 'E') )
+            else if ( (code.charAt(INDEX)     == 'P') &&
+                      (code.charAt(INDEX + 1) == 'R') &&
+                      (code.charAt(INDEX + 2) == 'I') &&
+                      (code.charAt(INDEX + 3) == 'N') &&
+                      (code.charAt(INDEX + 4) == 'T') )
             {
-                log.log(log_key, 3, "found Keyword CASE,         INDEX = " + INDEX);
-                INDEX = handler.found_CASE(INDEX, code);
+                log.log(log_key, 3, "found Keyword PRINT,        INDEX = " + INDEX);
+                INDEX = handler.found_PRINT(INDEX, code);
                 continue;
+            }
+            else if ( (code.charAt(INDEX)     == 'E') &&
+                      (code.charAt(INDEX + 1) == 'N') &&
+                      (code.charAt(INDEX + 2) == 'D') &&
+                      (code.charAt(INDEX + 3) == '_') )
+            {
+                if (      (code.charAt(INDEX + 4) == 'I') &&
+                          (code.charAt(INDEX + 5) == 'F') )
+                {
+                    log.log(log_key, 3, "found Keyword END_IF,       INDEX = " + INDEX);
+                    INDEX = handler.found_END_IF(INDEX, code);
+                    continue;
+                }
+                else if ( (code.charAt(INDEX + 4) == 'W') &&
+                          (code.charAt(INDEX + 5) == 'H') &&
+                          (code.charAt(INDEX + 6) == 'I') &&
+                          (code.charAt(INDEX + 7) == 'L') &&
+                          (code.charAt(INDEX + 8) == 'E') )
+                {
+                    log.log(log_key, 3, "found Keyword END_WHILE     INDEX = " + INDEX);
+                    INDEX = handler.found_END_WHILE(INDEX, code);
+                    continue;
+                }
+                else if ( (code.charAt(INDEX + 4) == 'F') &&
+                          (code.charAt(INDEX + 5) == 'O') &&
+                          (code.charAt(INDEX + 6) == 'R') )
+                {
+                    log.log(log_key, 3, "found Keyword END_FOR,      INDEX = " + INDEX);
+                    INDEX = handler.found_END_FOR(INDEX, code);
+                    continue;
+                }
+                else if ( (code.charAt(INDEX + 4) == 'F') &&
+                          (code.charAt(INDEX + 5) == 'U') &&
+                          (code.charAt(INDEX + 6) == 'N') &&
+                          (code.charAt(INDEX + 7) == 'C') &&
+                          (code.charAt(INDEX + 8) == 'T') &&
+                          (code.charAt(INDEX + 9) == 'I') &&
+                          (code.charAt(INDEX + 10)== 'O') &&
+                          (code.charAt(INDEX + 11)== 'N') )
+                {
+                    log.log(log_key, 3, "found Keyword END_FUNCTION, INDEX = " + INDEX);
+                    handler.found_END_FUNCTION(INDEX, code);
+                    break;
+                }
+                else if ( (code.charAt(INDEX + 4) == 'P') &&
+                          (code.charAt(INDEX + 5) == 'R') &&
+                          (code.charAt(INDEX + 6) == 'O') &&
+                          (code.charAt(INDEX + 7) == 'G') &&
+                          (code.charAt(INDEX + 8) == 'R') &&
+                          (code.charAt(INDEX + 9) == 'A') &&
+                          (code.charAt(INDEX + 10)== 'M') )
+                {
+                    log.log(log_key, 3, "found Keyword END_PROGRAM,  INDEX = " + INDEX);
+                    INDEX = handler.found_END_PROGRAM(INDEX, code);
+                    break;
+                }
             }
             else if ( (code.charAt(INDEX)     == 'E') &&
                       (code.charAt(INDEX + 1) == 'L') &&
@@ -89,6 +146,25 @@ public class Interpreter
             {
                 log.log(log_key, 3, "found Keyword ELSE,         INDEX = " + INDEX);
                 INDEX = handler.found_ELSE(INDEX, code);
+                continue;
+            }
+            else if ( (code.charAt(INDEX)     == 'E') &&
+                      (code.charAt(INDEX + 1) == 'L') &&
+                      (code.charAt(INDEX + 2) == 'S') &&
+                      (code.charAt(INDEX + 3) == 'I') &&
+                      (code.charAt(INDEX + 4) == 'F') )
+            {
+                log.log(log_key, 3, "found Keyword ELSIF,        INDEX = " + INDEX);
+                INDEX = handler.found_ELSIF(INDEX, code);
+                continue;
+            }
+            else if ( (code.charAt(INDEX)     == 'C') &&
+                      (code.charAt(INDEX + 1) == 'A') &&
+                      (code.charAt(INDEX + 2) == 'S') &&
+                      (code.charAt(INDEX + 3) == 'E') )
+            {
+                log.log(log_key, 3, "found Keyword CASE,         INDEX = " + INDEX);
+                INDEX = handler.found_CASE(INDEX, code);
                 continue;
             }
             else if ( (code.charAt(INDEX)     == 'P') &&
@@ -103,25 +179,12 @@ public class Interpreter
                 INDEX = handler.found_PROGRAM(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'E') &&
-                      (code.charAt(INDEX + 1) == 'N') &&
-                      (code.charAt(INDEX + 2) == 'D') &&
-                      (code.charAt(INDEX + 3) == '_') &&
-                      (code.charAt(INDEX + 4) == 'I') &&
-                      (code.charAt(INDEX + 5) == 'F') )
+            else if ( (code.charAt(INDEX)     == 'V') &&
+                      (code.charAt(INDEX + 1) == 'A') &&
+                      (code.charAt(INDEX + 2) == 'R') )
             {
-                log.log(log_key, 3, "found Keyword END_IF,       INDEX = " + INDEX);
-                INDEX = handler.found_END_IF(INDEX, code);
-                continue;
-            }
-            else if ( (code.charAt(INDEX)     == 'E') &&
-                      (code.charAt(INDEX + 1) == 'L') &&
-                      (code.charAt(INDEX + 2) == 'S') &&
-                      (code.charAt(INDEX + 3) == 'I') &&
-                      (code.charAt(INDEX + 4) == 'F') )
-            {
-                log.log(log_key, 3, "found Keyword ELSIF,        INDEX = " + INDEX);
-                INDEX = handler.found_ELSIF(INDEX, code);
+                log.log(log_key, 3, "found Keyword VAR,          INDEX = " + INDEX);
+                INDEX = handler.found_VAR(INDEX, code);
                 continue;
             }
             else if ( (code.charAt(INDEX)     == 'W') &&
@@ -134,38 +197,12 @@ public class Interpreter
                 INDEX = handler.found_WHILE(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'E') &&
-                      (code.charAt(INDEX + 1) == 'N') &&
-                      (code.charAt(INDEX + 2) == 'D') &&
-                      (code.charAt(INDEX + 3) == '_') &&
-                      (code.charAt(INDEX + 4) == 'W') &&
-                      (code.charAt(INDEX + 5) == 'H') &&
-                      (code.charAt(INDEX + 6) == 'I') &&
-                      (code.charAt(INDEX + 7) == 'L') &&
-                      (code.charAt(INDEX + 8) == 'E') )
-            {
-                log.log(log_key, 3, "found Keyword END_WHILE     INDEX = " + INDEX);
-                INDEX = handler.found_END_WHILE(INDEX, code);
-                continue;
-            }
             else if ( (code.charAt(INDEX)     == 'F') &&
                       (code.charAt(INDEX + 1) == 'O') &&
                       (code.charAt(INDEX + 2) == 'R') )
             {
                 log.log(log_key, 3, "found Keyword FOR,          INDEX = " + INDEX);
                 INDEX = handler.found_FOR(INDEX, code);
-                continue;
-            }
-            else if ( (code.charAt(INDEX)     == 'E') &&
-                      (code.charAt(INDEX + 1) == 'N') &&
-                      (code.charAt(INDEX + 2) == 'D') &&
-                      (code.charAt(INDEX + 3) == '_') &&
-                      (code.charAt(INDEX + 4) == 'F') &&
-                      (code.charAt(INDEX + 5) == 'O') &&
-                      (code.charAt(INDEX + 6) == 'R') )
-            {
-                log.log(log_key, 3, "found Keyword END_FOR,      INDEX = " + INDEX);
-                INDEX = handler.found_END_FOR(INDEX, code);
                 continue;
             }
             else if ( (code.charAt(INDEX)     == 'R') &&
@@ -199,24 +236,6 @@ public class Interpreter
                 INDEX = handler.found_BREAK(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'P') &&
-                      (code.charAt(INDEX + 1) == 'R') &&
-                      (code.charAt(INDEX + 2) == 'I') &&
-                      (code.charAt(INDEX + 3) == 'N') &&
-                      (code.charAt(INDEX + 4) == 'T') )
-            {
-                log.log(log_key, 3, "found Keyword PRINT,        INDEX = " + INDEX);
-                INDEX = handler.found_PRINT(INDEX, code);
-                continue;
-            }
-            else if ( (code.charAt(INDEX)     == 'V') &&
-                      (code.charAt(INDEX + 1) == 'A') &&
-                      (code.charAt(INDEX + 2) == 'R') )
-            {
-                log.log(log_key, 3, "found Keyword VAR,          INDEX = " + INDEX);
-                INDEX = handler.found_VAR(INDEX, code);
-                continue;
-            }
             else if ( (code.charAt(INDEX)     == 'F') &&
                       (code.charAt(INDEX + 1) == 'U') &&
                       (code.charAt(INDEX + 2) == 'N') &&
@@ -228,39 +247,6 @@ public class Interpreter
             {
                 log.log(log_key, 3, "found Keyword FUNCTION,     INDEX = " + INDEX);
                 handler.found_FUNCTION(INDEX, code);
-                break;
-            }
-            else if ( (code.charAt(INDEX)     == 'E') &&
-                      (code.charAt(INDEX + 1) == 'N') &&
-                      (code.charAt(INDEX + 2) == 'D') &&
-                      (code.charAt(INDEX + 3) == '_') &&
-                      (code.charAt(INDEX + 4) == 'F') &&
-                      (code.charAt(INDEX + 5) == 'U') &&
-                      (code.charAt(INDEX + 6) == 'N') &&
-                      (code.charAt(INDEX + 7) == 'C') &&
-                      (code.charAt(INDEX + 8) == 'T') &&
-                      (code.charAt(INDEX + 9) == 'I') &&
-                      (code.charAt(INDEX + 10)== 'O') &&
-                      (code.charAt(INDEX + 11)== 'N') )
-            {
-                log.log(log_key, 3, "found Keyword END_FUNCTION, INDEX = " + INDEX);
-                handler.found_END_FUNCTION(INDEX, code);
-                break;
-            }
-            else if ( (code.charAt(INDEX)     == 'E') &&
-                      (code.charAt(INDEX + 1) == 'N') &&
-                      (code.charAt(INDEX + 2) == 'D') &&
-                      (code.charAt(INDEX + 3) == '_') &&
-                      (code.charAt(INDEX + 4) == 'P') &&
-                      (code.charAt(INDEX + 5) == 'R') &&
-                      (code.charAt(INDEX + 6) == 'O') &&
-                      (code.charAt(INDEX + 7) == 'G') &&
-                      (code.charAt(INDEX + 8) == 'R') &&
-                      (code.charAt(INDEX + 9) == 'A') &&
-                      (code.charAt(INDEX + 10)== 'M') )
-            {
-                log.log(log_key, 3, "found Keyword END_PROGRAM,  INDEX = " + INDEX);
-                INDEX = handler.found_END_PROGRAM(INDEX, code);
                 break;
             }
             else /* if no match is found */
