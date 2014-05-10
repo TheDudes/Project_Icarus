@@ -86,6 +86,7 @@ public class Match {
 	 *
 	 * @param anal the analyser results
 	 * @param builder the while program code
+	 * @param log LogWriter from above
 	 */
 	public
 	Match(Analyser anal, StringBuilder builder, LogWriter log)
@@ -95,15 +96,15 @@ public class Match {
 
 		log.log(key, 3, "Match ...");
 
-		ifmatching             = new TreeMap<>(); /* map with if - end_if pairs */
-		casematching           = new TreeMap<>(); /* map with case - end_case pairs */
-		varmatching            = new TreeMap<>(); /* map with var* - end_var pairs */
-		programmatching        = new TreeMap<>(); /* map with programm - end_programm pairs */
-		functionmatching       = new TreeMap<>(); /* map with function - end_function pairs */
-		functionblockmatching  = new TreeMap<>(); /* map with funcion_block - end_function_block pairs */
-		formatching            = new TreeMap<>(); /* map with for - end_for pairs */
-		whilematching          = new TreeMap<>(); /* map with while - end_while pairs */
-		repeatmatching         = new TreeMap<>(); /* map with repeat - end_repeat pairs */
+		ifmatching             = new TreeMap<>();  /* map with if - end_if pairs */
+		casematching           = new TreeMap<>();  /* map with case - end_case pairs */
+		varmatching            = new TreeMap<>();  /* map with var* - end_var pairs */
+		programmatching        = new TreeMap<>();  /* map with programm - end_programm pairs */
+		functionmatching       = new TreeMap<>();  /* map with function - end_function pairs */
+		functionblockmatching  = new TreeMap<>();  /* map with funcion_block - end_function_block pairs */
+		formatching            = new TreeMap<>();  /* map with for - end_for pairs */
+		whilematching          = new TreeMap<>();  /* map with while - end_while pairs */
+		repeatmatching         = new TreeMap<>();  /* map with repeat - end_repeat pairs */
 
 		ifendif                        = new TreeMap<>();  /* map with if index and if keyword */
 		caseendcase                    = new TreeMap<>();  /* map with case index and case keyword */

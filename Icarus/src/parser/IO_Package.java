@@ -1,6 +1,5 @@
 
 
-
 /*
  * Copyright (c) 2014, HAW-Landshut
  *
@@ -29,12 +28,21 @@ package parser;
 public class
 IO_Package
 {
-	/**
-	 * The variables this class holds
-	 */
-	public  int      device_id;
-	public  int      pin_id;
+	/** device id or name for the configured device */
+	public  String   device_id;
+	/** pin id per device */
+	public  byte     pin_id;
+	/** value of the pin */
 	public  boolean  value;
+	/**
+	 * abilities can only have the values 0, 1, 2, 3
+	 * <p>
+	 * 0 = Undefined;
+	 * 1 = read/input;
+	 * 2 = write/output;
+	 * 3 = read-write/input-output;
+	 */
+	public  byte     abilities;
 
 	/**
 	 * io_package need the device_id, the pin_id and the bool value for the PIN
@@ -42,13 +50,15 @@ IO_Package
 	 * @param device_id  the device_id as int
 	 * @param pin_id     the pin_id as int
 	 * @param value      the value as boolean
+	 * @param abilities  the abilities parameter
 	 */
 	public
-	IO_Package (int device_id, int pin_id, boolean value)
+	IO_Package (String device_id, byte pin_id, boolean value, byte abilities)
 	{
 		this.device_id  = device_id;
 		this.pin_id     = pin_id;
 		this.value      = value;
+		this.abilities  = abilities;
 	}
 }
 
