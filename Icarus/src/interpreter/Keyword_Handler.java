@@ -454,8 +454,8 @@ public class Keyword_Handler
     {
         log.log(log_key, 4, "call   found_CASE, INDEX = " + INDEX);
 
-        String condition = code.substring(INDEX + 4, offset.get_OF(INDEX, code));
-        int value = Integer.parseInt(offset.convert_condition(container.replace_vars(condition, context_stack.peek())));
+        String    condition = code.substring(INDEX + 4, offset.get_OF(INDEX, code));
+        int       value     = Integer.parseInt(offset.convert_condition(container.replace_vars(condition, context_stack.peek())));
         Integer[] recursive_positions = new Integer[2];
         recursive_positions = container.get_case_coordinates(INDEX, value);
         interpreter.interpret(code, recursive_positions[0], recursive_positions[1]);

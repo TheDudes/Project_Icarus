@@ -216,8 +216,8 @@ public class Interpreter
                       (code.charAt(INDEX + 3) == 'E') )
             {
                 log.log(log_key, 3, "found Keyword CASE,         INDEX = " + INDEX);
-                handler.found_CASE(INDEX, code);
-                break;
+                INDEX = handler.found_CASE(INDEX, code);
+                continue;
             }
             else if ( (code.charAt(INDEX)     == 'F') &&
                       (code.charAt(INDEX + 1) == 'U') &&
