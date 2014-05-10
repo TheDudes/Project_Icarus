@@ -455,6 +455,7 @@ public class Config_Reader {
                     while(sign != '\n'){
                         sign = (char)reader.read();
                     }
+                    continue;
                 }
                 //throws out everything after //, if there is only one / it appends it plus the next sign
                 else if(sign == '/'){
@@ -467,14 +468,17 @@ public class Config_Reader {
                     else{
                         toReturn += "/";
                     }
+                    continue;
                 }
                 //remove spaces (they are not attached to the string, that's all)
                 else if(sign == ' '){
                     sign = (char)reader.read();
+                    continue;
                 }
                 //reads over tabs aswell, they are not needed
                 else if(sign == '\t'){
                     sign = (char)reader.read();
+                    continue;
                 }
                 //if there are several newLines after each other only one is attached
                 else if(sign == '\n'){
@@ -526,6 +530,7 @@ public class Config_Reader {
                         }
                         sign = (char)reader.read();
                     }
+                    continue;
                 }
                 //throws out everything after //, if there is only one / it appends it plus the next sign
                 else if(sign == '/'){
@@ -544,14 +549,17 @@ public class Config_Reader {
                     else{
                         toReturn += "/";
                     }
+                    continue;
                 }
                 //remove spaces (they are not attached to the string, that's all)
                 else if(sign == ' '){
                     sign = (char)reader.read();
+                    continue;
                 }
                 //reads over tabs aswell, they are not needed
                 else if(sign == '\t'){
                     sign = (char)reader.read();
+                    continue;
                 }
                 //if there are several newLines after each other only one is attached
                 else if(sign == '\r'){
