@@ -40,6 +40,8 @@ public abstract class SubCheckConvert {
      * @return the state of the Value(lower than max, or higher)
      * @throws UnsignedException
      */
+    /* --fixme-- */
+    /* Javadoc: Missing tag for parameter MAX_VALUE */
     public boolean check(StringBuilder aValue, String MAX_VALUE) throws UnsignedException {
 
         if (aValue.charAt(0) == MIN_VALUE) {
@@ -75,6 +77,8 @@ public abstract class SubCheckConvert {
      * @param aValue
      * @return the one time subtracted aValue
      */
+    /* --fixme-- */
+    /* Javadoc: Missing tag for parameter MaxForSub */
     public StringBuilder sub(StringBuilder aValue, String MaxForSub) {
 
         while (aValue.length() > MaxForSub.length()) {

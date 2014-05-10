@@ -19,6 +19,8 @@
  */
 package Ninti;
 
+/* --fixme-- */
+/* Javadoc: Missing comment for public declaration */
 public class UINT extends SubCheckConvert {
 
     private final String MAX_VALUE = "65535";
