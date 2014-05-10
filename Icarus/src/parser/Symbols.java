@@ -539,7 +539,7 @@ public class Symbols {
 			log.log(key, 4, "device: "+device);
 			for (String[] item : variable_and_device_with_pin)
 			{
-				log.log(key, 4, "variable_and_device_with_pin: "+item);
+				log.log(key, 4, "variable_and_device_with_pin: "+Arrays.toString(item));
 				if(item[2].equals(device))
 				{
 					if (!(device_deviceid.get(device)==null))
