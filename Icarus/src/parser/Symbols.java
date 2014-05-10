@@ -16,7 +16,12 @@
 package parser;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.*;
+
+import linc.Config_Reader;
+
 import vault.*;
 
 /**
@@ -28,30 +33,95 @@ import vault.*;
  */
 public class Symbols {
 
-	private final StringBuilder         builder;         /* the whole programm code */
-	private final Match                 match;           /* the matcher, this class holds some importand Informations */
-	private final ArrayList<Integer[]>  deleteme;        /* the list of all marked var blocks as arrays with first index and very last index */
-	private       ArrayList<String>     symbolnames;     /* list with all the symbolnames */
-	private final ArrayList<Integer>    variableIndexes; /* olds getVars() from match */
-	private       int                   id = 0;          /* the global variable id */
+	private final  StringBuilder         builder;         /* the whole programm code */
+	private final  Match                 match;           /* the matcher, this class holds some importand Informations */
+	private final  Config_Reader         confreader;
+	private final  ArrayList<Integer[]>  deleteme;        /* the list of all marked var blocks as arrays with first index and very last index */
+	private        ArrayList<String>     symbolnames;     /* list with all the symbolnames */
+	private final  ArrayList<Integer>    variableIndexes; /* olds getVars() from match */
+	private        int                   var_id;      /* the global variable var_id */
 
 	//***
 	// Fucked up containers are my bussines
 	//***
-	private final HashMap<String, HashMap<String, Integer>>  contextstore;     /* String for context, String for variable name, Integer for variable id */
-	private final HashMap<Integer, String>                   typebyid;         /* Integer id, String variable type */
-	private final HashMap<Integer, Object>                   valuebyid;        /* Integer id, Object variable value */
-
+	private final  HashMap<String, HashMap<String, Integer>>  contextstore;     /* String for context, String for variable name, Integer for variable var_id */
+	private final  HashMap<Integer, String>                   typebyid;         /* Integer var_id, String variable type */
+	private final  HashMap<Integer, Object>                   valuebyid;        /* Integer var_id, Object variable value */
+	
+	
 	/* Device Handling things here */
-        //private final HashMap<Integer, Integer[]>                deviceidwithpins; /* Integer device id and the pins as Integer[] pin is null if not defined. */
-
-    
+        private final  HashMap<String, Integer>                     device_deviceid; /* Integer device var_id and the pins as Integer[] pin is null if not defined. */
+	private final  HashMap<Integer, HashMap<Integer, Integer>>  deviceid_pinid_valueid;
+	private final  HashMap<Integer, Integer>                    valueid_abilities; /* abilities: 0=undefined, 1=read, 2=write, 3=read/write  */
+	private final  LinkedBlockingQueue<IO_Package>              com_channel_queue;
+	private        int  device_id;
+	private        int  pin_id;
+	
+	
 	/* logger */
-	private final LogWriter  log;
-	private final String     mainkey  = "parser";
-	private final String     subkey   = "Symbols";
-	private final String     key      = mainkey + "-" + subkey;
-    
+	private final  LogWriter  log;
+	private final  String     mainkey  = "parser";
+	private final  String     subkey   = "Symbols";
+	private final  String     key      = mainkey + "-" + subkey;
+
+
+	/**
+	 * Symbols needs a StringBuilder and a Match to work and to do all his
+	 * Operations
+	 *
+	 * @param builder the whole program code
+	 * @param match the match class with preprosesd informations
+	 * @param log logwriter from abouve
+	 * @throws java.lang.Exception
+	 */
+	public
+	Symbols(StringBuilder builder, Match match, LogWriter log, Config_Reader confreader) throws Exception
+	{
+		this.log      = log;
+		this.builder  = builder;
+		this.match    = match;
+		this.confreader = confreader;
+
+		var_id     = 0;
+		device_id  = 0;
+		pin_id     = 0;
+
+		variableIndexes = match.get_vars(); /* pulls out the vars from match */
+        
+		deleteme                = new ArrayList<>();
+		symbolnames             = new ArrayList<>();
+		contextstore            = new HashMap<>();
+		typebyid                = new HashMap<>();
+		valuebyid               = new HashMap<>();
+		device_deviceid         = new HashMap<>();
+		deviceid_pinid_valueid  = new HashMap<>();
+		valueid_abilities       = new HashMap<>();
+		com_channel_queue       = new LinkedBlockingQueue<>();
+
+		find_context_vars("PROGRAM");
+		find_context_vars("FUNCTION");
+		find_context_vars("FUNCTION_BLOCK");
+		//findContextVars("GLOBAL");
+        
+		generate_symbols_list();
+	}
+
+        /**
+         * get_com_channel_queue returns the linkedblockingqueue for the IOInterface
+	 * communikation.
+	 * <p>
+	 * the LinkedBlockingQueue with the type IO_Package
+	 * @return LinkedBlockingQueue with IO_Package Type
+	 * @see LinkedBlockingQueue
+	 * @see IO_Package
+         */
+	public LinkedBlockingQueue<IO_Package>
+	get_com_channel_queue()
+	{
+		return com_channel_queue;
+	}
+
+	
 	/**
 	 * findContextVars adds, depending on the context type, all the vars to the
 	 * correct container
@@ -214,11 +284,11 @@ public class Symbols {
 						percontext = new HashMap<>();
 					}
 					for (String name : names) {
-						percontext.put(name, id);
-						typebyid.put(id, type);
-						valuebyid.put(id, TYPES.get_type(type));
+						percontext.put(name, var_id);
+						typebyid.put(var_id, type);
+						valuebyid.put(var_id, TYPES.get_type(type));
 						//contextstore.put(context, percontext); /* i leave this for a moment, till i remember what i did there ... */
-						id++;
+						var_id++;
 					}
 					contextstore.put(context, percontext);
 				} else if (Pattern.matches("@", block.toString())) {
@@ -261,10 +331,10 @@ public class Symbols {
 						percontext = new HashMap<>();
 					}
 					for (String name : names) {
-						percontext.put(name, id);
-						typebyid.put(id, type);
-						valuebyid.put(id, TYPES.get_type(type, value));
-						id++;
+						percontext.put(name, var_id);
+						typebyid.put(var_id, type);
+						valuebyid.put(var_id, TYPES.get_type(type, value));
+						var_id++;
 					}
 					contextstore.put(context, percontext);
 				}
@@ -431,38 +501,5 @@ public class Symbols {
 			fill_up_the_containers(context, new StringBuilder(input + "@" ));
 		}
 		generate_symbols_list();
-	}
-
-	/**
-	 * Symbols needs a StringBuilder and a Match to work and to do all his
-	 * Operations
-	 *
-	 * @param builder the whole program code
-	 * @param match the match class with preprosesd informations
-	 * @param log logwriter from abouve
-	 * @throws java.lang.Exception
-	 */
-	public
-	Symbols(StringBuilder builder, Match match, LogWriter log) throws Exception
-	{
-		this.log      = log;
-		this.builder  = builder;
-		this.match    = match;
-
-		variableIndexes = match.get_vars(); /* pulls out the vars from match */
-        
-		deleteme      = new ArrayList<>();
-		symbolnames   = new ArrayList<>();
-		contextstore  = new HashMap<>();
-		typebyid      = new HashMap<>();
-		valuebyid     = new HashMap<>();
-
-		find_context_vars("PROGRAM");
-		find_context_vars("FUNCTION");
-		find_context_vars("FUNCTION_BLOCK");
-		//findContextVars("GLOBAL");
-        
-		generate_symbols_list();
-		//deleteVarBlocks(); /* legacy code, i should remove this completele */
 	}
 }

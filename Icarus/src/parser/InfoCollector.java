@@ -75,7 +75,7 @@ public class InfoCollector {
 		log.log(key, 2, "Matched.");
         
 		log.log(key, 2, "find all symbols in the code ...");
-		symb = new Symbols(allthecode, match, log);
+		symb = new Symbols(allthecode, match, log, configreader);
 		log.log(key, 2, "Symbols stored.");
         
 		log.log(key, 1, "file parsed.");

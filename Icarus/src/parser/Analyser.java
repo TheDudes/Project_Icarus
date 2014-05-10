@@ -93,25 +93,25 @@ public class Analyser {
 				for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, pointer + start.length())) {
 					if (flag) {
 						flag = false;
-						block.add(pointer);
+						block.add(new Integer(pointer));
 						log.log(key, 4, start+" index: "+(pointer));
 					} else if (builder.charAt(pointer - 1) == '_') {
-						block.add(pointer - 4);
+						block.add(new Integer(pointer - 4));
 						log.log(key, 4, stop+" index: "+(pointer-4));
 					} else {
-						block.add(pointer);
+						block.add(new Integer(pointer));
 						log.log(key, 4, start+" index: "+pointer);
 					}
 				}
 			} else if (i == 11) { 
 				for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, pointer + start.length())) {
 					if (builder.charAt(pointer - 1) == '_') {
-						block.add(pointer - 4);
+						block.add(new Integer(pointer - 4));
 						log.log(key, 4, stop+ " index "+(pointer-4));
 					} else if (builder.charAt(pointer - 1) == 'E') {
                         
 					} else {
-						block.add(pointer);
+						block.add(new Integer(pointer));
 						log.log(key, 4, start+ " index " + pointer);
 					}
 				}
@@ -119,12 +119,12 @@ public class Analyser {
 				log.log(key, 4, "count: "+i);
 				for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, pointer + start.length())) {
 					if (builder.charAt(pointer - 1) == '_') {
-						block.add(pointer - 4);
+						block.add(new Integer(pointer - 4));
 						log.log(key, 4, stop+" index: "+(pointer-4));
 					} else if (builder.charAt(pointer + 1) == '_') {
 						
 					} else {
-						block.add(pointer);
+						block.add(new Integer(pointer));
 						log.log(key, 4, start+" index: "+pointer);
 					}
 				}
@@ -132,10 +132,10 @@ public class Analyser {
 				log.log(key, 4, "count: "+i);
 				for (int pointer = builder.indexOf(start); pointer != -1; pointer = builder.indexOf(start, pointer + start.length())) {
 					if (builder.charAt(pointer - 1) == '_') {
-						block.add(pointer - 4);
+						block.add(new Integer(pointer - 4));
 						log.log(key, 4, stop+" index: "+(pointer-4));
 					} else {
-						block.add(pointer);
+						block.add(new Integer(pointer));
 						log.log(key, 4, start+" index: "+pointer);
 					}
 				}

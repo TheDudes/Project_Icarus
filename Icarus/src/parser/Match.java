@@ -30,47 +30,49 @@ import vault.LogWriter;
  */
 
 public class Match {
-	private StringBuilder builder;
+	private final  StringBuilder  builder;
 	
-	List<ArrayList<Integer>> list; /* list with all lists from Analyser */
+	private final  List<ArrayList<Integer>> list; /* list with all lists from Analyser */
 	
-	TreeMap<Integer,Integer>  ifmatching            = new TreeMap<>(); /* map with if - end_if pairs */
-	TreeMap<Integer,Integer>  casematching          = new TreeMap<>(); /* map with case - end_case pairs */
-	TreeMap<Integer,Integer>  varmatching           = new TreeMap<>(); /* map with var* - end_var pairs */
-	TreeMap<Integer,Integer>  programmatching       = new TreeMap<>(); /* map with programm - end_programm pairs */
-	TreeMap<Integer,Integer>  functionmatching      = new TreeMap<>(); /* map with function - end_function pairs */
-	TreeMap<Integer,Integer>  functionblockmatching = new TreeMap<>(); /* map with funcion_block - end_function_block pairs */
-	TreeMap<Integer,Integer>  formatching           = new TreeMap<>(); /* map with for - end_for pairs */
-	TreeMap<Integer,Integer>  whilematching         = new TreeMap<>(); /* map with while - end_while pairs */
-	TreeMap<Integer,Integer>  repeatmatching        = new TreeMap<>(); /* map with repeat - end_repeat pairs */
+	private final  TreeMap<Integer,Integer>  ifmatching;             /* map with if - end_if pairs */
+	private final  TreeMap<Integer,Integer>  casematching;           /* map with case - end_case pairs */
+	private final  TreeMap<Integer,Integer>  varmatching;            /* map with var* - end_var pairs */
+	private final  TreeMap<Integer,Integer>  programmatching;        /* map with programm - end_programm pairs */
+	private final  TreeMap<Integer,Integer>  functionmatching;       /* map with function - end_function pairs */
+	private final  TreeMap<Integer,Integer>  functionblockmatching;  /* map with funcion_block - end_function_block pairs */
+	private final  TreeMap<Integer,Integer>  formatching;            /* map with for - end_for pairs */
+	private final  TreeMap<Integer,Integer>  whilematching;          /* map with while - end_while pairs */
+	private final  TreeMap<Integer,Integer>  repeatmatching;         /* map with repeat - end_repeat pairs */
 
-	Stack<Integer>  stack; /* a temp stack to find the pairs */
+	private  Stack<Integer>  stack; /* a temp stack to find the pairs */
 
-	ArrayList<Integer>  ifs;            /* list with all the ifs */
-	ArrayList<Integer>  cases;          /* list with all the cases */
-	ArrayList<Integer>  vars;           /* list with all the vars */
-	ArrayList<Integer>  programs;       /* list with all the programs */
-	ArrayList<Integer>  functions;      /* list with all the functions */
-	ArrayList<Integer>  functionblocks; /* list with all the function_blocks */
-	ArrayList<Integer>  fors;           /* list with all the fors */
-	ArrayList<Integer>  whiles;         /* list with all the whiles */
-	ArrayList<Integer>  repeats;        /* list with all the repeats */
+	private  ArrayList<Integer>  ifs;            /* list with all the ifs */
+	private  ArrayList<Integer>  cases;          /* list with all the cases */
+	private  ArrayList<Integer>  vars;           /* list with all the vars */
+	private  ArrayList<Integer>  programs;       /* list with all the programs */
+	private  ArrayList<Integer>  functions;      /* list with all the functions */
+	private  ArrayList<Integer>  functionblocks; /* list with all the function_blocks */
+	private  ArrayList<Integer>  fors;           /* list with all the fors */
+	private  ArrayList<Integer>  whiles;         /* list with all the whiles */
+	private  ArrayList<Integer>  repeats;        /* list with all the repeats */
 
-	TreeMap<Integer,String>  ifendif;                       /* map with if index and if keyword */
-	TreeMap<Integer,String>  caseendcase;                   /* map with case index and case keyword */
-	TreeMap<Integer,String>  varendvar;                     /* map with var index and var keyword */
-	TreeMap<Integer,String>  programendprogram;             /* map with program index and programm keyword */
-	TreeMap<Integer,String>  functionendfunction;           /* map with function index and function keyword */
-	TreeMap<Integer,String>  functionblockendfunctionblock; /* map with function_block index and function_block keyword */
-	TreeMap<Integer,String>  forendfor;                     /* map with for index and for keyword */
-	TreeMap<Integer,String>  whileendwhile;                 /* map with while index and while keyword */
-	TreeMap<Integer,String>  repeatendrepeat;               /* map with repeat index and repeat keyword */
+	private  TreeMap<Integer,String>  ifendif;                       /* map with if index and if keyword */
+	private  TreeMap<Integer,String>  caseendcase;                   /* map with case index and case keyword */
+	private  TreeMap<Integer,String>  varendvar;                     /* map with var index and var keyword */
+	private  TreeMap<Integer,String>  programendprogram;             /* map with program index and programm keyword */
+	private  TreeMap<Integer,String>  functionendfunction;           /* map with function index and function keyword */
+	private  TreeMap<Integer,String>  functionblockendfunctionblock; /* map with function_block index and function_block keyword */
+	private  TreeMap<Integer,String>  forendfor;                     /* map with for index and for keyword */
+	private  TreeMap<Integer,String>  whileendwhile;                 /* map with while index and while keyword */
+	private  TreeMap<Integer,String>  repeatendrepeat;               /* map with repeat index and repeat keyword */
 
-	ArrayList<Integer>  tmp; /* temp list to reorder the old lists */
+	private  ArrayList<Integer>  tmp; /* temp list to reorder the old lists */
 
+	private  ArrayList<String>  var_config_entrys;
+	
 	/* aditional structures to make the case handling more comfortable */
-	TreeMap<Integer,Integer>                     allcases   = new TreeMap<>();
-	TreeMap<Integer,TreeMap<Integer,Integer[]>>  casevalue  = new TreeMap<>();
+	private final  TreeMap<Integer,Integer>                     allcases;
+	private final  TreeMap<Integer,TreeMap<Integer,Integer[]>>  casevalue;
 
 	/* logger */
 	private final LogWriter  log;
@@ -92,6 +94,35 @@ public class Match {
 		this.builder = builder;
 
 		log.log(key, 3, "Match ...");
+
+		ifmatching             = new TreeMap<>(); /* map with if - end_if pairs */
+		casematching           = new TreeMap<>(); /* map with case - end_case pairs */
+		varmatching            = new TreeMap<>(); /* map with var* - end_var pairs */
+		programmatching        = new TreeMap<>(); /* map with programm - end_programm pairs */
+		functionmatching       = new TreeMap<>(); /* map with function - end_function pairs */
+		functionblockmatching  = new TreeMap<>(); /* map with funcion_block - end_function_block pairs */
+		formatching            = new TreeMap<>(); /* map with for - end_for pairs */
+		whilematching          = new TreeMap<>(); /* map with while - end_while pairs */
+		repeatmatching         = new TreeMap<>(); /* map with repeat - end_repeat pairs */
+
+		ifendif                        = new TreeMap<>();  /* map with if index and if keyword */
+		caseendcase                    = new TreeMap<>();  /* map with case index and case keyword */
+		varendvar                      = new TreeMap<>();  /* map with var index and var keyword */
+		programendprogram              = new TreeMap<>();  /* map with program index and programm keyword */
+		functionendfunction            = new TreeMap<>();  /* map with function index and function keyword */
+		functionblockendfunctionblock  = new TreeMap<>();  /* map with function_block index and function_block keyword */
+		forendfor                      = new TreeMap<>();  /* map with for index and for keyword */
+		whileendwhile                  = new TreeMap<>();  /* map with while index and while keyword */
+		repeatendrepeat                = new TreeMap<>();  /* map with repeat index and repeat keyword */
+
+		tmp  = new ArrayList<>(); /* temp list to reorder the old lists */
+
+		stack = new Stack<>();
+		
+		var_config_entrys  = new ArrayList<>();
+		
+		allcases   = new TreeMap<>();
+		casevalue  = new TreeMap<>();
 		
 		list = anal.give_me_all_the_lists();
 		log.log(key, 4, "got all lists from the analyser.");
@@ -147,7 +178,6 @@ public class Match {
 		ifs = list.get(11); /* 11 is hardcoded here, should find a better solution */
 		log.log(key, 4, "ifs: "+Arrays.toString(ifs.toArray()));
 		
-		ifendif = new TreeMap<>();
 		for (Integer item : ifs) {
 			if (builder.substring(item, item+2).equals("IF")) {
 				ifendif.put(item, "IF");
@@ -168,7 +198,7 @@ public class Match {
 	{
 		log.log(key, 4, "find_if_end_if_pairs called.");
 		tmp = new ArrayList<>();
-		stack = new Stack<>();
+		//stack = new Stack<>();
 		for (Integer item : new TreeSet<Integer>(ifendif.keySet())) {
 			if ( ifendif.get(item).equals("IF") ) {
 				stack.push(item);
@@ -198,9 +228,9 @@ public class Match {
 	get_end_if(int a)
 	{
 		log.log(key, 4, "get_end_if called.");
-		int tmp = (int)ifmatching.get(a);
+		int localtmp = (int)ifmatching.get(a);
 		log.log(key, 4, "end_if: "+tmp);
-		return tmp;
+		return localtmp;
 	}
 	
 	/**
@@ -226,7 +256,7 @@ public class Match {
 	{
 		log.log(key, 4, "gather_case_list called.");
 		cases = list.get(5);
-		caseendcase = new TreeMap<>();
+		//caseendcase = new TreeMap<>();
 		for (Integer item : cases) {
 			if (builder.substring(item, item+4).equals("CASE")) {
 				caseendcase.put(item, "CASE");		
@@ -247,7 +277,7 @@ public class Match {
 	{
 		log.log(key, 4, "find_case_end_case_pairs called.");
 		tmp = new ArrayList<>();
-		stack = new Stack<>();
+		//stack = new Stack<>();
 		for (Integer item : new TreeSet<>(caseendcase.keySet())) {
 			if ( caseendcase.get(item).equals("CASE") ) {
 				stack.push(item);
@@ -477,7 +507,7 @@ public class Match {
 	{
 		log.log(key, 4, "gather_all_var_list called.");
 		
-		varendvar  = new TreeMap<>();
+		//varendvar  = new TreeMap<>();
 		vars       = new ArrayList<>();
 		
 		vars.addAll(list.get(3));
@@ -529,7 +559,7 @@ public class Match {
 	{
 		log.log(key, 4, "find_var_end_var_pairs called.");
 		tmp    = new ArrayList<>();
-		stack  = new Stack<>();
+		//stack  = new Stack<>();
 		for (Integer item : new TreeSet<>(varendvar.keySet())) {
 			if (Pattern.matches( "VAR.*", varendvar.get(item))) {
 				stack.push(item);
@@ -601,7 +631,7 @@ public class Match {
 	{
 		log.log(key, 4, "gather_all_program_list called.");
 		programs = list.get(0);
-		programendprogram = new TreeMap<>();
+		//programendprogram = new TreeMap<>();
 		for (Integer item : programs) {
 			if (builder.substring(item, item+7).equals("PROGRAM")) {
 				programendprogram.put(item, "PROGRAM");
@@ -623,7 +653,7 @@ public class Match {
 		log.log(key, 4, "find_program_end_program_pairs called.");
 
 		tmp    = new ArrayList<>();
-		stack  = new Stack<>();
+		//stack  = new Stack<>();
 
 		for (Integer item : new TreeSet<>(programendprogram.keySet())) {
 			if (programendprogram.get(item).equals("PROGRAM")) {
@@ -682,7 +712,7 @@ public class Match {
 	{
 		log.log(key, 4, "gather_all_function_list called.");
 		functions = list.get(1);
-		functionendfunction = new TreeMap<>();
+		//functionendfunction = new TreeMap<>();
 		for (Integer item : functions) {
 			if (builder.substring(item, item+8).equals("FUNCTION")) {
 				functionendfunction.put(item, "FUNCTION");
@@ -703,7 +733,7 @@ public class Match {
 	{
 		log.log(key, 4, "find_function_end_function_pairs called.");
 		tmp = new ArrayList<>();
-		stack = new Stack<>();
+		//stack = new Stack<>();
 		for (Integer item : new TreeSet<>(functionendfunction.keySet())) {
 			if(functionendfunction.get(item).equals("FUNCTION")) {
 				stack.push(item);
@@ -761,7 +791,7 @@ public class Match {
 	{
 		log.log(key, 4, "gather_all_function_block_list called.");
 		functionblocks = list.get(2);
-		functionblockendfunctionblock = new TreeMap<>();
+		//functionblockendfunctionblock = new TreeMap<>();
 		for (Integer item : functionblocks) {
 			if (builder.substring(item, item+14).equals("FUNCTION_BLOCK")) {
 				functionblockendfunctionblock.put(item, "FUNCTION_BLOCK");
@@ -783,7 +813,7 @@ public class Match {
 		log.log(key, 4, "find_function_block_end_function_block_pairs called.");
 
 		tmp    = new ArrayList<>();
-		stack  = new Stack<>();
+		//stack  = new Stack<>();
 		
 		for (Integer item : new TreeSet<>(functionblockendfunctionblock.keySet())) {
 			if(functionblockendfunctionblock.get(item).equals("FUNCTION_BLOCK")) {
@@ -843,7 +873,7 @@ public class Match {
 		log.log(key, 4, "gather_all_for_list called.");
 
 		fors       = list.get(6);
-		forendfor  = new TreeMap<>();
+		//forendfor  = new TreeMap<>();
 
 		for (Integer item : fors) {
 			if (builder.substring(item, item+3).equals("FOR")) {
@@ -866,7 +896,7 @@ public class Match {
 		log.log(key, 4, "find_for_end_for_pairs called.");
 
 		tmp    = new ArrayList<>();
-		stack  = new Stack<>();
+		//stack  = new Stack<>();
 
 		for (Integer item : new TreeSet<>(forendfor.keySet())) {
 			if (forendfor.get(item).equals("FOR")) {
@@ -925,7 +955,7 @@ public class Match {
 	{
 		log.log(key, 4, "gather_all_while_list called");
 		whiles = list.get(7);
-		whileendwhile = new TreeMap<>();
+		//whileendwhile = new TreeMap<>();
 		for (Integer item : whiles) {
 			if (builder.substring(item, item+5).equals("WHILE")) {
 				whileendwhile.put(item, "WHILE");
@@ -947,7 +977,7 @@ public class Match {
 		log.log(key, 4, "find_while_end_while_pairs called");
 
 		tmp    = new ArrayList<>();
-		stack  = new Stack<>();
+		//stack  = new Stack<>();
 
 		for (Integer item : new TreeSet<>(whileendwhile.keySet())) {
 			if (whileendwhile.get(item).equals("WHILE")) {
@@ -1007,7 +1037,7 @@ public class Match {
 		log.log(key, 4, "gather_all_repeat_list called.");
 
 		repeats          = list.get(8);
-		repeatendrepeat  = new TreeMap<>();
+		//repeatendrepeat  = new TreeMap<>();
 
 		for (Integer item : repeats) {
 			if (builder.substring(item, item+5).equals("REPEAT")) {
@@ -1030,7 +1060,7 @@ public class Match {
 		log.log(key, 4, "find_repeat_end_repeat_pairs called.");
 
 		tmp    = new ArrayList<>();
-		stack  = new Stack<>();
+		//stack  = new Stack<>();
 
 		for (Integer item : new TreeSet<>(repeatendrepeat.keySet())) {
 			if (repeatendrepeat.get(item).equals("REPEAT")) {

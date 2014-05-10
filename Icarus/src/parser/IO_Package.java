@@ -39,9 +39,9 @@ IO_Package
 	/**
 	 * io_package need the device_id, the pin_id and the bool value for the PIN
 	 * 
-	 * @param int the device_id
-	 * @param int the pin_id
-	 * @param int the value
+	 * @param device_id  the device_id as int
+	 * @param pin_id     the pin_id as int
+	 * @param value      the value as boolean
 	 */
 	public
 	IO_Package (int device_id, int pin_id, boolean value)
