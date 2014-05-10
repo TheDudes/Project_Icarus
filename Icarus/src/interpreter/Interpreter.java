@@ -64,7 +64,6 @@ public class Interpreter
         int INDEX = start;
         for(; INDEX < end; INDEX++)
         {
-
             log.log(log_key, 4, "for_loop_top, INDEX = " + INDEX);
 
             if (      (code.charAt(INDEX)     == 'I') &&
