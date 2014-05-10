@@ -19,6 +19,8 @@ package parser;
 import java.util.*;
 import java.util.regex.*;
 
+import javax.swing.text.html.BlockView;
+
 import vault.LogWriter;
 
 
@@ -68,7 +70,7 @@ public class Match {
 
 	private  ArrayList<Integer>  tmp; /* temp list to reorder the old lists */
 
-	private  ArrayList<String>  var_config_entrys;
+	private  String[] var_config_entrys;
 	
 	/* aditional structures to make the case handling more comfortable */
 	private final  TreeMap<Integer,Integer>                     allcases;
@@ -120,8 +122,6 @@ public class Match {
 
 		stack = new Stack<>();
 		
-		var_config_entrys  = new ArrayList<>();
-		
 		allcases   = new TreeMap<>();
 		casevalue  = new TreeMap<>();
 		
@@ -158,6 +158,9 @@ public class Match {
 
 			gather_all_repeat_list();
 			find_repeat_end_repeat_pairs();
+
+			gather_configurations();
+			
 		} catch (Exception e) {
 			System.out.println(e);
 			System.exit(1);
@@ -1107,6 +1110,41 @@ public class Match {
 		log.log(key, 4, "get_repeats called.");
 		log.log(key, 4, "repeats#: "+Arrays.toString(repeats.toArray()));
 		return repeats;
+	}
+
+	/* Device Handling things here */
+        //private final  HashMap<String, Integer>                     device_deviceid; /* Integer device var_id and the pins as Integer[] pin is null if not defined. */
+	//private final  HashMap<Integer, HashMap<Integer, Integer>>  deviceid_pinid_valueid;
+	//private final  HashMap<Integer, Integer>                    valueid_abilities; /* abilities: 0=undefined, 1=read, 2=write, 3=read/write  */
+	/**
+	 * gather_configurations will find the var_config blog und extracts the configguration lines
+	 * <p>
+	 * this function is private
+	 */
+	private void
+	gather_configurations()
+	{
+		String    keyword = "VAR_CONFIG";
+		
+		for (Integer item : get_vars())
+		{
+			if (get_var_start(item.intValue()).equals("VAR_CONFIG"))
+			{
+				var_config_entrys = builder.substring(item+keyword.length(), get_end_var(item)).split(";");
+				break;
+			}
+		}
+	}
+
+	/**
+	 * get_var_config_entrys returns the config entry from the var config block 
+	 * 
+	 * @return var_config_entrys
+	 */
+	public String[]
+	get_var_config_entrys()
+	{
+		return var_config_entrys;
 	}
 }
 

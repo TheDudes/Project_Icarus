@@ -41,9 +41,12 @@ IO_Package
 	 * 1 = read/input;
 	 * 2 = write/output;
 	 * 3 = read-write/input-output;
+	 * >3 = Undefined;
 	 */
 	public  byte     abilities;
-
+	/** if true, then register for polling */
+	public boolean   to_poll;
+	
 	/**
 	 * io_package need the device_id, the pin_id and the bool value for the PIN
 	 * 
@@ -53,12 +56,13 @@ IO_Package
 	 * @param abilities  the abilities parameter
 	 */
 	public
-	IO_Package (String device_id, byte pin_id, boolean value, byte abilities)
+	IO_Package (String device_id, byte pin_id, boolean value, byte abilities, boolean to_poll)
 	{
 		this.device_id  = device_id;
 		this.pin_id     = pin_id;
 		this.value      = value;
 		this.abilities  = abilities;
+		this.to_poll    = to_poll;
 	}
 }
 

@@ -16,9 +16,9 @@
 package parser;
 
 import java.util.*;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.*;
+
 
 import linc.Config_Reader;
 
@@ -72,15 +72,16 @@ public class Symbols {
 	 * @param builder the whole program code
 	 * @param match the match class with preprosesd informations
 	 * @param log logwriter from abouve
+	 * @param confreader Config_Reader from above
 	 * @throws java.lang.Exception
 	 */
 	public
 	Symbols(StringBuilder builder, Match match, LogWriter log, Config_Reader confreader) throws Exception
 	{
-		this.log      = log;
-		this.builder  = builder;
-		this.match    = match;
-		this.confreader = confreader;
+		this.log         = log;
+		this.builder     = builder;
+		this.match       = match;
+		this.confreader  = confreader;
 
 		var_id     = 0;
 		device_id  = 0;
@@ -502,5 +503,15 @@ public class Symbols {
 		return com_channel_queue;
 	}
 
+	/**
+	 * create_devices fills the structures up with all the devices, pins and values 
+	 * <p>
+	 * this function is private.
+	 */
+	private void
+	create_devices()
+	{
+		
+	}
 	
 }
