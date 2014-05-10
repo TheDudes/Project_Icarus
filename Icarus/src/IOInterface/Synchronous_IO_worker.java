@@ -74,7 +74,7 @@ public class Synchronous_IO_worker implements Runnable {
 
                     logWriter.log(key, 0, "Undefined Ability for Device " + ioPackage.device_id + " at Pin " + ioPackage.pin_id);
 
-                    throw new Undefined_ability_exception();
+//                    throw new Undefined_ability_exception();
 
                 } else if (ioPackage.to_poll = true) {
 

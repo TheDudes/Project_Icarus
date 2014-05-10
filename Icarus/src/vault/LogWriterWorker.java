@@ -55,7 +55,7 @@ public class LogWriterWorker implements Runnable
         verboseLevel    = confReader.get_int("verbosity_level");
         date = new Date(System.currentTimeMillis());
         sdf  = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss");
-        pathToLogfiles  = sdf.format(date) + ".log";
+        pathToLogfiles  = confReader.get_string("LogWriter") + sdf.format(date) + ".log";
     }
 
     @Override
