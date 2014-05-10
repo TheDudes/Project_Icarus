@@ -54,6 +54,7 @@ IO_Package
 	 * @param pin_id     the pin_id as int
 	 * @param value      the value as boolean
 	 * @param abilities  the abilities parameter
+	 * @param to_poll    true if this pin should be registered for polling
 	 */
 	public
 	IO_Package (String device_id, byte pin_id, byte value, byte abilities, boolean to_poll)

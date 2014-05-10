@@ -1135,7 +1135,7 @@ public class Match {
 			}
 		}
 	}
-
+	
 	/**
 	 * get_var_config_entrys returns the config entry from the var config block 
 	 * 

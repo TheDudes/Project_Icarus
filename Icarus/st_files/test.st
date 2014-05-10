@@ -2,6 +2,8 @@ PROGRAM deineMudda
 
 VAR
     blub : BOOL := FALSE;
+    bluber : BOOL := TRUE;
+    ratatazonk : BOOL := TRUE;
     blah : INT := 3;
     test : INT := 133;
     test2 : INT := 4432;

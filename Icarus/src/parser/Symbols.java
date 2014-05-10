@@ -105,6 +105,7 @@ public class Symbols {
 		//findContextVars("GLOBAL");
         
 		generate_symbols_list();
+		create_devices();
 	}
 	
 	/**
@@ -487,6 +488,12 @@ public class Symbols {
 		}
 		generate_symbols_list();
 	}
+
+	private int
+	get_varid_by_name(String context, String variable)
+	{
+		return contextstore.get(context).get(variable);
+	}
 	
         /**
          * get_com_channel_queue returns the linkedblockingqueue for the IOInterface
@@ -511,7 +518,54 @@ public class Symbols {
 	private void
 	create_devices()
 	{
+		String[]             devices                       = confreader.get_string("devices").split(",");
+		ArrayList<String[]>  variable_and_device_with_pin  = new ArrayList<>();
+		HashMap<Integer,Integer> pin_to_var;
+		int varid;
+		int pinid;
 		
+		for (String item : match.get_var_config_entrys())
+		{
+			variable_and_device_with_pin.add(item.split("\\.|AT"));
+		}
+
+		for (String device : devices)
+		{
+			for (String[] item : variable_and_device_with_pin)
+			{
+				if(item[2].equals(device))
+				{
+					if (!(device_deviceid.get(device)==null))
+					{
+						pin_to_var = deviceid_pinid_valueid.get(device_id);
+					}
+					else
+					{
+						device_deviceid.put(device, device_id);
+						pin_to_var = new HashMap<>();
+					}
+					
+					varid = get_varid_by_name(item[0], item[1]);
+					pinid = Integer.parseInt(item[3]);
+					pin_to_var.put(pinid, varid);
+					deviceid_pinid_valueid.put(device_id, pin_to_var);
+
+					for (String abilities : confreader.get_string(device).split(","))
+					{
+						String[] abilitie = abilities.split(":");
+						if (abilitie[0].equals(item[3]))
+						{
+							valueid_abilities.put(varid,Integer.parseInt(abilitie[1]));
+							if (abilitie[1].equals("1") || abilitie[1].equals("3"))
+							{
+								com_channel_queue.offer(new IO_Package(device, (byte)pinid, (byte)0, Byte.parseByte(abilitie[0]), true));
+							}
+						}
+					}
+				}
+			}
+			device_id++;
+		}
 	}
 	
 }

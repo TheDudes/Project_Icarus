@@ -70,6 +70,38 @@ public class Analyser {
 	private final String     subkey   = "Analyser";
 	private final String     key      = mainkey + "-" + subkey;
 
+
+
+	/**
+	 * the Constructor takes a StringBuilder, which was prepared by MergeAllFiles
+	 *
+	 * @param builder StringBuilder prepared by MergeAllFiles
+	 * @param log LogWriter from above
+	 */
+	public
+	Analyser(StringBuilder builder, LogWriter log)
+	{
+		this.log      = log;
+		this.builder  = builder;
+		
+		blocks.add(program_cursor); //0
+		blocks.add(function_cursor); //1
+		blocks.add(function_block_cursor); //2
+		blocks.add(global_cursor); //3
+		blocks.add(config_cursor); //4
+		blocks.add(case_all); //5
+		blocks.add(for_all); //6
+		blocks.add(while_all); //7
+		blocks.add(repeat_all); //8
+		blocks.add(var_input_all); //9
+		blocks.add(var_output_all); //10
+		blocks.add(if_all); //11
+		blocks.add(var_all); //12
+        
+		find_all_keywords();
+	}
+
+	
 	private void
 	find_all_keywords()
 	{ /* think of the IF, its a special case */
@@ -159,35 +191,6 @@ public class Analyser {
 	{
 		log.log(key, 3, "give_me_all_the_lists called.");
 		return blocks;
-	}
-	
-	/**
-	 * the Constructor takes a StringBuilder, which was prepared by MergeAllFiles
-	 *
-	 * @param builder StringBuilder prepared by MergeAllFiles
-	 * @param log LogWriter from above
-	 */
-	public
-	Analyser(StringBuilder builder, LogWriter log)
-	{
-		this.log      = log;
-		this.builder  = builder;
-		
-		blocks.add(program_cursor); //0
-		blocks.add(function_cursor); //1
-		blocks.add(function_block_cursor); //2
-		blocks.add(global_cursor); //3
-		blocks.add(config_cursor); //4
-		blocks.add(case_all); //5
-		blocks.add(for_all); //6
-		blocks.add(while_all); //7
-		blocks.add(repeat_all); //8
-		blocks.add(var_input_all); //9
-		blocks.add(var_output_all); //10
-		blocks.add(if_all); //11
-		blocks.add(var_all); //12
-        
-		find_all_keywords();
 	}
 }
 
