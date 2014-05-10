@@ -67,7 +67,32 @@ public class Interpreter
 
             log.log(log_key, 4, "for_loop_top, INDEX = " + INDEX);
 
-            if (      (code.charAt(INDEX)     == 'P') &&
+            if (      (code.charAt(INDEX)     == 'I') &&
+                      (code.charAt(INDEX + 1) == 'F') )
+            {
+                log.log(log_key, 3, "found Keyword IF,           INDEX = " + INDEX);
+                INDEX = handler.found_IF(INDEX, code);
+                continue;
+            }
+            else if ( (code.charAt(INDEX)     == 'C') &&
+                      (code.charAt(INDEX + 1) == 'A') &&
+                      (code.charAt(INDEX + 2) == 'S') &&
+                      (code.charAt(INDEX + 3) == 'E') )
+            {
+                log.log(log_key, 3, "found Keyword CASE,         INDEX = " + INDEX);
+                INDEX = handler.found_CASE(INDEX, code);
+                continue;
+            }
+            else if ( (code.charAt(INDEX)     == 'E') &&
+                      (code.charAt(INDEX + 1) == 'L') &&
+                      (code.charAt(INDEX + 2) == 'S') &&
+                      (code.charAt(INDEX + 3) == 'E') )
+            {
+                log.log(log_key, 3, "found Keyword ELSE,         INDEX = " + INDEX);
+                INDEX = handler.found_ELSE(INDEX, code);
+                continue;
+            }
+            else if ( (code.charAt(INDEX)     == 'P') &&
                       (code.charAt(INDEX + 1) == 'R') &&
                       (code.charAt(INDEX + 2) == 'O') &&
                       (code.charAt(INDEX + 3) == 'G') &&
@@ -79,13 +104,6 @@ public class Interpreter
                 INDEX = handler.found_PROGRAM(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'I') &&
-                      (code.charAt(INDEX + 1) == 'F') )
-            {
-                log.log(log_key, 3, "found Keyword IF,           INDEX = " + INDEX);
-                INDEX = handler.found_IF(INDEX, code);
-                continue;
-            }
             else if ( (code.charAt(INDEX)     == 'E') &&
                       (code.charAt(INDEX + 1) == 'N') &&
                       (code.charAt(INDEX + 2) == 'D') &&
@@ -95,15 +113,6 @@ public class Interpreter
             {
                 log.log(log_key, 3, "found Keyword END_IF,       INDEX = " + INDEX);
                 INDEX = handler.found_END_IF(INDEX, code);
-                continue;
-            }
-            else if ( (code.charAt(INDEX)     == 'E') &&
-                      (code.charAt(INDEX + 1) == 'L') &&
-                      (code.charAt(INDEX + 2) == 'S') &&
-                      (code.charAt(INDEX + 3) == 'E') )
-            {
-                log.log(log_key, 3, "found Keyword ELSE,         INDEX = " + INDEX);
-                INDEX = handler.found_ELSE(INDEX, code);
                 continue;
             }
             else if ( (code.charAt(INDEX)     == 'E') &&
@@ -207,15 +216,6 @@ public class Interpreter
             {
                 log.log(log_key, 3, "found Keyword VAR,          INDEX = " + INDEX);
                 INDEX = handler.found_VAR(INDEX, code);
-                continue;
-            }
-            else if ( (code.charAt(INDEX)     == 'C') &&
-                      (code.charAt(INDEX + 1) == 'A') &&
-                      (code.charAt(INDEX + 2) == 'S') &&
-                      (code.charAt(INDEX + 3) == 'E') )
-            {
-                log.log(log_key, 3, "found Keyword CASE,         INDEX = " + INDEX);
-                INDEX = handler.found_CASE(INDEX, code);
                 continue;
             }
             else if ( (code.charAt(INDEX)     == 'F') &&

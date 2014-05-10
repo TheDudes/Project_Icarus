@@ -63,7 +63,7 @@ public class Engine
         int total_evaluations = 2000;
         double avg = 0.0;
 
-        log.log("engine", 1,"starting engine warmup...");
+        log.log("engine", 0,"starting engine warmup...");
         long start = System.currentTimeMillis();
 
         for(int i = 0; i < total_evaluations; i++)
@@ -103,7 +103,7 @@ public class Engine
             }
         }
         log.log("engine", 2, "100 evaluations done, avg time: (" + avg / 100 + "ms avg)");
-        log.log("engine", 1, "engine warmup finished, total evaluations: "
+        log.log("engine", 0, "engine warmup finished, total evaluations: "
                                     + total_evaluations
                                     + ", total time: "
                                     + (System.currentTimeMillis() - start)
