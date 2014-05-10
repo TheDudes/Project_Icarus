@@ -33,7 +33,7 @@ IO_Package
 	/** pin id per device */
 	public  byte     pin_id;
 	/** value of the pin */
-	public  boolean  value;
+	public  byte     value;
 	/**
 	 * abilities can only have the values 0, 1, 2, 3
 	 * <p>
@@ -45,7 +45,7 @@ IO_Package
 	 */
 	public  byte     abilities;
 	/** if true, then register for polling */
-	public boolean   to_poll;
+	public  boolean  to_poll;
 	
 	/**
 	 * io_package need the device_id, the pin_id and the bool value for the PIN
@@ -56,7 +56,7 @@ IO_Package
 	 * @param abilities  the abilities parameter
 	 */
 	public
-	IO_Package (String device_id, byte pin_id, boolean value, byte abilities, boolean to_poll)
+	IO_Package (String device_id, byte pin_id, byte value, byte abilities, boolean to_poll)
 	{
 		this.device_id  = device_id;
 		this.pin_id     = pin_id;
