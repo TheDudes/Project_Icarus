@@ -492,6 +492,7 @@ public class Symbols {
 	private int
 	get_varid_by_name(String context, String variable)
 	{
+		log.log(key, 4, "get_varid_by_name called");
 		return contextstore.get(context).get(variable);
 	}
 	
@@ -545,10 +546,12 @@ public class Symbols {
 					log.log(key, 4, "device choosen: " + item[2]);
 					if (!(device_deviceid.get(device)==null))
 					{
+						log.log(key, 4, "old device");
 						pin_to_var = deviceid_pinid_valueid.get(device_id);
 					}
 					else
 					{
+						log.log(key, 4, "new device");
 						device_deviceid.put(device, device_id);
 						pin_to_var = new HashMap<>();
 					}
