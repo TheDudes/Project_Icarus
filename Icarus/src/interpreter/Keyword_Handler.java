@@ -35,17 +35,17 @@ import java.util.Stack;
  */
 public class Keyword_Handler
 {
-    private String         log_key = "Interpreter-Keyword_Handler";
-    private InfoCollector  container;
-    private Engine         engine;
-    private LogWriter      log;
-    private Interpreter    interpreter;
-    private Offset_Handler offset;
+    final private String                log_key = "Interpreter-Keyword_Handler";
+    final private InfoCollector         container;
+    final private Engine                engine;
+    final private LogWriter             log;
+    final private Interpreter           interpreter;
+    final private Offset_Handler        offset;
 
-    private Stack<Container_LOOP> loop_stack;
-    private Stack<String>         context_stack;
-    private Stack<Boolean>        if_stack;
-    private Stack<Integer>        if_position_stack;
+    final private Stack<Container_LOOP> loop_stack;
+    final private Stack<String>         context_stack;
+    final private Stack<Boolean>        if_stack;
+    final private Stack<Integer>        if_position_stack;
 
     /**
      * @param container used InfoCollector object

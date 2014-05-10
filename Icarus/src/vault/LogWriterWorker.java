@@ -36,14 +36,13 @@ import linc.*;
  */
 public class LogWriterWorker implements Runnable
 {
-    private LinkedBlockingQueue<String> lbq;
-    private SimpleDateFormat sdf;
-    private Date    date;
-    private boolean alive = true;
-    private String  tmpFilePath;
-    private String  pathToLogfiles;
-    private String  message;
-    private int     verboseLevel;
+    final private LinkedBlockingQueue<String> lbq;
+    final private SimpleDateFormat sdf;
+    final private Date    date;
+    final private String  pathToLogfiles;
+    final private int     verboseLevel;
+          private String  message;
+          private boolean alive = true;
 
     /**
      * LogWriterWorker constructor
@@ -53,20 +52,10 @@ public class LogWriterWorker implements Runnable
     public LogWriterWorker(Config_Reader confReader, LinkedBlockingQueue<String> lbq)
     {
         this.lbq        = lbq;
-        tmpFilePath     = confReader.get_path("LogWriter");
         verboseLevel    = confReader.get_int("verbosity_level");
-        pathToLogfiles  = tmpFilePath+getTimestamp() + ".log";
-    }
-
-    /**
-     * getTimeStamp returns the current time to use it in the timestamp
-     * @return String
-     */
-    private String getTimestamp()
-    {
         date = new Date(System.currentTimeMillis());
         sdf  = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss");
-        return sdf.format(date);
+        pathToLogfiles  = sdf.format(date) + ".log";
     }
 
     @Override

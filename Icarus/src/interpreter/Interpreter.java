@@ -32,9 +32,9 @@ import linc.*;
  */
 public class Interpreter
 {
-    private String log_key = "Interpreter";
-    private LogWriter       log;
-    private Keyword_Handler handler;
+    final private String log_key = "Interpreter";
+    final private LogWriter       log;
+    final private Keyword_Handler handler;
 
     /**
      * @param container used parser

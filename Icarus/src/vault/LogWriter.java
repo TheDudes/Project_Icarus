@@ -31,12 +31,12 @@ import linc.*;
  */
 public class LogWriter
 {
-    private LinkedBlockingQueue<String> lbq = new LinkedBlockingQueue<>(1024);
-    private SimpleDateFormat sdf;
-    private LogWriterWorker LogWorker;
-    private boolean         silent;
-    private Thread          worker;
-    private int             verboseLevel;
+    final private LinkedBlockingQueue<String> lbq = new LinkedBlockingQueue<>(1024);
+    final private SimpleDateFormat sdf;
+    final private LogWriterWorker  LogWorker;
+    final private boolean          silent;
+    final private Thread           worker;
+    final private int              verboseLevel;
 
     /**
      * LogWriter Constructor
@@ -62,21 +62,6 @@ public class LogWriter
      */
     public void log(String key, int msgVerboseLevel, String logMessage)
     {
-        /*
-        if (!silent && ( verboseLevel == 0 ) )
-        {
-            System.out.println(logMessage);
-        }
-
-        if ( verboseLevel <= this.verboseLevel )
-        {
-            String logLine ="["+getTimestamp()+"]"+" ["+
-                                host+"] "+"["+
-                                key+"]"+": "+
-                                logMessage+"\n";
-            lbq.offer(logLine);
-        }
-        */
         if (( msgVerboseLevel == 0 ) && !silent )
         {
             System.out.println(logMessage);

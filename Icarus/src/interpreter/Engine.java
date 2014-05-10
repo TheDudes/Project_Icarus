@@ -34,9 +34,9 @@ import javax.script.*;
  */
 public class Engine
 {
-    private ScriptEngine engine;
-    private LogWriter    log;
-    private String       log_key = "engine";
+    final private ScriptEngine engine;
+    final private LogWriter    log;
+    final private String       log_key = "engine";
 
     /**
      * @param log LogWriter Object

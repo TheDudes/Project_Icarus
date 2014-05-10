@@ -37,15 +37,15 @@ import java.net.*;
  */
 public class Main
 {
-    static String log_key = "main";
-    static String config_path;
-    static String hostname;
-    static String code;
+    final static String log_key = "main";
+          static String config_path;
+          static String hostname;
+          static String code;
 
-    static Config_Reader config;
-    static LogWriter     logger;
-    static InfoCollector container;
-    static Interpreter   interpreter;
+          static Config_Reader config;
+          static LogWriter     logger;
+          static InfoCollector container;
+          static Interpreter   interpreter;
 
     /**
      * main funcion which will start Icarus
