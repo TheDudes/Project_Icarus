@@ -507,6 +507,7 @@ public class Symbols {
 	public LinkedBlockingQueue<IO_Package>
 	get_com_channel_queue()
 	{
+		log.log(key, 4, "get_com_channel_queue called.");
 		return com_channel_queue;
 	}
 
@@ -518,21 +519,27 @@ public class Symbols {
 	private void
 	create_devices()
 	{
-		String[]             devices                       = confreader.get_string("devices").split(",");
-		ArrayList<String[]>  variable_and_device_with_pin  = new ArrayList<>();
-		HashMap<Integer,Integer> pin_to_var;
-		int varid;
-		int pinid;
-		
+		log.log(key, 4, "create_devices called.");
+		String[]                  devices                       = confreader.get_string("devices").split(",");
+
+		ArrayList<String[]>       variable_and_device_with_pin  = new ArrayList<>();
+		HashMap<Integer,Integer>  pin_to_var;
+
+		int  varid;
+		int  pinid;
+
 		for (String item : match.get_var_config_entrys())
 		{
 			variable_and_device_with_pin.add(item.split("\\.|AT"));
+			log.log(key, 4, "get_var_config_entry: "+item);
 		}
 
 		for (String device : devices)
 		{
+			log.log(key, 4, "device: "+device);
 			for (String[] item : variable_and_device_with_pin)
 			{
+				log.log(key, 4, "variable_and_device_with_pin: "+item);
 				if(item[2].equals(device))
 				{
 					if (!(device_deviceid.get(device)==null))
@@ -552,12 +559,14 @@ public class Symbols {
 
 					for (String abilities : confreader.get_string(device).split(","))
 					{
+						log.log(key, 4, "abilities of pin: "+abilities);
 						String[] abilitie = abilities.split(":");
 						if (abilitie[0].equals(item[3]))
 						{
 							valueid_abilities.put(varid,Integer.parseInt(abilitie[1]));
 							if (abilitie[1].equals("1") || abilitie[1].equals("3"))
 							{
+								log.log(key, 4, "prepare initial package for queue.");
 								com_channel_queue.offer(new IO_Package(device, (byte)pinid, (byte)0, Byte.parseByte(abilitie[0]), true));
 							}
 						}
