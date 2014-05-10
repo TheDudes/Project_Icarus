@@ -371,6 +371,9 @@ public class Config_Reader {
         container.put("verbosity_level", 0);
         container.put("silent", (Boolean)false);
         container.put("Engine_Warmup", (Boolean)true);
+        container.put("sync_port", 5021);
+        container.put("async_port", 5022);
+        container.put("hostname", "localhost");
         container.put("path", "/home/linc/NetBeansProjects/Project_Icarus/Icarus/st_files");
     }
     
