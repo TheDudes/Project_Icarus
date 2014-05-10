@@ -60,8 +60,9 @@ public class Interpreter
      */
     public void interpret (String code, int start, int end) throws Exception
     {
-        log.log(log_key, 4, "started with start: " + start + ", end: " + end);
-        for(int INDEX = start; INDEX < end; INDEX++)
+        log.log(log_key, 3, "call interpret: " + start + ", end: " + end);
+        int INDEX = start;
+        for(; INDEX < end; INDEX++)
         {
 
             log.log(log_key, 4, "for_loop_top, INDEX = " + INDEX);
@@ -260,7 +261,7 @@ public class Interpreter
                       (code.charAt(INDEX + 10)== 'M') )
             {
                 log.log(log_key, 3, "found Keyword END_PROGRAM,  INDEX = " + INDEX);
-                handler.found_END_PROGRAM(INDEX, code);
+                INDEX = handler.found_END_PROGRAM(INDEX, code);
                 break;
             }
             else /* if no match is found */
@@ -268,6 +269,7 @@ public class Interpreter
                 INDEX = handler.found_nothing(INDEX, code);
                 continue;
             }
-        } /* end main for loop   */
+        }
+        log.log(log_key, 3, "returning from interpret,   INDEX = " + INDEX);
     }
 }

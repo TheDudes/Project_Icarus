@@ -102,9 +102,10 @@ public class Keyword_Handler
     {
         log.log(log_key, 4, "call   found_IF, INDEX = " + INDEX);
 
+        int    then_position = offset.get_THEN(INDEX, code);
+        String condition     = code.substring(INDEX + 2, then_position);
+
         if_position_stack.push(INDEX);
-        int then_position = offset.get_THEN(INDEX, code);
-        String condition = code.substring(INDEX + 2, then_position);
         if_stack.push((Boolean)engine.eval(offset.convert_condition(container.replace_vars(condition, context_stack.peek()))));
 
         if (if_stack.peek())
@@ -126,9 +127,10 @@ public class Keyword_Handler
     {
         log.log(log_key, 4, "call   found_END_IF, INDEX = " + INDEX);
 
-        INDEX += 5;
         if_stack.pop();
         if_position_stack.pop();
+
+        INDEX += 5;
 
         log.log(log_key, 4, "return found_END_IF, INDEX = " + INDEX);
         return INDEX;
@@ -169,9 +171,8 @@ public class Keyword_Handler
         }
         else
         {
-            INDEX += 5;
-            int then_position = offset.get_THEN(INDEX, code);
-            String condition = code.substring(INDEX + 2, then_position);
+            int    then_position = offset.get_THEN(INDEX + 5, code);
+            String condition     = code.substring(INDEX + 7, then_position);
             if_stack.pop();
             if_stack.push((Boolean)engine.eval(offset.convert_condition(container.replace_vars(condition, context_stack.peek()))));
             if (if_stack.peek())
@@ -225,8 +226,6 @@ public class Keyword_Handler
     public int found_END_WHILE(int INDEX, String code) throws Exception
     {
         log.log(log_key, 4, "call   found_END_WHILE, INDEX = " + INDEX);
-
-        INDEX += 8;
 
         if((Boolean)engine.eval(container.replace_vars(loop_stack.peek().condition, context_stack.peek())))
             INDEX = loop_stack.peek().do_index + 1;
@@ -438,6 +437,7 @@ public class Keyword_Handler
 
         log.log("interpreter-end", 4, "end of Program Reached, Breaking for Loop, poping context_stack");
         context_stack.pop();
+        INDEX += 10;
 
         log.log(log_key, 4, "return found_END_PROGRAM, INDEX = " + INDEX);
         return INDEX;
@@ -458,7 +458,11 @@ public class Keyword_Handler
         int       value     = Integer.parseInt(offset.convert_condition(container.replace_vars(condition, context_stack.peek())));
         Integer[] recursive_positions = new Integer[2];
         recursive_positions = container.get_case_coordinates(INDEX, value);
+
+        log.log(log_key, 3, "CASE-recursive call   interpret: " + recursive_positions[0] + " <--> " + recursive_positions[1]);
         interpreter.interpret(code, recursive_positions[0], recursive_positions[1]);
+        log.log(log_key, 3, "CASE-recursive return interpret: " + recursive_positions[0] + " <--> " + recursive_positions[1]);
+
         INDEX = container.get_end_case(INDEX) + 7;
 
         log.log(log_key, 4, "return found_CASE, INDEX = " + INDEX);
@@ -504,13 +508,10 @@ public class Keyword_Handler
     {
         log.log(log_key, 4, "call   found_nothing, INDEX = " + INDEX);
 
-        /*
-        log.log("error", 4, "no keyword was found, substring(INDEX, INDEX + 20):" +
-                                    code.substring(INDEX, INDEX + 20));
-        */
         int    semicolon_position = offset.get_semicolon(INDEX, code);
         String condition          = code.substring(INDEX, semicolon_position + 1);
         container.set_value(condition, context_stack.peek());
+
         INDEX = semicolon_position;
 
         log.log(log_key, 4, "return found_nothing, INDEX = " + INDEX);
