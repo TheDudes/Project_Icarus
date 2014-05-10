@@ -159,7 +159,7 @@ public class Match {
 			gather_all_repeat_list();
 			find_repeat_end_repeat_pairs();
 
-			gather_configurations();
+			//gather_configurations();
 			
 		} catch (Exception e) {
 			System.out.println(e);

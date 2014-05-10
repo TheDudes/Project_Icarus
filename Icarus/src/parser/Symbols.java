@@ -105,7 +105,7 @@ public class Symbols {
 		//findContextVars("GLOBAL");
         
 		generate_symbols_list();
-		create_devices();
+		//create_devices();
 	}
 	
 	/**
