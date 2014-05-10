@@ -32,10 +32,9 @@ import linc.*;
  */
 public class Interpreter
 {
-    String log_key = "Interpreter";
-    LogWriter       log;
-    Keyword_Handler handler;
-    InfoCollector   container;
+    private String log_key = "Interpreter";
+    private LogWriter       log;
+    private Keyword_Handler handler;
 
     /**
      * @param container used parser
@@ -47,7 +46,6 @@ public class Interpreter
         log.log(log_key, 4, "init Interpreter...");
 
         this.log       = log;
-        this.container = container;
         handler        = new Keyword_Handler(container, log, config, this);
 
         log.log(log_key, 4, "init Interpreter done.");

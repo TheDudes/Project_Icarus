@@ -31,8 +31,8 @@ import vault.*;
  */
 public class Offset_Handler
 {
-    String    log_key = "Interpreter-Offset";
-    LogWriter log;
+    private String    log_key = "Interpreter-Offset";
+    private LogWriter log;
 
     /**
      * @param log used LogWriter
