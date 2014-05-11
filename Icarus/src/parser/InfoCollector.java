@@ -38,12 +38,12 @@ public class InfoCollector {
 	private final Match          match;
 	private final Symbols        symb;
 	private final LogWriter      log;
-	
+
 	/* logger */
 	private final String  mainkey = "parser";
 	private final String  subkey = "InfoCollector";
 	private final String  key = mainkey+"-"+subkey;
-    
+
 	/**
 	 * InfoCollector is a Interfaceclass which has all the functions from a
 	 * lot of different classes to make the life for others easyer
@@ -71,19 +71,19 @@ public class InfoCollector {
 		log.log(key, 2, "merge all Files ...");
 		allthecode = new MergeFiles(log, configreader.get_st_filepaths()).merge_all();
 		log.log(key, 2, "Files merged.");
-        
+
 		log.log(key, 2, "analyse the code ...");
 		analyser = new Analyser(allthecode, log);
 		log.log(key, 2, "Analysed.");
-        
+
 		log.log(key, 2, "matching open and close tags ...");
 		match = new Match(analyser, allthecode, log);
 		log.log(key, 2, "Matched.");
-        
+
 		log.log(key, 2, "find all symbols in the code ...");
 		symb = new Symbols(allthecode, match, log, configreader);
 		log.log(key, 2, "Symbols stored.");
-        
+
 		log.log(key, 1, "file parsed.");
 	}
 
@@ -116,7 +116,7 @@ public class InfoCollector {
 		log.log(key, 4, "getEndIf called.");
 		return match.get_end_if(a);
 	}
-    
+
 	/**
 	 * getIfs returns a list with all the IF indexes
 	 * @return list with all IF indexes
@@ -387,7 +387,7 @@ public class InfoCollector {
 		log.log(key, 4, "replaceVars called.");
 		return symb.replace_vars(input, context);
 	}
-    
+
 	/**
 	 * setValue accepts whole variable lines like:
 	 * var,var1,var2:=5;
@@ -417,7 +417,7 @@ public class InfoCollector {
 		log.log(key, 4, "addVar called.");
 		symb.add_var(input, context);
 	}
-    
+
 	/**
 	 * getAllTheCode will give you all the preprocessed code
 	 * @return a StringBuilder with all the preprocessed code inside
@@ -430,25 +430,24 @@ public class InfoCollector {
 	}
 
 	/**
-         * get_com_channel_queue returns the linkedblockingqueue for the IOInterface
+	 * get_com_channel_queue returns the linkedblockingqueue for the IOInterface
 	 * communikation.
 	 * <p>
 	 * the LinkedBlockingQueue with the type IO_Package
 	 * @return LinkedBlockingQueue with IO_Package Type
 	 * @see LinkedBlockingQueue
 	 * @see IO_Package
-         */
+	 */
 	public LinkedBlockingQueue<IO_Package>
 	get_com_channel_queue()
 	{
 		return symb.get_com_channel_queue();
 	}
 
-	
 	public void
 	update_device(String device, int pinid, boolean value)
 	{
 		symb.update_device(device, pinid, value);
 	}
-	
+
 }
