@@ -63,7 +63,7 @@ public class Main
         interpreter = new Interpreter(container, logger, config);
 
         double blub = 0.0;
-        for(int i = 0; i < 1000; i++ )
+        for(int i = 0; i < 25; i++ )
         {
             blub = System.currentTimeMillis();
 

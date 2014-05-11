@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2014, Jonas Huber <Jonas_Huber2@gmx.de>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
