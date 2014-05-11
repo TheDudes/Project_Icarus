@@ -7,7 +7,11 @@ package IOInterface;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+/* --fixme-- */
+/* The import java.io.InputStream is never used */
 import java.io.InputStream;
+/* --fixme-- */
+/* The import java.io.OutputStream is never used */
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -22,6 +26,8 @@ public class Synchronous_IO_worker implements Runnable {
 
     private LinkedBlockingQueue<IO_Package> lbq;
     private LogWriter logWriter;
+    /* --fixme-- */
+/* The value of the field Synchronous_IO_worker.infoCollector is not used */
     private InfoCollector infoCollector;
     private Socket client;
     private String key = "Synchronous_IO_worker";
@@ -76,7 +82,9 @@ public class Synchronous_IO_worker implements Runnable {
 
 //                    throw new Undefined_ability_exception();
 
-                } else if (ioPackage.to_poll = true) {
+                /* --fixme-- */
+/* Possible accidental assignment in place of a comparison. A condition expression should not be reduced to an assignment */
+                } else if (ioPackage.to_poll == true) {
 
                     polling_init();
 
@@ -101,6 +109,8 @@ public class Synchronous_IO_worker implements Runnable {
 
     }
 
+    /* --fixme-- */
+/* Javadoc: Missing comment for public declaration */
     public void polling_init() {
         convert_deviceID();
         dataOutput[3] = ioPackage.pin_id;
@@ -110,6 +120,8 @@ public class Synchronous_IO_worker implements Runnable {
 
     }
 
+    /* --fixme-- */
+/* Javadoc: Missing comment for public declaration */
     public void make_package() {
         convert_deviceID();
         dataOutput[3] = ioPackage.pin_id;
@@ -119,6 +131,8 @@ public class Synchronous_IO_worker implements Runnable {
 
     }
 
+    /* --fixme-- */
+/* Javadoc: Missing comment for public declaration */
     public void convert_deviceID() {
 
         letter = ioPackage.device_id.substring(0, 1);
@@ -129,6 +143,8 @@ public class Synchronous_IO_worker implements Runnable {
 
     }
 
+    /* --fixme-- */
+/* Javadoc: Missing comment for public declaration */
     public void kill() {
         alive = false;
 

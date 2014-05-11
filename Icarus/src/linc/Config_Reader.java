@@ -147,6 +147,8 @@ public class Config_Reader {
             }
             return container.get(key);
         }
+        /* --fixme-- */
+/* Statement unnecessarily nested within else clause. The corresponding then clause does not complete normally */
         else{
             if(logWriterInit){
                 logWriter.log("Config_Reader", 0, "in get_val could not find a match for " + key + ", exiting");
@@ -156,6 +158,8 @@ public class Config_Reader {
                 System.err.println("in function get_val could not find a match for " + key + ", exiting");
                 System.exit(0);
             }
+            /* --fixme-- */
+/* The expression of type int is boxed into Integer */
             return -1;
         }
     }
@@ -211,6 +215,8 @@ public class Config_Reader {
             toReturn = (Integer)container.get(key);
         }
         else{
+            /* --fixme-- */
+/* The expression of type int is boxed into Integer */
             toReturn = -1;
             if(logWriterInit){
                 logWriter.log("Config_Reader", 0, "in get_int could not find a match for " + key + ", exiting");
@@ -224,6 +230,8 @@ public class Config_Reader {
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "leaving get_int");
         }
+        /* --fixme-- */
+/* The expression of type Integer is unboxed into int */
         return toReturn;
     }
     
@@ -243,6 +251,8 @@ public class Config_Reader {
             toReturn = (Double)container.get(key);
         }
         else{
+            /* --fixme-- */
+/* The expression of type double is boxed into Double */
             toReturn = -1.0;
             if(logWriterInit){
                 logWriter.log("Config_Reader", 0, "in get_double could not find a match for " + key + ", exiting");
@@ -256,6 +266,8 @@ public class Config_Reader {
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "leaving get_double");
         }
+        /* --fixme-- */
+/* The expression of type Double is unboxed into double */
         return toReturn;
     }
     
@@ -275,6 +287,8 @@ public class Config_Reader {
             toReturn = (Boolean)container.get(key);
         }
         else{
+            /* --fixme-- */
+/* The expression of type boolean is boxed into Boolean */
             toReturn = false;
             if(logWriterInit){
                 logWriter.log("Config_Reader", 0, "in get_boolean could not find a match for " + key + ", exiting");
@@ -288,6 +302,8 @@ public class Config_Reader {
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "leaving get_boolean");
         }
+        /* --fixme-- */
+/* The expression of type Boolean is unboxed into boolean */
         return toReturn;
     }
     
@@ -367,11 +383,23 @@ public class Config_Reader {
      * verbosity_level default is 0
      */
     private void set_default_values(){
+        /* --fixme-- */
+/* The expression of type int is boxed into Integer */
         container.put("takt_frequency", 100);
+        /* --fixme-- */
+/* The expression of type int is boxed into Integer */
         container.put("verbosity_level", 0);
+        /* --fixme-- */
+/* The expression of type boolean is boxed into Boolean */
         container.put("silent", (Boolean)false);
+        /* --fixme-- */
+/* The expression of type boolean is boxed into Boolean */
         container.put("Engine_Warmup", (Boolean)true);
+        /* --fixme-- */
+/* The expression of type int is boxed into Integer */
         container.put("sync_port", 5021);
+        /* --fixme-- */
+/* The expression of type int is boxed into Integer */
         container.put("async_port", 5022);
         container.put("hostname", "localhost");
         container.put("path", "/home/linc/NetBeansProjects/Project_Icarus/Icarus/st_files");
@@ -706,6 +734,8 @@ public class Config_Reader {
     /**
      * 
      */
+    /* --fixme-- */
+/* Javadoc: Missing tag for declared exception IOException */
     public void create_example_config() throws IOException{
         if(logWriterInit){
             logWriter.log("Config_Reader", 4, "jumping in create_example_config");

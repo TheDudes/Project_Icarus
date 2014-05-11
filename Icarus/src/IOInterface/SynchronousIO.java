@@ -4,13 +4,19 @@ import vault.*;
 import parser.*;
 import java.net.*;
 
+/* --fixme-- */
+/* Javadoc: Missing comment for public declaration */
 public class SynchronousIO{
 
     private Synchronous_IO_Worker syncWorker;
     private Thread syncWorkerThread;
+    /* --fixme-- */
+/* The value of the field SynchronousIO.logger is not used */
     private LogWriter logger;
     private Socket syncSocket;
 
+    /* --fixme-- */
+/* Javadoc: Missing comment for public declaration */
     public SynchronousIO(LogWriter logger, Config_Reader confReader, InfoCollector infoColl){
        this.logger = logger;
        logger.log("SynchronousIO", 0, "trying to establish a connection to the IO Manager");
