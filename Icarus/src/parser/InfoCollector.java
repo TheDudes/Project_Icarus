@@ -50,14 +50,18 @@ public class InfoCollector {
 	 * <p>
 	 * the Constructor simply takes a array of String which are filenames.
 	 * Then different operations are run on these files to gether a lot of
-	 * Information.
-	 * @param files array of filenames to process
+	 * Informations.
+	 * @param configreader Config_Reader from above
 	 * @param log logwriter from above
 	 * @throws java.io.FileNotFoundException
+	 * @throws java.io.IOException
+	 * @throws java.lang.Exception
 	 * @see MergeFiles
 	 * @see Analyser
 	 * @see Match
 	 * @see Symbols
+	 * @see Config_Reader
+	 * @see LogWriter
 	 */
 	public InfoCollector (Config_Reader configreader, LogWriter log) throws FileNotFoundException, IOException, Exception {
 		this.log = log;
@@ -145,6 +149,7 @@ public class InfoCollector {
 	 * @param caseopen index of the C in the CASE
 	 * @param value int value of the variable we run this CASE for
 	 * @return an Integer array, [0] is the startindex and [1] is the endindex
+	 * @throws Exception
 	 * @see Match
 	 */
 	public Integer[]
@@ -439,4 +444,11 @@ public class InfoCollector {
 		return symb.get_com_channel_queue();
 	}
 
+	
+	public void
+	update_device(String device, int pinid, boolean value)
+	{
+		symb.update_device(device, pinid, value);
+	}
+	
 }

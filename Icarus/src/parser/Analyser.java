@@ -141,7 +141,7 @@ public class Analyser {
 						block.add(new Integer(pointer - 4));
 						log.log(key, 4, stop+ " index "+(pointer-4));
 					} else if (builder.charAt(pointer - 1) == 'E') {
-                        
+						continue;
 					} else {
 						block.add(new Integer(pointer));
 						log.log(key, 4, start+ " index " + pointer);
@@ -154,7 +154,7 @@ public class Analyser {
 						block.add(new Integer(pointer - 4));
 						log.log(key, 4, stop+" index: "+(pointer-4));
 					} else if (builder.charAt(pointer + 1) == '_') {
-						
+						continue;
 					} else {
 						block.add(new Integer(pointer));
 						log.log(key, 4, start+" index: "+pointer);

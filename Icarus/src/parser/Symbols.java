@@ -105,7 +105,7 @@ public class Symbols {
 		//findContextVars("GLOBAL");
         
 		generate_symbols_list();
-		//create_devices();
+		create_devices();
 	}
 	
 	/**
@@ -135,7 +135,7 @@ public class Symbols {
 
 				for (int j : variableIndexes) {
 					if (j < match.get_end_program(k) && j > k) { /* room for improvement here! i should take some minutes and think about the variable names .... */
-						varlist.add(j);
+						varlist.add(new Integer(j));
 					}
 				}
 				
@@ -252,7 +252,8 @@ public class Symbols {
 
 				log.log(key, 4, "Current line: "+b);
 				
-				if (tmpint == -1) {
+				if (tmpint == -1)
+				{
 					tmpint = b.indexOf(":");
 
 					/* variable deklaration wrong */
@@ -277,17 +278,53 @@ public class Symbols {
 						var_id++;
 					}
 					contextstore.put(context, percontext);
-				} else if (Pattern.matches("@", block.toString())) {
+				}
+				else if (Pattern.matches("@", block.toString()))
+				{
 					
-					names       = b.substring(0, b.indexOf(":")).split(",");
+					names       = b.substring( 0,          b.indexOf(":")).split(",");
 					type        = typebyid.get(contextstore.get(context).get(names[0]));
-					value       = b.substring(tmpint + 2, b.indexOf(";"));
+					value       = b.substring( tmpint + 2, b.indexOf(";"));
 					percontext  = contextstore.get(context);
 
-					if (percontext == null) {
+					int varid;
+
+					if (percontext == null)
+					{
 						percontext = new HashMap<>();  /* hmmm ... */
 					}
-					for (String name : names) {
+					for (String name : names)
+					{
+						varid = get_varid_by_name(context, name);
+						if(!(valueid_abilities.get(new Integer(varid)) == null))
+						{
+							boolean set = false;
+						        for (Integer deviceid : deviceid_pinid_valueid.keySet())
+							{
+								//System.out.println("Key: " + key + ", Value: " + map.get(key));
+								for (Integer pinid : deviceid_pinid_valueid.get(deviceid).keySet())
+								{
+									if (varid == deviceid_pinid_valueid.get(deviceid).get(pinid))
+									{
+										for (String device : device_deviceid.keySet())
+										{
+											if (deviceid == device_deviceid.get(device))
+											{
+												com_channel_queue.offer(
+													new IO_Package(
+														device,
+														(byte)(pinid & 0xFF),
+														Boolean.parseBoolean(value) ? new Byte("1").byteValue() : new Byte("0").byteValue(),
+														(byte)(valueid_abilities.get(new Integer(varid)) & 0xFF),
+														false
+														)
+													);
+											}
+										}
+									}
+								}
+							}
+						}
 						tmpint2 = contextstore.get(context).get(name);
 						if (!(tmpint2 == null)) {
 							valuebyid.put(tmpint2, TYPES.get_type(type, value));
@@ -297,7 +334,14 @@ public class Symbols {
 							throw new Exception("Unknown Symbol \"" + name + "\" in: " + context);
 						}
 					}
-				} else {
+					//int varid = get_varid_by_name(context, input);
+					/*if(!(valueid_abilities.get(new Integer(varid)) == null))
+					  {
+					  com_channel_queue.offer(new IO_Package());
+					  }*/
+				}
+				else
+				{
 					tmpint2 = b.indexOf(":");
 
 					log.log(key, 4, "With Initialization.");
@@ -452,6 +496,12 @@ public class Symbols {
 		
 		fill_up_the_containers(context, new StringBuilder(input + "@"));
 		
+		//int varid = get_varid_by_name(context, input);
+		/*if(!(valueid_abilities.get(new Integer(varid)) == null))
+		{
+			com_channel_queue.offer(new IO_Package());
+			}*/
+		
 	}
 
 	/**
@@ -580,5 +630,25 @@ public class Symbols {
 			device_id++;
 		}
 	}
+
+	public void
+	update_device(String device, int pinid, boolean value)
+	{
+		valuebyid.put(deviceid_pinid_valueid.get(device).get(pinid), new Boolean(value));
+	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

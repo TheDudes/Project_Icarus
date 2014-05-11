@@ -19,8 +19,6 @@ package parser;
 import java.util.*;
 import java.util.regex.*;
 
-import javax.swing.text.html.BlockView;
-
 import vault.LogWriter;
 
 
@@ -159,7 +157,7 @@ public class Match {
 			gather_all_repeat_list();
 			find_repeat_end_repeat_pairs();
 
-			//gather_configurations();
+			gather_configurations();
 			
 		} catch (Exception e) {
 			System.out.println(e);
@@ -183,7 +181,7 @@ public class Match {
 		log.log(key, 4, "ifs: "+Arrays.toString(ifs.toArray()));
 		
 		for (Integer item : ifs) {
-			if (builder.substring(item, item+2).equals("IF")) {
+			if (builder.substring(item.intValue(), item.intValue()+2).equals("IF")) {
 				ifendif.put(item, "IF");
 			} else {
 				ifendif.put(item, "END_IF");
@@ -232,7 +230,7 @@ public class Match {
 	get_end_if(int a)
 	{
 		log.log(key, 4, "get_end_if called.");
-		int localtmp = (int)ifmatching.get(a);
+		int localtmp = ifmatching.get(new Integer(a)).intValue();
 		log.log(key, 4, "end_if: "+tmp);
 		return localtmp;
 	}
@@ -262,7 +260,7 @@ public class Match {
 		cases = list.get(5);
 		//caseendcase = new TreeMap<>();
 		for (Integer item : cases) {
-			if (builder.substring(item, item+4).equals("CASE")) {
+			if (builder.substring(item.intValue(), item.intValue()+4).equals("CASE")) {
 				caseendcase.put(item, "CASE");		
 			} else {
 				caseendcase.put(item, "END_CASE");
@@ -315,12 +313,12 @@ public class Match {
 		log.log(key, 4, "case definition: "+casedef);
 		Pattern pattern = Pattern.compile(casedef);
 		Matcher matcher = pattern.matcher(builder);
-		int[] cases = new int[2];
+		int[] local_cases = new int[2];
 		while(matcher.find()) {
-			cases[0] = matcher.start();
-			cases[1] = matcher.end();
-			log.log(key, 4, "found: "+builder.substring(cases[0], cases[1])+" @ "+cases[0]+","+cases[1]);
-			allcases.put(cases[0], cases[1]);
+			local_cases[0] = matcher.start();
+			local_cases[1] = matcher.end();
+			log.log(key, 4, "found: "+builder.substring(local_cases[0], local_cases[1])+" @ "+local_cases[0]+","+local_cases[1]);
+			allcases.put(new Integer(local_cases[0]), new Integer(local_cases[1]));
 		}
 		/* finds all things matching the regex, but this doesn't matter because he knows where the cases are  */
 		log.log(key, 4, "cases found#: "+allcases.size());
@@ -342,22 +340,22 @@ public class Match {
 
 		ArrayList<Integer>  intlist   = new ArrayList<>();
 
-		String   tmp       = builder.substring(start, stop);
+		String   local_tmp       = builder.substring(start, stop);
 		boolean  series    = false;
 		int      inttmp    = 0;
 		int      intstart  = 0;
 
-		log.log(key, 4, "case: "+tmp);
+		log.log(key, 4, "case: "+local_tmp);
 
-		for (char c : tmp.toCharArray()) {
+		for (char c : local_tmp.toCharArray()) {
 			if (c == ',' || c == ':') {
 				if (series) {
 					for (; intstart <= inttmp; intstart++) {
-						intlist.add(intstart);
+						intlist.add(new Integer(intstart));
 					}
 					series = false;
 				} else {
-					intlist.add(inttmp);
+					intlist.add(new Integer(inttmp));
 				}
 			} else if (c == '.') {
 				if (!series) {
@@ -398,10 +396,10 @@ public class Match {
 
 			for (Map.Entry<Integer,Integer> evalcase : allcases.entrySet()) {
 
-				caseposstart  = evalcase.getKey();
-				caseposstop   = evalcase.getValue();
+				caseposstart  = evalcase.getKey().intValue();
+				caseposstop   = evalcase.getValue().intValue();
 
-				if (caseposstart > casestruct.getKey() && caseposstart < casestruct.getValue()) {
+				if (caseposstart > casestruct.getKey().intValue() && caseposstart < casestruct.getValue().intValue()) {
 
 					if (startstop[0] == -1) {
 						startstop[0]   = caseposstop;
@@ -412,7 +410,7 @@ public class Match {
 						startstop[1]  = caseposstart;
 
 						for (Integer val : eval_cases(casetoeval[0], casetoeval[1])) {
-							valuecase.put(val, new Integer[] {startstop[0], startstop[1]});
+							valuecase.put(val, new Integer[] {new Integer(startstop[0]),new Integer(startstop[1])});
 						}
 
 						startstop[0]   = caseposstop;
@@ -424,7 +422,7 @@ public class Match {
 			
 			for (Integer val : eval_cases(casetoeval[0], casetoeval[1])) {
 
-				valuecase.put(val, new Integer[] {startstop[0], casestruct.getValue()});
+				valuecase.put(val, new Integer[] {new Integer(startstop[0]), casestruct.getValue()});
 			}
 			
 			startstop[0] = -1;
@@ -452,24 +450,26 @@ public class Match {
 	 * @param caseopen index of the C in the CASE
 	 * @param value int value of the variable we run this CASE for
 	 * @return an Integer array, [0] is the startindex and [1] is the endindex
+	 * @throws java.lang.Exception
 	 */
 	public Integer[]
 	get_case_coordinates(int caseopen, int value) throws Exception
 	{
 		log.log(key, 4, "get_case_coordinates called.");
-		Integer[] tmp = casevalue.get(caseopen).get(value);
-		if (tmp != null) {
-			log.log(key, 4, "case coordinates: "+Arrays.toString(tmp));
-			return tmp;
-		} else {
-			int elseincase = builder.toString().indexOf("ELSE", caseopen);
-			if (elseincase < get_end_case(caseopen)) {
-				return new Integer[] {elseincase+4, builder.toString().indexOf("END_CASE", caseopen) };
-			} else {
-				log.log(key, 4, "Case is fucked up");
-				throw new Exception("Case is facked up");
-			}
+		Integer[] local_tmp = casevalue.get(new Integer(caseopen)).get(new Integer(value));
+		if (local_tmp != null) {
+			log.log(key, 4, "case coordinates: "+Arrays.toString(local_tmp));
+			return local_tmp;
 		}
+		
+		int elseincase = builder.toString().indexOf("ELSE", caseopen);
+
+		if (elseincase < get_end_case(caseopen)) {
+			return new Integer[] {new Integer(elseincase+4), new Integer(builder.toString().indexOf("END_CASE", caseopen)) };
+		}
+		
+		log.log(key, 4, "Case is fucked up");
+		throw new Exception("Case is fucked up");
 	}
 
 	/**
@@ -482,9 +482,9 @@ public class Match {
 	get_end_case(int a)
 	{
 		log.log(key, 4, "get_end_case called.");
-		int tmp = (int)casematching.get(a);
+		int local_tmp = casematching.get(new Integer(a)).intValue();
 		log.log(key, 4, "end_case: "+ tmp);
-		return tmp;
+		return local_tmp;
 	}
 
 	/**
@@ -521,28 +521,28 @@ public class Match {
 		vars.addAll(list.get(12));
 		
 		for (Integer item : vars) {
-			if (builder.substring(item, item+4).equals("VAR_")) {
+			if (builder.substring(item.intValue(), item.intValue()+4).equals("VAR_")) {
 				/* inner if block */
-				if (builder.substring(item, item+9).equals("VAR_INPUT")) {
-					log.log(key, 4, "found VAR_INPUT @ "+item);
+				if (builder.substring(item.intValue(), item.intValue()+9).equals("VAR_INPUT")) {
+					log.log(key, 4, "found VAR_INPUT @ "+item.intValue());
 					varendvar.put(item, "VAR_INPUT");
-				} else if (builder.substring(item, item+10).equals("VAR_OUTPUT")) {
-					log.log(key, 4, "found VAR_OUTPUT @ "+item);
+				} else if (builder.substring(item.intValue(), item.intValue()+10).equals("VAR_OUTPUT")) {
+					log.log(key, 4, "found VAR_OUTPUT @ "+item.intValue());
 					varendvar.put(item, "VAR_OUTPUT");
-				} else if (builder.substring(item, item+10).equals("VAR_GLOBAL")) {
-					log.log(key, 4, "found VAR_GLOBAL @ "+item);
+				} else if (builder.substring(item.intValue(), item.intValue()+10).equals("VAR_GLOBAL")) {
+					log.log(key, 4, "found VAR_GLOBAL @ "+item.intValue());
 					varendvar.put(item, "VAR_GLOBAL");
-				} else if (builder.substring(item, item+10).equals("VAR_CONFIG")) {
-					log.log(key, 4, "found VAR_CONFIG @ "+item);
+				} else if (builder.substring(item.intValue(), item.intValue()+10).equals("VAR_CONFIG")) {
+					log.log(key, 4, "found VAR_CONFIG @ "+item.intValue());
 					varendvar.put(item, "VAR_CONFIG");
 				} else {
 					/* throws, you realy fucked it up! */
-					log.log(key, 0, "Your realy fucked it up! Undefined VAR block, ten char cut: \""+builder.substring(item, item+10)+"\" @ "+item);
-					throw new Exception("Your realy fucked it up! Undefined VAR block, ten char cut: \""+builder.substring(item, item+10)+"\" @ "+item);
+					log.log(key, 0, "Your realy fucked it up! Undefined VAR block, ten char cut: \""+builder.substring(item.intValue(), item.intValue()+10)+"\" @ "+item.intValue());
+					throw new Exception("Your realy fucked it up! Undefined VAR block, ten char cut: \""+builder.substring(item.intValue(), item.intValue()+10)+"\" @ "+item.intValue());
 				}
 				/* end inner if block */
-			} else if (builder.substring(item, item+3).equals("VAR")) {
-				log.log(key, 4, "found VAR @ "+item);
+			} else if (builder.substring(item.intValue(), item.intValue()+3).equals("VAR")) {
+				log.log(key, 4, "found VAR @ "+item.intValue());
 				varendvar.put(item, "VAR");
 			} else {
 				varendvar.put(item, "END_VAR");
@@ -593,9 +593,9 @@ public class Match {
 	get_end_var(int a)
 	{
 		log.log(key, 4, "get_end_var called.");
-		int tmp = (int)varmatching.get(a);
-		log.log(key, 4, "end_var: "+tmp);
-		return tmp;
+		int local_tmp = varmatching.get(new Integer(a)).intValue();
+		log.log(key, 4, "end_var: "+local_tmp);
+		return local_tmp;
 	}
 
 	/**
@@ -619,9 +619,9 @@ public class Match {
 	get_var_start(int a)
 	{
 		log.log(key, 4, "get_var_start called.");
-		String tmp = varendvar.get(a);
-		log.log(key, 4, "var open: "+tmp);
-		return tmp;
+		String local_tmp = varendvar.get(new Integer(a));
+		log.log(key, 4, "var open: "+local_tmp);
+		return local_tmp;
 	}
 
 	/**
@@ -637,7 +637,7 @@ public class Match {
 		programs = list.get(0);
 		//programendprogram = new TreeMap<>();
 		for (Integer item : programs) {
-			if (builder.substring(item, item+7).equals("PROGRAM")) {
+			if (builder.substring(item.intValue(), item.intValue()+7).equals("PROGRAM")) {
 				programendprogram.put(item, "PROGRAM");
 			} else {
 				programendprogram.put(item, "END_PROGRAM");
@@ -688,9 +688,9 @@ public class Match {
 	get_end_program(int a)
 	{
 		log.log(key, 4, "get_end_program called.");
-		int tmp = (int)programmatching.get(a);
-		log.log(key, 4, "end_program: "+tmp);
-		return tmp;
+		int local_tmp = programmatching.get(new Integer(a)).intValue();
+		log.log(key, 4, "end_program: "+local_tmp);
+		return local_tmp;
 	}
     
 	/**
@@ -718,7 +718,7 @@ public class Match {
 		functions = list.get(1);
 		//functionendfunction = new TreeMap<>();
 		for (Integer item : functions) {
-			if (builder.substring(item, item+8).equals("FUNCTION")) {
+			if (builder.substring(item.intValue(), item.intValue()+8).equals("FUNCTION")) {
 				functionendfunction.put(item, "FUNCTION");
 			} else {
 				functionendfunction.put(item, "END_FUNCTION");
@@ -767,9 +767,9 @@ public class Match {
 	get_end_function(int a)
 	{
 		log.log(key, 4, "get_end_function called.");
-		int tmp = (int)functionmatching.get(a);
-		log.log(key, 4, "end_function: "+tmp);
-		return tmp;
+		int local_tmp = functionmatching.get(new Integer(a)).intValue();
+		log.log(key, 4, "end_function: "+local_tmp);
+		return local_tmp;
 	}
 
 	/**
@@ -797,7 +797,7 @@ public class Match {
 		functionblocks = list.get(2);
 		//functionblockendfunctionblock = new TreeMap<>();
 		for (Integer item : functionblocks) {
-			if (builder.substring(item, item+14).equals("FUNCTION_BLOCK")) {
+			if (builder.substring(item.intValue(), item.intValue()+14).equals("FUNCTION_BLOCK")) {
 				functionblockendfunctionblock.put(item, "FUNCTION_BLOCK");
 			} else {
 				functionblockendfunctionblock.put(item, "END_FUNCTION_BLOCK");
@@ -848,9 +848,9 @@ public class Match {
 	get_end_function_block(int a)
 	{
 		log.log(key, 4, "get_end_function_block called.");
-		int tmp = (int)functionblockmatching.get(a);
-		log.log(key, 4, "end_function_block: "+tmp);
-		return tmp;
+		int local_tmp = functionblockmatching.get(new Integer(a)).intValue();
+		log.log(key, 4, "end_function_block: "+local_tmp);
+		return local_tmp;
 	}
 
 	/**
@@ -880,7 +880,7 @@ public class Match {
 		//forendfor  = new TreeMap<>();
 
 		for (Integer item : fors) {
-			if (builder.substring(item, item+3).equals("FOR")) {
+			if (builder.substring(item.intValue(), item.intValue()+3).equals("FOR")) {
 				forendfor.put(item, "FOR");
 			} else {
 				forendfor.put(item, "END_FOR");
@@ -931,9 +931,9 @@ public class Match {
 	get_end_for(int a)
 	{
 		log.log(key, 4, "get_end_for called.");
-		int tmp = (int)formatching.get(a);
-		log.log(key, 4, "end_for: "+tmp);
-		return tmp;
+		int local_tmp = formatching.get(new Integer(a)).intValue();
+		log.log(key, 4, "end_for: "+local_tmp);
+		return local_tmp;
 	}
 
 	/**
@@ -961,7 +961,7 @@ public class Match {
 		whiles = list.get(7);
 		//whileendwhile = new TreeMap<>();
 		for (Integer item : whiles) {
-			if (builder.substring(item, item+5).equals("WHILE")) {
+			if (builder.substring(item.intValue(), item.intValue()+5).equals("WHILE")) {
 				whileendwhile.put(item, "WHILE");
 			} else {
 				whileendwhile.put(item, "END_WHILE");
@@ -1012,9 +1012,9 @@ public class Match {
 	get_end_while(int a)
 	{
 		log.log(key, 4, "get_end_while called.");
-		int tmp = (int)whilematching.get(a);
-		log.log(key, 4, "end_while: "+tmp);
-		return tmp;
+		int local_tmp = whilematching.get(new Integer(a)).intValue();
+		log.log(key, 4, "end_while: "+local_tmp);
+		return local_tmp;
 	}
 
 	/**
@@ -1044,7 +1044,7 @@ public class Match {
 		//repeatendrepeat  = new TreeMap<>();
 
 		for (Integer item : repeats) {
-			if (builder.substring(item, item+5).equals("REPEAT")) {
+			if (builder.substring(item.intValue(), item.intValue()+5).equals("REPEAT")) {
 				repeatendrepeat.put(item, "REPEAT");
 			} else {
 				repeatendrepeat.put(item, "END_REPEAT");
@@ -1095,9 +1095,9 @@ public class Match {
 	get_end_repeat(int a)
 	{
 		log.log(key, 4, "get_end_repeat called.");
-		int tmp = (int)repeatmatching.get(a);
-		log.log(key, 4, "end_repeat: "+tmp);
-		return tmp;
+		int local_tmp = repeatmatching.get(new Integer(a)).intValue();
+		log.log(key, 4, "end_repeat: "+local_tmp);
+		return local_tmp;
 	}
 
 	/**
@@ -1130,7 +1130,7 @@ public class Match {
 		{
 			if (get_var_start(item.intValue()).equals("VAR_CONFIG"))
 			{
-				var_config_entrys = builder.substring(item+keyword.length(), get_end_var(item)).split(";");
+				var_config_entrys = builder.substring(item.intValue()+keyword.length(), get_end_var(item.intValue())).split(";");
 				break;
 			}
 		}

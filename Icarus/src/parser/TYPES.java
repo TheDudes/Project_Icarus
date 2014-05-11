@@ -38,15 +38,15 @@ public class TYPES {
 	{
 		switch(type) {
 		case "BOOL":
-			return false;
+			return new Boolean(false);
 		case "SINT":
-			return (byte)0;
+			return new Byte("0");
 		case "INT":
-			return (short)0;
+			return new Short("0");
 		case "DINT":
-			return 0;
+			return new Integer("0");
 		case "LINT":
-			return (long) 0;
+			return new Long("0");
 		case "USINT":
 			return new USINT("0");
 		case "UINT":
@@ -56,16 +56,16 @@ public class TYPES {
 		case "ULINT":
 			return new ULINT("0");
 		case "REAL":
-			return (float) 0.0;
+			return new Float("0.0");
 		case "LREAL":
-			return 0.0;
+			return new Double("0.0");
 		case "TIME":
 		case "DATE":
 		case "TIME_OF_DAY":
 		case "TOD":
 		case "DATE_AND_TIME":
 		case "DT":
-			return (int) (System.currentTimeMillis() / 1000L);
+			return new Integer((System.currentTimeMillis() / 1000L)+"");
 		case "STRING":
 		case "WSTRING":
 			return "";

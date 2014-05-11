@@ -17,7 +17,6 @@
 package parser;
 
 import java.io.*;
-import java.util.Arrays;
 
 import vault.*;
 /**
@@ -38,7 +37,12 @@ public class MergeFiles {
 	private final String subkey = "MergeFiles";
 	private final String key = mainkey+"-"+subkey;
     
-    
+	/**
+	 * MergeFiles will merge all st files together and deletes all unneeded
+	 * information
+	 * @param log LogWriter to write log
+	 * @param args String array with the file paths
+	 */
 	public
 	MergeFiles(LogWriter log, String[] args)
 	{
@@ -52,66 +56,60 @@ public class MergeFiles {
 	 * be faster then String.
 	 *
 	 * @return StringBuilder
-	 * @throws FileNotFoundException, IOException
 	 */
 	public StringBuilder
-	merge_all() throws FileNotFoundException, IOException, Exception
+	merge_all()
 	{
-		StringBuilder  builder     = new StringBuilder();
-		FileReader     filereader;
-		boolean        flag        = false;
-		log.log(key, 3, "Inside merge_all()");
-		if (args.length <= 0) {
-			log.log(key, 0, "No files ... array is empty: "+Arrays.toString(args));
-			throw new Exception("No files ....");
-		} else {
-			filereader = new FileReader(args[0]);
-		} /* dirty, but it fixes a warning, will think about it ... */
+		StringBuilder  builder  = new StringBuilder();
+		boolean        flag     = false;
 		
-		for (String item : args) {
-			try { 
-				filereader = new FileReader(item); 
-				/*
-				 * Loop through all bytes of "item" and check every byte
-				 */
-				for(int i = filereader.read(); i != -1; i = filereader.read()) {
-					switch (i) {
-					case 10: //newline
-					case 13: //carriagereturn
-						break;
-					case 32: //space
-						break;
-					case 9: //tabulator
-						break;
-					case 40: //parentesis open
-						i = filereader.read();
-						if ( i == 42 ) //asterisk
-						{
-							flag = true;
-						}
-						else if (!flag) {
-							builder.append('(');
-							builder.append((char)i);
-						}
-						break;
-					case 42: //asterisk
-						i = filereader.read();
-						if ( i == 41 ) //parentesis close
-						{
-							flag = false;
-						} else if (!flag) {
-							builder.append('*');
-						}
-						break;
-					default:
-						if(!flag)
-						{
-							builder.append((char)i);
-						}
-						break;
-					}
-				}
-			}
+		log.log(key, 3, "Inside merge_all()");
+	        
+		for (String item : args)
+		{
+			try (FileReader filereader = new FileReader(item))
+			    {
+				    /*
+				     * Loop through all bytes of "item" and check every byte
+				     */
+				    for(int i = filereader.read(); i != -1; i = filereader.read()) {
+					    switch (i) {
+					    case 10: //newline
+					    case 13: //carriagereturn
+						    break;
+					    case 32: //space
+						    break;
+					    case 9: //tabulator
+						    break;
+					    case 40: //parentesis open
+						    i = filereader.read();
+						    if ( i == 42 ) //asterisk
+						    {
+							    flag = true;
+						    }
+						    else if (!flag) {
+							    builder.append('(');
+							    builder.append((char)i);
+						    }
+						    break;
+					    case 42: //asterisk
+						    i = filereader.read();
+						    if ( i == 41 ) //parentesis close
+						    {
+							    flag = false;
+						    } else if (!flag) {
+							    builder.append('*');
+						    }
+						    break;
+					    default:
+						    if(!flag)
+						    {
+							    builder.append((char)i);
+						    }
+						    break;
+					    }
+				    }
+			    }
 			catch (FileNotFoundException fnfe) {
 				log.log(key, 0, "File not found: "+ item);
 				System.err.println("File not found: " + item);
@@ -122,9 +120,8 @@ public class MergeFiles {
 			}
 		}
 		
-		filereader.close();
-		
 		log.log(key, 3, "Merged code: "+builder.toString());
 		return builder;
+		    
 	}
 }
