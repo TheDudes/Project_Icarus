@@ -25,7 +25,7 @@ import linc.*;
  * @author Aleksej Weinberg <weinberg.aleksej@yahoo.de>
  * <p>
  * This class gathers the information about one log line and hands it over to
- * the worker class
+ * the worker thread
  * <p>
  * @version 1.0
  */
@@ -41,7 +41,7 @@ public class LogWriter
 
     /**
      * LogWriter Constructor
-     * @param configReader gets the Path from the configfile and returns it
+     * @param configReader needed for silent value and verbosity_level.
      */
     public LogWriter(Config_Reader configReader)
     {
@@ -49,8 +49,8 @@ public class LogWriter
         verboseLevel = configReader.get_int("verbosity_level");
         LogWorker    = new LogWriterWorker(configReader, lbq);
         worker       = new Thread(LogWorker);
-        worker.setName("LogWriter");
         sdf          = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+        worker.setName("LogWriter");
         worker.start();
         log("LogWriter", 2, "initialized LogWriter");
         configReader.setLogWriter(this);
