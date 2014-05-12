@@ -23,8 +23,6 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import linc.*;
 
 /**
@@ -39,7 +37,7 @@ public class LogWriterWorker implements Runnable
     final private LinkedBlockingQueue<String> lbq;
     final private SimpleDateFormat sdf;
     final private Date    date;
-    final private String  pathToLogfiles;
+    final private String  path_to_log_files;
     final private int     verboseLevel;
           private String  message;
           private boolean alive = true;
@@ -55,13 +53,13 @@ public class LogWriterWorker implements Runnable
         verboseLevel    = confReader.get_int("verbosity_level");
         date = new Date(System.currentTimeMillis());
         sdf  = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss");
-        pathToLogfiles  = confReader.get_string("LogWriter") + sdf.format(date) + ".log";
+        path_to_log_files = confReader.get_string("LogWriter") + sdf.format(date) + ".log";
     }
 
     @Override
     public void run()
     {
-        try (Writer fWriter = new BufferedWriter(new FileWriter(pathToLogfiles, true)))
+        try (Writer fWriter = new BufferedWriter(new FileWriter(path_to_log_files, true)))
         {
             while( alive || !lbq.isEmpty() )
             {
@@ -80,12 +78,15 @@ public class LogWriterWorker implements Runnable
         }
         catch (IOException e)
         {
-            System.out.println("LogWriter Error (exiting): " + e);
+            System.out.println("LogWriter: Could not open/write/create log file at path: " + path_to_log_files);
+            System.out.println("LogWriter: IOException: " + e);
             System.exit(1);
         }
         catch (InterruptedException ex)
         {
-            Logger.getLogger(LogWriterWorker.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("LogWriter: Could not take Log message from Linked Blocking Queue");
+            System.out.println("LogWriter: InterruptedException: " + ex);
+            System.exit(1);
         }
     }
 
