@@ -48,6 +48,7 @@ public class LogWriter
         verboseLevel = configReader.get_int("verbosity_level");
         LogWorker    = new LogWriterWorker(configReader, lbq);
         worker       = new Thread(LogWorker);
+        worker.setName("LogWriter");
         sdf          = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
         worker.start();
         log("LogWriter", 0, "initialized LogWriter");
