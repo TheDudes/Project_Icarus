@@ -143,6 +143,8 @@ public class Synchronous_IO_worker implements Runnable {
 
     /* --fixme-- */
 /* Javadoc: Missing comment for public declaration */
+    /* --fixme-- */
+    /* Javadoc: Missing comment for public declaration */
     public void convert_deviceID() {
 
         letter = ioPackage.device_id.substring(0, 1);

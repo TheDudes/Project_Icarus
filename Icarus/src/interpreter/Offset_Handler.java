@@ -365,12 +365,14 @@ public class Offset_Handler
         String final_condition = "";
         int spot = 0;
 
-        for( ; spot < code.length(); spot++ ) {
-            if ( (code.charAt(spot) == '=') )
+        for( ; spot < code.length(); spot++ )
+        {
+            if (        (code.charAt(spot)     == '=') )
             {
                 final_condition += " == ";
                 continue;
-            } else if ( (code.charAt(spot)     == 'T') &&
+            }
+            else if (   (code.charAt(spot)     == 'T') &&
                         (code.charAt(spot + 1) == 'R') &&
                         (code.charAt(spot + 2) == 'U') &&
                         (code.charAt(spot + 3) == 'E') )
@@ -378,7 +380,8 @@ public class Offset_Handler
                 final_condition += " true ";
                 spot += 3;
                 continue;
-            } else if ( (code.charAt(spot)     == 'F') &&
+            }
+            else if (   (code.charAt(spot)     == 'F') &&
                         (code.charAt(spot + 1) == 'A') &&
                         (code.charAt(spot + 2) == 'L') &&
                         (code.charAt(spot + 3) == 'S') &&
@@ -387,65 +390,75 @@ public class Offset_Handler
                 final_condition += " false ";
                 spot += 4;
                 continue;
-            } else if ( (code.charAt(spot)     == 'X') &&
+            }
+            else if (   (code.charAt(spot)     == 'X') &&
                         (code.charAt(spot + 1) == 'O') &&
                         (code.charAt(spot + 2) == 'R') )
             {
                 final_condition += " ^ ";
                 spot += 2;
                 continue;
-            } else if ( (code.charAt(spot)     == 'A') &&
+            }
+            else if (   (code.charAt(spot)     == 'A') &&
                         (code.charAt(spot + 1) == 'N') &&
                         (code.charAt(spot + 2) == 'D') )
             {
                 final_condition += " && ";
                 spot += 2;
                 continue;
-            } else if ( (code.charAt(spot)     == 'N') &&
+            }
+            else if (   (code.charAt(spot)     == 'N') &&
                         (code.charAt(spot + 1) == 'O') &&
                         (code.charAt(spot + 2) == 'T') )
             {
                 final_condition += " !";
                 spot += 2;
                 continue;
-            } else if ( (code.charAt(spot) == '&') )
+            }
+            else if (   (code.charAt(spot)     == '&') )
             {
                 final_condition += " && ";
                 continue;
-            } else if ( (code.charAt(spot)     == '<') &&
+            }
+            else if (   (code.charAt(spot)     == '<') &&
                         (code.charAt(spot + 1) == '>') )
             {
                 final_condition += " != ";
                 spot += 1;
                 continue;
-            } else if ( (code.charAt(spot)     == 'M') &&
+            }
+            else if (   (code.charAt(spot)     == 'M') &&
                         (code.charAt(spot + 1) == 'O') &&
                         (code.charAt(spot + 2) == 'D') )
             {
                 final_condition += " % ";
                 spot += 2;
                 continue;
-            } else if ( (code.charAt(spot)     == 'O') &&
+            }
+            else if (   (code.charAt(spot)     == 'O') &&
                         (code.charAt(spot + 1) == 'R') )
             {
                 final_condition += " || ";
                 spot += 1;
                 continue;
-            } else if ( (code.charAt(spot)     == 'S') &&
+            }
+            else if (   (code.charAt(spot)     == 'S') &&
                         (code.charAt(spot + 1) == 'I') &&
                         (code.charAt(spot + 2) == 'N') )
             {
                 final_condition += " Math.sin";
                 spot += 2;
                 continue;
-            } else if ( (code.charAt(spot)     == 'T') &&
+            }
+            else if (   (code.charAt(spot)     == 'T') &&
                         (code.charAt(spot + 1) == 'A') &&
                         (code.charAt(spot + 2) == 'N') )
             {
                 final_condition += " Math.tan";
                 spot += 2;
                 continue;
-            } else if ( (code.charAt(spot)     == 'A') &&
+            }
+            else if (   (code.charAt(spot)     == 'A') &&
                         (code.charAt(spot + 1) == 'S') &&
                         (code.charAt(spot + 2) == 'I') &&
                         (code.charAt(spot + 3) == 'N') )
@@ -453,7 +466,8 @@ public class Offset_Handler
                 final_condition += " Math.asin";
                 spot += 3;
                 continue;
-            } else if ( (code.charAt(spot)     == 'A') &&
+            }
+            else if (   (code.charAt(spot)     == 'A') &&
                         (code.charAt(spot + 1) == 'C') &&
                         (code.charAt(spot + 2) == 'O') &&
                         (code.charAt(spot + 3) == 'S') )
@@ -461,7 +475,8 @@ public class Offset_Handler
                 final_condition += " Math.acos";
                 spot += 3;
                 continue;
-            } else if ( (code.charAt(spot)     == 'A') &&
+            }
+            else if (   (code.charAt(spot)     == 'A') &&
                         (code.charAt(spot + 1) == 'T') &&
                         (code.charAt(spot + 2) == 'A') &&
                         (code.charAt(spot + 3) == 'N') )
@@ -469,27 +484,31 @@ public class Offset_Handler
                 final_condition += " Math.atan";
                 spot += 3;
                 continue;
-            } else if ( (code.charAt(spot)     == 'L') &&
+            }
+            else if (   (code.charAt(spot)     == 'L') &&
                         (code.charAt(spot + 1) == 'O') &&
                         (code.charAt(spot + 2) == 'G') )
             {
                 final_condition += " Math.log10";
                 spot += 2;
                 continue;
-            } else if ( (code.charAt(spot)     == 'E') &&
+            }
+            else if (   (code.charAt(spot)     == 'E') &&
                         (code.charAt(spot + 1) == 'X') &&
                         (code.charAt(spot + 2) == 'P') )
             {
                 final_condition += " Math.exp";
                 spot += 2;
                 continue;
-            } else if ( (code.charAt(spot)     == 'L') &&
+            }
+            else if (   (code.charAt(spot)     == 'L') &&
                         (code.charAt(spot + 1) == 'N') )
             {
                 final_condition += " Math.log";
                 spot += 1;
                 continue;
-            } else if ( (code.charAt(spot)     == 'S') &&
+            }
+            else if (   (code.charAt(spot)     == 'S') &&
                         (code.charAt(spot + 1) == 'Q') &&
                         (code.charAt(spot + 2) == 'R') &&
                         (code.charAt(spot + 3) == 'T') )
@@ -497,7 +516,8 @@ public class Offset_Handler
                 final_condition += " Math.sqrt";
                 spot += 3;
                 continue;
-            } else if ( (code.charAt(spot)     == 'A') &&
+            }
+            else if (   (code.charAt(spot)     == 'A') &&
                         (code.charAt(spot + 1) == 'B') &&
                         (code.charAt(spot + 2) == 'S') )
             {
