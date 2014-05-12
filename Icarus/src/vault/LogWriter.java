@@ -51,7 +51,7 @@ public class LogWriter
         worker.setName("LogWriter");
         sdf          = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
         worker.start();
-        log("LogWriter", 0, "initialized LogWriter");
+        log("LogWriter", 2, "initialized LogWriter");
         configReader.setLogWriter(this);
     }
 

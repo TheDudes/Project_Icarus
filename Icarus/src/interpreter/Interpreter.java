@@ -43,12 +43,12 @@ public class Interpreter
      */
     public Interpreter(InfoCollector container, LogWriter log, Config_Reader config)
     {
-        log.log(log_key, 4, "init Interpreter...");
+        log.log(log_key, 2, "init Interpreter...");
 
         this.log       = log;
         handler        = new Keyword_Handler(container, log, config, this);
 
-        log.log(log_key, 4, "init Interpreter done.");
+        log.log(log_key, 2, "init Interpreter done.");
     }
 
     /**

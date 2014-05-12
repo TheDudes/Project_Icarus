@@ -39,11 +39,11 @@ public class Offset_Handler
      */
     public Offset_Handler(LogWriter log)
     {
-        log.log(log_key, 4, "init Offset_Handler...");
+        log.log(log_key, 2, "init Offset_Handler...");
 
         this.log       = log;
 
-        log.log(log_key, 4, "init Offset_Handler done.");
+        log.log(log_key, 2, "init Offset_Handler done.");
     }
 
     /**

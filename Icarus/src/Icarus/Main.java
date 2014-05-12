@@ -62,6 +62,7 @@ public class Main
         container   = new InfoCollector(config, logger);
         interpreter = new Interpreter(container, logger, config);
 
+        logger.log(log_key, 0, "starting Icarus.");
         double blub = 0.0;
         for(int i = 0; i < 25; i++ )
         {

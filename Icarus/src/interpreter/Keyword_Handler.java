@@ -55,7 +55,7 @@ public class Keyword_Handler
      */
     public Keyword_Handler(InfoCollector container, LogWriter log, Config_Reader config, Interpreter interpreter)
     {
-        log.log(log_key, 4, "init Keyword_Handler...");
+        log.log(log_key, 2, "init Keyword_Handler...");
 
         this.container   = container;
         this.log         = log;
@@ -64,14 +64,14 @@ public class Keyword_Handler
         engine = new Engine(log, config);
         offset = new Offset_Handler(log);
 
-        log.log(log_key, 4, "init stacks...");
+        log.log(log_key, 2, "init stacks...");
         context_stack     = new Stack<>();
         loop_stack        = new Stack<>();
         if_stack          = new Stack<>();
         if_position_stack = new Stack<>();
-        log.log(log_key, 4, "init stacks done.");
+        log.log(log_key, 2, "init stacks done.");
 
-        log.log(log_key, 4, "init Keyword_Handler done.");
+        log.log(log_key, 2, "init Keyword_Handler done.");
     }
 
     /**

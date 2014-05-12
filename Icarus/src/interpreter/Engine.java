@@ -45,12 +45,12 @@ public class Engine
     public Engine(LogWriter log, Config_Reader config)
     {
         this.log = log;
-        log.log(log_key, 4, "init Engine...");
+        log.log(log_key, 2, "init Engine...");
         ScriptEngineManager factory = new ScriptEngineManager();
         engine                      = factory.getEngineByName("JavaScript");
         if(config.get_boolean("Engine_Warmup"))
             warmup();
-        log.log(log_key, 4, "init Engine done.");
+        log.log(log_key, 2, "init Engine done.");
     }
 
     /**
