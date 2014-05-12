@@ -44,16 +44,16 @@ public class LogWriterWorker implements Runnable
 
     /**
      * LogWriterWorker constructor
-     * @param confReader config reader object with all parsed config values
+     * @param config config reader object with all parsed config values
      * @param lbq LinkedBlockingQueue in which the log messages will be added
      */
-    public LogWriterWorker(Config_Reader confReader, LinkedBlockingQueue<String> lbq)
+    public LogWriterWorker(Config_Reader config, LinkedBlockingQueue<String> lbq)
     {
-        this.lbq        = lbq;
-        verboseLevel    = confReader.get_int("verbosity_level");
+        this.lbq     = lbq;
+        verboseLevel = config.get_int("verbosity_level");
         date = new Date(System.currentTimeMillis());
         sdf  = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss");
-        path_to_log_files = confReader.get_string("LogWriter") + sdf.format(date) + ".log";
+        path_to_log_files = config.get_string("LogWriter") + sdf.format(date) + ".log";
     }
 
     @Override

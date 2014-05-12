@@ -43,17 +43,17 @@ public class LogWriter
      * LogWriter Constructor
      * @param configReader needed for silent value and verbosity_level.
      */
-    public LogWriter(Config_Reader configReader)
+    public LogWriter(Config_Reader config)
     {
-        silent       = configReader.get_boolean("silent");
-        verboseLevel = configReader.get_int("verbosity_level");
-        LogWorker    = new LogWriterWorker(configReader, lbq);
+        verboseLevel = config.get_int("verbosity_level");
+        silent       = config.get_boolean("silent");
+        LogWorker    = new LogWriterWorker(config, lbq);
         worker       = new Thread(LogWorker);
         sdf          = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
         worker.setName("LogWriter");
         worker.start();
         log("LogWriter", 2, "initialized LogWriter");
-        configReader.setLogWriter(this);
+        config.setLogWriter(this);
     }
 
     /**
