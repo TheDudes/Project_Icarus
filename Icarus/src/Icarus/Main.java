@@ -43,7 +43,7 @@ public class Main
           static String code;
 
           static Config_Reader config;
-          static LogWriter     logger;
+          static LogWriter     log;
           static InfoCollector container;
           static Interpreter   interpreter;
 
@@ -58,25 +58,24 @@ public class Main
         set_config_file_path();
 
         config      = new Config_Reader(config_path);
-        logger      = new LogWriter(config);
-        container   = new InfoCollector(config, logger);
-        interpreter = new Interpreter(container, logger, config);
+        log         = new LogWriter(config);
+        container   = new InfoCollector(config, log);
+        interpreter = new Interpreter(container, log, config);
 
-        logger.log(log_key, 0, "starting Icarus.");
+        log.log(log_key, 0, "starting Icarus.");
         double blub = 0.0;
         for(int i = 0; i < 25; i++ )
         {
             blub = System.currentTimeMillis();
 
-            logger.log(log_key, 4, "starting Interpreter...");
             code = container.get_all_the_code().toString();
             interpreter.interpret(code, 0, code.length());
 
-            System.out.println((System.currentTimeMillis() - blub) + "ms.");
+            log.log(log_key, 0, (System.currentTimeMillis() - blub) + "ms.");
         }
 
-        logger.log(log_key, 0, "exiting Icarus.");
-        logger.kill();
+        log.log(log_key, 0, "exiting Icarus.");
+        log.kill();
     }
 
     private static void print_startup_message()
