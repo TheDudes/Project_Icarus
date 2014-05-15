@@ -36,21 +36,21 @@ public class Engine
 {
     final private ScriptEngine engine;
     final private Logger       log;
-    final private String       log_key = "engine";
+    final private String       log_key = " [engine]: ";
 
     /**
-     * @param log LogWriter Object
+     * @param log Logger Object
      * @param config Config_Reader Object
      */
     public Engine(Logger log, Config_Reader config)
     {
         this.log = log;
-        log.log(log_key, 2, "init Engine...");
+        log.log(2, log_key, "init Engine...\n");
         ScriptEngineManager factory = new ScriptEngineManager();
         engine                      = factory.getEngineByName("JavaScript");
         if(config.get_boolean("Engine_Warmup"))
             warmup();
-        log.log(log_key, 2, "init Engine done.");
+        log.log(2, log_key, "init Engine done.\n");
     }
 
     /**
@@ -63,7 +63,7 @@ public class Engine
         int total_evaluations = 2000;
         double avg = 0.0;
 
-        log.log("engine", 0,"starting engine warmup...");
+        log.log(0, log_key, "starting engine warmup...\n");
         long start = System.currentTimeMillis();
 
         for(int i = 0; i < total_evaluations; i++)
@@ -99,15 +99,15 @@ public class Engine
             if (i % 100 == 0 && i != 0)
             {
                 avg = avg / 100;
-                log.log("engine", 2,"100 evaluations done, avg time: (" + avg + "ms avg)");
+                log.log(2, log_key, "100 evaluations done, avg time: (", new Double(avg).toString(), "ms avg)\n");
             }
         }
-        log.log("engine", 2, "100 evaluations done, avg time: (" + avg / 100 + "ms avg)");
-        log.log("engine", 0, "engine warmup finished, total evaluations: "
-                                    + total_evaluations
-                                    + ", total time: "
-                                    + (System.currentTimeMillis() - start)
-                                    + "ms");
+        log.log(2, log_key, "100 evaluations done, avg time: (", new Double(avg / 100).toString(), "ms avg)\n");
+        log.log(0, log_key, "engine warmup finished, total evaluations:",
+                                    new Double(total_evaluations).toString(),
+                                    ", total time: ",
+                                    new Double(System.currentTimeMillis() - start).toString(),
+                                    "ms\n");
         return engine;
     }
 
@@ -118,7 +118,7 @@ public class Engine
      */
     public Object eval(String condition)
     {
-        log.log(log_key, 4, "call_engine_eval with: " + condition);
+        log.log(4, log_key, "call_engine_eval with: ", condition, "\n");
         Object obj = new Object();
         try
         {
@@ -126,17 +126,17 @@ public class Engine
         }
         catch(ScriptException e)
         {
-            log.log(log_key, 0, "could not evalue condition:" + condition);
+            log.log(0, log_key, "could not evalue condition:", condition, "\n");
             log.kill();
             System.exit(1);
         }
         catch(NullPointerException e)
         {
-            log.log(log_key, 0, "could not evalue condition:" + condition);
+            log.log(0, log_key, "could not evalue condition:", condition, "\n");
             log.kill();
             System.exit(1);
         }
-        log.log(log_key, 4, "return_engine_eval with: " + condition);
+        log.log(4,  log_key, "return_engine_eval with: ", condition, "\n");
         return obj;
     }
 }

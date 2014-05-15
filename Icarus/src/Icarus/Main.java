@@ -37,7 +37,7 @@ import java.net.*;
  */
 public class Main
 {
-    final static String log_key = "main";
+    final static String log_key = " [main]: ";
           static String config_path;
           static String hostname;
           static String code;
@@ -76,7 +76,7 @@ public class Main
 
         //test.kill();
 
-        log.log(log_key, 0, "starting Icarus.");
+        log.log(0, log_key, "starting Icarus.\n");
         double blub = 0.0;
         for(int i = 0; i < 25; i++ )
         {
@@ -85,10 +85,10 @@ public class Main
             code = container.get_all_the_code().toString();
             interpreter.interpret(code, 0, code.length());
 
-            log.log(log_key, 0, (System.currentTimeMillis() - blub) + "ms.");
+            log.log(0, log_key, new Double(System.currentTimeMillis() - blub).toString(), "ms.\n");
         }
 
-        log.log(log_key, 0, "exiting Icarus.");
+        log.log(0, log_key, "exiting Icarus.\n");
         log.kill();
     }
 

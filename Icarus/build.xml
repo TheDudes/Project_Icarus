@@ -1,7 +1,7 @@
 <project name="Icarus" basedir="." default="magic">
 
   <property name="project"     value="Project_Icarus"/>
-  <property name="packages"    value="parser,Ninti,linc,Icarus,vault,interpreter"/>
+  <property name="packages"    value="parser,Ninti,linc,Icarus,logger,interpreter"/>
   <property name="main.class"  value="Icarus.Main"/>
   
   <property name="src.dir"     value="src"/>

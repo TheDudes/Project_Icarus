@@ -34,7 +34,7 @@ import java.io.Writer;
 /**
  * @author d4ryus - https://github.com/d4ryus/
  * <p>
- * Main, here is where the magic happens.
+ * Logger, used to write log files.
  * <p>
  * @version 0.8
  */
@@ -60,6 +60,7 @@ public class Logger
         path_to_log_files = config.get_string("LogWriter") 
                              + sdf.format(new Long(new Date().getTime()))
                              + ".log";
+
         verboseLevel      = config.get_int("verbosity_level");
         silent            = config.get_boolean("silent");
 
