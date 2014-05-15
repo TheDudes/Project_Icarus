@@ -49,7 +49,7 @@ public class InfoCollector {
 	 * lot of different classes to make the life for others easyer
 	 * <p>
 	 * the Constructor simply takes a array of String which are filenames.
-	 * Then different operations are run on these files to gether a lot of
+	 * Then different operations are run on these files to gether a lot Offset_Handler
 	 * Informations.
 	 * @param configreader Config_Reader from above
 	 * @param log logwriter from above
