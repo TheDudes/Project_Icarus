@@ -62,20 +62,6 @@ public class Main
         container   = new InfoCollector(config, log);
         interpreter = new Interpreter(container, log, config);
 
-        //test.log(0, " [main]: ", "this is a test log.\n");
-        //test.log(0, " [main]: ", "this is a test log.\n");
-        //test.log(0, " [main]: ", "this is a test log.\n");
-        //test.log(0, " [main]: ", "this is a test log.\n");
-        //test.log(0, " [main]: ", "this is a test log.\n");
-
-        //test.log("blub",0, "this is a test log.\n");
-        //test.log("blub",0, "this is a test log.\n");
-        //test.log("blub",0, "this is a test log.\n");
-        //test.log("blub",0, "this is a test log.\n");
-        //test.log("blub",0, "this is a test log.\n");
-
-        //test.kill();
-
         log.log(0, log_key, "starting Icarus.\n");
         double blub = 0.0;
         for(int i = 0; i < 25; i++ )
