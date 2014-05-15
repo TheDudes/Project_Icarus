@@ -1,36 +1,43 @@
 package parser;
 
+import Ninti.*;
 
 public class
-Variable()
+Variable
 {
-        private int    id;
-        private String type;
-        private String name;
-        private Object value;
-        private TYPES  types;
-        private String device;
-        private byte   pin;
-        private byte   abilities;
+        private String  context;
+        private int     id;
+        private String  type;
+        private String  name;
+        private Object  value;
+        private TYPES   types;
+        private String  device;
+        private byte    pin;
+        private byte    abilities;
+        private boolean to_poll;
 
         public
-        Variable(id, type, name, str_value)
+        Variable(String context, int id, String type, String name, String str_value)
+        throws UnsignedException
         {
-                this.id    = id;
-                this.type  = type;
-                this.name  = name;
-                this.types = new TYPES();
-                this.value = types.get_type(type, str_value);
+                this.context = context;
+                this.id      = id;
+                this.type    = type;
+                this.name    = name;
+                this.types   = new TYPES();
+                this.value   = types.get_type(type, str_value);
         }
 
         public
-        Variable(id, type, name)
+        Variable(String context, int id, String type, String name)
+        throws UnsignedException
         {
-                this.id    = id;
-                this.type  = type;
-                this.name  = name;
-                this.types = new TYPES();
-                this.value = types.get_type(type);
+                this.context = context;
+                this.id      = id;
+                this.type    = type;
+                this.name    = name;
+                this.types   = new TYPES();
+                this.value   = types.get_type(type);
         }
 
         public String
@@ -41,6 +48,7 @@ Variable()
 
         public void
         set_value(String str_value)
+        throws UnsignedException
         {
                 this.value = types.get_type(type, str_value);
         }
@@ -51,6 +59,12 @@ Variable()
                 this.device    = device;
                 this.pin       = pin;
                 this.abilities = abilities;
+        }
+
+        public IO_Package
+        get_IOPackage()
+        {
+                return new IO_Package(device, pin, ((Boolean)value).booleanValue() ? (byte)1 : (byte)0, abilities, to_poll);
         }
         
 }
