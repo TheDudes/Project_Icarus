@@ -22,7 +22,7 @@ import java.util.regex.*;
 
 import linc.Config_Reader;
 
-import vault.*;
+import logger.*;
 
 /**
  * This finds all var block and the corresponding context in which they life an
@@ -59,7 +59,7 @@ public class Symbols {
 	
 	
 	/* logger */
-	private final  LogWriter  log;
+	private final  Logger     log;
 	private final  String     mainkey  = "parser";
 	private final  String     subkey   = "Symbols";
 	private final  String     key      = mainkey + "-" + subkey;
@@ -76,7 +76,7 @@ public class Symbols {
 	 * @throws java.lang.Exception
 	 */
 	public
-	Symbols(StringBuilder builder, Match match, LogWriter log, Config_Reader confreader) throws Exception
+	Symbols(StringBuilder builder, Match match, Logger log, Config_Reader confreader) throws Exception
 	{
 		this.log         = log;
 		this.builder     = builder;

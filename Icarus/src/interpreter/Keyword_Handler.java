@@ -19,7 +19,7 @@
 
 package interpreter;
 
-import vault.*;
+import logger.*;
 import parser.*;
 import linc.*;
 
@@ -38,7 +38,7 @@ public class Keyword_Handler
     final private String                log_key = "Interpreter-Keyword_Handler";
     final private InfoCollector         container;
     final private Engine                engine;
-    final private LogWriter             log;
+    final private Logger                log;
     final private Interpreter           interpreter;
     final private Offset_Handler        offset;
 
@@ -53,7 +53,7 @@ public class Keyword_Handler
      * @param config used Config_Reader
      * @param interpreter used Interpreter, need for recursive calls (CASE, ...)
      */
-    public Keyword_Handler(InfoCollector container, LogWriter log, Config_Reader config, Interpreter interpreter)
+    public Keyword_Handler(InfoCollector container, Logger log, Config_Reader config, Interpreter interpreter)
     {
         log.log(log_key, 2, "init Keyword_Handler...");
 

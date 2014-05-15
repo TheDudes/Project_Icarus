@@ -32,7 +32,6 @@ import linc.*;
 public class LogWriter
 {
     final private LinkedBlockingQueue<String> lbq = new LinkedBlockingQueue<>(1024);
-    final private LinkedBlockingQueue<String[]> lbq_test = new LinkedBlockingQueue<>(1024);
     final private SimpleDateFormat sdf;
     final private LogWriterWorker  LogWorker;
     final private boolean          silent;
@@ -41,7 +40,7 @@ public class LogWriter
 
     /**
      * LogWriter Constructor
-     * @param configReader needed for silent value and verbosity_level.
+     * @param config needed for silent value and verbosity_level.
      */
     public LogWriter(Config_Reader config)
     {
@@ -54,25 +53,6 @@ public class LogWriter
         worker.start();
         log("LogWriter", 2, "initialized LogWriter");
         config.setLogWriter(this);
-    }
-
-    /**
-     * new_log generates one log line and adds it to the LinkeBlockingQueue lbq
-     * @param verbosity incomming message verbosity
-     * @param args message in String array
-     */
-    public void new_log(int verbosity, String... args)
-    {
-        if (( verbosity == 0 ) && !silent )
-        {
-            String message = new String();
-            for (String arg : args)
-                message += arg;
-            System.out.println(message);
-            lbq_test.offer(args);
-        }
-        else if ( verbosity <= this.verboseLevel )
-            lbq_test.offer(args);
     }
 
     /**

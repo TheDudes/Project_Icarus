@@ -19,7 +19,7 @@
 
 package interpreter;
 
-import vault.*;
+import logger.*;
 
 /**
  * @author d4ryus - https://github.com/d4ryus/
@@ -32,12 +32,12 @@ import vault.*;
 public class Offset_Handler
 {
     final private String    log_key = "Interpreter-Offset";
-    final private LogWriter log;
+    final private Logger log;
 
     /**
      * @param log used LogWriter
      */
-    public Offset_Handler(LogWriter log)
+    public Offset_Handler(Logger log)
     {
         log.log(log_key, 2, "init Offset_Handler...");
 

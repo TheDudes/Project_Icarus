@@ -19,7 +19,7 @@ package parser;
 import java.util.*;
 import java.util.regex.*;
 
-import vault.LogWriter;
+import logger.*;
 
 
 /**
@@ -75,7 +75,7 @@ public class Match {
 	private final  TreeMap<Integer,TreeMap<Integer,Integer[]>>  casevalue;
 
 	/* logger */
-	private final LogWriter  log;
+	private final Logger     log;
 	private final String     mainkey  = "parser";
 	private final String     subkey   = "Match";
 	private final String     key      = mainkey+"-"+subkey;
@@ -89,7 +89,7 @@ public class Match {
 	 * @param log LogWriter from above
 	 */
 	public
-	Match(Analyser anal, StringBuilder builder, LogWriter log)
+	Match(Analyser anal, StringBuilder builder, Logger log)
  	{
 		this.log = log;
 		this.builder = builder;

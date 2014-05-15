@@ -19,7 +19,7 @@
 
 package interpreter;
 
-import vault.*;
+import logger.*;
 import linc.*;
 
 import javax.script.*;
@@ -35,14 +35,14 @@ import javax.script.*;
 public class Engine
 {
     final private ScriptEngine engine;
-    final private LogWriter    log;
+    final private Logger       log;
     final private String       log_key = "engine";
 
     /**
      * @param log LogWriter Object
      * @param config Config_Reader Object
      */
-    public Engine(LogWriter log, Config_Reader config)
+    public Engine(Logger log, Config_Reader config)
     {
         this.log = log;
         log.log(log_key, 2, "init Engine...");

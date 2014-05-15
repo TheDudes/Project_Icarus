@@ -18,7 +18,7 @@ package linc;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
-import vault.LogWriter;
+import logger.*;
 
 /**
  *
@@ -30,7 +30,7 @@ public class STFileFinder {
     private String files[];
     private File directory;
     private ArrayList<String> stFiles;
-    private LogWriter logWriter;
+    private Logger logWriter;
     
     
     /**
@@ -38,7 +38,7 @@ public class STFileFinder {
      * @param cfReader cfReader to be able to call the function to get the fileDirectory we should search
      * @param logWriter logWriter so we can spam the shit out of people
      */
-    public STFileFinder(Config_Reader cfReader, LogWriter logWriter){
+    public STFileFinder(Config_Reader cfReader, Logger logWriter){
         this.logWriter = logWriter;
         fileDirectory = cfReader.get_path("path");
 	directory = new File(fileDirectory);

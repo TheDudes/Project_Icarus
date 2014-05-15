@@ -18,7 +18,7 @@ package parser;
 
 import java.io.*;
 
-import vault.*;
+import logger.*;
 /**
  * This class merges all files together and removes the unneeded chars
  *
@@ -32,7 +32,7 @@ public class MergeFiles {
 	
 	// logger
 	//private static boolean logstat;
-	private final LogWriter log;
+	private final Logger log;
 	private final String mainkey = "parser";
 	private final String subkey = "MergeFiles";
 	private final String key = mainkey+"-"+subkey;
@@ -44,7 +44,7 @@ public class MergeFiles {
 	 * @param args String array with the file paths
 	 */
 	public
-	MergeFiles(LogWriter log, String[] args)
+	MergeFiles(Logger log, String[] args)
 	{
 		this.log = log;
 		this.args = args;

@@ -16,7 +16,7 @@
 package parser;
 
 import java.util.*;
-import vault.*;
+import logger.*;
 
 /**
  * This class locates all block beginnings and endings
@@ -64,7 +64,7 @@ public class Analyser {
 	};
 
 	/* logger */
-	private final LogWriter  log;
+	private final Logger  log;
 	private final String     mainkey  = "parser";
 	private final String     subkey   = "Analyser";
 	private final String     key      = mainkey + "-" + subkey;
@@ -75,10 +75,10 @@ public class Analyser {
 	 * the Constructor takes a StringBuilder, which was prepared by MergeAllFiles
 	 *
 	 * @param builder StringBuilder prepared by MergeAllFiles
-	 * @param log LogWriter from above
+	 * @param log Logger from above
 	 */
 	public
-	Analyser(StringBuilder builder, LogWriter log)
+	Analyser(StringBuilder builder, Logger log)
 	{
 		this.log      = log;
 		this.builder  = builder;

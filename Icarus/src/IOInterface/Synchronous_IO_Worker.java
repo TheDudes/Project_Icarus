@@ -4,7 +4,7 @@ package IOInterface;
 /* --fixme-- */
 /* The import linc.Config_Reader is never used */
 import linc.Config_Reader;
-import vault.*;
+import logger.*;
 import parser.*;
 import java.net.*;
 
@@ -20,7 +20,7 @@ public class Synchronous_IO_Worker implements Runnable{
 
    }
 
-    public Synchronous_IO_Worker(LogWriter logger, InfoCollector infoColl, Socket syncSocket){
+    public Synchronous_IO_Worker(Logger logger, InfoCollector infoColl, Socket syncSocket){
     }
 
    /* --fixme-- */

@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
-import vault.LogWriter;
+import logger.*;
 
 /**
  *
@@ -47,7 +47,7 @@ public class Config_Reader {
     us if the LogWriter has been initialised since that is not the case at
     the beginning
     */
-    private LogWriter logWriter;
+    private Logger logWriter;
     private boolean logWriterInit;
     
     //the map for the variables and stuff we get from the config file
@@ -93,7 +93,7 @@ public class Config_Reader {
      * @param logger an object of the type LogWriter, is initialised here since it needs the ConfigReader first
      * will set the flag that the LogWriter is now initialised and the functions can send logging calls
      */
-    public void setLogWriter(LogWriter logger){
+    public void set_Logger(Logger logger){
         logWriter = logger;
         logWriterInit = true;
         logWriter.log("Config_Reader", 0, "----------------------------------------");

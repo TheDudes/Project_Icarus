@@ -19,7 +19,7 @@
 
 package interpreter;
 
-import vault.*;
+import logger.*;
 import parser.*;
 import linc.*;
 
@@ -33,7 +33,7 @@ import linc.*;
 public class Interpreter
 {
     final private String log_key = "Interpreter";
-    final private LogWriter       log;
+    final private Logger log;
     final private Keyword_Handler handler;
 
     /**
@@ -41,7 +41,7 @@ public class Interpreter
      * @param log used LogWriter
      * @param config Config_Reader object which will be passed to Engine
      */
-    public Interpreter(InfoCollector container, LogWriter log, Config_Reader config)
+    public Interpreter(InfoCollector container, Logger log, Config_Reader config)
     {
         log.log(log_key, 2, "init Interpreter...");
 

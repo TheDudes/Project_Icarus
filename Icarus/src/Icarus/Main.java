@@ -21,10 +21,10 @@
 
 package Icarus;
 
-import vault.*;
 import parser.*;
 import linc.*;
 import interpreter.*;
+import logger.*;
 
 import java.net.*;
 
@@ -43,7 +43,7 @@ public class Main
           static String code;
 
           static Config_Reader config;
-          static LogWriter     log;
+          static Logger        log;
           static InfoCollector container;
           static Interpreter   interpreter;
 
@@ -52,15 +52,29 @@ public class Main
      * @param args not used yet
      * @throws Exception --fixme--
      */
-    public static void main(String[] args) throws Exception
+    public static void main(String... args) throws Exception
     {
         print_startup_message();
         set_config_file_path();
 
         config      = new Config_Reader(config_path);
-        log         = new LogWriter(config);
+        log         = new Logger(config);
         container   = new InfoCollector(config, log);
         interpreter = new Interpreter(container, log, config);
+
+        //test.log(0, " [main]: ", "this is a test log.\n");
+        //test.log(0, " [main]: ", "this is a test log.\n");
+        //test.log(0, " [main]: ", "this is a test log.\n");
+        //test.log(0, " [main]: ", "this is a test log.\n");
+        //test.log(0, " [main]: ", "this is a test log.\n");
+
+        //test.log("blub",0, "this is a test log.\n");
+        //test.log("blub",0, "this is a test log.\n");
+        //test.log("blub",0, "this is a test log.\n");
+        //test.log("blub",0, "this is a test log.\n");
+        //test.log("blub",0, "this is a test log.\n");
+
+        //test.kill();
 
         log.log(log_key, 0, "starting Icarus.");
         double blub = 0.0;

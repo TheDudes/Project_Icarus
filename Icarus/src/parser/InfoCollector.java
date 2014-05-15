@@ -22,7 +22,7 @@ import java.io.*;
 
 import linc.Config_Reader;
 
-import vault.*;
+import logger.*;
 
 /**
  * This class is an Interfaceclass to all the functions which a potentionally needed
@@ -37,7 +37,7 @@ public class InfoCollector {
 	private final Analyser       analyser;
 	private final Match          match;
 	private final Symbols        symb;
-	private final LogWriter      log;
+	private final Logger         log;
 
 	/* logger */
 	private final String  mainkey = "parser";
@@ -63,7 +63,7 @@ public class InfoCollector {
 	 * @see Config_Reader
 	 * @see LogWriter
 	 */
-	public InfoCollector (Config_Reader configreader, LogWriter log)
+	public InfoCollector (Config_Reader configreader, Logger log)
         throws FileNotFoundException, IOException, Exception
         {
 		this.log = log;

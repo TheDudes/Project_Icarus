@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
-import vault.*;
+import logger.*;
 import parser.*;
 
 /**
@@ -35,7 +35,7 @@ import parser.*;
 public class Synchronous_IO_worker implements Runnable {
 
     private LinkedBlockingQueue<IO_Package> lbq;
-    private LogWriter logWriter;
+    private Logger logWriter;
     /* --fixme-- */
 /* The value of the field Synchronous_IO_worker.infoCollector is not used */
     private InfoCollector infoCollector;
@@ -60,7 +60,7 @@ public class Synchronous_IO_worker implements Runnable {
      * @param infoCollector
      * @param client
      */
-    public Synchronous_IO_worker(LogWriter logWriter, InfoCollector infoCollector, Socket client) {
+    public Synchronous_IO_worker(Logger logWriter, InfoCollector infoCollector, Socket client) {
 
         this.logWriter = logWriter;
         this.infoCollector = infoCollector;
@@ -161,12 +161,4 @@ public class Synchronous_IO_worker implements Runnable {
         alive = false;
 
     }
-    
-    
-    
-    
-    
-    
-    
-    
 }
