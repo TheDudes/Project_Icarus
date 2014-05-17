@@ -31,7 +31,7 @@ import logger.*;
  */
 public class Offset_Handler
 {
-    final private String    log_key = "Interpreter-Offset";
+    final private String    log_key = " [Interpreter-Offset]: ";
     final private Logger log;
 
     /**
@@ -39,11 +39,11 @@ public class Offset_Handler
      */
     public Offset_Handler(Logger log)
     {
-        log.log(log_key, 2, "init Offset_Handler...");
+        log.log(2, log_key, "init Offset_Handler...\n");
 
         this.log       = log;
 
-        log.log(log_key, 2, "init Offset_Handler done.");
+        log.log(2, log_key, "init Offset_Handler done.\n");
     }
 
     /**
@@ -54,7 +54,7 @@ public class Offset_Handler
      */
     public int get_next_keyword(int INDEX, String code)
     {
-        log.log(log_key, 4, "call   get_next_keyword, INDEX = " + INDEX);
+        log.log(4, log_key, "call   get_next_keyword, INDEX = ", new Integer(INDEX).toString(), "\n");
 
         for(;;INDEX++) 
         {
@@ -76,7 +76,7 @@ public class Offset_Handler
                    (code.charAt(INDEX + 4) == 'I') &&
                    (code.charAt(INDEX + 5) == 'F') ) )
             {
-                log.log(log_key, 4, "return get_next_keyword, INDEX = " + INDEX);
+                log.log(4, log_key, "return get_next_keyword, INDEX = ", new Integer(INDEX).toString(), "\n");
                 return INDEX;
             }
             else if ( (code.charAt(INDEX)     == 'I') &&
@@ -95,12 +95,12 @@ public class Offset_Handler
      */
     public int get_colon(String string)
     {
-        log.log(log_key, 4, "call   get_colon, string = " + string);
+        log.log(4, log_key, "call   get_colon, string = ", string, "\n");
         for(int i = 0;;i++)
         {
             if (string.charAt(i) == ':')
             {
-                log.log(log_key, 4, "return get_colon, i = " + i);
+                log.log(4, log_key, "return get_colon, i = ", new Integer(i).toString(), "\n");
                 return i;
             }
         }
@@ -114,11 +114,11 @@ public class Offset_Handler
      */
     public int get_semicolon(int INDEX, String code)
     {
-        log.log(log_key, 4, "call   get_semicolon, INDEX = " + INDEX);
+        log.log(4, log_key, "call   get_semicolon, INDEX = ", new Integer(INDEX).toString(), "\n");
         for(;;INDEX++) {
             if ( (code.charAt(INDEX)     == ';') )
             {
-                log.log(log_key, 4, "return get_semicolon , INDEX = " + INDEX);
+                log.log(4, log_key, "return get_semicolon , INDEX = ", new Integer(INDEX).toString(), "\n");
                 return INDEX;
             }
         }
@@ -131,12 +131,12 @@ public class Offset_Handler
      */
     public int get_comma(String string)
     {
-        log.log(log_key, 4, "call   get_comma, string = " + string);
+        log.log(4, log_key, "call   get_comma, string = ", string, "\n");
         for(int i = 0;;i++)
         {
             if (string.charAt(i) == ',')
             {
-                log.log(log_key, 4, "return get_comma, i = " + i);
+                log.log(4, log_key, "return get_comma, i = ", new Integer(i).toString(), "\n");
                 return i;
             }
         }
@@ -150,12 +150,12 @@ public class Offset_Handler
      */
     public int get_OF(int INDEX, String code)
     {
-        log.log(log_key, 4, "call   get_OF, INDEX = " + INDEX);
+        log.log(4, log_key, "call   get_OF, INDEX = ", new Integer(INDEX).toString(), "\n");
         for(;;INDEX++) {
             if ( (code.charAt(INDEX)     == 'O') &&
                  (code.charAt(INDEX + 1) == 'F') )
             {
-                log.log(log_key, 4, "return get_OF, INDEX = " + INDEX);
+                log.log(4, log_key, "return get_OF, INDEX = ", new Integer(INDEX).toString(), "\n");
                 return INDEX;
             }
         }
@@ -169,13 +169,13 @@ public class Offset_Handler
      */
     public int get_VAR(int INDEX, String code)
     {
-        log.log(log_key, 4, "call   get_VAR, INDEX = " + INDEX);
+        log.log(4, log_key, "call   get_VAR, INDEX = ", new Integer(INDEX).toString(), "\n");
         for(;;INDEX++) {
             if ( (code.charAt(INDEX)     == 'V') &&
                  (code.charAt(INDEX + 1) == 'A') &&
                  (code.charAt(INDEX + 2) == 'R') )
             {
-                log.log(log_key, 4, "return get_VAR, INDEX = " + INDEX);
+                log.log(4, log_key, "return get_VAR, INDEX = ", new Integer(INDEX).toString(), "\n");
                 return INDEX;
             }
         }
@@ -189,12 +189,12 @@ public class Offset_Handler
      */
     public int get_TO(int INDEX, String code)
     {
-        log.log(log_key, 4, "call   get_TO, INDEX = " + INDEX);
+        log.log(4, log_key, "call   get_TO, INDEX = ", new Integer(INDEX).toString(), "\n");
         for(;;INDEX++) {
             if ( (code.charAt(INDEX)     == 'T') &&
                  (code.charAt(INDEX + 1) == 'O') )
             {
-                log.log(log_key, 4, "return get_TO, INDEX = " + INDEX);
+                log.log(4, log_key, "return get_TO, INDEX = ", new Integer(INDEX).toString(), "\n");
                 return INDEX;
             }
         }
@@ -208,20 +208,19 @@ public class Offset_Handler
      */
     public int get_BY(int INDEX, String code)
     {
-        log.log(log_key, 4, "call   get_BY, INDEX = " + INDEX);
+        log.log(4, log_key, "call   get_BY, INDEX = ", new Integer(INDEX).toString(), "\n");
         for(;;INDEX++)
         {
             if ( (code.charAt(INDEX)     == 'D') &&
                  (code.charAt(INDEX + 1) == 'O') )
             {
-                log.log(log_key, 4, "return get_BY (DO found): -1");
+                log.log(4, log_key, "return get_BY (DO found): -1\n");
                 return -1;
             }
             else if ( (code.charAt(INDEX)     == 'B') &&
                       (code.charAt(INDEX + 1) == 'Y') )
             {
-                log.log(log_key, 4, "return get_BY , (BY found) INDEX = "
-                                                                      + INDEX);
+                log.log(4, log_key, "return get_BY , (BY found) INDEX = ", new Integer(INDEX).toString(), "\n");
                 return INDEX;
             }
         }
@@ -235,13 +234,13 @@ public class Offset_Handler
      */
     public int get_DO(int INDEX, String code)
     {
-        log.log(log_key, 4, "call   get_DO, INDEX = " + INDEX);
+        log.log(4, log_key, "call   get_DO, INDEX = ", new Integer(INDEX).toString(), "\n");
         for(;;INDEX++)
         {
             if ( (code.charAt(INDEX)     == 'D') &&
                  (code.charAt(INDEX + 1) == 'O') )
             {
-                log.log(log_key, 4, "return get_DO, INDEX = " + INDEX);
+                log.log(4, log_key, "return get_DO, INDEX = ", new Integer(INDEX).toString(), "\n");
                 return INDEX;
             }
         }
@@ -255,14 +254,14 @@ public class Offset_Handler
      */
     public int get_THEN(int INDEX, String code)
     {
-        log.log(log_key, 4, "call   get_THEN, INDEX = " + INDEX);
+        log.log(4, log_key, "call   get_THEN, INDEX = ", new Integer(INDEX).toString(), "\n");
         for(;;INDEX++) {
             if ( (code.charAt(INDEX)     == 'T') &&
                  (code.charAt(INDEX + 1) == 'H') &&
                  (code.charAt(INDEX + 2) == 'E') &&
                  (code.charAt(INDEX + 3) == 'N') )
             {
-                log.log(log_key, 4, "return get_THEN, INDEX = " + INDEX);
+                log.log(4, log_key, "return get_THEN, INDEX = ", new Integer(INDEX).toString(), "\n");
                 return INDEX;
             }
         }
@@ -276,7 +275,7 @@ public class Offset_Handler
      */
     public int get_END_IF(int INDEX, String code)
     {
-        log.log(log_key, 4, "call   get_END_IF, INDEX = " + INDEX);
+        log.log(4, log_key, "call   get_END_IF, INDEX = ", new Integer(INDEX).toString(), "\n");
         for(;;INDEX++) {
             if  ( (code.charAt(INDEX)     == 'E') &&
                   (code.charAt(INDEX + 1) == 'N') &&
@@ -285,13 +284,13 @@ public class Offset_Handler
                   (code.charAt(INDEX + 4) == 'I') &&
                   (code.charAt(INDEX + 5) == 'F') )
             {
-                log.log(log_key, 4, "return get_END_IF, INDEX = " + INDEX);
+                log.log(4, log_key, "return get_END_IF, INDEX = ", new Integer(INDEX).toString(), "\n");
                 return INDEX;
             }
             else if ( (code.charAt(INDEX)     == 'I') &&
                       (code.charAt(INDEX + 1) == 'F') )
             {
-                log.log(log_key, 4, "recursive call get_END_IF, INDEX = " + INDEX);
+                log.log(4, log_key, "recursive call get_END_IF, INDEX = ", new Integer(INDEX).toString(), "\n");
                 INDEX = get_END_IF(INDEX, code) + 5;
                 continue;
             }
@@ -306,7 +305,7 @@ public class Offset_Handler
      */
     public int get_UNTIL(int INDEX, String code)
     {
-        log.log(log_key, 4, "call   get_UNTIL, INDEX = " + INDEX);
+        log.log(4, log_key, "call   get_UNTIL, INDEX = ", new Integer(INDEX).toString(), "\n");
         for(;;INDEX++) {
             if  ( (code.charAt(INDEX)     == 'U') &&
                   (code.charAt(INDEX + 1) == 'N') &&
@@ -314,7 +313,7 @@ public class Offset_Handler
                   (code.charAt(INDEX + 3) == 'I') &&
                   (code.charAt(INDEX + 4) == 'L') )
             {
-                log.log(log_key, 4, "return get_UNTIL, INDEX = " + INDEX);
+                log.log(4, log_key, "return get_UNTIL, INDEX = ", new Integer(INDEX).toString(), "\n");
                 return INDEX;
             } else if ( (code.charAt(INDEX)     == 'R') &&
                         (code.charAt(INDEX + 1) == 'E') &&
@@ -323,7 +322,7 @@ public class Offset_Handler
                         (code.charAt(INDEX + 4) == 'A') &&
                         (code.charAt(INDEX + 5) == 'T') )
             {
-                log.log(log_key, 4, "recursive call get_UNTIL, INDEX = " + INDEX);
+                log.log(4, log_key, "recursive call get_UNTIL, INDEX = ", new Integer(INDEX).toString(), "\n");
                 INDEX = get_UNTIL(INDEX, code) + 5;
                 continue;
             }
@@ -361,7 +360,7 @@ public class Offset_Handler
      */
     public String convert_condition(String code)
     {
-        log.log(log_key, 4, "convert_condition call with: " + code);
+        log.log(4, log_key, "convert_condition call with: ", code, "\n");
         String final_condition = "";
         int spot = 0;
 
@@ -527,7 +526,7 @@ public class Offset_Handler
             }
             final_condition += code.charAt(spot);
         }
-        log.log(log_key, 4, "convert_condition return with: " + final_condition);
+        log.log(4, log_key, "convert_condition return with: ", final_condition, "\n");
         return final_condition;
     }
 }
