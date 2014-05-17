@@ -32,7 +32,7 @@ import linc.*;
  */
 public class Interpreter
 {
-    final private String log_key = "Interpreter";
+    final private String log_key = " [Interpreter]: ";
     final private Logger log;
     final private Keyword_Handler handler;
 
@@ -43,12 +43,12 @@ public class Interpreter
      */
     public Interpreter(InfoCollector container, Logger log, Config_Reader config)
     {
-        log.log(log_key, 2, "init Interpreter...");
+        log.log(2, log_key, "init Interpreter...\n");
 
         this.log       = log;
         handler        = new Keyword_Handler(container, log, config, this);
 
-        log.log(log_key, 2, "init Interpreter done.");
+        log.log(2, log_key, "init Interpreter done.\n");
     }
 
     /**
@@ -60,16 +60,16 @@ public class Interpreter
      */
     public void interpret (String code, int start, int end) throws Exception
     {
-        log.log(log_key, 3, "call interpret: " + start + ", end: " + end);
+        log.log(3, log_key, "call interpret: ", new Integer(start).toString(),  ", end: ", new Integer(end).toString(), "\n");
         int INDEX = start;
         for(; INDEX < end; INDEX++)
         {
-            log.log(log_key, 4, "for_loop_top, INDEX = " + INDEX);
+            log.log(4, log_key, "for_loop_top, INDEX = ", new Integer(INDEX).toString(), "\n");
 
             if (      (code.charAt(INDEX)     == 'I') &&
                       (code.charAt(INDEX + 1) == 'F') )
             {
-                log.log(log_key, 3, "found Keyword IF,           INDEX = " + INDEX);
+                log.log(3, log_key, "found Keyword IF,           INDEX = ", new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_IF(INDEX, code);
                 continue;
             }
@@ -79,7 +79,7 @@ public class Interpreter
                       (code.charAt(INDEX + 3) == 'N') &&
                       (code.charAt(INDEX + 4) == 'T') )
             {
-                log.log(log_key, 3, "found Keyword PRINT,        INDEX = " + INDEX);
+                log.log(3, log_key, "found Keyword PRINT,        INDEX = ", new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_PRINT(INDEX, code);
                 continue;
             }
@@ -91,7 +91,7 @@ public class Interpreter
                 if (      (code.charAt(INDEX + 4) == 'I') &&
                           (code.charAt(INDEX + 5) == 'F') )
                 {
-                    log.log(log_key, 3, "found Keyword END_IF,       INDEX = " + INDEX);
+                    log.log(3, log_key, "found Keyword END_IF,       INDEX = ", new Integer(INDEX).toString(), "\n");
                     INDEX = handler.found_END_IF(INDEX, code);
                     continue;
                 }
@@ -101,7 +101,7 @@ public class Interpreter
                           (code.charAt(INDEX + 7) == 'L') &&
                           (code.charAt(INDEX + 8) == 'E') )
                 {
-                    log.log(log_key, 3, "found Keyword END_WHILE     INDEX = " + INDEX);
+                    log.log(3, log_key, "found Keyword END_WHILE     INDEX = ", new Integer(INDEX).toString(), "\n");
                     INDEX = handler.found_END_WHILE(INDEX, code);
                     continue;
                 }
@@ -109,7 +109,7 @@ public class Interpreter
                           (code.charAt(INDEX + 5) == 'O') &&
                           (code.charAt(INDEX + 6) == 'R') )
                 {
-                    log.log(log_key, 3, "found Keyword END_FOR,      INDEX = " + INDEX);
+                    log.log(3, log_key, "found Keyword END_FOR,      INDEX = ", new Integer(INDEX).toString(), "\n");
                     INDEX = handler.found_END_FOR(INDEX, code);
                     continue;
                 }
@@ -122,7 +122,7 @@ public class Interpreter
                           (code.charAt(INDEX + 10)== 'O') &&
                           (code.charAt(INDEX + 11)== 'N') )
                 {
-                    log.log(log_key, 3, "found Keyword END_FUNCTION, INDEX = " + INDEX);
+                    log.log(3, log_key, "found Keyword END_FUNCTION, INDEX = ", new Integer(INDEX).toString(), "\n");
                     handler.found_END_FUNCTION(INDEX, code);
                     break;
                 }
@@ -134,7 +134,7 @@ public class Interpreter
                           (code.charAt(INDEX + 9) == 'A') &&
                           (code.charAt(INDEX + 10)== 'M') )
                 {
-                    log.log(log_key, 3, "found Keyword END_PROGRAM,  INDEX = " + INDEX);
+                    log.log(3, log_key, "found Keyword END_PROGRAM,  INDEX = ", new Integer(INDEX).toString(), "\n");
                     INDEX = handler.found_END_PROGRAM(INDEX, code);
                     break;
                 }
@@ -144,7 +144,7 @@ public class Interpreter
                       (code.charAt(INDEX + 2) == 'S') &&
                       (code.charAt(INDEX + 3) == 'E') )
             {
-                log.log(log_key, 3, "found Keyword ELSE,         INDEX = " + INDEX);
+                log.log(3, log_key, "found Keyword ELSE,         INDEX = ", new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_ELSE(INDEX, code);
                 continue;
             }
@@ -154,7 +154,7 @@ public class Interpreter
                       (code.charAt(INDEX + 3) == 'I') &&
                       (code.charAt(INDEX + 4) == 'F') )
             {
-                log.log(log_key, 3, "found Keyword ELSIF,        INDEX = " + INDEX);
+                log.log(3, log_key, "found Keyword ELSIF,        INDEX = ", new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_ELSIF(INDEX, code);
                 continue;
             }
@@ -163,7 +163,7 @@ public class Interpreter
                       (code.charAt(INDEX + 2) == 'S') &&
                       (code.charAt(INDEX + 3) == 'E') )
             {
-                log.log(log_key, 3, "found Keyword CASE,         INDEX = " + INDEX);
+                log.log(3, log_key, "found Keyword CASE,         INDEX = ", new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_CASE(INDEX, code);
                 continue;
             }
@@ -175,7 +175,7 @@ public class Interpreter
                       (code.charAt(INDEX + 5) == 'A') &&
                       (code.charAt(INDEX + 6) == 'M') )
             {
-                log.log(log_key, 3, "found Keyword PROGRAM,      INDEX = " + INDEX);
+                log.log(3, log_key, "found Keyword PROGRAM,      INDEX = ", new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_PROGRAM(INDEX, code);
                 continue;
             }
@@ -183,7 +183,7 @@ public class Interpreter
                       (code.charAt(INDEX + 1) == 'A') &&
                       (code.charAt(INDEX + 2) == 'R') )
             {
-                log.log(log_key, 3, "found Keyword VAR,          INDEX = " + INDEX);
+                log.log(3, log_key, "found Keyword VAR,          INDEX = ", new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_VAR(INDEX, code);
                 continue;
             }
@@ -193,7 +193,7 @@ public class Interpreter
                       (code.charAt(INDEX + 3) == 'L') &&
                       (code.charAt(INDEX + 4) == 'E') )
             {
-                log.log(log_key, 3, "found Keyword WHILE,        INDEX = " + INDEX);
+                log.log(3, log_key, "found Keyword WHILE,        INDEX = ", new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_WHILE(INDEX, code);
                 continue;
             }
@@ -201,7 +201,7 @@ public class Interpreter
                       (code.charAt(INDEX + 1) == 'O') &&
                       (code.charAt(INDEX + 2) == 'R') )
             {
-                log.log(log_key, 3, "found Keyword FOR,          INDEX = " + INDEX);
+                log.log(3, log_key, "found Keyword FOR,          INDEX = ", new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_FOR(INDEX, code);
                 continue;
             }
@@ -212,7 +212,7 @@ public class Interpreter
                       (code.charAt(INDEX + 4) == 'A') &&
                       (code.charAt(INDEX + 5) == 'T') )
             {
-                log.log(log_key, 3, "found Keyword REPEAT,       INDEX = " + INDEX);
+                log.log(3, log_key, "found Keyword REPEAT,       INDEX = ", new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_REPEAT(INDEX, code);
                 continue;
             }
@@ -222,7 +222,7 @@ public class Interpreter
                       (code.charAt(INDEX + 3) == 'I') &&
                       (code.charAt(INDEX + 4) == 'L') )
             {
-                log.log(log_key, 3, "found Keyword UNTIL,        INDEX = " + INDEX);
+                log.log(3, log_key, "found Keyword UNTIL,        INDEX = ", new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_UNTIL(INDEX, code);
                 continue;
             }
@@ -232,7 +232,7 @@ public class Interpreter
                       (code.charAt(INDEX + 3) == 'A') &&
                       (code.charAt(INDEX + 4) == 'K') )
             {
-                log.log(log_key, 3, "found Keyword BREAK,        INDEX = " + INDEX);
+                log.log(3, log_key, "found Keyword BREAK,        INDEX = ", new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_BREAK(INDEX, code);
                 continue;
             }
@@ -245,7 +245,7 @@ public class Interpreter
                       (code.charAt(INDEX + 6) == 'O') &&
                       (code.charAt(INDEX + 7) == 'N') )
             {
-                log.log(log_key, 3, "found Keyword FUNCTION,     INDEX = " + INDEX);
+                log.log(3, log_key, "found Keyword FUNCTION,     INDEX = ", new Integer(INDEX).toString(), "\n");
                 handler.found_FUNCTION(INDEX, code);
                 break;
             }
@@ -255,6 +255,6 @@ public class Interpreter
                 continue;
             }
         }
-        log.log(log_key, 3, "returning from interpret,   INDEX = " + INDEX);
+        log.log(3, log_key, "returning from interpret,   INDEX = ", new Integer(INDEX).toString(), "\n");
     }
 }
