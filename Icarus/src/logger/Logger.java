@@ -30,6 +30,9 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.io.File;
+import java.util.regex.Pattern;
+import java.util.ArrayList;
 
 /**
  * @author d4ryus - https://github.com/d4ryus/
@@ -41,9 +44,12 @@ import java.io.Writer;
 public class Logger
 {
     final private LinkedBlockingQueue<String[]> queue = new LinkedBlockingQueue<>(1024);
+    final private String log_file_name        = "Icarus_latest";
+    final private String log_file_backup_name = "Icarus_backup";
+    final private String log_file_ending      = ".log";
     final private SimpleDateFormat sdf;
     final private boolean    silent;
-    final private String     path_to_log_files;
+    final private String     path_to_log_file;
     final private Thread     thread;
     final private int        verboseLevel;
           private boolean    alive = true;
@@ -57,17 +63,48 @@ public class Logger
         sdf    = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss");
         thread = new Thread(new Log_Thread());
 
-        path_to_log_files = config.get_string("LogWriter") 
-                             + sdf.format(new Long(new Date().getTime()))
-                             + ".log";
-
-        verboseLevel      = config.get_int("verbosity_level");
-        silent            = config.get_boolean("silent");
+        path_to_log_file = file_rotation(config.get_string("LogWriter"));
+        verboseLevel     = config.get_int("verbosity_level");
+        silent           = config.get_boolean("silent");
 
         thread.setName("Log_Thread");
         thread.start();
         log(2, " [Logger]: ","initialized Logger.\n");
         config.set_Logger(this);
+    }
+
+    /**
+     * this function will rename the last logfile to log_file_backup_name,
+     * and return a string containing the full path to the new log file.
+     * @param path full path to logfiles
+     * @return string containing the full path to the new log file.
+     */
+    private String file_rotation(String path)
+    {
+        if(!path.endsWith("/"))
+            path += "/";
+        File file1 = new File(path + log_file_name + log_file_ending);
+        if(!file1.exists())
+            return new String(path + log_file_name + log_file_ending);
+
+        File   directory = new File(path);
+        String files[]   = directory.list();
+        int count = 0;
+        for(int i = 0; i < files.length; i++)
+        {
+            if(Pattern.matches(".*?\\" + log_file_ending, files[i]))
+                count++;
+        }
+        File file2 = new File(path + log_file_backup_name
+                                   + "_"
+                                   + new Integer(count).toString()
+                                   + log_file_ending);
+        if(!file1.renameTo(file2))
+        {
+            System.out.println("error near logfile rotating, could not move file");
+            System.exit(1);
+        }
+        return new String(path + log_file_name + log_file_ending);
     }
 
     /**
@@ -132,7 +169,7 @@ public class Logger
             String queue_element[];
             try (Writer file_writer =
                     new BufferedWriter(
-                        new FileWriter(path_to_log_files, true)))
+                        new FileWriter(path_to_log_file, true)))
             {
                 while( alive || !queue.isEmpty() )
                 {
@@ -157,7 +194,7 @@ public class Logger
             }
             catch (IOException e)
             {
-                System.out.println("LogWriter: Could not open/write/create log file at path: " + path_to_log_files);
+                System.out.println("LogWriter: Could not open/write/create log file at path: " + path_to_log_file);
                 System.out.println("LogWriter: IOException: " + e);
                 System.exit(1);
             }
