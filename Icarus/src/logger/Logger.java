@@ -43,15 +43,17 @@ import java.util.regex.Pattern;
 public class Logger
 {
     final private LinkedBlockingQueue<String[]> queue = new LinkedBlockingQueue<>(8192);
-    final private SimpleDateFormat sdf;
+    final private SimpleDateFormat              sdf   = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss");
     final private String  log_file_name        = "Icarus_latest";
     final private String  log_file_backup_name = "Icarus_backup";
     final private String  log_file_ending      = ".log";
     final private String  log_key              = " [Logger]: ";
-    final private boolean silent;
+          private String  path_to_log_file_folder;
     final private String  path_to_log_file;
+    final private boolean silent;
     final private Thread  thread;
     final private int     verboseLevel;
+    final private int     max_backup_files;
           private boolean alive = true;
 
     /**
@@ -60,12 +62,16 @@ public class Logger
      */
     public Logger(Config_Reader config)
     {
-        sdf    = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss");
         thread = new Thread(new Log_Thread());
 
-        path_to_log_file = file_rotation(config.get_string("LogWriter"));
         verboseLevel     = config.get_int("verbosity_level");
         silent           = config.get_boolean("silent");
+        /* --fixme-- */
+        /* add config value here */
+        max_backup_files = 20;
+
+        path_to_log_file_folder = config.get_string("LogWriter");
+        path_to_log_file = file_rotation();
 
         thread.setName("Log_Thread");
         thread.start();
@@ -76,42 +82,71 @@ public class Logger
     /**
      * this function will rename the last logfile to log_file_backup_name,
      * and return a string containing the full path to the new log file.
-     * @param path full path to logfiles
      * @return string containing the full path to the new log file.
      */
-    private String file_rotation(String path)
+    private String file_rotation()
     {
-        if(!path.endsWith("/"))
-            path += "/";
-        File file1 = new File(path + log_file_name + log_file_ending);
-        if(!file1.exists())
-            return new String(path + log_file_name + log_file_ending);
+        if(!path_to_log_file_folder.endsWith("/"))
+            path_to_log_file_folder += "/";
 
-        File   directory = new File(path);
-        String files[]   = directory.list();
-        int count = 1;
-        for(int i = 0; i < files.length; i++)
+        File file = new File(path_to_log_file_folder + log_file_name + log_file_ending);
+        if(!file.exists())
+            return new String(path_to_log_file_folder + log_file_name + log_file_ending);
+
+        move(0);
+        return new String(path_to_log_file_folder + log_file_name + log_file_ending);
+    }
+
+    private void move(int count)
+    {
+        if (count == max_backup_files)
+            return;
+
+        File file_from;
+        File file_to;
+        if (count == 0)
+            file_from = new File(path_to_log_file_folder + log_file_name + log_file_ending);
+        else
         {
-            if(Pattern.matches(log_file_backup_name + "_" + "[\\d]*" + log_file_ending, files[i]))
-                count++;
+            if(count < 10)
+                file_from = new File(path_to_log_file_folder + log_file_backup_name
+                        + "_00" + new Integer(count).toString()
+                        + log_file_ending);
+            else if(count < 100)
+                file_from = new File(path_to_log_file_folder + log_file_backup_name
+                        + "_0" + new Integer(count).toString()
+                        + log_file_ending);
+            else
+                file_from = new File(path_to_log_file_folder + log_file_backup_name
+                        + "_" + new Integer(count).toString()
+                        + log_file_ending);
         }
-        File file2 = new File(path + log_file_backup_name
-                                   + "_"
-                                   + new Integer(count).toString()
-                                   + log_file_ending);
-        while(file2.exists())
+
+        if(count < 9)
+            file_to = new File(path_to_log_file_folder + log_file_backup_name
+                    + "_00" + new Integer(count + 1).toString()
+                    + log_file_ending);
+        else if(count < 99)
+            file_to = new File(path_to_log_file_folder + log_file_backup_name
+                    + "_0" + new Integer(count + 1).toString()
+                    + log_file_ending);
+        else
+            file_to = new File(path_to_log_file_folder + log_file_backup_name
+                    + "_" + new Integer(count + 1).toString()
+                    + log_file_ending);
+
+        if(file_to.exists())
+            move(count + 1);
+
+        log(2, log_key, "moving file:", file_from.getAbsolutePath(), "\n");
+        log(2, log_key, "         to:", file_to.getAbsolutePath(),   "\n");
+
+        if(!file_from.renameTo(file_to))
         {
-            file2 = new File(path + log_file_backup_name
-                                  + "_"
-                                  + new Integer(count++).toString()
-                                  + log_file_ending);
-        }
-        if(!file1.renameTo(file2))
-        {
-            System.out.println("error near logfile rotating, could not move file");
+            System.out.println(
+                    "error near logfile rotating, could not move file");
             System.exit(1);
         }
-        return new String(path + log_file_name + log_file_ending);
     }
 
     /**
