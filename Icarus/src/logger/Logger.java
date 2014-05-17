@@ -89,16 +89,23 @@ public class Logger
 
         File   directory = new File(path);
         String files[]   = directory.list();
-        int count = 0;
+        int count = 1;
         for(int i = 0; i < files.length; i++)
         {
-            if(Pattern.matches(".*?\\" + log_file_ending, files[i]))
+            if(Pattern.matches(log_file_backup_name + "_" + "[\\d]*" + log_file_ending, files[i]))
                 count++;
         }
         File file2 = new File(path + log_file_backup_name
                                    + "_"
                                    + new Integer(count).toString()
                                    + log_file_ending);
+        while(file2.exists())
+        {
+            file2 = new File(path + log_file_backup_name
+                                  + "_"
+                                  + new Integer(count++).toString()
+                                  + log_file_ending);
+        }
         if(!file1.renameTo(file2))
         {
             System.out.println("error near logfile rotating, could not move file");
