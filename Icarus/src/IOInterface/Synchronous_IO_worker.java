@@ -154,6 +154,49 @@ public class Synchronous_IO_worker implements Runnable {
         dataOutput[1] += Integer.parseInt(number);
 
     }
+    
+    /**
+     * transforms an integer into a byteArray with 2 fields, the first one is the 
+     * integer/255 the second one the integer%255
+     * If you want to get the integer again be advised that due to the fact that if
+     * the first byte is 0 we do not know if it should be 0 or 256 we wont be able to
+     * get the full scope of the integer, we can only get 0-65279, everything higher will be
+     * 0 - 255 again which is wrong - so don't use a higher number than 65279
+     * @param toTransform the integer we want to transform into a byteArray with 2 fields
+     * @return a byteArray with two fields, the first is the int/255 the second is the int%255
+     */
+    private byte[] getBytes(int toTransform){
+        Integer mod = toTransform % 255;
+        Integer times = toTransform / 255;
+        byte[] byteArray = new byte[2];
+        byteArray[0] = times.byteValue();
+        byteArray[1] = mod.byteValue();
+        return byteArray;
+    }
+    
+    /**
+     * transforms a byteArray with 2 fields into an integer, the first entry has 
+     * to be the integer/255, the second entry the integer%255
+     * Be advised: due to the fact that if
+     * the first byte is 0 we do not know if it should be 0 or 256 we wont be able to
+     * get the full scope of the integer, we can only get 0-65279, everything higher will be
+     * 0 - 255 again which is wrong - so don't use a higher number than 65279
+     * @param toTransform the byteArray we want to transform, first entry is the number/255, the second is number%255
+     * @return the integer value we got from the byteArray
+     */
+    private int getIntFromBytes(byte[] toTransform){
+        int mod = toTransform[1];
+        int times = toTransform[0];
+        if(mod < 0){
+            mod = 256 + mod;
+        }
+        if(times < 0){
+            times = 256 + mod;
+        }
+        int value = times*255 + mod;
+        return value;
+    }
+
 
     /* --fixme-- */
 /* Javadoc: Missing comment for public declaration */
