@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.io.File;
 import java.util.regex.Pattern;
-import java.util.ArrayList;
 
 /**
  * @author d4ryus - https://github.com/d4ryus/
@@ -43,20 +42,21 @@ import java.util.ArrayList;
  */
 public class Logger
 {
-    final private LinkedBlockingQueue<String[]> queue = new LinkedBlockingQueue<>(1024);
-    final private String log_file_name        = "Icarus_latest";
-    final private String log_file_backup_name = "Icarus_backup";
-    final private String log_file_ending      = ".log";
+    final private LinkedBlockingQueue<String[]> queue = new LinkedBlockingQueue<>(8192);
     final private SimpleDateFormat sdf;
-    final private boolean    silent;
-    final private String     path_to_log_file;
-    final private Thread     thread;
-    final private int        verboseLevel;
-          private boolean    alive = true;
+    final private String  log_file_name        = "Icarus_latest";
+    final private String  log_file_backup_name = "Icarus_backup";
+    final private String  log_file_ending      = ".log";
+    final private String  log_key              = " [Logger]: ";
+    final private boolean silent;
+    final private String  path_to_log_file;
+    final private Thread  thread;
+    final private int     verboseLevel;
+          private boolean alive = true;
 
     /**
      * LogWriter Constructor
-     * @param config needed for silent value and verbosity_level.
+     * @param config needed for verbosity_level and silent value.
      */
     public Logger(Config_Reader config)
     {
@@ -69,7 +69,7 @@ public class Logger
 
         thread.setName("Log_Thread");
         thread.start();
-        log(2, " [Logger]: ","initialized Logger.\n");
+        log(2, log_key, "initialized Logger.\n");
         config.set_Logger(this);
     }
 
@@ -130,6 +130,9 @@ public class Logger
     }
 
     /**
+     * @param key message key
+     * @param msgVerboseLevel  incomming message verbosity
+     * @param logMessage log message
      * @deprecated
      */
     public void log(String key, int msgVerboseLevel, String logMessage)
@@ -157,7 +160,7 @@ public class Logger
     public void kill()
     {
         alive = false;
-        log(0," [Logger]: ", "exiting Logger.\n");
+        log(0, log_key, "exiting Logger.\n");
     }
 
     private class Log_Thread implements Runnable
@@ -167,6 +170,7 @@ public class Logger
         {
             String message = new String();
             String queue_element[];
+            int queue_size;
             try (Writer file_writer =
                     new BufferedWriter(
                         new FileWriter(path_to_log_file, true)))
@@ -181,7 +185,15 @@ public class Logger
 
                     if(verboseLevel == 4)
                     {
-                        message = queue.size() + "| " + message;
+                        queue_size = queue.size();
+                        if (queue_size < 10)
+                            message = "   " + queue.size() + "| " + message;
+                        else if (queue_size < 100)
+                            message = "  " + queue.size() + "| " + message;
+                        else if (queue_size < 1000)
+                            message = " " + queue.size() + "| " + message;
+                        else
+                            message = queue.size() + "| " + message;
                         file_writer.write(message);
                         file_writer.flush();
                     }
