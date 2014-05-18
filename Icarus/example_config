@@ -1,3 +1,24 @@
+# set the following values to fit ur system:
+Log_file_path = /path/to/ur/log/folder/;
+Log_file_name = Icarus_latest;
+Log_file_backup = Icarus;
+Log_file_ending = .log;
+# up to 999 possible
+Log_max_files = 20;
+# print verbosity 0 messages on screen?
+silent = false;
+# log verbosity, higher = more logs
+verbosity_level = 4;
+# flag to trigger Engine Warmup
+Engine_Warmup=true;
+# path to ur .st files which will be interpreted
+path = /home/d4ryus/Project_Icarus/Icarus/;
+# device configuration
+devices = X32, X33, X34;
+X32 = 2:1;
+X33 = 12:3;
+X34 = 7:2;
+
 ######################################################################
 ######################################################################
 ##  Default Config File for the Config_Reader                       ##
@@ -40,19 +61,19 @@
 
 ## will add the variable testvar in the container map and assign 
 ## the value 1 to it - the testvar will be a Integer Object
-testvar = 1;
+#testvar = 1;
 
 ## will add the variable testvar in the container map and assign
 ## the value 1.5 to it - the testvar will be a Double Object
-testvar2 = 1.5;
+#testvar2 = 1.5;
 
 ## will add the variable testvar in the container map and assign
 ## the value true to it - the testvar will be a Boolean Object
-testvar3 = true;
+#testvar3 = true;
 
 ## will add the variable testvar in the container map and assign
 ## the value asdf to it - the testvar will be a String
-testvar4 = asdf;
+#testvar4 = asdf;
 
 ######################################################################
 ######################################################################
@@ -75,7 +96,7 @@ testvar4 = asdf;
 ## will assign the path /home/linc/Documents/ParseLog to the Parser 
 ## output
 #key_parser = /home/linc/Documents/ParseLog;
-path = /home/d4ryus/coding/Project_Icarus/franzke_files/plc_prg.st
+#path = /home/d4ryus/coding/Project_Icarus/franzke_files/plc_prg.st
 
 ## will assign the path /home/linc/Icarus/Logs/LogAll to the output 
 ## of the Syntax checker
@@ -84,4 +105,4 @@ path = /home/d4ryus/coding/Project_Icarus/franzke_files/plc_prg.st
 
 ## asign a default path for the LogWriter
 #key_LogWriter = /home/d4ryus/coding/Project_Icarus/Icarus/logs/;
-key_LogWriter = /tmp/;
+#key_LogWriter = /tmp/;

@@ -41,13 +41,15 @@ import java.io.File;
  */
 public class Logger
 {
-    final private LinkedBlockingQueue<String[]> queue = new LinkedBlockingQueue<>(8192);
-    final private SimpleDateFormat              sdf   = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss");
+    final private LinkedBlockingQueue<String[]>
+                          queue = new LinkedBlockingQueue<>(8192);
+    final private SimpleDateFormat
+                          sdf   = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss");
     final private String  log_file_name;
-    final private String  log_file_backup_name;
+    final private String  log_file_backup;
     final private String  log_file_ending;
     final private String  log_key = " [Logger]: ";
-          private String  path_to_log_folder;
+          private String  log_file_path;
     final private String  path_to_log_file;
     final private boolean silent;
     final private Thread  thread;
@@ -61,14 +63,14 @@ public class Logger
      */
     public Logger(Config_Reader config)
     {
-        verboseLevel         = config.get_int("verbosity_level");
-        silent               = config.get_boolean("silent");
-        max_backup_files     = config.get_int("Log_max_files");
-        log_file_name        = config.get_string("Log_file_name");
-        log_file_backup_name = config.get_string("Log_file_backup");
-        log_file_ending      = config.get_string("Log_file_ending");
-        path_to_log_folder   = config.get_string("Log_file_path");
-        path_to_log_file     = file_rotation();
+        verboseLevel     = config.get_int("verbosity_level");
+        silent           = config.get_boolean("silent");
+        max_backup_files = config.get_int("Log_max_files");
+        log_file_name    = config.get_string("Log_file_name");
+        log_file_backup  = config.get_string("Log_file_backup");
+        log_file_ending  = config.get_string("Log_file_ending");
+        log_file_path    = config.get_string("Log_file_path");
+        path_to_log_file = file_rotation();
 
         thread = new Thread(new Log_Thread());
         thread.setName("Log_Thread");
@@ -78,23 +80,27 @@ public class Logger
     }
 
     /**
-     * this function will rename the last logfile to log_file_backup_name,
+     * this function will rename the last logfile to log_file_backup,
      * and return a string containing the full path to the new log file.
      * @return string containing the full path to the new log file.
      */
     private String file_rotation()
     {
-        if(!path_to_log_folder.endsWith("/"))
-            path_to_log_folder += "/";
+        if(!log_file_path.endsWith("/"))
+            log_file_path += "/";
 
-        File file = new File(path_to_log_folder + log_file_name + log_file_ending);
+        File file = new File(log_file_path + log_file_name + log_file_ending);
         if(!file.exists())
-            return new String(path_to_log_folder + log_file_name + log_file_ending);
+            return new String(log_file_path + log_file_name + log_file_ending);
 
         recursive_move(0);
-        return new String(path_to_log_folder + log_file_name + log_file_ending);
+        return new String(log_file_path + log_file_name + log_file_ending);
     }
 
+    /**
+     * will move log files recursivly, needed for file rotation
+     * @param count needed to keep track of recursion level and file
+     */
     private void recursive_move(int count)
     {
         if (count == max_backup_files)
@@ -103,33 +109,33 @@ public class Logger
         File file_from;
         File file_to;
         if (count == 0)
-            file_from = new File(path_to_log_folder + log_file_name + log_file_ending);
+            file_from = new File(log_file_path + log_file_name + log_file_ending);
         else
         {
             if(count < 10)
-                file_from = new File(path_to_log_folder + log_file_backup_name
+                file_from = new File(log_file_path + log_file_backup
                         + "_00" + new Integer(count).toString()
                         + log_file_ending);
             else if(count < 100)
-                file_from = new File(path_to_log_folder + log_file_backup_name
+                file_from = new File(log_file_path + log_file_backup
                         + "_0" + new Integer(count).toString()
                         + log_file_ending);
             else
-                file_from = new File(path_to_log_folder + log_file_backup_name
+                file_from = new File(log_file_path + log_file_backup
                         + "_" + new Integer(count).toString()
                         + log_file_ending);
         }
 
         if(count < 9)
-            file_to = new File(path_to_log_folder + log_file_backup_name
+            file_to = new File(log_file_path + log_file_backup
                     + "_00" + new Integer(count + 1).toString()
                     + log_file_ending);
         else if(count < 99)
-            file_to = new File(path_to_log_folder + log_file_backup_name
+            file_to = new File(log_file_path + log_file_backup
                     + "_0" + new Integer(count + 1).toString()
                     + log_file_ending);
         else
-            file_to = new File(path_to_log_folder + log_file_backup_name
+            file_to = new File(log_file_path + log_file_backup
                     + "_" + new Integer(count + 1).toString()
                     + log_file_ending);
 
