@@ -106,7 +106,7 @@ public class Keyword_Handler
         String condition     = code.substring(INDEX + 2, then_position);
 
         if_position_stack.push(new Integer(INDEX));
-        if_stack.push((Boolean)engine.eval(offset.convert_condition(container.replace_vars(condition, context_stack.peek()))));
+        if_stack.push((Boolean)engine.eval(container.replace_vars(condition, context_stack.peek()), true));
 
         if (if_stack.peek().booleanValue())
             INDEX = then_position + 3;
@@ -174,7 +174,7 @@ public class Keyword_Handler
             int    then_position = offset.get_THEN(INDEX + 5, code);
             String condition     = code.substring(INDEX + 7, then_position);
             if_stack.pop();
-            if_stack.push((Boolean)engine.eval(offset.convert_condition(container.replace_vars(condition, context_stack.peek()))));
+            if_stack.push((Boolean)engine.eval(container.replace_vars(condition, context_stack.peek()), true));
             if (if_stack.peek().booleanValue())
             {
                 INDEX = then_position + 3;
@@ -203,11 +203,11 @@ public class Keyword_Handler
         obj.INDEX          = INDEX;
         obj.do_index       = offset.get_DO(INDEX, code);
         obj.end_index      = container.get_end_while(INDEX) + 8;
-        obj.condition      = offset.convert_condition(code.substring(INDEX + 5, obj.do_index));
+        obj.condition      = engine.convert_condition(code.substring(INDEX + 5, obj.do_index));
 
         loop_stack.push(obj);
 
-        if(((Boolean)engine.eval(container.replace_vars(obj.condition, context_stack.peek()))).booleanValue())
+        if(((Boolean)engine.eval(container.replace_vars(obj.condition, context_stack.peek()), true)).booleanValue())
             INDEX = obj.do_index + 1;
         else
             INDEX = loop_stack.pop().end_index;
@@ -227,7 +227,7 @@ public class Keyword_Handler
     {
         log.log(4, log_key, "call   found_END_WHILE, INDEX = ", new Integer(INDEX).toString(), "\n");
 
-        if(((Boolean)engine.eval(container.replace_vars(loop_stack.peek().condition, context_stack.peek()))).booleanValue())
+        if(((Boolean)engine.eval(container.replace_vars(loop_stack.peek().condition, context_stack.peek()), false)).booleanValue())
             INDEX = loop_stack.peek().do_index + 1;
         else
             INDEX = loop_stack.pop().end_index;
@@ -358,7 +358,7 @@ public class Keyword_Handler
 
         String condition = code.substring(INDEX + 6, loop_stack.peek().end_index - 9);
 
-        if(((Boolean)engine.eval(offset.convert_condition(container.replace_vars(condition, context_stack.peek())))).booleanValue())
+        if(((Boolean)engine.eval(container.replace_vars(condition, context_stack.peek()), true)).booleanValue())
             INDEX = loop_stack.peek().do_index;
         else
             INDEX = loop_stack.pop().end_index;
@@ -455,7 +455,7 @@ public class Keyword_Handler
         log.log(4, log_key, "call   found_CASE, INDEX = ", new Integer(INDEX).toString(), "\n");
 
         String    condition = code.substring(INDEX + 4, offset.get_OF(INDEX, code));
-        int       value     = Integer.parseInt(offset.convert_condition(container.replace_vars(condition, context_stack.peek())));
+        int       value     = Integer.parseInt(engine.convert_condition(container.replace_vars(condition, context_stack.peek())));
         Integer[] recursive_positions = new Integer[2];
         recursive_positions = container.get_case_coordinates(INDEX, value);
 

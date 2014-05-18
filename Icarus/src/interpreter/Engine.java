@@ -82,16 +82,16 @@ public class Engine
 
             long now = System.currentTimeMillis();
 
-            eval(test0);
-            eval(test1);
-            eval(test2);
-            eval(test3);
-            eval(test4);
-            eval(test5);
-            eval(test6);
-            eval(test7);
-            eval(test8);
-            eval(test9);
+            eval(test0, false);
+            eval(test1, false);
+            eval(test2, false);
+            eval(test3, false);
+            eval(test4, false);
+            eval(test5, false);
+            eval(test6, false);
+            eval(test7, false);
+            eval(test8, false);
+            eval(test9, false);
 
             now = System.currentTimeMillis() - now;
 
@@ -114,11 +114,15 @@ public class Engine
     /**
      * used to evaluate conditions.
      * @param condition String with the condition
+     * @param convert true if condition should be converted
+     *                from structure style to java style
      * @return Object which holds the evaluated value
      */
-    public Object eval(String condition)
+    public Object eval(String condition, boolean convert)
     {
         log.log(4, log_key, "call_engine_eval with: ", condition, "\n");
+        if (convert)
+            condition = convert_condition(condition);
         Object obj = new Object();
         try
         {
@@ -138,5 +142,206 @@ public class Engine
         }
         log.log(4,  log_key, "return_engine_eval with: ", condition, "\n");
         return obj;
+    }
+
+    /**
+     * convert given string so that the Java Script Engine can Interpret it,
+     * will replace following matches: 
+     * |FROM     | TO            |
+     * +---------+---------------+
+     * |'='      | ' == '        |
+     * |'TRUE'   | ' true '      |
+     * |'FALSE'  | ' false '     |
+     * |'XOR'    | ' ^ '         |
+     * |'AND'    | ' && '        |
+     * |'NOT'    | ' !'          |
+     * |'&'      | ' && '        |
+     * |'<>'     | ' != '        |
+     * |'MOD'    | ' % '         |
+     * |'OR'     | ' || '        |
+     * |'SIN()'  | 'Math.sin()'  |
+     * |'COS()'  | 'Math.cos()'  |
+     * |'TAN()'  | 'Math.tan()'  |
+     * |'ASIN()' | 'Math.asin()' |
+     * |'ACOS()' | 'Math.acos()' |
+     * |'ATAN()' | 'Math.atan()' |
+     * |'LOG()'  | 'Math.log10()'|
+     * |'EXP()'  | 'Math.exp()'  |
+     * |'LN()'   | 'Math.log()'  |
+     * |'SQRT()' | 'Math.sqrt()' |
+     * +---------+---------------+
+     * @param code will be the full condition as a string
+     * @return string with the converted condition
+     */
+    public String convert_condition(String code)
+    {
+        log.log(4, log_key, "convert_condition call with: ", code, "\n");
+        String final_condition = "";
+        int spot = 0;
+
+        for( ; spot < code.length(); spot++ )
+        {
+            if (        (code.charAt(spot)     == '=') )
+            {
+                final_condition += " == ";
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'T') &&
+                        (code.charAt(spot + 1) == 'R') &&
+                        (code.charAt(spot + 2) == 'U') &&
+                        (code.charAt(spot + 3) == 'E') )
+            {
+                final_condition += " true ";
+                spot += 3;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'F') &&
+                        (code.charAt(spot + 1) == 'A') &&
+                        (code.charAt(spot + 2) == 'L') &&
+                        (code.charAt(spot + 3) == 'S') &&
+                        (code.charAt(spot + 4) == 'E') )
+            {
+                final_condition += " false ";
+                spot += 4;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'X') &&
+                        (code.charAt(spot + 1) == 'O') &&
+                        (code.charAt(spot + 2) == 'R') )
+            {
+                final_condition += " ^ ";
+                spot += 2;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'A') &&
+                        (code.charAt(spot + 1) == 'N') &&
+                        (code.charAt(spot + 2) == 'D') )
+            {
+                final_condition += " && ";
+                spot += 2;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'N') &&
+                        (code.charAt(spot + 1) == 'O') &&
+                        (code.charAt(spot + 2) == 'T') )
+            {
+                final_condition += " !";
+                spot += 2;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == '&') )
+            {
+                final_condition += " && ";
+                continue;
+            }
+            else if (   (code.charAt(spot)     == '<') &&
+                        (code.charAt(spot + 1) == '>') )
+            {
+                final_condition += " != ";
+                spot += 1;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'M') &&
+                        (code.charAt(spot + 1) == 'O') &&
+                        (code.charAt(spot + 2) == 'D') )
+            {
+                final_condition += " % ";
+                spot += 2;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'O') &&
+                        (code.charAt(spot + 1) == 'R') )
+            {
+                final_condition += " || ";
+                spot += 1;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'S') &&
+                        (code.charAt(spot + 1) == 'I') &&
+                        (code.charAt(spot + 2) == 'N') )
+            {
+                final_condition += " Math.sin";
+                spot += 2;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'T') &&
+                        (code.charAt(spot + 1) == 'A') &&
+                        (code.charAt(spot + 2) == 'N') )
+            {
+                final_condition += " Math.tan";
+                spot += 2;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'A') &&
+                        (code.charAt(spot + 1) == 'S') &&
+                        (code.charAt(spot + 2) == 'I') &&
+                        (code.charAt(spot + 3) == 'N') )
+            {
+                final_condition += " Math.asin";
+                spot += 3;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'A') &&
+                        (code.charAt(spot + 1) == 'C') &&
+                        (code.charAt(spot + 2) == 'O') &&
+                        (code.charAt(spot + 3) == 'S') )
+            {
+                final_condition += " Math.acos";
+                spot += 3;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'A') &&
+                        (code.charAt(spot + 1) == 'T') &&
+                        (code.charAt(spot + 2) == 'A') &&
+                        (code.charAt(spot + 3) == 'N') )
+            {
+                final_condition += " Math.atan";
+                spot += 3;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'L') &&
+                        (code.charAt(spot + 1) == 'O') &&
+                        (code.charAt(spot + 2) == 'G') )
+            {
+                final_condition += " Math.log10";
+                spot += 2;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'E') &&
+                        (code.charAt(spot + 1) == 'X') &&
+                        (code.charAt(spot + 2) == 'P') )
+            {
+                final_condition += " Math.exp";
+                spot += 2;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'L') &&
+                        (code.charAt(spot + 1) == 'N') )
+            {
+                final_condition += " Math.log";
+                spot += 1;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'S') &&
+                        (code.charAt(spot + 1) == 'Q') &&
+                        (code.charAt(spot + 2) == 'R') &&
+                        (code.charAt(spot + 3) == 'T') )
+            {
+                final_condition += " Math.sqrt";
+                spot += 3;
+                continue;
+            }
+            else if (   (code.charAt(spot)     == 'A') &&
+                        (code.charAt(spot + 1) == 'B') &&
+                        (code.charAt(spot + 2) == 'S') )
+            {
+                final_condition += " Math.abs";
+                spot += 2;
+                continue;
+            }
+            final_condition += code.charAt(spot);
+        }
+        log.log(4, log_key, "convert_condition return with: ", final_condition, "\n");
+        return final_condition;
     }
 }
