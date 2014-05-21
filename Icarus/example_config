@@ -1,5 +1,5 @@
 # set the following values to fit ur system:
-Log_file_path = /home/linc/Documents/logs/;
+Log_file_path = /path/to/ur/log/folder/;
 Log_file_name = Icarus_latest;
 Log_file_backup = Icarus;
 Log_file_ending = .log;
