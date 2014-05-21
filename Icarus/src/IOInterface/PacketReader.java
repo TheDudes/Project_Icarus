@@ -1,24 +1,35 @@
 import java.io.*;
 public class PacketReader extends BufferedInputStream{
 
+    /**
+    * standart constuctor call of the parent constructor
+    */
     public PacketReader(InputStream in){
      super(in);
     }
 
+    /**
+    * reads a standart IO_Packet from the inputstream, transforms the geraeteId and the pin to an integer again, same for namespace and count.
+    * calls the read method of the parent class to retrieve information and transforms some of it then
+    * @return an IO_Packet with all the information from Datapackage we got/read.
+    */
     public IO_Packet readPacket() throws IOException{
+        //array where we store the stuff we get from the parent class read in
         byte readBuffer[] = new byte[8];
         super.read(readBuffer, 0, 8);
+        //byteArray to keep the information for the geraeteId, will be transformed to an int later on
         byte geraeteId[] = new byte[2];
         geraeteId[0] = readBuffer[0];
         geraeteId[1] = readBuffer[1];
+        //byteArray to hold the information for the pin in, will be transformed into an actual in later on
         byte pin[] = new byte[2];
         pin[0] = readBuffer[2];
         pin[1] = readBuffer[3];
         byte namespace = readBuffer[4];
         byte count = readBuffer[5];
-        System.out.println(count);
         byte rwflag = readBuffer[6];
         byte value = readBuffer[7];
+        //creates a new IO_Packet that we can return, the conversions from a byteArray to an int take place here
         IO_Packet returnPacket = new IO_Packet(getIntFromBytes(geraeteId), getIntFromBytes(pin), (int)namespace, (int)count, rwflag, value);
         return returnPacket;
    }
@@ -47,6 +58,9 @@ public class PacketReader extends BufferedInputStream{
         return value;
     }
 
+    /**
+    * simply calls the close method of the parent class
+    */
     public void close() throws IOException{
         super.close();
     }

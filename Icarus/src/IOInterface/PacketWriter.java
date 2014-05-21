@@ -2,12 +2,22 @@ import java.io.*;
 
 public class PacketWriter extends BufferedOutputStream{
 
+    /**
+    * standart constructor call of the parent constuctor
+    */
     public PacketWriter(OutputStream out){
         super(out);
     } 
 
+    /**
+    * creates a 8 field byte array that will be filled with the information from the IO_Packet and then the array will be sent
+    * via the send method of the parent class
+    * @param packet an IO_Packet that contains all the information we want to send over. Some information will be transformed so we are able to send it
+    */
     public void write(IO_Packet packet) throws IOException{
+        //stores the integers we transform into a two byte array(some information CAN be lost, see description of the getBytes method
         byte buffer[] = new byte[2];
+        //byteArray used to prepare the stuff we write
         byte writeBuffer[] = new byte[8];
         buffer = getBytes(packet.getGeraeteId());
         writeBuffer[0] = buffer[0];
@@ -15,9 +25,9 @@ public class PacketWriter extends BufferedOutputStream{
         buffer = getBytes(packet.getPin());
         writeBuffer[2] = buffer[0];
         writeBuffer[3] = buffer[1];
+        //the next two lines transform an int to a byte which means information CAN be lost but the NamespaceId and count are only 3 bit long which means they
+        //should ALWAYS fit into a byte
         writeBuffer[4] = (byte)packet.getNamespaceId();
-        System.out.println(packet.getCount());
-        System.out.println((byte)packet.getCount());
         writeBuffer[5] = (byte)packet.getCount();
         writeBuffer[6] = packet.getRWFlag();
         writeBuffer[7] = packet.getValue();
@@ -42,10 +52,17 @@ public class PacketWriter extends BufferedOutputStream{
         return byteArray;
     }
 
+    /**
+    *
+    * just calls the flush method of the parent class
+    */
     public void flush() throws IOException{
         super.flush();
     }
 
+    /**
+    * just calls the close method of the parent class
+    */
     public void close() throws IOException{
         super.close();
     }

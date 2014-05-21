@@ -115,7 +115,7 @@ public class Main
                 config_path = "/home/ninti/NetbeansProjects/Project_Icarus/Icarus/example_config";
                 break;
             case "link":
-                config_path = "/home/linc/NetBeansProjects/Project_Icarus/Icarus/example_config";
+                config_path = "/home/linc/NetBeansProjects/Project_Icarus/Icarus/defaultConfig";
                 break;
             /*
              case "yourhostname":
