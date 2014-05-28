@@ -21,6 +21,9 @@ import java.net.*;
 
 /* --fixme-- */
 /* Javadoc: Missing comment for public declaration */
+/**
+* our class SynchronousIO, initiates all the IO stuff so we can talk to the other group
+*/
 public class SynchronousIO{
 
     private Synchronous_IO_Worker syncWorker;
@@ -30,8 +33,11 @@ public class SynchronousIO{
     private Logger logger;
     private Socket syncSocket;
 
-    /* --fixme-- */
-/* Javadoc: Missing comment for public declaration */
+    /**
+    * @param logger LogWriter so we can log the stuff we want to print
+    * @param confReader Config_Reader so we can get the hostname and port for the Sockets
+    * @param infoColl we have to get this object as we have to pass it on to the Synchronous_IO_worker
+    */
     public SynchronousIO(Logger logger, Config_Reader confReader, InfoCollector infoColl){
        this.logger = logger;
        logger.log("SynchronousIO", 0, "trying to establish a connection to the IO Manager");

@@ -15,7 +15,7 @@ public class IO_Packet{
         this.rwflag = rwflag;
         this.value = value;
     }
-    
+
     public int getGeraeteId(){
         return geraeteId;
     }
