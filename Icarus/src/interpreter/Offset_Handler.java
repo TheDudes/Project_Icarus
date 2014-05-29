@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * file: Icarus/src/interpreter/Offset.java
- * vim: foldmethod=syntax:foldcolumn=5:
+ * vim: foldmethod=syntax:
  */
 
 package interpreter;
@@ -56,7 +56,7 @@ public class Offset_Handler
     {
         log.log(4, log_key, "call   get_next_keyword, INDEX = ", new Integer(INDEX).toString(), "\n");
 
-        for(;;INDEX++) 
+        for(;;INDEX++)
         {
             if ( ( (code.charAt(INDEX)     == 'E') &&
                    (code.charAt(INDEX + 1) == 'L') &&

@@ -16,7 +16,7 @@
  * file: Icarus/src/Icarus/main.java
  * @author d4ryus - https://github.com/d4ryus/
  * @version 0.8
- * vim: foldmethod=syntax:foldcolumn=5:
+ * vim: foldmethod=syntax:
  */
 
 package Icarus;

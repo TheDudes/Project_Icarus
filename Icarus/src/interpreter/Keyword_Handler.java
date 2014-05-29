@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * file: Icarus/src/interpreter/Keyword_Handler.java
- * vim: foldmethod=syntax:foldcolumn=5:
+ * vim: foldmethod=syntax:
  */
 
 package interpreter;

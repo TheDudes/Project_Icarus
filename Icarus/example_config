@@ -59,7 +59,7 @@ X34 = 7:2;
 # verbosity_level = 0;
 # takt_frequency = 100;
 
-## will add the variable testvar in the container map and assign 
+## will add the variable testvar in the container map and assign
 ## the value 1 to it - the testvar will be a Integer Object
 #testvar = 1;
 
@@ -92,13 +92,13 @@ X34 = 7:2;
                     ##############################
                     ##  logs and paths to them  ##
                     ##############################
-                        
-## will assign the path /home/linc/Documents/ParseLog to the Parser 
+
+## will assign the path /home/linc/Documents/ParseLog to the Parser
 ## output
 #key_parser = /home/linc/Documents/ParseLog;
 #path = /home/d4ryus/coding/Project_Icarus/franzke_files/plc_prg.st
 
-## will assign the path /home/linc/Icarus/Logs/LogAll to the output 
+## will assign the path /home/linc/Icarus/Logs/LogAll to the output
 ## of the Syntax checker
 #key_syntax_checker = /home/linc/Icarus/Logs/LogAll;
 

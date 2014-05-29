@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * file: Icarus/src/interpreter/Engine_Warmup.java
- * vim: foldmethod=syntax:foldcolumn=4:
+ * vim: foldmethod=syntax:
  */
 
 package interpreter;
@@ -146,7 +146,7 @@ public class Engine
 
     /**
      * convert given string so that the Java Script Engine can Interpret it,
-     * will replace following matches: 
+     * will replace following matches:
      * |FROM     | TO            |
      * +---------+---------------+
      * |'='      | ' == '        |
