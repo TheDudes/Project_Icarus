@@ -63,14 +63,14 @@ public class Logger
      */
     public Logger(Config_Reader config)
     {
-        verboseLevel      = config.get_int("verbosity_level");
+        verboseLevel      = config.get_int("verbosity_level", 0, 4);
         silent            = config.get_boolean("silent");
-        max_backup_files  = config.get_int("Log_max_files");
+        max_backup_files  = config.get_int("Log_max_files", 0, 999);
         log_file_name     = config.get_string("Log_file_name");
         log_file_backup   = config.get_string("Log_file_backup");
         log_file_ending   = config.get_string("Log_file_ending");
         log_file_path     = config.get_string("Log_file_path");
-        log_check_count   = config.get_int("Log_check_count");
+        log_check_count   = config.get_int("Log_check_count", 0, 1000000);
         log_file_max_size = evaluate_size(config.get_string("Log_file_max_size"));
         path_to_log_file  = file_rotation();
 

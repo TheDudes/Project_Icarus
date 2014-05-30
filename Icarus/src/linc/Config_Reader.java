@@ -33,17 +33,17 @@ import java.lang.ClassCastException;
  * @author linc
  */
 public class Config_Reader {
-    
+
     //stores the path to the config file
     private String filePath = "";
     private String logKey = " [Config_Reader]: ";
-    
+
     /*
     used for storing the String we get from the read() Method
     is initialised in the constructor and used in the interpret_line function
     */
     private String workWithThat = "";
-    
+
     /*
     LogWriter so we can log our stuff, the boolean is a flag that tells
     us if the LogWriter has been initialised since that is not the case at
@@ -51,13 +51,13 @@ public class Config_Reader {
     */
     private Logger logWriter;
     private boolean logWriterInit;
-    
+
     //the map for the variables and stuff we get from the config file
     private Map<String, Object> container = new HashMap<>();
-    
+
     /*
     we need this one to get all the Structured Text files (or the paths to them)
-    from the directory the path variable in the config file points to, aka the 
+    from the directory the path variable in the config file points to, aka the
     directory the ST files are supposed to be in
     the StringArray is for the storage of the Array we get from the STFileFinder,
     it has the paths to all the ST files in the directory stored in it
@@ -65,9 +65,9 @@ public class Config_Reader {
     private STFileFinder findEmFiles;
     private String stFiles[];
 
-    
+
     /**
-     * 
+     *
      * @param path the file path of the config file, must be given when the Config_Reader is created
      * @throws java.io.IOException in case no there is no config found under the path provided
      */
@@ -92,7 +92,7 @@ public class Config_Reader {
     }
 
     /**
-     * 
+     *
      * @param logger an object of the type LogWriter, is initialised here since it needs the ConfigReader first
      * will set the flag that the LogWriter is now initialised and the functions can send logging calls
      */
@@ -108,9 +108,9 @@ public class Config_Reader {
         }
         logWriter.log(0, logKey, "----------------------------------------\n");
     }
-    
+
     /**
-     * 
+     *
      * @param filePath the path the config file is in
      */
     public void setConfigFilePath(String filePath) {
@@ -122,10 +122,10 @@ public class Config_Reader {
             logWriter.log(4, logKey, "leaving setFilePath\n");
         }
     }
-    
-    
+
+
     /**
-     * 
+     *
      * @return StringArray with all the keys stored in the container
      */
     public String[] get_variables(){
@@ -143,11 +143,11 @@ public class Config_Reader {
         }
         return toReturn;
     }
-    
-    
+
+
     /**
      * just used for debugging, Object isn't a really good return value
-     * @param key 
+     * @param key
      * @return the Object stored under the key in the variable container
      */
     public Object get_val(String key){
@@ -170,10 +170,10 @@ public class Config_Reader {
         }
         return new Integer(-1);
     }
-    
-    
+
+
     /**
-     * 
+     *
      * @param key the key from which we want to get the value from
      * @return the value stored under the key
      */
@@ -205,8 +205,8 @@ public class Config_Reader {
         }
         return prep;
     }
-    
-    
+
+
     /**
      * first casts the object in the Map to an Integer (we assume the one calling this method knows there is an Integer stored in there)
      * and we then get the int value of it
@@ -237,8 +237,57 @@ public class Config_Reader {
         }
         return toReturn;
     }
-    
-    
+
+    /**
+     * first casts the object in the Map to an Integer (we assume the one calling this method knows there is an Integer stored in there)
+     * and we then get the int value of it
+     * @param key the key of the entry in which the data you want are stored in
+     * @param min min return value
+     * @param max max return value
+     * @return value of given key
+     */
+    public int get_int(String key, int min, int max)
+    {
+        if(logWriterInit){
+            logWriter.log(4, logKey, "jumping in get_int with key" , key, "\n");
+        }
+        int toReturn;
+        if(container.containsKey(key)){
+            try
+            {
+                toReturn = (int)container.get(key);
+            }
+            catch(ClassCastException e)
+            {
+                logWriter.log(0, logKey, "\n");
+                logWriter.log(0, logKey, "###################################################\n");
+                logWriter.log(0, logKey, "error by reading values from config file.\n");
+                logWriter.log(0, logKey, "value '" + key + "' in config file is not a int!\n");
+                logWriter.log(0, logKey, "'" + key + "' is set to: '", get_string(key), "'\n");
+                logWriter.log(0, logKey, "###################################################\n");
+                logWriter.log(0, logKey, "\n");
+                System.exit(0);
+                return -1;
+            }
+        }
+        else{
+            toReturn = -1;
+            if(logWriterInit){
+                logWriter.log(0, logKey, "in get_int could not find a match for " , key , ", exiting\n");
+                System.exit(0);
+            }
+            else{
+                System.err.println("in function get_int could not find a match for " + key + ", exiting");
+                System.exit(0);
+            }
+        }
+        if(logWriterInit){
+            logWriter.log(4, logKey, "leaving get_int\n");
+        }
+        return toReturn;
+    }
+
+
     /**
      * first casts the object in the Map to a Double (we assume the one calling this method knows there is a Double stored in there)
      * and we then get the double value of it
@@ -269,8 +318,8 @@ public class Config_Reader {
         }
         return toReturn;
     }
-    
-    
+
+
     /**
      * first casts the object in the Map to a Boolean (we assume the one calling this method knows there is a Boolean stored in there)
      * and we then get the boolean value of it
@@ -283,7 +332,22 @@ public class Config_Reader {
         }
         boolean toReturn;
         if(container.containsKey(key)){
-            toReturn = (boolean)container.get(key);
+            try
+            {
+                toReturn = (boolean)container.get(key);
+            }
+            catch(ClassCastException e)
+            {
+                logWriter.log(0, logKey, "\n");
+                logWriter.log(0, logKey, "###################################################\n");
+                logWriter.log(0, logKey, "error by reading values from config file.\n");
+                logWriter.log(0, logKey, "value '" + key + "' in config file is not a boolean!\n");
+                logWriter.log(0, logKey, "'" + key + "' is set to: ", get_string(key), "\n");
+                logWriter.log(0, logKey, "###################################################\n");
+                logWriter.log(0, logKey, "\n");
+                System.exit(0);
+                return false;
+            }
         }
         else{
             toReturn = false;
@@ -301,8 +365,8 @@ public class Config_Reader {
         }
         return toReturn;
     }
-    
-    
+
+
     /**
      * we cast the object in the Map to a String which we then return
      * @param key the key of the entry in which the data you want are stored in
@@ -331,8 +395,8 @@ public class Config_Reader {
         }
         return prep;
     }
-    
-    
+
+
     /**
      * will create a STFileFinder that is used to get all the Structured Text files
      * from the directory specified in the path variable from the config file
@@ -350,12 +414,12 @@ public class Config_Reader {
         }
         return stFiles;
     }
-    
-    
+
+
     /**
      * first puts some default values in the container, then proceeds by splitting the String from the
      * config file after each newLine, the calls the interpret_line function which does the actual work
-     * @throws IOException 
+     * @throws IOException
      */
     private void read_config() throws IOException{
         if(logWriterInit){
@@ -370,7 +434,7 @@ public class Config_Reader {
             logWriter.log(4, logKey, "leaving read_config\n");
         }
     }
-    
+
     /**
      * puts some default values in the container, the default value is
      * defined here
@@ -399,8 +463,8 @@ public class Config_Reader {
         container.put("hostname", "localhost");
         container.put("path", "/home/linc/NetBeansProjects/Project_Icarus/Icarus/st_files");
     }
-    
-    
+
+
     /**
      * first checks if it is a key which has to be put in the key_container, if so removes the key_ part and stores it in the map
      * if it is no a key, checks the type of the value and then puts the value in the normal container
@@ -433,8 +497,8 @@ public class Config_Reader {
             logWriter.log(4, logKey, "leaving interpret_line\n");
         }
     }
-    
-    
+
+
     /**
      * only checks if the System is Windows or Linux and then calls the
      * read Method for the fitting system
@@ -456,13 +520,13 @@ public class Config_Reader {
         }
         return toReturn;
     }
-    
-    
+
+
     /**
      * This is the read Method for Linux since Linux uses only \n as a newLine indicator
      * @return the content of the file without comments, spaces and stuff as a String
      * @throws FileNotFoundException
-     * @throws IOException 
+     * @throws IOException
      */
     private String read_Linux() throws FileNotFoundException, IOException{
         if(logWriterInit){
@@ -525,13 +589,13 @@ public class Config_Reader {
         }
         return toReturn;
     }
-    
-    
+
+
     /**
      * This is the read Method for Windows as Windows uses \r\n as a newLine indicator
      * @return the content of the file without comments, spaces and stuff as a String
      * @throws FileNotFoundException
-     * @throws IOException 
+     * @throws IOException
      */
      private String read_Windows() throws FileNotFoundException, IOException{
          if(logWriterInit){
@@ -614,8 +678,8 @@ public class Config_Reader {
         }
         return toReturn;
     }
-    
-    
+
+
     /**
      * will created an example config file at the specified path
      * @param path the path at which the example config will be created
@@ -704,7 +768,7 @@ public class Config_Reader {
             "## will assign the path /home/linc/Icarus/Logs/LogAll to the output \n" +
             "## of the Syntax checker\n" +
             "#syntax_checker = /home/linc/Icarus/Logs/LogAll; \n" +
-            "\n " + 
+            "\n " +
             "## set the path for the LogWriter: \n" +
             "LogWriter = /tmp" +
             "\n" +
@@ -715,7 +779,7 @@ public class Config_Reader {
         ){
             writer.write(hugeAssExampleString);
             writer.flush();
-        }   
+        }
         catch(IOException e){
             System.err.println("could not create example_config");
             throw e;
@@ -724,10 +788,10 @@ public class Config_Reader {
             logWriter.log(4, logKey, "leaving create_example_config(String)\n");
         }
     }
-    
-    
+
+
     /**
-     * 
+     *
      */
     /* --fixme-- */
 /* Javadoc: Missing tag for declared exception IOException */
@@ -815,7 +879,7 @@ public class Config_Reader {
             "## will assign the path /home/linc/Icarus/Logs/LogAll to the output \n" +
             "## of the Syntax checker\n" +
             "#syntax_checker = /home/linc/Icarus/Logs/LogAll; \n" +
-            "\n " + 
+            "\n " +
             "## set the path for the LogWriter: \n" +
             "LogWriter = /home/linc/Documents/logs" +
             "\n" +
