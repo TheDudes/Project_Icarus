@@ -47,8 +47,10 @@ public class Logger
     final private String  log_file_backup;
     final private String  log_file_ending;
     final private String  log_key = " [Logger]: ";
+    final private long    log_file_max_size;
+    final private int     log_check_count;
           private String  log_file_path;
-    final private String  path_to_log_file;
+          private String  path_to_log_file;
     final private boolean silent;
     final private Thread  thread;
     final private int     verboseLevel;
@@ -61,14 +63,16 @@ public class Logger
      */
     public Logger(Config_Reader config)
     {
-        verboseLevel     = config.get_int("verbosity_level");
-        silent           = config.get_boolean("silent");
-        max_backup_files = config.get_int("Log_max_files");
-        log_file_name    = config.get_string("Log_file_name");
-        log_file_backup  = config.get_string("Log_file_backup");
-        log_file_ending  = config.get_string("Log_file_ending");
-        log_file_path    = config.get_string("Log_file_path");
-        path_to_log_file = file_rotation();
+        verboseLevel      = config.get_int("verbosity_level");
+        silent            = config.get_boolean("silent");
+        max_backup_files  = config.get_int("Log_max_files");
+        log_file_name     = config.get_string("Log_file_name");
+        log_file_backup   = config.get_string("Log_file_backup");
+        log_file_ending   = config.get_string("Log_file_ending");
+        log_file_path     = config.get_string("Log_file_path");
+        log_check_count   = config.get_int("Log_check_count");
+        log_file_max_size = evaluate_size(config.get_string("Log_file_max_size"));
+        path_to_log_file  = file_rotation();
 
         thread = new Thread(new Log_Thread());
         thread.setName("Log_Thread");
@@ -112,30 +116,30 @@ public class Logger
         {
             if(count < 10)
                 file_from = new File(log_file_path + log_file_backup
-                        + "_00" + new Integer(count).toString()
-                        + log_file_ending);
+                        + log_file_ending
+                        + ".00" + new Integer(count).toString());
             else if(count < 100)
                 file_from = new File(log_file_path + log_file_backup
-                        + "_0" + new Integer(count).toString()
-                        + log_file_ending);
+                        + log_file_ending
+                        + ".0" + new Integer(count).toString());
             else
                 file_from = new File(log_file_path + log_file_backup
-                        + "_" + new Integer(count).toString()
+                        + "." + new Integer(count).toString()
                         + log_file_ending);
         }
 
         if(count < 9)
             file_to = new File(log_file_path + log_file_backup
-                    + "_00" + new Integer(count + 1).toString()
-                    + log_file_ending);
+                    + log_file_ending
+                    + ".00" + new Integer(count + 1).toString());
         else if(count < 99)
             file_to = new File(log_file_path + log_file_backup
-                    + "_0" + new Integer(count + 1).toString()
-                    + log_file_ending);
+                    + log_file_ending
+                    + ".0" + new Integer(count + 1).toString());
         else
             file_to = new File(log_file_path + log_file_backup
-                    + "_" + new Integer(count + 1).toString()
-                    + log_file_ending);
+                    + log_file_ending
+                    + "." + new Integer(count + 1).toString());
 
         log(4, log_key, "recursive move call with count: "
                                 + new Integer(count).toString() + "\n");
@@ -152,6 +156,37 @@ public class Logger
                     "error near logfile rotating, could not move file");
             System.exit(1);
         }
+    }
+
+    private static long evaluate_size(String s)
+    {
+        if(s.contains("M"))
+        {
+            return 1024*1024*
+                    (long)Long.parseLong(s.substring(0, s.indexOf("M",0)));
+        }
+        else if(s.contains("B"))
+        {
+            return (long)Long.parseLong(s.substring(0, s.indexOf("B",0)));
+        }
+        else if(s.contains("K"))
+        {
+            return 1024*
+                    (long)Long.parseLong(s.substring(0, s.indexOf("K",0)));
+        }
+        else if(s.contains("G"))
+        {
+            return 1024*1024*1024*
+                    (long)Long.parseLong(s.substring(0, s.indexOf("G",0)));
+        }
+        else
+        {
+            System.out.print("could not evalute Logfile Size from: "
+                                    + s + "\n");
+            System.exit(0);
+            return 1;
+        }
+
     }
 
     /**
@@ -218,13 +253,29 @@ public class Logger
             String message = new String();
             String queue_element[];
             int queue_size;
-            try (Writer file_writer =
-                    new BufferedWriter(
-                        new FileWriter(path_to_log_file, true)))
+            int count = 0;
+            try
             {
+                Writer file_writer =
+                    new BufferedWriter(
+                        new FileWriter(path_to_log_file, true));
+                File file = new File(path_to_log_file);
                 while( alive || !queue.isEmpty() )
                 {
+                    count++;
                     queue_element = queue.take();
+                    if((count % log_check_count) == 0)
+                    {
+                        count = 0;
+                        if(file.length() >= (log_file_max_size))
+                        {
+                            file_writer.close();
+                            recursive_move(0);
+                            file_writer =
+                                new BufferedWriter(
+                                    new FileWriter(path_to_log_file, true));
+                        }
+                    }
 
                     message = sdf.format(new Long(new Date().getTime()));
                     for(String buff : queue_element)
@@ -250,6 +301,7 @@ public class Logger
                         file_writer.flush();
                     }
                 }
+                file_writer.close();
             }
             catch (IOException e)
             {
