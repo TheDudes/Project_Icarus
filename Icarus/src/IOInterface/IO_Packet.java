@@ -1,3 +1,4 @@
+package IOInterface;
 public class IO_Packet{
 
     private int geraeteId;

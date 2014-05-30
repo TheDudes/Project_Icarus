@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 import logger.*;
+import java.lang.ClassCastException;
 
 /**
  *
@@ -35,6 +36,7 @@ public class Config_Reader {
     
     //stores the path to the config file
     private String filePath = "";
+    private String logKey = " [Config_Reader]: ";
     
     /*
     used for storing the String we get from the read() Method
@@ -85,6 +87,7 @@ public class Config_Reader {
         }
         else{
             create_example_config(filePath);
+            set_default_values();
         }
     }
 
@@ -96,14 +99,14 @@ public class Config_Reader {
     public void set_Logger(Logger logger){
         logWriter = logger;
         logWriterInit = true;
-        logWriter.log("Config_Reader", 0, "----------------------------------------");
-        logWriter.log("Config_Reader", 0 , "  Values specified in the config file:");
-        logWriter.log("Config_Reader", 0, "----------------------------------------");
+        logWriter.log(0, logKey, "----------------------------------------\n");
+        logWriter.log(0, logKey, "  Values specified in the config file:\n");
+        logWriter.log(0, logKey, "----------------------------------------\n");
         for(Map.Entry<String, Object> e : container.entrySet()){
             String formattedValues = String.format("%6s%-20s%8s", "Key: ", e.getKey(), "Value: ");
-            logWriter.log("Config_Reader", 0, formattedValues + e.getValue());
+            logWriter.log(0, logKey, formattedValues , e.getValue().toString(), "\n");
         }
-        logWriter.log("Config_Reader", 0, "----------------------------------------");
+        logWriter.log(0, logKey, "----------------------------------------\n");
     }
     
     /**
@@ -112,11 +115,11 @@ public class Config_Reader {
      */
     public void setConfigFilePath(String filePath) {
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in setConfigFilePath and setting path to" + filePath);
+            logWriter.log(4, logKey, "jumping in setConfigFilePath and setting path to" , filePath, "\n");
         }
         this.filePath = filePath;
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "leaving setFilePath");
+            logWriter.log(4, logKey, "leaving setFilePath\n");
         }
     }
     
@@ -127,7 +130,7 @@ public class Config_Reader {
      */
     public String[] get_variables(){
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in get_variables");
+            logWriter.log(4, logKey, "jumping in get_variables\n");
         }
         int i = 0;
         String[] toReturn = new String[container.size()];
@@ -136,7 +139,7 @@ public class Config_Reader {
             i++;
         }
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "leaving get_variables");
+            logWriter.log(4, logKey, "leaving get_variables\n");
         }
         return toReturn;
     }
@@ -149,29 +152,23 @@ public class Config_Reader {
      */
     public Object get_val(String key){
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in get_val with key" + key);
+            logWriter.log(4, logKey, "jumping in get_val with key" , key, "\n");
         }
         if(container.containsKey(key)){
             if(logWriterInit){
-                logWriter.log("Config_Reader", 4, "leaving get_val");
+                logWriter.log(4, logKey, "leaving get_val\n");
             }
             return container.get(key);
         }
-        /* --fixme-- */
-/* Statement unnecessarily nested within else clause. The corresponding then clause does not complete normally */
-        else{
-            if(logWriterInit){
-                logWriter.log("Config_Reader", 0, "in get_val could not find a match for " + key + ", exiting");
-                System.exit(0);
-            }
-            else{
-                System.err.println("in function get_val could not find a match for " + key + ", exiting");
-                System.exit(0);
-            }
-            /* --fixme-- */
-/* The expression of type int is boxed into Integer */
-            return -1;
+        if(logWriterInit){
+            logWriter.log(0, logKey, "in get_val could not find a match for " , key , ", exiting\n");
+            System.exit(0);
         }
+        else{
+            System.err.println("in function get_val could not find a match for " + key + ", exiting");
+            System.exit(0);
+        }
+        return new Integer(-1);
     }
     
     
@@ -180,9 +177,9 @@ public class Config_Reader {
      * @param key the key from which we want to get the value from
      * @return the value stored under the key
      */
-    public String get_path(String key){
+    public String get_path(String key) throws ClassCastException{
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in get_path with key" + key);
+            logWriter.log(4, logKey, "jumping in get_path with key" , key, "\n");
         }
         String prep;
         //removes the ; from the path Strings
@@ -192,7 +189,7 @@ public class Config_Reader {
         else{
             prep = "";
             if(logWriterInit){
-                logWriter.log("Config_Reader", 0, "in get_path could not find a match for " + key + ", exiting");
+                logWriter.log(0, logKey, "in get_path could not find a match for " , key , ", exiting\n");
                 System.exit(0);
             }
             else{
@@ -204,7 +201,7 @@ public class Config_Reader {
         //splits the String after each , thereby seperating the different paths from each other
         //String[] toReturn = prep.split(",");
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "leaving get_path");
+            logWriter.log(4, logKey, "leaving get_path\n");
         }
         return prep;
     }
@@ -216,20 +213,18 @@ public class Config_Reader {
      * @param key the key of the entry in which the data you want are stored in
      * @return value of given key
      */
-    public int get_int(String key){
+    public int get_int(String key) throws ClassCastException{
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in get_int with key" + key);
+            logWriter.log(4, logKey, "jumping in get_int with key" , key, "\n");
         }
-        Integer toReturn;
+        int toReturn;
         if(container.containsKey(key)){
-            toReturn = (Integer)container.get(key);
+            toReturn = (int)container.get(key);
         }
         else{
-            /* --fixme-- */
-/* The expression of type int is boxed into Integer */
             toReturn = -1;
             if(logWriterInit){
-                logWriter.log("Config_Reader", 0, "in get_int could not find a match for " + key + ", exiting");
+                logWriter.log(0, logKey, "in get_int could not find a match for " , key , ", exiting\n");
                 System.exit(0);
             }
             else{
@@ -238,10 +233,8 @@ public class Config_Reader {
             }
         }
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "leaving get_int");
+            logWriter.log(4, logKey, "leaving get_int\n");
         }
-        /* --fixme-- */
-/* The expression of type Integer is unboxed into int */
         return toReturn;
     }
     
@@ -252,20 +245,18 @@ public class Config_Reader {
      * @param key the key of the entry in which the data you want are stored in
      * @return value of given key
      */
-    public double get_double(String key){
+    public double get_double(String key) throws ClassCastException{
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in get_double with key" + key);
+            logWriter.log(4, logKey, "jumping in get_double with key" , key, "\n");
         }
-        Double toReturn;
+        double toReturn;
         if(container.containsKey(key)){
-            toReturn = (Double)container.get(key);
+            toReturn = (double)container.get(key);
         }
         else{
-            /* --fixme-- */
-/* The expression of type double is boxed into Double */
             toReturn = -1.0;
             if(logWriterInit){
-                logWriter.log("Config_Reader", 0, "in get_double could not find a match for " + key + ", exiting");
+                logWriter.log(0, logKey, "in get_double could not find a match for " , key , ", exiting\n");
                 System.exit(0);
             }
             else{
@@ -274,10 +265,8 @@ public class Config_Reader {
             }
         }
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "leaving get_double");
+            logWriter.log(4, logKey, "leaving get_double\n");
         }
-        /* --fixme-- */
-/* The expression of type Double is unboxed into double */
         return toReturn;
     }
     
@@ -288,20 +277,18 @@ public class Config_Reader {
      * @param key the key of the entry in which the data you want are stored in
      * @return value of given key
      */
-    public boolean get_boolean(String key){
+    public boolean get_boolean(String key) throws ClassCastException{
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in get_boolean with key" + key);
+            logWriter.log(4, logKey, "jumping in get_boolean with key" , key, "\n");
         }
-        Boolean toReturn;
+        boolean toReturn;
         if(container.containsKey(key)){
-            toReturn = (Boolean)container.get(key);
+            toReturn = (boolean)container.get(key);
         }
         else{
-            /* --fixme-- */
-/* The expression of type boolean is boxed into Boolean */
             toReturn = false;
             if(logWriterInit){
-                logWriter.log("Config_Reader", 0, "in get_boolean could not find a match for " + key + ", exiting");
+                logWriter.log(0, logKey, "in get_boolean could not find a match for " , key , ", exiting\n");
                 System.exit(0);
             }
             else{
@@ -310,10 +297,8 @@ public class Config_Reader {
             }
         }
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "leaving get_boolean");
+            logWriter.log(4, logKey, "leaving get_boolean\n");
         }
-        /* --fixme-- */
-/* The expression of type Boolean is unboxed into boolean */
         return toReturn;
     }
     
@@ -323,9 +308,9 @@ public class Config_Reader {
      * @param key the key of the entry in which the data you want are stored in
      * @return value of given key
      */
-    public String get_string(String key){
+    public String get_string(String key) throws ClassCastException{
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in get_string with key" + key);
+            logWriter.log(4, logKey, "jumping in get_string with key" , key, "\n");
         }
         String prep = "";
         if(container.containsKey(key)){
@@ -333,7 +318,7 @@ public class Config_Reader {
         }
         else{
             if(logWriterInit){
-                logWriter.log("Config_Reader", 0, "in get_string could not find a match for " + key + ", exiting");
+                logWriter.log(0, logKey, "in get_string could not find a match for " , key , ", exiting\n");
                 System.exit(0);
             }
             else{
@@ -342,7 +327,7 @@ public class Config_Reader {
             }
         }
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "leaving get_String");
+            logWriter.log(4, logKey, "leaving get_String\n");
         }
         return prep;
     }
@@ -355,13 +340,13 @@ public class Config_Reader {
      */
     public String[] get_st_filepaths(){
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in get_st_filepaths");
+            logWriter.log(4, logKey, "jumping in get_st_filepaths\n");
             findEmFiles = new STFileFinder(this, logWriter);
             stFiles = findEmFiles.get_file_names();
             for(int i = 0; i < stFiles.length; i++){
-                logWriter.log("Config_Reader", 0, "path to ST File" + i + ".  " + stFiles[i]);
+                logWriter.log(0, logKey, "path to ST File " , new Integer(i).toString() , ".  " , stFiles[i], "\n");
             }
-            logWriter.log("Config_Reader", 4, "leaving get_st_filepaths");
+            logWriter.log(4, logKey, "leaving get_st_filepaths\n");
         }
         return stFiles;
     }
@@ -374,7 +359,7 @@ public class Config_Reader {
      */
     private void read_config() throws IOException{
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in read_config");
+            logWriter.log(4, logKey, "jumping in read_config\n");
         }
         set_default_values();
         String[] lines = workWithThat.split("\n");
@@ -382,7 +367,7 @@ public class Config_Reader {
             interpret_line(line);
         }
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "leaving read_config");
+            logWriter.log(4, logKey, "leaving read_config\n");
         }
     }
     
@@ -423,7 +408,7 @@ public class Config_Reader {
      */
     public void interpret_line(String line){
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in interpret_line");
+            logWriter.log(4, logKey, "jumping in interpret_line\n");
         }
         String[] split_line = line.split("=");
         if(split_line.length != 1){
@@ -445,7 +430,7 @@ public class Config_Reader {
             }
         }
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "leaving interpret_line");
+            logWriter.log(4, logKey, "leaving interpret_line\n");
         }
     }
     
@@ -457,7 +442,7 @@ public class Config_Reader {
      */
     private String read() throws IOException{
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in read");
+            logWriter.log(4, logKey, "jumping in read\n");
         }
         String toReturn = "";
         if(Pattern.matches("Windows.*", System.getProperty("os.name"))){
@@ -467,7 +452,7 @@ public class Config_Reader {
             toReturn = read_Linux();
         }
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "leaving read");
+            logWriter.log(4, logKey, "leaving read\n");
         }
         return toReturn;
     }
@@ -481,7 +466,7 @@ public class Config_Reader {
      */
     private String read_Linux() throws FileNotFoundException, IOException{
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in read_Linux");
+            logWriter.log(4, logKey, "jumping in read_Linux\n");
         }
         String toReturn;
         try (BufferedReader reader = new BufferedReader(new FileReader (filePath))) {
@@ -536,7 +521,7 @@ public class Config_Reader {
             }
         }
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "leaving read_Linux");
+            logWriter.log(4, logKey, "leaving read_Linux\n");
         }
         return toReturn;
     }
@@ -550,7 +535,7 @@ public class Config_Reader {
      */
      private String read_Windows() throws FileNotFoundException, IOException{
          if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in read_Windows");
+            logWriter.log(4, logKey, "jumping in read_Windows\n");
         }
         String toReturn;
         try (BufferedReader reader = new BufferedReader(new FileReader (filePath))) {
@@ -625,7 +610,7 @@ public class Config_Reader {
             }
         }
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "leaving read_Windows");
+            logWriter.log(4, logKey, "leaving read_Windows\n");
         }
         return toReturn;
     }
@@ -637,7 +622,7 @@ public class Config_Reader {
      */
     private void create_example_config(String path) throws IOException{
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in create_example_config(String) with path" + path);
+            logWriter.log(4, logKey, "jumping in create_example_config(String) with path" , path, "\n");
         }
         String hugeAssExampleString = "######################################################################\n" +
             "#####################################################################\n" +
@@ -736,7 +721,7 @@ public class Config_Reader {
             throw e;
         }
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "leaving create_example_config(String)");
+            logWriter.log(4, logKey, "leaving create_example_config(String)\n");
         }
     }
     
@@ -748,7 +733,7 @@ public class Config_Reader {
 /* Javadoc: Missing tag for declared exception IOException */
     public void create_example_config() throws IOException{
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "jumping in create_example_config");
+            logWriter.log(4, logKey, "jumping in create_example_config\n");
         }
         String hugeAssExampleString = "######################################################################\n" +
             "#####################################################################\n" +
@@ -847,7 +832,7 @@ public class Config_Reader {
             throw e;
         }
         if(logWriterInit){
-            logWriter.log("Config_Reader", 4, "leaving create_example_config");
+            logWriter.log(4, logKey, "leaving create_example_config\n");
         }
     }
 }

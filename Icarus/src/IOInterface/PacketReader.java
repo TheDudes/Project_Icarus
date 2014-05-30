@@ -1,3 +1,4 @@
+package IOInterface;
 import java.io.*;
 public class PacketReader extends BufferedInputStream{
 

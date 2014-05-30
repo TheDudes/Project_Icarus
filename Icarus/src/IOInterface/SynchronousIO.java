@@ -26,8 +26,11 @@ import java.net.*;
 */
 public class SynchronousIO{
 
-    private Synchronous_IO_Worker syncWorker;
+    private String logKey = " [SynchronousIO]: ";
+    private Synchronous_IO_worker syncWorker;
     private Thread syncWorkerThread;
+    private ASynchronous_IO_Worker asyncWorker;
+    private Thread asyncWorkerThread;
     /* --fixme-- */
 /* The value of the field SynchronousIO.logger is not used */
     private Logger logger;
@@ -40,18 +43,23 @@ public class SynchronousIO{
     */
     public SynchronousIO(Logger logger, Config_Reader confReader, InfoCollector infoColl){
        this.logger = logger;
-       logger.log("SynchronousIO", 0, "trying to establish a connection to the IO Manager");
+       logger.log(0, logKey, "trying to establish a connection to the IO Manager\n");
        try{
             syncSocket = new Socket(confReader.get_string("hostname"), confReader.get_int("sync_port"));
-            logger.log("SynchronousIO", 0, "established the connection to the IO Manager");
-            logger.log("SynchronousIO", 4, "creating the worker"); 
-            syncWorker = new Synchronous_IO_Worker(logger, infoColl, syncSocket);
+            ServerSocket aSyncSocket = new ServerSocket(confReader.get_int("async_port"));
+            logger.log(0, logKey, "established the connection to the IO Manager\n");
+            logger.log(4, logKey, "creating the workers\n"); 
+            syncWorker = new Synchronous_IO_worker(logger, infoColl, syncSocket);
+            asyncWorker = new ASynchronous_IO_Worker(logger, infoColl, aSyncSocket);
             syncWorkerThread = new Thread(syncWorker);
             syncWorkerThread.start();
-            logger.log("SynchronousIO", 4, "created the worker, exiting constructor");
+            logger.log(4, logKey, "created the syncWorker, exiting constructor\n");
+            asyncWorkerThread = new Thread(asyncWorker);
+            asyncWorkerThread.start();
+            logger.log(4, logKey, "created the asyncWorker, exiting constructor\n");
        }
        catch(Exception e){
-            logger.log("SynchronousIO", 0, "Exception while trying to establish a connection to the IO Manager:" + e );
+            logger.log(0, logKey, "Exception while trying to establish a connection to the IO Manager:" , e .getMessage(), "\n");
             System.exit(0);
        }
        finally{
@@ -60,7 +68,7 @@ public class SynchronousIO{
                     syncSocket.close();
                 }
                 catch(Exception e){
-                    logger.log("SynchronousIO", 0, "Exception in Exception when trying to close the socket: " + e);
+                    logger.log(0, logKey, "Exception in Exception when trying to close the socket: " , e.getMessage(), "\n");
                 }
             }
        }

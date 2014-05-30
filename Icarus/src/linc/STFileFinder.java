@@ -31,6 +31,7 @@ public class STFileFinder {
     private File directory;
     private ArrayList<String> stFiles;
     private Logger logWriter;
+    private String logKey = " [STFileFinder]: ";
     
     
     /**
@@ -45,7 +46,7 @@ public class STFileFinder {
         files = directory.list();
         this.stFiles = new ArrayList<>(files.length);
         getSTFiles();
-        logWriter.log("STFileFinder", 4, "leaving constructor");
+        logWriter.log(4, logKey, "leaving constructor\n");
     }
     
     
@@ -56,7 +57,7 @@ public class STFileFinder {
      * If the directory name does not end on a / the function will append that one aswell
      */
     private void getSTFiles(){
-        logWriter.log("STFileFinder", 4, "jumping in getSTFiles");
+        logWriter.log(4, logKey, "jumping in getSTFiles\n");
         if(!fileDirectory.endsWith("/")){
             fileDirectory += "/";
         }
@@ -65,7 +66,7 @@ public class STFileFinder {
                 stFiles.add(fileDirectory + files[i]);
             }
         }
-        logWriter.log("STFileFinder", 4, "leaving getSTFiles");
+        logWriter.log(4, logKey, "leaving getSTFiles\n");
     }
     
     
@@ -75,10 +76,10 @@ public class STFileFinder {
      * @return Array with all the paths of the Structured Text files found in the provided (in the constructor) directory
      */
     public String[] get_file_names(){
-        logWriter.log("STFileFinder", 4, "jumping in get_file_names");
+        logWriter.log(4, logKey, "jumping in get_file_names\n");
         int size = stFiles.size();
         String returnArray[] = new String[size];
-        logWriter.log("STFileFinder", 4, "leaving get_file_names");
+        logWriter.log(4, logKey, "leaving get_file_names\n");
         return stFiles.toArray(returnArray);
     }
     
@@ -88,11 +89,11 @@ public class STFileFinder {
      * @param fileDir the new directory we shall search
      */
     public void set_stfile_directory(String fileDir){
-        logWriter.log("STFileFinder", 4, "jumping in set_file_directory");
+        logWriter.log(4, logKey, "jumping in set_file_directory\n");
         directory = new File(fileDir);
         files = directory.list();
         getSTFiles();
-        logWriter.log("STFileFinder", 4, "leaving set_file_directory");
+        logWriter.log(4, logKey, "leaving set_file_directory\n");
     }
     
 }
