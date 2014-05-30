@@ -351,13 +351,26 @@ public class Config_Reader {
             }
             catch(ClassCastException e)
             {
-                logWriter.log(0, logKey, "\n");
-                logWriter.log(0, logKey, "###################################################\n");
-                logWriter.log(0, logKey, "error by reading values from config file.\n");
-                logWriter.log(0, logKey, "value '" + key + "' in config file is not a boolean!\n");
-                logWriter.log(0, logKey, "'" + key + "' is set to: ", get_string(key), "\n");
-                logWriter.log(0, logKey, "###################################################\n");
-                logWriter.log(0, logKey, "\n");
+                if(logWriterInit)
+                {
+                    logWriter.log(0, logKey, "\n");
+                    logWriter.log(0, logKey, "###################################################\n");
+                    logWriter.log(0, logKey, "error by reading values from config file.\n");
+                    logWriter.log(0, logKey, "value '" + key + "' in config file is not a boolean!\n");
+                    logWriter.log(0, logKey, "'" + key + "' is set to: ", get_string(key), "\n");
+                    logWriter.log(0, logKey, "###################################################\n");
+                    logWriter.log(0, logKey, "\n");
+                }
+                else
+                {
+                    System.out.print("\n");
+                    System.out.print("###################################################\n");
+                    System.out.print("error by reading values from config file.\n");
+                    System.out.print("value '" + key + "' in config file is not a int!\n");
+                    System.out.print("'" + key + "' is set to: '" + get_string(key) + "'\n");
+                    System.out.print("###################################################\n");
+                    System.out.print("\n");
+                }
                 System.exit(0);
                 return false;
             }
