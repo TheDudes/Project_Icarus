@@ -242,7 +242,7 @@ public class Logger
     }
 
     /**
-     * kill will stop the thread
+     * kill will stop the logging thread
      */
     public void kill()
     {

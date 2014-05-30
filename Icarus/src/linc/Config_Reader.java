@@ -177,7 +177,7 @@ public class Config_Reader {
      * @param key the key from which we want to get the value from
      * @return the value stored under the key
      */
-    public String get_path(String key) throws ClassCastException{
+    public String get_path(String key) {
         if(logWriterInit){
             logWriter.log(4, logKey, "jumping in get_path with key" , key, "\n");
         }
@@ -210,8 +210,7 @@ public class Config_Reader {
     /**
      * first casts the object in the Map to an Integer (we assume the one calling this method knows there is an Integer stored in there)
      * and we then get the int value of it
-     * @param key the key of the entry in which the data you want are stored in
-     * @return value of given key
+     * @deprecated
      */
     public int get_int(String key) throws ClassCastException{
         if(logWriterInit){
@@ -366,7 +365,7 @@ public class Config_Reader {
      * @param key the key of the entry in which the data you want are stored in
      * @return value of given key
      */
-    public boolean get_boolean(String key) throws ClassCastException{
+    public boolean get_boolean(String key) {
         if(logWriterInit){
             logWriter.log(4, logKey, "jumping in get_boolean with key" , key, "\n");
         }
@@ -425,7 +424,7 @@ public class Config_Reader {
      * @param key the key of the entry in which the data you want are stored in
      * @return value of given key
      */
-    public String get_string(String key) throws ClassCastException{
+    public String get_string(String key) {
         if(logWriterInit){
             logWriter.log(4, logKey, "jumping in get_string with key" , key, "\n");
         }
