@@ -165,21 +165,21 @@ public class Logger
      */
     private static long evaluate_size(String s)
     {
-        if(s.contains("M"))
+        if(s.contains("M") || s.contains("m") )
         {
             return 1024*1024*
                     (long)Long.parseLong(s.substring(0, s.indexOf("M",0)));
         }
-        else if(s.contains("B"))
+        else if(s.contains("B") || s.contains("b"))
         {
             return (long)Long.parseLong(s.substring(0, s.indexOf("B",0)));
         }
-        else if(s.contains("K"))
+        else if(s.contains("K") || s.contains("k"))
         {
             return 1024*
                     (long)Long.parseLong(s.substring(0, s.indexOf("K",0)));
         }
-        else if(s.contains("G"))
+        else if(s.contains("G") || s.contains("g"))
         {
             return 1024*1024*1024*
                     (long)Long.parseLong(s.substring(0, s.indexOf("G",0)));
