@@ -256,6 +256,33 @@ public class Config_Reader {
             try
             {
                 toReturn = (int)container.get(key);
+                if (min > toReturn || toReturn > max)
+                {
+                    if(logWriterInit)
+                    {
+                        logWriter.log(0, logKey, "\n");
+                        logWriter.log(0, logKey, "###################################################\n");
+                        logWriter.log(0, logKey, "error by reading values from config file.\n");
+                        logWriter.log(0, logKey, "value '", key, "' in config file is not valid!\n");
+                        logWriter.log(0, logKey, "'", key, "' is set to: '", new Integer(toReturn).toString(), "'\n");
+                        logWriter.log(0, logKey, "should be between '", new Integer(min).toString(),"' and '", new Integer(max).toString(), "'\n");
+                        logWriter.log(0, logKey, "###################################################\n");
+                        logWriter.log(0, logKey, "\n");
+                    }
+                    else
+                    {
+                        System.out.print("\n");
+                        System.out.print("###################################################\n");
+                        System.out.print("error by reading values from config file.\n");
+                        System.out.print("value '" + key + "' in config file is not valid!\n");
+                        System.out.print("'" + key + "' is set to: '" + toReturn + "'\n");
+                        System.out.print("should be between '" + min + "' and '" + max + "'\n");
+                        System.out.print("###################################################\n");
+                        System.out.print("\n");
+                    }
+                    System.exit(0);
+                    return -1;
+                }
             }
             catch(ClassCastException e)
             {
