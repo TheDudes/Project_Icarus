@@ -3,7 +3,7 @@ Log_file_path = /path/to/ur/log/folder/;
 Log_file_name = Icarus_latest;
 Log_file_backup = Icarus;
 Log_file_ending = .log;
-# max size of logfile, given in B/M or G (Byte, Megabyte or Gigabyte)
+# max size of logfile, given in B/K/M or G (Byte, KiloByte, Megabyte or Gigabyte)
 Log_file_max_size = 10B;
 # every "Log_check_count" round the size of the logfile will be checked
 Log_check_count = 1;
