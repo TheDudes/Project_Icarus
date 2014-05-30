@@ -158,6 +158,11 @@ public class Logger
         }
     }
 
+    /**
+     * function to evaluate the given log_size string from config file
+     * @param s string containing the log size
+     * @return value after identification and calculation
+     */
     private static long evaluate_size(String s)
     {
         if(s.contains("M"))
@@ -245,6 +250,9 @@ public class Logger
         log(0, log_key, "exiting Logger.\n");
     }
 
+    /**
+     * external thread which will write the log messages to the log file
+     */
     private class Log_Thread implements Runnable
     {
         @Override
