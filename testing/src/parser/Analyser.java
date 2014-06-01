@@ -156,8 +156,12 @@ public class Analyser {
                 address_mappedbyte_out  = new HashMap<>();
                 com_channel_queue       = new LinkedBlockingQueue<>();
                 functioname_inputid_var = new HashMap<>();
-                
-		blocks.add(program_cursor); //0
+                program_startpoint = new HashMap<>();
+                function_startpoint = new HashMap<>();
+
+                build_function_structure();
+
+                blocks.add(program_cursor); //0
 		blocks.add(function_cursor); //1
 		blocks.add(function_block_cursor); //2
 		blocks.add(global_cursor); //3

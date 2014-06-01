@@ -317,4 +317,16 @@ public class InfoCollector {
 		analyser.update_device(byte_address, value);
 	}
 
+        public int
+        call_function_or_program(String... function_call)
+        {
+                return analyser.call_function(function_call);
+        }
+
+        public void
+        reset_function(String context)
+        {
+                analyser.reset_function(context);
+        }
+
 }
