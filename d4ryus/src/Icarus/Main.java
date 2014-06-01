@@ -103,7 +103,7 @@ public class Main
                 break;
             case "d4ryus":
             case "cubie":
-                config_path = "/home/d4ryus/Project_Icarus/Icarus/d4ryus_config";
+                config_path = "/home/d4ryus/Project_Icarus/d4ryus/d4ryus_config";
                 break;
             case "alarmpi":
                 config_path = "/home/vault/Project_Icarus/Icarus/example_config";
