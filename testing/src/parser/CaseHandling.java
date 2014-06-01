@@ -3,7 +3,6 @@ package parser;
 
 import java.util.*;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.IntArrayData;
 
 public class
 CaseHandling
@@ -15,14 +14,14 @@ CaseHandling
         private int     offset;
         private int     old_collon;
         private int     end_case_e;
-        
+
         private HashMap<Integer,Integer[]> cases_map = new HashMap<>();
         private ArrayList<Integer> current_cases_list = new ArrayList<>();
         private ArrayList<Integer> old_cases_list = new ArrayList<>();
         private intStack case_stack = new intStack(100);
 
         enum states {start, jump_behind_of, find_colon, find_end_case, find_number, from_to, create_case_lookup, failed, end}
-        
+
         public
         CaseHandling(String code, int offset)
         {
@@ -205,9 +204,9 @@ CaseHandling
                         }
                 }
 
-                
+
         }
-        
+
         public int
         get_end_case()
         {
@@ -221,9 +220,9 @@ CaseHandling
                 if (get_case == null) {
                         return new Integer[]{new Integer(else_part[0]), new Integer(else_part[1])};
                 }
-                return get_case; 
+                return get_case;
         }
-        
+
 }
 
-        
+
