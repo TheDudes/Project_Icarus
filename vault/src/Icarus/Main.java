@@ -55,9 +55,8 @@ public class Main
     public static void main(String... args) throws Exception
     {
         print_startup_message();
-        set_config_file_path();
 
-        config      = new Config_Reader(config_path);
+        config      = new Config_Reader("./icarus.conf");
         log         = new Logger(config);
         container   = new InfoCollector(config, log);
         interpreter = new Interpreter(container, log, config);
@@ -82,50 +81,5 @@ public class Main
     {
         System.out.println("Staring Icarus Structure Text Interpreter!");
         System.out.println("verion: 0.8 (Alpha!)");
-    }
-
-    private static void set_config_file_path()
-    {
-        try
-        {
-            hostname = InetAddress.getLocalHost().getHostName();
-        }
-        catch (UnknownHostException e)
-        {
-            System.out.println("UnknownHostException: " + e);
-            hostname = "";
-            System.exit(1);
-        }
-        switch (hostname)
-        {
-            case "beelzebub":
-                config_path = "/home/apfel/Documents/StudienProjekt/StudienProjekt/sp_2013_10/Project_Icarus/Icarus/superduper_config";
-                break;
-            case "d4ryus":
-            case "cubie":
-                config_path = "/home/d4ryus/Project_Icarus/Icarus/d4ryus_config";
-                break;
-            case "alarmpi":
-                config_path = "/home/vault/Project_Icarus/Icarus/example_config";
-                break;
-            case "vault":
-                config_path = "/home/vault/programing/NetBeansProjects/Project_Icarus/Icarus/example_config";
-                break;
-            case "csb.local":
-                config_path = "/home/ninti/NetbeansProjects/Project_Icarus/Icarus/example_config";
-                break;
-            case "link":
-                config_path = "/home/linc/NetBeansProjects/Project_Icarus/Icarus/defaultConfig";
-                break;
-            /*
-             case "yourhostname":
-             config_path = "/path/to/your/config_file";
-             break;
-             */
-            default:
-                System.out.print("no case for hostname: " + hostname + "\n");
-                config_path = "";
-                System.exit(0);
-        }
     }
 }
