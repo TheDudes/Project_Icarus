@@ -1,10 +1,14 @@
 package IOInterface;
 import java.io.*;
+/* --fixme-- */
+/* Javadoc: Missing comment for public declaration */
 public class PacketReader extends BufferedInputStream{
 
     /**
     * standart constuctor call of the parent constructor
     */
+    /* --fixme-- */
+    /* Javadoc: Missing tag for parameter in */
     public PacketReader(InputStream in){
      super(in);
     }
@@ -14,6 +18,8 @@ public class PacketReader extends BufferedInputStream{
     * calls the read method of the parent class to retrieve information and transforms some of it then
     * @return an IO_Packet with all the information from Datapackage we got/read.
     */
+    /* --fixme-- */
+    /* Javadoc: Missing tag for declared exception IOException */
     public IO_Packet readPacket() throws IOException{
         //array where we store the stuff we get from the parent class read in
         byte readBuffer[] = new byte[8];
@@ -27,6 +33,8 @@ public class PacketReader extends BufferedInputStream{
         pin[0] = readBuffer[2];
         pin[1] = readBuffer[3];
         byte namespace = readBuffer[4];
+        /* --fixme-- */
+        /* The local variable count is hiding a field from type BufferedInputStream */
         byte count = readBuffer[5];
         byte rwflag = readBuffer[6];
         byte value = readBuffer[7];
@@ -40,6 +48,8 @@ public class PacketReader extends BufferedInputStream{
     * calls the read method of the parent class to retrieve information and transforms some of it then
     * @return an IO_Packet with all the information from Datapackage we got/read.
     */
+    /* --fixme-- */
+    /* Javadoc: Missing tag for declared exception IOException */
     public IO_Packet readPacketMod() throws IOException{
         //array where we store the stuff we get from the parent class read in
         byte readBuffer[] = new byte[8];
@@ -53,6 +63,8 @@ public class PacketReader extends BufferedInputStream{
         pin[0] = readBuffer[2];
         pin[1] = readBuffer[3];
         byte namespace = readBuffer[4];
+        /* --fixme-- */
+        /* The local variable count is hiding a field from type BufferedInputStream */
         byte count = readBuffer[5];
         byte rwflag = readBuffer[6];
         byte value = readBuffer[7];
@@ -63,7 +75,7 @@ public class PacketReader extends BufferedInputStream{
 
 
     /**
-     * transforms a byteArray with 2 fields into an integer, the first entry has 
+     * transforms a byteArray with 2 fields into an integer, the first entry has
      * to be the integer/255, the second entry the integer%255
      * Be advised: due to the fact that if
      * the first byte is 0 we do not know if it should be 0 or 256 we wont be able to
@@ -72,6 +84,8 @@ public class PacketReader extends BufferedInputStream{
      * @param toTransform the byteArray we want to transform, first entry is the number/255, the second is number%255
      * @return the integer value we got from the byteArray
      */
+    /* --fixme-- */
+    /* The method getIntFromBytes(byte[]) from the type PacketReader can be declared as static */
     private int getIntFromBytes(byte[] toTransform){
         int mod = toTransform[1];
         int times = toTransform[0];
@@ -97,6 +111,8 @@ public class PacketReader extends BufferedInputStream{
     * @param toTransform a byteArray that should be 2 byte big and which content we shall transform back to an integer
     * @return an integer derived from the byteArray
     */
+    /* --fixme-- */
+    /* The method getIntFromByte(byte[]) from the type PacketReader can be declared as static */
     private int getIntFromByte(byte[] toTransform){
         int first = toTransform[1];
         int second = toTransform[0];
@@ -145,6 +161,8 @@ public class PacketReader extends BufferedInputStream{
     /**
     * simply calls the close method of the parent class
     */
+    /* --fixme-- */
+    /* The method close() of type PacketReader should be tagged with @Override since it actually overrides a superclass method */
     public void close() throws IOException{
         super.close();
     }

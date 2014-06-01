@@ -19,6 +19,8 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
+/* --fixme-- */
+/* The import java.io.InputStream is never used */
 import logger.*;
 import parser.*;
 
@@ -38,10 +40,14 @@ public class Synchronous_IO_worker implements Runnable {
     private int namespaceID = 1;
     private int count = 1;
     private byte rwFlag;
+    /* --fixme-- */
+    /* The value of the field Synchronous_IO_worker.letter is not used */
     private String letter;
+    /* --fixme-- */
+    /* The value of the field Synchronous_IO_worker.number is not used */
     private String number;
 
-    
+
     /**
      * @param logWriter
      * @param infoCollector
@@ -62,12 +68,16 @@ public class Synchronous_IO_worker implements Runnable {
                 BufferedInputStream inFromServer = new BufferedInputStream(client.getInputStream());
                 BufferedOutputStream outToServer = new BufferedOutputStream(client.getOutputStream());) {
 
+            /* --fixme-- */
+            /* The method log(String, int, String) from the type Logger is deprecated */
             logWriter.log(key, 4, "Streams established");
             PacketWriter packetWriter = new PacketWriter(outToServer);
             while (alive || !lbq.isEmpty()) {
 
                 ioPackage = lbq.take();
 
+                /* --fixme-- */
+                /* The method log(String, int, String) from the type Logger is deprecated */
                 logWriter.log(key, 3, "IO_Package received."
                         + " Device ID: " + ioPackage.device_id
                         + " Pin ID: " + ioPackage.pin_id
@@ -75,17 +85,27 @@ public class Synchronous_IO_worker implements Runnable {
 
                 if (ioPackage.abilities == 0) {
 
+                    /* --fixme-- */
+                    /* The method log(String, int, String) from the type Logger is deprecated */
                     logWriter.log(key, 0, "Undefined Ability for Device " + ioPackage.device_id + " at Pin " + ioPackage.pin_id);
 
+                    /* --fixme-- */
+                    /* Undefined_ability_exception cannot be resolved to a type */
                     throw new Undefined_ability_exception();
 
                 } else if (ioPackage.to_poll == true) {
 
+                    /* --fixme-- */
+                    /* The method polling_init(PacketWriter) from the type Synchronous_IO_worker refers to the missing type IOException */
                     polling_init(packetWriter);                 //initiates polling and writes the package to the ioManager
+                    /* --fixme-- */
+                    /* The method log(String, int, String) from the type Logger is deprecated */
                     logWriter.log(key, 4, "Wrote IO_Packet to the IO Manager for Polling");
 
                 } else {
                     write_package(packetWriter);                //writes a value to the ioManager
+                    /* --fixme-- */
+                    /* The method log(String, int, String) from the type Logger is deprecated */
                     logWriter.log(key, 4, "Wrote IO_Packet to the IO Mangager for Writing");
 
                 }
@@ -105,8 +125,12 @@ public class Synchronous_IO_worker implements Runnable {
      *
      * @param packetWriter
      */
+    /* --fixme-- */
+    /* IOException cannot be resolved to a type */
     public void polling_init(PacketWriter packetWriter) throws IOException{
         rwFlag = 11;
+        /* --fixme-- */
+        /* The constructor IO_Packet(String, byte, int, int, byte, byte) is undefined */
         IO_Packet ioPacket = new IO_Packet(ioPackage.device_id, ioPackage.pin_id, namespaceID, count, rwFlag, ioPackage.value);
         packetWriter.write(ioPacket);
     }
@@ -119,12 +143,14 @@ public class Synchronous_IO_worker implements Runnable {
      */
     public void write_package(PacketWriter packetWriter) {
         rwFlag = 0;
+        /* --fixme-- */
+        /* The constructor IO_Packet(String, byte, int, int, byte, byte) is undefined */
         IO_Packet ioPacket = new IO_Packet(ioPackage.device_id, ioPackage.pin_id, namespaceID, count, rwFlag, ioPackage.value);
         packetWriter.write(ioPacket);
 
     }
 
-// 
+//
 //    public void convert_deviceID() {
 //
 //        letter = ioPackage.device_id.substring(0, 1);
@@ -147,8 +173,15 @@ public class Synchronous_IO_worker implements Runnable {
      * @return a byteArray with two fields, the first is the int/255 the second
      * is the int%255
      */
+    /* --fixme-- */
+    /* The method getBytes(int) from the type Synchronous_IO_worker is never used locally */
+    /* The method getBytes(int) from the type Synchronous_IO_worker can be declared as static */
     private byte[] getBytes(int toTransform) {
+        /* --fixme-- */
+        /* The expression of type int is boxed into Integer */
         Integer mod = toTransform % 255;
+        /* --fixme-- */
+        /* The expression of type int is boxed into Integer */
         Integer times = toTransform / 255;
         byte[] byteArray = new byte[2];
         byteArray[0] = times.byteValue();
@@ -168,6 +201,10 @@ public class Synchronous_IO_worker implements Runnable {
      * number/255, the second is number%255
      * @return the integer value we got from the byteArray
      */
+    /* --fixme-- */
+    /* The method getIntFromBytes(byte[]) from the type Synchronous_IO_worker is never used locally */
+    /* --fixme-- */
+    /* The method getIntFromBytes(byte[]) from the type Synchronous_IO_worker can be declared as static */
     private int getIntFromBytes(byte[] toTransform) {
         int mod = toTransform[1];
         int times = toTransform[0];

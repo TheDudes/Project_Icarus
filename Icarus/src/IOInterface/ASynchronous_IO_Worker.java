@@ -4,11 +4,17 @@ import parser.*;
 import java.net.*;
 import java.io.IOException;
 
+/* --fixme-- */
+/* Javadoc: Missing comment for public declaration */
 public class ASynchronous_IO_Worker implements Runnable{
     private Logger logger;
+    /* --fixme-- */
+    /* The value of the field ASynchronous_IO_Worker.infoColl is not used */
     private InfoCollector infoColl;
     private ServerSocket sSocket;
     private boolean alive = true;
+    /* --fixme-- */
+    /* The value of the field ASynchronous_IO_Worker.incomingPacket is not used */
     private IO_Packet incomingPacket;
     private int serverPort;
     private InetAddress serverAddress;
@@ -58,11 +64,15 @@ public class ASynchronous_IO_Worker implements Runnable{
         }
     }
 
+    /* --fixme-- */
+    /* Javadoc: Missing comment for public declaration */
     public void kill(){
         logger.log(2, logKey, "called the kill method\n");
         alive = false;
         logger.log(2, logKey, "set the alive flag to false\n");
         try{
+            /* --fixme-- */
+            /* Resource 'closeSocket' should be managed by try-with-resource */
             Socket closeSocket = new Socket(serverAddress, serverPort);
             closeSocket.close();
         }

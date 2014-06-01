@@ -24,7 +24,7 @@ package Ninti;
 public class USINT extends SubCheckConvert {
 
     private final String MAX_VALUE = "255";
-    // Variable who holds the Max Value of the UINT                        
+    // Variable who holds the Max Value of the UINT
     private String MaxForSub = MAX_VALUE;
     // Variable to hold the String for subtracts
     private StringBuilder value;

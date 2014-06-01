@@ -258,13 +258,14 @@ public class Logger
         @Override
         public void run()
         {
+            Writer file_writer;
             String message = new String();
             String queue_element[];
             int queue_size;
             int count = 0;
             try
             {
-                Writer file_writer =
+                file_writer =
                     new BufferedWriter(
                         new FileWriter(path_to_log_file, true));
                 File file = new File(path_to_log_file);

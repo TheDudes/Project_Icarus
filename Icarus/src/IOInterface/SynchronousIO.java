@@ -33,6 +33,8 @@ public class SynchronousIO{
     private Thread asyncWorkerThread;
     /* --fixme-- */
 /* The value of the field SynchronousIO.logger is not used */
+    /* --fixme-- */
+    /* The value of the field SynchronousIO.logger is not used */
     private Logger logger;
     private Socket syncSocket;
 
@@ -45,10 +47,16 @@ public class SynchronousIO{
        this.logger = logger;
        logger.log(0, logKey, "trying to establish a connection to the IO Manager\n");
        try{
+            /* --fixme-- */
+           /* The method get_int(String) from the type Config_Reader is deprecated */
             syncSocket = new Socket(confReader.get_string("hostname"), confReader.get_int("sync_port"));
+            /* --fixme-- */
+            /* Potential resource leak: 'aSyncSocket' may not be closed */
+            /* --fixme-- */
+            /* The method get_int(String) from the type Config_Reader is deprecated */
             ServerSocket aSyncSocket = new ServerSocket(confReader.get_int("async_port"));
             logger.log(0, logKey, "established the connection to the IO Manager\n");
-            logger.log(4, logKey, "creating the workers\n"); 
+            logger.log(4, logKey, "creating the workers\n");
             syncWorker = new Synchronous_IO_worker(logger, infoColl, syncSocket);
             asyncWorker = new ASynchronous_IO_Worker(logger, infoColl, aSyncSocket);
             syncWorkerThread = new Thread(syncWorker);
@@ -73,5 +81,5 @@ public class SynchronousIO{
             }
        }
     }
-    
+
 }
