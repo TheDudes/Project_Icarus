@@ -101,7 +101,7 @@ public class Analyser {
         private final HashMap<String,HashMap<String,Variable>> context_varname_var;
         private       int var_config_start;
         private       int var_global_start;
-        private final HashMap<String,HashMap<Integer,Vatriable>> functioname_inputid_var
+        private final HashMap<String,HashMap<Integer,Variable>> functioname_inputid_var;
 
         /* device lbq */
         private final  LinkedBlockingQueue<IO_Package>  com_channel_queue;
@@ -155,6 +155,7 @@ public class Analyser {
                 address_mappedbyte_in  = new HashMap<>();
                 address_mappedbyte_out  = new HashMap<>();
                 com_channel_queue       = new LinkedBlockingQueue<>();
+                functioname_inputid_var = new HashMap<>();
                 
 		blocks.add(program_cursor); //0
 		blocks.add(function_cursor); //1
@@ -1254,7 +1255,7 @@ public class Analyser {
 	}
 
         public int
-        call_function(String)
+        call_function(String param)
         {
                 
         }
