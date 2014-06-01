@@ -230,13 +230,7 @@ public class Logger
     {
         if (( verbosity == 0 ) && !silent )
         {
-            String message = new String();
-            for (int i = 0; i < args.length; i++)
-            {
-                if(i == 0) continue;
-                message += args[i];
-            }
-
+            /* Calculuate the ratio of statusbar (will be 0.5 on 50%) */
             float ratio = x / (float)n;
             int percentage = (int)( (ratio * 100) + 0.5);
 
@@ -244,7 +238,13 @@ public class Logger
             if ( percentage % r != 0 )
                 return;
 
-            /* Calculuate the ratio of statusbar (will be 0.5 on 50%) */
+            String message = new String();
+            for (int i = 0; i < args.length; i++)
+            {
+                if(i == 0) continue;
+                message += args[i];
+            }
+
             int c =(int)( ((ratio ) * w) + 0.5);
 
             /* print out the message + the ratio in % */
