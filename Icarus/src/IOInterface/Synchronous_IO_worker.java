@@ -29,17 +29,16 @@ import parser.*;
  */
 public class Synchronous_IO_worker implements Runnable {
 
-    private LinkedBlockingQueue<IO_Package> lbq;
-    private Logger logWriter;
-    private InfoCollector infoCollector;
-    private Socket client;
-    private String key = "Synchronous_IO_worker";
+    private final LinkedBlockingQueue<IO_Package> lbq;
+    private final Logger logWriter;
+    private final InfoCollector infoCollector;
+    private final Socket client;
+    private final String key = "Synchronous_IO_worker";
     private IO_Package ioPackage;
     private boolean alive = true;
-    private int namespaceID = 1;
+    private final int namespaceID = 1;
     private int count = 1;
     private byte rwFlag;
-
 
     /**
      * @param logWriter
@@ -61,45 +60,36 @@ public class Synchronous_IO_worker implements Runnable {
                 BufferedInputStream inFromServer = new BufferedInputStream(client.getInputStream());
                 BufferedOutputStream outToServer = new BufferedOutputStream(client.getOutputStream());) {
 
-            /* --fixme-- */
-            /* The method log(String, int, String) from the type Logger is deprecated */
-            logWriter.log(key, 4, "Streams established");
+            logWriter.log(4, key, "Streams established");
             PacketWriter packetWriter = new PacketWriter(outToServer);
             while (alive || !lbq.isEmpty()) {
 
                 ioPackage = lbq.take();
 
-                /* --fixme-- */
-                /* The method log(String, int, String) from the type Logger is deprecated */
-                logWriter.log(key, 3, "IO_Package received."
-                        + " Device ID: " + ioPackage.device_id
-                        + " Pin ID: " + ioPackage.pin_id
-                        + " New Value: " + ioPackage.value);
+                logWriter.log(3, key, "IO_Package received."
+                        , " Device ID: ", ioPackage.device_id
+                        , " Pin ID: ", Byte.toString(ioPackage.pin_id)
+                        , " New Value: ", Byte.toString(ioPackage.value));
 
                 if (ioPackage.abilities == 0) {
 
-                    /* --fixme-- */
-                    /* The method log(String, int, String) from the type Logger is deprecated */
-                    logWriter.log(key, 0, "Undefined Ability for Device " + ioPackage.device_id + " at Pin " + ioPackage.pin_id);
+                    logWriter.log(0, key, "Undefined Ability for Device ", ioPackage.device_id
+                            , " at Pin ", Byte.toString(ioPackage.pin_id));
 
-                    /* --fixme-- */
-                    /* Undefined_ability_exception cannot be resolved to a type */
                     throw new Undefined_ability_exception();
 
                 } else if (ioPackage.to_poll == true) {
 
-                    /* --fixme-- */
-                    /* The method polling_init(PacketWriter) from the type Synchronous_IO_worker refers to the missing type IOException */
                     polling_init(packetWriter);                 //initiates polling and writes the package to the ioManager
-                    /* --fixme-- */
-                    /* The method log(String, int, String) from the type Logger is deprecated */
-                    logWriter.log(key, 4, "Wrote IO_Packet to the IO Manager for Polling");
+
+                    logWriter.log(3, key, "Wrote IO_Packet with Device ID: ", ioPackage.device_id
+                            , " to the IO Manager for Polling");
 
                 } else {
                     write_package(packetWriter);                //writes a value to the ioManager
-                    /* --fixme-- */
-                    /* The method log(String, int, String) from the type Logger is deprecated */
-                    logWriter.log(key, 4, "Wrote IO_Packet to the IO Mangager for Writing");
+
+                    logWriter.log(4, key, "Wrote IO_Packet with Device ID: ", ioPackage.device_id
+                            , " to the IO Mangager for Writing");
 
                 }
 
@@ -107,6 +97,7 @@ public class Synchronous_IO_worker implements Runnable {
 
         } catch (Exception e) {
             System.err.println(e.getMessage());
+            logWriter.log(0, key, e.getMessage());
             System.exit(1);
         }
 
@@ -119,12 +110,11 @@ public class Synchronous_IO_worker implements Runnable {
      * @param packetWriter
      * @throws java.io.IOException
      */
-    
-    private void polling_init(PacketWriter packetWriter) throws IOException{
+    private void polling_init(PacketWriter packetWriter) throws IOException {
         rwFlag = 11;
-        
-        IO_Packet ioPacket = new IO_Packet(ioPackage.device_id, ioPackage.pin_id, namespaceID, count, rwFlag, ioPackage.value);
-        packetWriter.write(ioPacket);
+
+      //  IO_Packet ioPacket = new IO_Packet(ioPackage.device_id, ioPackage.pin_id, namespaceID, count, rwFlag, ioPackage.value);
+      // packetWriter.write(ioPacket);
     }
 
     /**
@@ -134,12 +124,11 @@ public class Synchronous_IO_worker implements Runnable {
      * @param packetWriter
      * @throws java.io.IOException
      */
-    private void write_package(PacketWriter packetWriter) throws IOException{
+    private void write_package(PacketWriter packetWriter) throws IOException {
         rwFlag = 0;
-        /* --fixme-- */
-        /* The constructor IO_Packet(String, byte, int, int, byte, byte) is undefined */
-        IO_Packet ioPacket = new IO_Packet(ioPackage.device_id, ioPackage.pin_id, namespaceID, count, rwFlag, ioPackage.value);
-        packetWriter.write(ioPacket);
+
+       // IO_Packet ioPacket = new IO_Packet(ioPackage.device_id, ioPackage.pin_id, namespaceID, count, rwFlag, ioPackage.value);
+       // packetWriter.write(ioPacket);
 
     }
 
