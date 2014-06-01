@@ -29,48 +29,48 @@ import logger.*;
 public class Analyser {
 
 
-        private enum states {mainloop, find_context, var_handling, case_handling, var_config_handling}
+        private enum states {mainloop, find_context, var_handling, case_handling}
         private enum var_states {find_semicollon, type_or_value_or_name, get_type, get_value, get_name, get_last_name, write_to_structure}
         private enum config_states {start, find_context, find_var_name, find_type, find_address, find_var_type, find_AT_percent, find_IN_or_OUT}
         
 	/* These list are holding pointers, these pointers are indexes of the programmstring. */
-	private final ArrayList<Integer>  program_cursor         = new ArrayList<>();
-	private final ArrayList<Integer>  function_cursor        = new ArrayList<>();
-	private final ArrayList<Integer>  function_block_cursor  = new ArrayList<>();
-	private final ArrayList<Integer>  global_cursor          = new ArrayList<>();
-	private final ArrayList<Integer>  config_cursor          = new ArrayList<>();
-	private final ArrayList<Integer>  var_all                = new ArrayList<>();
-	private final ArrayList<Integer>  if_all                 = new ArrayList<>();
-	private final ArrayList<Integer>  case_all               = new ArrayList<>();
-	private final ArrayList<Integer>  for_all                = new ArrayList<>();
-	private final ArrayList<Integer>  while_all              = new ArrayList<>();
-	private final ArrayList<Integer>  repeat_all             = new ArrayList<>();
-	//private final ArrayList<Integer> exit_all = new ArrayList<>();
-	private final ArrayList<Integer>  var_input_all          = new ArrayList<>();
-	private final ArrayList<Integer>  var_output_all         = new ArrayList<>();
-
-	private final StringBuilder builder;
+//	private final ArrayList<Integer>  program_cursor         = new ArrayList<>();
+//	private final ArrayList<Integer>  function_cursor        = new ArrayList<>();
+//	private final ArrayList<Integer>  function_block_cursor  = new ArrayList<>();
+//	private final ArrayList<Integer>  global_cursor          = new ArrayList<>();
+//	private final ArrayList<Integer>  config_cursor          = new ArrayList<>();
+//	private final ArrayList<Integer>  var_all                = new ArrayList<>();
+//	private final ArrayList<Integer>  if_all                 = new ArrayList<>();
+//	private final ArrayList<Integer>  case_all               = new ArrayList<>();
+//	private final ArrayList<Integer>  for_all                = new ArrayList<>();
+//	private final ArrayList<Integer>  while_all              = new ArrayList<>();
+//	private final ArrayList<Integer>  repeat_all             = new ArrayList<>();
+//	//private final ArrayList<Integer> exit_all = new ArrayList<>();
+//	private final ArrayList<Integer>  var_input_all          = new ArrayList<>();
+//	private final ArrayList<Integer>  var_output_all         = new ArrayList<>();
+//
+////	private final StringBuilder builder;
         private final String code;
         
 	/* iterration preperation for our program string  */
-	private final int                       LISTCOUNT  = 13;
-	private final List<ArrayList<Integer>>  blocks     = new ArrayList<>();
-	private final String[][]                keywords   = {
-		{"PROGRAM", "END_PROGRAM"},
-		{"FUNCTION", "END_FNUNCTION"},
-		{"FUNCTION_BLOCK", "END_FUNCTION_BLOCK"},
-		{"VAR_GLOBAL", "END_VAR"},
-		{"VAR_CONFIG", "END_VAR"},
-		{"CASE", "END_CASE"},
-		{"FOR", "END_FOR"},
-		{"WHILE", "END_WHILE"},
-		{"REPEAT", "END_REPEAT"},
-		{"VAR_INPUT", "END_VAR"},
-		{"VAR_OUTPUT", "END_VAR"},
-		{"IF", "END_IF"},
-		{"VAR", "END_VAR"}
-	};
-
+//	private final int                       LISTCOUNT  = 13;
+//	private final List<ArrayList<Integer>>  blocks     = new ArrayList<>();
+//	private final String[][]                keywords   = {
+//		{"PROGRAM", "END_PROGRAM"},
+//		{"FUNCTION", "END_FNUNCTION"},
+//		{"FUNCTION_BLOCK", "END_FUNCTION_BLOCK"},
+//		{"VAR_GLOBAL", "END_VAR"},
+//		{"VAR_CONFIG", "END_VAR"},
+//		{"CASE", "END_CASE"},
+//		{"FOR", "END_FOR"},
+//		{"WHILE", "END_WHILE"},
+//		{"REPEAT", "END_REPEAT"},
+//		{"VAR_INPUT", "END_VAR"},
+//		{"VAR_OUTPUT", "END_VAR"},
+//		{"IF", "END_IF"},
+//		{"VAR", "END_VAR"}
+//	};
+//
         /* stacks */
         private final intStack program_stack;
         private final intStack function_stack;
@@ -113,7 +113,7 @@ public class Analyser {
 	private final Logger  log;
 	private final String  mainkey  = "parser";
 	private final String  subkey   = "Analyser";
-	private final String  key      = mainkey + "-" + subkey;
+	private final String  key      = " ["+mainkey + "-" + subkey+"] ";
 
 
 
@@ -127,9 +127,11 @@ public class Analyser {
 	Analyser(StringBuilder builder, Logger log)
 	{
                 this.log      = log;
-		this.builder  = builder;
+		//this.builder  = builder;
                 this.code     = builder.toString();
 
+                log.log(4, key, "Analyser is doing stuff please wait ...");
+                
                 program_stack        = new intStack(1);
                 function_stack       = new intStack(1);
                 function_block_stack = new intStack(1);
@@ -151,13 +153,14 @@ public class Analyser {
                 repeat_map         = new TreeMap<>();
                 if_map             = new TreeMap<>();
 
-                context_varname_var = new HashMap<>();
-                address_mappedbyte_in  = new HashMap<>();
+                context_varname_var     = new HashMap<>();
+                address_mappedbyte_in   = new HashMap<>();
                 address_mappedbyte_out  = new HashMap<>();
                 com_channel_queue       = new LinkedBlockingQueue<>();
                 functioname_inputid_var = new HashMap<>();
-                program_startpoint = new HashMap<>();
-                function_startpoint = new HashMap<>();
+                program_startpoint      = new HashMap<>();
+                function_startpoint     = new HashMap<>();
+
                 analyse();
                 build_function_structure();
 	}
@@ -166,17 +169,19 @@ public class Analyser {
         private void
         analyse()
         {
-                states state = states.mainloop;
-                String context = "";
+                log.log(4, key, "analyse() called");
+                states state        = states.mainloop;
+                String context      = "";
                 String context_type = "";
-                String var_block = "";
-                Integer temp_start = null;
+                String var_block    = "";
+                Integer temp_start  = null;
                 
                 for (int index = 0; index < code.length();)
                 {
 
                         switch (state){
                         case mainloop:
+                                log.log(4, key, "\tState: mainloop");
                                 /*end checks*/
                                 if (code.charAt(index  ) == 'E' &&
                                     code.charAt(index+1) == 'N' &&
@@ -614,7 +619,7 @@ public class Analyser {
         {
                 config_states states;
                 states = config_states.start;
-                int count;
+                //int count;
 
                 String band = "";
 
@@ -762,8 +767,8 @@ public class Analyser {
         private void
         process_vars(String context, String var_block, String var_type, String context_type)
         {
+                log.log(4, key, "process_vars() called");
                 context_varname_var.put(context, new HashMap<String,Variable>());
-                //        private enum var_states {find_semicollon, type_or_value_or_name, get_type, get_value, get_name, write_to_structure}
                 var_states state = var_states.find_semicollon;
                 int id = 0;
                 int index = 0;
@@ -774,10 +779,11 @@ public class Analyser {
                 ArrayList<String> names = new ArrayList<>();
                 String value = "";
                 Variable tmp;
-
+                
                 for (;index < var_block.length();) {
                         switch (state){
                         case find_semicollon:
+                                log.log(4, key, "\tState: find_semicollon");
                                 if(!(var_block.charAt(index) == ';')) {
                                         semicollon_pos = index;
                                         index += 1;
@@ -787,6 +793,7 @@ public class Analyser {
                                 }
                                 break;
                         case type_or_value_or_name:
+                                log.log(4, key, "\tState: type_or_value_or_name");
                                 if(var_block.charAt(index  ) == '=' && // :=
                                    var_block.charAt(index-1) == ':')
                                 {
@@ -812,26 +819,31 @@ public class Analyser {
                                 }
                                 break;
                         case get_value:
+                                log.log(4, key, "\tState: get_value");
                                 value = band;
                                 band = "";
                                 state = var_states.type_or_value_or_name;
                                 break;
                         case get_type:
+                                log.log(4, key, "\tState: get_type");
                                 type = band;
                                 band = "";
                                 state = var_states.type_or_value_or_name;
                                 break;
                         case get_name:
+                                log.log(4, key, "\tState: get_name");
                                 names.add(band);
                                 band = "";
                                 state = var_states.type_or_value_or_name;
                                 break;
                         case get_last_name:
+                                log.log(4, key, "\tState: get_last_name");
                                 names.add(band);
                                 band = "";
                                 state = var_states.write_to_structure;
                                 break;
                         case write_to_structure:
+                                log.log(4, key, "\tState: write_to_structure");
                                 if(!names.isEmpty() &&
                                    type  != "" &&
                                    value != "")

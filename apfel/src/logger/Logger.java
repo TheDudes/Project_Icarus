@@ -217,6 +217,59 @@ public class Logger
     }
 
     /**
+     * will check for verbosity and add the String[] to the queue, this
+     * log function will also print out a statusbar in ascii art
+     * @param verbosity incomming message verbosity
+     * @param args message in String array
+     * @param x actual value
+     * @param n max value
+     * @param r resolution
+     * @param w bar width
+     */
+    public void log(int verbosity, int x, int n, int r, int w, String... args)
+    {
+        if (( verbosity == 0 ) && !silent )
+        {
+            String message = new String();
+            for (int i = 0; i < args.length; i++)
+            {
+                if(i == 0) continue;
+                message += args[i];
+            }
+
+            float ratio = x / (float)n;
+            int percentage = (int)( (ratio * 100) + 0.5);
+
+            /* Only update when resolution fit's */
+            if ( percentage % r != 0 )
+                return;
+
+            /* Calculuate the ratio of statusbar (will be 0.5 on 50%) */
+            int c =(int)( ((ratio ) * w) + 0.5);
+
+            /* print out the message + the ratio in % */
+            System.out.print(message + " " + percentage + "%[");
+
+            /* print out the actual bar */
+            int i;
+            for (i=0; i<c; i++)
+                System.out.print("=");
+            for (i=c; i<w; i++)
+                System.out.print(" ");
+
+            /* enter a new line, then go up 1 line (cursor will be at beginning) */
+            if ((ratio*100 + r) >= 100.0)
+                System.out.print("]\n");
+            else
+                System.out.print("]\n\033[F");
+
+            queue.offer(args);
+        }
+        else if ( verbosity <= this.verboseLevel )
+            queue.offer(args);
+    }
+
+    /**
      * @param key message key
      * @param msgVerboseLevel  incomming message verbosity
      * @param logMessage log message
