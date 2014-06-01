@@ -158,24 +158,8 @@ public class Analyser {
                 functioname_inputid_var = new HashMap<>();
                 program_startpoint = new HashMap<>();
                 function_startpoint = new HashMap<>();
-
+                analyse();
                 build_function_structure();
-
-                blocks.add(program_cursor); //0
-		blocks.add(function_cursor); //1
-		blocks.add(function_block_cursor); //2
-		blocks.add(global_cursor); //3
-		blocks.add(config_cursor); //4
-		blocks.add(case_all); //5
-		blocks.add(for_all); //6
-		blocks.add(while_all); //7
-		blocks.add(repeat_all); //8
-		blocks.add(var_input_all); //9
-		blocks.add(var_output_all); //10
-		blocks.add(if_all); //11
-		blocks.add(var_all); //12
-        
-		//find_all_keywords();
 	}
 
 
