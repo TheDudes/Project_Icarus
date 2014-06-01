@@ -33,7 +33,7 @@ public class TYPES {
 	 * @return Object of the right type
 	 * @throws Ninti.UnsignedException
 	 */
-	public static Object
+	public Object
 	get_type(String type) throws UnsignedException
 	{
 		switch(type) {
@@ -90,7 +90,7 @@ public class TYPES {
 	 * @return Object of the right type with the new value
 	 * @throws Ninti.UnsignedException
 	 */
-	public static Object
+	public Object
 	get_type(String type, String value) throws UnsignedException
 	{
 		switch(type) {

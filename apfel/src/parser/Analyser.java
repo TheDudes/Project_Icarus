@@ -18,8 +18,6 @@ package parser;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.IntArrayData;
-
 import logger.*;
 
 /**
@@ -102,6 +100,8 @@ public class Analyser {
         private       int var_config_start;
         private       int var_global_start;
         private final HashMap<String,HashMap<Integer,Variable>> functioname_inputid_var;
+        private final HashMap<String,Integer> program_startpoint;
+        private final HashMap<String,Integer> function_startpoint;
 
         /* device lbq */
         private final  LinkedBlockingQueue<IO_Package>  com_channel_queue;
@@ -182,6 +182,8 @@ public class Analyser {
                 String context = "";
                 String context_type = "";
                 String var_block = "";
+                Integer temp_start = null;
+                
                 for (int index = 0; index < code.length();)
                 {
 
@@ -301,6 +303,7 @@ public class Analyser {
                                         program_stack.push(index);
                                         state = states.find_context;
                                         context_type = "PROGRAM";
+                                        temp_start = new Integer(index);
                                         index += 7;
                                 }
                                 else if(code.charAt(index  ) == 'F' && //FUNCTION
@@ -315,6 +318,7 @@ public class Analyser {
                                         function_stack.push(index);
                                         state = states.find_context;
                                         context_type = "FUNCTION";
+                                        temp_start = new Integer(index);
                                         index += 8;
                                 }
                                 else if(code.charAt(index   ) == 'F' && //FUNCTION_BLOCK
@@ -467,6 +471,13 @@ public class Analyser {
                                    code.charAt(index+1) == 'A' &&
                                    code.charAt(index+2) == 'R')
                                 {
+                                        if (context_type.equals("PROGRAM")){
+                                                program_startpoint.put(context, temp_start);
+                                                temp_start = null;
+                                        } else if (context_type.equals("FUNCTION")) {
+                                                function_startpoint.put(context, temp_start);
+                                                temp_start = null;
+                                        }
                                         state = states.mainloop;
                                 } else {
                                         context += code.charAt(index);
@@ -1254,10 +1265,81 @@ public class Analyser {
 		return local_tmp;
 	}
 
-        public int
-        call_function(String param)
+
+        private void
+        build_function_structure()
         {
+                TreeMap<Integer,Variable> temp = new TreeMap<>();
+                HashMap<Integer,Variable> helper;
+                int count = 0;
+                for (String context : function_startpoint.keySet()) {
+                        for (Variable variable : context_varname_var.get(context).values()) {
+                                if (variable.get_var_type().equals("VAR_INPUT")){
+                                        temp.put(new Integer(variable.get_id()), variable);
+                                }
+                        }
+
+                        for (Variable variable_sorted : temp.values()) {
+                                helper = new HashMap<>();
+                                helper.put(new Integer(count), variable_sorted);
+                                functioname_inputid_var.put(context, helper);
+                        }
+                        count = 0;
+                        temp = new TreeMap<>();
+                }
                 
+                //functioname_inputid_var
+        }
+        
+        public int
+        call_function(String... function_call)
+        {
+                String[] fun_param;
+                String[] fun_param_split;
+                boolean  is_program = false;
+                
+                if (function_call[1].equals("")){
+                        fun_param = function_call[1].split(",");
+                } else {
+                        fun_param = null;
+                        is_program = true;
+                }
+                
+                for (String para : fun_param){
+                        fun_param_split = para.split(":=");
+                        if (fun_param_split.length == fun_param.length){
+                                for (int i = 0; i < fun_param_split.length; i++){
+                                        functioname_inputid_var.get(function_call[0]).get(new Integer(i)).set_value(fun_param_split[i]);
+                                }
+                        } else {
+                                for (int i = 0; i < fun_param_split.length; i++){
+                                        context_varname_var.get(function_call[0]).get(fun_param_split[i]).set_value(fun_param_split[i+1]);
+                                        i += 1;
+                                }
+                        }
+                }
+
+                if (is_program)
+                        return program_startpoint.get(function_call[0]).intValue();
+                return function_startpoint.get(function_call[0]).intValue();
+        }
+
+        public void
+        reset_function(String context)
+        {
+                for (Variable var : functioname_inputid_var.get(context).values()) {
+                        var.set_default_value();
+                }
         }
 }
+
+
+
+
+
+
+
+
+
+
 

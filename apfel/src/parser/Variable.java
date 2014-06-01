@@ -1,5 +1,7 @@
 package parser;
 
+import sun.swing.DefaultLookup;
+
 import Ninti.*;
 
 public class
@@ -56,6 +58,12 @@ Variable
                 return value.toString();
         }
 
+        public String
+        get_original_value()
+        {
+                return default_value.toString();
+        }
+        
         public void
         set_value(String str_value)
         {
@@ -91,5 +99,23 @@ Variable
         get_IOPackage()
         {
                 return new IO_Package(mbyte.get_address(), pin, mbyte.get_byte(), mbyte.get_abilities(), false);
+        }
+
+        public String
+        get_var_type()
+        {
+                return var_type;
+        }
+
+        public int
+        get_id()
+        {
+                return id;
+        }
+
+        public void
+        set_default_value()
+        {
+                value = default_value;
         }
 }

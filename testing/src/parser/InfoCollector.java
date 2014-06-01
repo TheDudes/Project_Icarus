@@ -35,8 +35,6 @@ import logger.*;
 public class InfoCollector {
 	private final StringBuilder  allthecode;
 	private final Analyser       analyser;
-	private final Match          match;
-	private final Symbols        symb;
 	private final Logger         log;
 
 	/* logger */
@@ -77,18 +75,32 @@ public class InfoCollector {
 		log.log(key, 2, "analyse the code ...");
 		analyser = new Analyser(allthecode, log);
 		log.log(key, 2, "Analysed.");
-
-		log.log(key, 2, "matching open and close tags ...");
-		match = new Match(analyser, allthecode, log);
-		log.log(key, 2, "Matched.");
-
-		log.log(key, 2, "find all symbols in the code ...");
-		symb = new Symbols(allthecode, match, log, configreader);
-		log.log(key, 2, "Symbols stored.");
-
+//
+//		log.log(key, 2, "matching open and close tags ...");
+//		match = new Match(analyser, allthecode, log);
+//		log.log(key, 2, "Matched.");
+//
+//		log.log(key, 2, "find all symbols in the code ...");
+//		symb = new Symbols(allthecode, match, log, configreader);
+//		log.log(key, 2, "Symbols stored.");
+//
 		log.log(key, 1, "file parsed.");
 	}
 
+        /* local functions */
+        
+	/**
+	 * getAllTheCode will give you all the preprocessed code
+	 * @return a StringBuilder with all the preprocessed code inside
+	 */
+	public StringBuilder
+	get_all_the_code()
+	{
+		log.log(key, 4, "getAllTheCode called.");
+		return allthecode;
+	}
+
+        
 	/* functions from match class */
 	/**
 	 * getEndIf takes the index of an IF and returns the index of the
@@ -101,7 +113,7 @@ public class InfoCollector {
 	get_end_if(int a)
 	{
 		log.log(key, 4, "getEndIf called.");
-		return match.get_end_if(a);
+		return analyser.get_end_if(a);
 	}
 
 	/**
@@ -131,7 +143,7 @@ public class InfoCollector {
 	get_case_coordinates(int caseopen, int value) throws Exception
 	{
 		log.log(key, 4, "getCaseCoordinates called.");
-		return match.get_case_coordinates(caseopen, value);
+		return analyser.get_case_coordinates(caseopen, value);
 	}
 
 	/**
@@ -145,7 +157,7 @@ public class InfoCollector {
 	get_end_case(int a)
 	{
 		log.log(key, 4, "getEndCase called.");
-		return match.get_end_case(a);
+		return analyser.get_end_case(a);
 	}
 
 	/**
@@ -158,20 +170,7 @@ public class InfoCollector {
 	get_end_var(int a)
 	{
 		log.log(key, 4, "getEndVar called.");
-		return match.get_end_var(a);
-	}
-
-	/**
-	 * getVarStart takes the index of the VAR and returns the String of the VAR_* declaration
-	 * @param a index of a VAR
-	 * @return name of VAR declaration type (VAR_INPUT, VAR_OUTPUT, ...)
-	 * @see Match
-	 */
-	public String
-	get_var_start(int a)
-	{
-		log.log(key, 4, "getVarStart called.");
-		return match.get_var_start(a);
+		return analyser.get_end_var(a);
 	}
 
 	/**
@@ -184,7 +183,7 @@ public class InfoCollector {
 	get_end_program(int a)
 	{
 		log.log(key, 4, "getEndProgram called.");
-		return match.get_end_program(a);
+		return analyser.get_end_program(a);
 	}
 
 	/**
@@ -197,7 +196,7 @@ public class InfoCollector {
 	get_end_function(int a)
 	{
 		log.log(key, 4, "getEndFunction called.");
-		return match.get_end_function(a);
+		return analyser.get_end_function(a);
 	}
 
 	/**
@@ -210,7 +209,7 @@ public class InfoCollector {
 	get_end_function_block(int a)
 	{
 		log.log(key, 4, "getEndFunctionBlock called.");
-		return match.get_end_function_block(a);
+		return analyser.get_end_function_block(a);
 	}
 
 	/**
@@ -223,7 +222,7 @@ public class InfoCollector {
 	get_end_for(int a)
 	{
 		log.log(key, 4, "getEndFor called.");
-		return match.get_end_for(a);
+		return analyser.get_end_for(a);
 	}
 
 	/**
@@ -236,7 +235,7 @@ public class InfoCollector {
 	get_end_while(int a)
 	{
 		log.log(key, 4, "getEndWhile called.");
-		return match.get_end_while(a);
+		return analyser.get_end_while(a);
 	}
 
 	/**
@@ -249,7 +248,7 @@ public class InfoCollector {
 	get_end_repeat(int a)
 	{
 		log.log(key, 4, "getEndRepeat called.");
-		return match.get_end_repeat(a);
+		return analyser.get_end_repeat(a);
 	}
 
 	/* functions from symbols class */
@@ -264,7 +263,7 @@ public class InfoCollector {
 	replace_vars(String input, String context)
 	{
 		log.log(key, 4, "replaceVars called.");
-		return symb.replace_vars(input, context);
+		return analyser.replace_vars(input, context);
 	}
 
 	/**
@@ -281,7 +280,7 @@ public class InfoCollector {
 	set_value(String input, String context) throws Exception
 	{
 		log.log(key, 4, "setValue called.");
-		symb.set_value(input, context);
+		analyser.set_value(input, context);
 	}
 
 	/**
@@ -294,18 +293,7 @@ public class InfoCollector {
 	add_var(String input, String context) throws Exception
 	{
 		log.log(key, 4, "addVar called.");
-		symb.add_var(input, context);
-	}
-
-	/**
-	 * getAllTheCode will give you all the preprocessed code
-	 * @return a StringBuilder with all the preprocessed code inside
-	 */
-	public StringBuilder
-	get_all_the_code()
-	{
-		log.log(key, 4, "getAllTheCode called.");
-		return allthecode;
+		analyser.add_var(input, context);
 	}
 
 	/**
@@ -320,13 +308,13 @@ public class InfoCollector {
 	public LinkedBlockingQueue<IO_Package>
 	get_com_channel_queue()
 	{
-		return symb.get_com_channel_queue();
+		return analyser.get_com_channel_queue();
 	}
 
 	public void
-	update_device(String device, int pinid, boolean value)
+	update_device(String byte_address, byte value)
 	{
-		symb.update_device(device, pinid, value);
+		analyser.update_device(byte_address, value);
 	}
 
 }
