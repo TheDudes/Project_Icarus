@@ -23,8 +23,10 @@
 package Ninti;
 
 
-/* --fixme-- */
-/* Javadoc: Missing comment for public declaration */
+/**
+ * 
+ * @author Jonas Huber <Jonas_Huber2@gmx.de>
+ */
 public class UnsignedException extends Exception {
     
             private static final long serialVersionUID = 7526472295622776147L;

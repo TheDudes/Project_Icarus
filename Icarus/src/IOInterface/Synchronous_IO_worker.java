@@ -17,10 +17,9 @@ package IOInterface;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
-/* --fixme-- */
-/* The import java.io.InputStream is never used */
 import logger.*;
 import parser.*;
 
@@ -40,12 +39,6 @@ public class Synchronous_IO_worker implements Runnable {
     private int namespaceID = 1;
     private int count = 1;
     private byte rwFlag;
-    /* --fixme-- */
-    /* The value of the field Synchronous_IO_worker.letter is not used */
-    private String letter;
-    /* --fixme-- */
-    /* The value of the field Synchronous_IO_worker.number is not used */
-    private String number;
 
 
     /**
@@ -124,13 +117,12 @@ public class Synchronous_IO_worker implements Runnable {
      * Poll-Flag to the IO_Manager
      *
      * @param packetWriter
+     * @throws java.io.IOException
      */
-    /* --fixme-- */
-    /* IOException cannot be resolved to a type */
-    public void polling_init(PacketWriter packetWriter) throws IOException{
+    
+    private void polling_init(PacketWriter packetWriter) throws IOException{
         rwFlag = 11;
-        /* --fixme-- */
-        /* The constructor IO_Packet(String, byte, int, int, byte, byte) is undefined */
+        
         IO_Packet ioPacket = new IO_Packet(ioPackage.device_id, ioPackage.pin_id, namespaceID, count, rwFlag, ioPackage.value);
         packetWriter.write(ioPacket);
     }
@@ -140,8 +132,9 @@ public class Synchronous_IO_worker implements Runnable {
      * Write-Flag to the IO Manager
      *
      * @param packetWriter
+     * @throws java.io.IOException
      */
-    public void write_package(PacketWriter packetWriter) {
+    private void write_package(PacketWriter packetWriter) throws IOException{
         rwFlag = 0;
         /* --fixme-- */
         /* The constructor IO_Packet(String, byte, int, int, byte, byte) is undefined */
