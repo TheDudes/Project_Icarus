@@ -37,6 +37,8 @@ public class Engine
     final private ScriptEngine engine;
     final private Logger       log;
     final private String       log_key = " [engine]: ";
+    final private int          bar_width;
+    final private int          warmup_evaluations;
 
     /**
      * @param log Logger Object
@@ -47,7 +49,9 @@ public class Engine
         this.log = log;
         log.log(2, log_key, "init Engine...\n");
         ScriptEngineManager factory = new ScriptEngineManager();
-        engine                      = factory.getEngineByName("JavaScript");
+        engine             = factory.getEngineByName("JavaScript");
+        bar_width          = config.get_int("Engine_bar_width", 10, 300);
+        warmup_evaluations = config.get_int("Engine_warmup_evaluations", 100, 10000);
         if(config.get_boolean("Engine_Warmup"))
             warmup();
         log.log(2, log_key, "init Engine done.\n");
@@ -60,13 +64,12 @@ public class Engine
     public ScriptEngine warmup()
     {
 
-        int total_evaluations = 10000;
         double avg = 0.0;
 
         log.log(0, log_key, "starting engine warmup...\n");
         long start = System.currentTimeMillis();
 
-        for(int i = 0; i < total_evaluations; i++)
+        for(int i = 0; i < warmup_evaluations; i++)
         {
 
             String test0 = "true == false != true && false";
@@ -99,13 +102,13 @@ public class Engine
             if (i % 100 == 0 && i != 0)
             {
                 avg = avg / 100;
-                log.log(0, i, total_evaluations, 1, 40, log_key, "engine warmup...");
+                log.log(0, i, warmup_evaluations, 1, bar_width, log_key, "engine warmup...");
                 log.log(2, log_key, "100 evaluations done, avg time: (", new Double(avg).toString(), "ms avg)\n");
             }
         }
         log.log(2, log_key, "100 evaluations done, avg time: (", new Double(avg / 100).toString(), "ms avg)\n");
         log.log(0, log_key, "engine warmup finished, total evaluations:",
-                                    new Double(total_evaluations).toString(),
+                                    new Double(warmup_evaluations).toString(),
                                     ", total time: ",
                                     new Double(System.currentTimeMillis() - start).toString(),
                                     "ms\n");
