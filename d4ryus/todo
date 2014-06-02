@@ -27,7 +27,9 @@ all - verbosity 0: error and startup
                 4: fucking everything
 change all logs to non deprecated version!
 ------------------------------------------------------------------------------
-tux - String " ... " implementation for PRINT function
+tux -> call_function should return int[2] (start and end point)
+    -> call_function in Analyser.java got error on 1301 (should be if(! ...)
+    -> String " ... " implementation for PRINT function
 ------------------------------------------------------------------------------
 page 160: Keywords
     -> ARRAY...OF

@@ -514,7 +514,26 @@ public class Keyword_Handler
 
         int    semicolon_position = offset.get_semicolon(INDEX, code);
         String condition          = code.substring(INDEX, semicolon_position + 1);
-        container.set_value(condition, context_stack.peek());
+        String function_name      = "";
+
+        for(int i = 0; i < condition.length(); i++)
+        {
+            if(condition.charAt(i) == '(')
+            {
+                //int [2] = container functioncall (function name, condition.substring (index +1, condition.length() )
+                //index = int [1];
+            }
+            else if (condition.charAt(i) == ':')
+            {
+                container.set_value(condition, context_stack.peek());
+                break;
+            }
+            else
+            {
+                function_name += condition.charAt(i);
+            }
+        }
+
 
         INDEX = semicolon_position;
 
