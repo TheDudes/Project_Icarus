@@ -51,7 +51,7 @@ public class Engine
         ScriptEngineManager factory = new ScriptEngineManager();
         engine             = factory.getEngineByName("JavaScript");
         bar_width          = config.get_int("Engine_bar_width", 10, 300);
-        warmup_evaluations = config.get_int("Engine_warmup_evaluations", 100, 10000);
+        warmup_evaluations = config.get_int("Engine_warmup_count", 100, 10000);
         if(config.get_boolean("Engine_Warmup"))
             warmup();
         log.log(2, log_key, "init Engine done.\n");
