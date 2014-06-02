@@ -7,7 +7,7 @@
 | | | +----------------------------------------------------------------+ | | |
 | | | |                                                                | | | |
 | | | | +------------------------------------------------------------+ | | | |
-| | | | |                                                            | | | | |
+| | | | |                           TODO                             | | | | |
 | | | | +------------------------------------------------------------+ | | | |
 | | | |                                                                | | | |
 | | | +----------------------------------------------------------------+ | | |
@@ -20,14 +20,14 @@
 linc - Config_Reader -> default/serach in working directory
                      -> add Log_keywords
 ------------------------------------------------------------------------------
-ninti -> --fixme--
-------------------------------------------------------------------------------
-change all logs to non deprecated version!
 all - verbosity 0: error and startup
                 1: PRINT messages, on terminal?
                 2: init of objects?
                 3: even more
                 4: fucking everything
+change all logs to non deprecated version!
+------------------------------------------------------------------------------
+tux - String " ... " implementation for PRINT function
 ------------------------------------------------------------------------------
 page 160: Keywords
     -> ARRAY...OF
@@ -38,7 +38,6 @@ page 160: Keywords
 me  -> run frankze files
     -> functions
     -> make list of stuff
-    -> error checking
     -> trying out everyyyything
 ------------------------------------------------------------------------------
 function-declaration------------
