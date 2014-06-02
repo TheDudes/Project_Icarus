@@ -60,7 +60,7 @@ public class Engine
     public ScriptEngine warmup()
     {
 
-        int total_evaluations = 2000;
+        int total_evaluations = 10000;
         double avg = 0.0;
 
         log.log(0, log_key, "starting engine warmup...\n");
@@ -99,7 +99,7 @@ public class Engine
             if (i % 100 == 0 && i != 0)
             {
                 avg = avg / 100;
-                log.log(0, i, total_evaluations, 1, 20, log_key, "engine warmup...");
+                log.log(0, i, total_evaluations, 1, 40, log_key, "engine warmup...");
                 log.log(2, log_key, "100 evaluations done, avg time: (", new Double(avg).toString(), "ms avg)\n");
             }
         }
