@@ -26,8 +26,6 @@ import linc.*;
 import interpreter.*;
 import logger.*;
 
-import java.net.*;
-
 /**
  * @author d4ryus - https://github.com/d4ryus/
  * <p>
