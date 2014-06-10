@@ -494,24 +494,12 @@ public class Config_Reader {
      * verbosity_level default is 0
      */
     private void set_default_values(){
-        /* --fixme-- */
-/* The expression of type int is boxed into Integer */
-        container.put("takt_frequency", 100);
-        /* --fixme-- */
-/* The expression of type int is boxed into Integer */
-        container.put("verbosity_level", 0);
-        /* --fixme-- */
-/* The expression of type boolean is boxed into Boolean */
+        container.put("takt_frequency", (Integer)100);
+        container.put("verbosity_level", (Integer)0);
         container.put("silent", (Boolean)false);
-        /* --fixme-- */
-/* The expression of type boolean is boxed into Boolean */
         container.put("Engine_Warmup", (Boolean)true);
-        /* --fixme-- */
-/* The expression of type int is boxed into Integer */
-        container.put("sync_port", 5021);
-        /* --fixme-- */
-/* The expression of type int is boxed into Integer */
-        container.put("async_port", 5022);
+        container.put("sync_port", (Integer)5021);
+        container.put("async_port", (Integer)5022);
         container.put("hostname", "localhost");
         container.put("path", "/home/linc/NetBeansProjects/Project_Icarus/Icarus/st_files");
     }
@@ -843,10 +831,8 @@ public class Config_Reader {
 
 
     /**
-     *
+     * @throws IOException
      */
-    /* --fixme-- */
-/* Javadoc: Missing tag for declared exception IOException */
     public void create_example_config() throws IOException{
         if(logWriterInit){
             logWriter.log(4, logKey, "jumping in create_example_config\n");

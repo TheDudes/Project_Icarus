@@ -19,8 +19,6 @@ import logger.*;
 import parser.*;
 import java.net.*;
 
-/* --fixme-- */
-/* Javadoc: Missing comment for public declaration */
 /**
 * our class SynchronousIO, initiates all the IO stuff so we can talk to the other group
 */
@@ -31,11 +29,6 @@ public class SynchronousIO{
     private Thread syncWorkerThread;
     private ASynchronous_IO_Worker asyncWorker;
     private Thread asyncWorkerThread;
-    /* --fixme-- */
-/* The value of the field SynchronousIO.logger is not used */
-    /* --fixme-- */
-    /* The value of the field SynchronousIO.logger is not used */
-    private Logger logger;
     private Socket syncSocket;
 
     /**
@@ -44,17 +37,12 @@ public class SynchronousIO{
     * @param infoColl we have to get this object as we have to pass it on to the Synchronous_IO_worker
     */
     public SynchronousIO(Logger logger, Config_Reader confReader, InfoCollector infoColl){
-       this.logger = logger;
        logger.log(0, logKey, "trying to establish a connection to the IO Manager\n");
        try{
-            /* --fixme-- */
-           /* The method get_int(String) from the type Config_Reader is deprecated */
-            syncSocket = new Socket(confReader.get_string("hostname"), confReader.get_int("sync_port"));
+            syncSocket = new Socket(confReader.get_string("hostname"), confReader.get_int("sync_port", 1, 65536));
             /* --fixme-- */
             /* Potential resource leak: 'aSyncSocket' may not be closed */
-            /* --fixme-- */
-            /* The method get_int(String) from the type Config_Reader is deprecated */
-            ServerSocket aSyncSocket = new ServerSocket(confReader.get_int("async_port"));
+            ServerSocket aSyncSocket = new ServerSocket(confReader.get_int("async_port", 1, 65536));
             logger.log(0, logKey, "established the connection to the IO Manager\n");
             logger.log(4, logKey, "creating the workers\n");
             syncWorker = new Synchronous_IO_worker(logger, infoColl, syncSocket);
