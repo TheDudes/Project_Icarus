@@ -86,7 +86,7 @@ public class Keyword_Handler
 
         int var = offset.get_VAR(INDEX, code);
         context_stack.push(code.substring(INDEX + 7, var));
-        INDEX   = container.get_end_var(var) + 6;
+        INDEX   = container.get_end_var(var);
 
         log.log(4, log_key, "return found_PROGRAM, INDEX = ", new Integer(INDEX).toString(), "\n");
         return INDEX;
@@ -419,7 +419,7 @@ public class Keyword_Handler
     {
         log.log(4, log_key, "call   found_VAR, INDEX = ", new Integer(INDEX).toString(), "\n");
 
-        INDEX = container.get_end_var(INDEX) + 6;
+        INDEX = container.get_end_var(INDEX);
 
         log.log(4, log_key, "return found_VAR, INDEX = ", new Integer(INDEX).toString(), "\n");
         return INDEX;
