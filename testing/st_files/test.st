@@ -1,10 +1,10 @@
-PROGRAM deineMudda
+PROGRAM Test
 
 VAR
     blub : BOOL := FALSE;
     bluber : BOOL := TRUE;
     ratatazonk : BOOL := TRUE;
-    blah : INT := 3;
+    blah : SINT := 3;
     test : INT := 133;
     test2 : INT := 4432;
 END_VAR
@@ -40,8 +40,8 @@ END_CASE
 END_PROGRAM
 
 VAR_CONFIG
-	deineMudda.blub AT X32.2;
-	deineMudda.bluber AT X33.12;
-	deineMudda.ratatazonk AT X34.7;
-END_VAR
+	Test.blub AT %QX32.2 : BOOL;
+	Test.blah AT %IB33 : BYTE;
+	Test.ratatazonk AT %IX34.7 : BOOL;
+END_VAR_CONFIG
 

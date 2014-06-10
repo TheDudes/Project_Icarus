@@ -95,4 +95,10 @@ MappedByte
         {
                 return abilities;
         }
+        
+        public String
+        toString()
+        {
+            return new Byte(dbyte).toString();
+        }
 }

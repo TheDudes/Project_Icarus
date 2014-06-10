@@ -37,7 +37,7 @@ CaseHandling
                 String band = "";
                 String from = "";
                 states state = states.start;
-                for(int index = 0; index <= code.length();){
+                for(int index = 0; index < code.length();){
                         switch(state){
                         case start:
                                 if(code.charAt(index  ) == 'C' &&
@@ -77,7 +77,8 @@ CaseHandling
                                         code.charAt(index+3) == 'E')
                                 {
                                         has_else = true;
-                                        else_part[0] = index+3;
+                                        index += 3;
+                                        else_part[0] = index;
                                 } else if(code.charAt(index  ) == 'E' &&
                                           code.charAt(index+1) == 'N' &&
                                           code.charAt(index+2) == 'D' &&
@@ -96,7 +97,8 @@ CaseHandling
                                                 current_collon = index;
                                                 index -= 1;
                                                 state = states.find_number;
-                                        }
+                                        } else
+                                            index += 1;
                                 }
                                 break;
                         case find_end_case:
@@ -117,7 +119,7 @@ CaseHandling
                                                 state = states.find_end_case;
                                         }
                                 } else {
-                                        state = states.find_end_case;
+                                        index += 1;
                                 }
                                 break;
                         case find_number:
@@ -199,6 +201,7 @@ CaseHandling
                                 break;
                         case end:
                                 end_case_e = else_part[1];
+                                index = code.length();
                                 break;
                         }
                 }

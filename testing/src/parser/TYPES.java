@@ -69,14 +69,16 @@ public class TYPES {
 		case "STRING":
 		case "WSTRING":
 			return "";
-		case "BYTE":
-			return new Boolean[8];
-		case "WORD":
-			return new Boolean[16];
-		case "DWORD":
-			return new Boolean[32];
-		case "LWORD":
-			return new Boolean[64];
+                case "BYTE":
+                        return new Byte("0");
+//		case "BYTE":
+//			return new Boolean[8];
+//              case "WORD":
+//			return new Boolean[16];
+//		case "DWORD":
+//			return new Boolean[32];
+//		case "LWORD":
+//			return new Boolean[64];
 		}
 		return new Object(); /* ToDo: new types, return values from functions, and so on */
 	}
@@ -126,14 +128,16 @@ public class TYPES {
 		case "STRING":
 		case "WSTRING":
 			return value;
-		case "BYTE":
+                case "BYTE":
+                        return new Byte(value);
+		/*case "BYTE":
 			return new Boolean[8];
 		case "WORD":
 			return new Boolean[16];
 		case "DWORD":
 			return new Boolean[32];
 		case "LWORD":
-			return new Boolean[64];
+			return new Boolean[64];*/
 		}
 		return new Object(); /* ToDo: new types, return values from functions, an so on */
 	}

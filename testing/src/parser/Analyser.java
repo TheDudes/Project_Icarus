@@ -31,7 +31,7 @@ public class Analyser {
 
         private enum states {mainloop, find_context, var_handling, case_handling}
         private enum var_states {find_semicollon, type_or_value_or_name, get_type, get_value, get_name, get_last_name, write_to_structure}
-        private enum config_states {start, find_context, find_var_name, find_type, find_address, find_var_type, find_AT_percent, find_IN_or_OUT}
+        private enum config_states {start, find_context, find_var_name, find_type, find_address, find_var_type, find_AT_percent, find_IN_or_OUT, find_pin}
         
 	/* These list are holding pointers, these pointers are indexes of the programmstring. */
 //	private final ArrayList<Integer>  program_cursor         = new ArrayList<>();
@@ -116,6 +116,9 @@ public class Analyser {
 	private final String  key      = " ["+mainkey + "-" + subkey+"] ";
 
 
+        {
+                System.out.println("Static constructor");
+        }
 
 	/**
 	 * the Constructor takes a StringBuilder, which was prepared by MergeAllFiles
@@ -126,21 +129,22 @@ public class Analyser {
 	public
 	Analyser(StringBuilder builder, Logger log)
 	{
+                System.out.println("Inside Analyser");
                 this.log      = log;
 		//this.builder  = builder;
                 this.code     = builder.toString();
 
                 log.log(4, key, "Analyser is doing stuff please wait ...");
                 
-                program_stack        = new intStack(1);
-                function_stack       = new intStack(1);
-                function_block_stack = new intStack(1);
-                var_stack            = new intStack(1);
-                case_stack           = new intStack(1);
-                for_stack            = new intStack(1);
-                while_stack          = new intStack(1);
-                repeat_stack         = new intStack(1);
-                if_stack             = new intStack(1);
+                program_stack        = new intStack(100);
+                function_stack       = new intStack(100);
+                function_block_stack = new intStack(100);
+                var_stack            = new intStack(100);
+                case_stack           = new intStack(100);
+                for_stack            = new intStack(100);
+                while_stack          = new intStack(100);
+                repeat_stack         = new intStack(100);
+                if_stack             = new intStack(100);
 
 
                 program_map        = new TreeMap<>();
@@ -161,6 +165,9 @@ public class Analyser {
                 program_startpoint      = new HashMap<>();
                 function_startpoint     = new HashMap<>();
 
+                var_global_start = -1;
+                var_config_start = -1;
+                
                 analyse();
                 build_function_structure();
 	}
@@ -450,6 +457,8 @@ public class Analyser {
                                         var_stack.push(index);
                                         state = states.var_handling;
                                         index += 3;
+                                } else {
+                                    index += 1;
                                 }
                                
                                 
@@ -533,16 +542,7 @@ public class Analyser {
                                                 state = states.mainloop;
                                                 index += 14;
                                         }
-                                        else if(code.charAt(index+4) == 'V' && //VAR
-                                                code.charAt(index+5) == 'A' &&
-                                                code.charAt(index+6) == 'R')
-                                        {
-                                                var_map.put(new Integer(var_stack.pop()), new Integer(index+6));
-                                                process_vars(context, var_block, "VAR", context_type);
-                                                var_block = "";
-                                                state = states.mainloop;
-                                                index += 7;
-                                        }
+                                        
                                         else if(code.charAt(index+4 ) == 'V' && //VAR_GLOBAL
                                                 code.charAt(index+5 ) == 'A' &&
                                                 code.charAt(index+6 ) == 'R' &&
@@ -579,6 +579,16 @@ public class Analyser {
                                                 state = states.mainloop;
                                                 index += 14;
                                         }
+                                        else if(code.charAt(index+4) == 'V' && //VAR
+                                                code.charAt(index+5) == 'A' &&
+                                                code.charAt(index+6) == 'R')
+                                        {
+                                                var_map.put(new Integer(var_stack.pop()), new Integer(index+6));
+                                                process_vars(context, var_block, "VAR", context_type);
+                                                var_block = "";
+                                                state = states.mainloop;
+                                                index += 7;
+                                        }
                                         else
                                         {
                                                 // some exception, because of the END_ in a var block
@@ -599,16 +609,20 @@ public class Analyser {
                                    code.charAt(index+7) == 'E')
                                 {
                                         int case_start = case_stack.pop();
-                                        case_map.put(new Integer(case_start), new CaseHandling(code.substring(case_start, index+7), case_start));
+                                        case_map.put(new Integer(case_start), new CaseHandling(code.substring(case_start, index+8), case_start));
                                         index += 8;
+                                        state = states.mainloop;
+                                } else {
+                                    index += 1;
                                 }
                                 break;
                         }
                 }
-
-                process_vars("GLOBAL", code.substring(var_global_start, var_map.get(new Integer(var_global_start)).intValue()), "VAR_GLOBAL", "GLOBAL");
+                if (var_global_start != -1)
+                        process_vars("GLOBAL", code.substring(var_global_start, var_map.get(new Integer(var_global_start)).intValue()), "VAR_GLOBAL", "GLOBAL");
                 /*last but not least, handle the var_config block*/
-                process_var_config(code.substring(var_config_start, var_map.get(new Integer(var_config_start)).intValue()));
+                if (var_config_start != -1)
+                        process_var_config(code.substring(var_config_start, var_map.get(new Integer(var_config_start)).intValue()));
         }
 
         
@@ -664,9 +678,11 @@ public class Analyser {
                                 }
                                 break;
                         case find_var_name:
-                                if(var_block.charAt(index) == '.'){
+                                if(var_block.charAt(index  ) == 'A' &&
+                                   var_block.charAt(index+1) == 'T')
+                                {
                                         var_name = band;
-                                        index += 1;
+                                        index += 2;
                                         band = "";
                                         states = config_states.find_AT_percent;
                                 } else {
@@ -675,11 +691,9 @@ public class Analyser {
                                 }
                                 break;
                         case find_AT_percent:
-                                if(var_block.charAt(index  ) == 'A' &&
-                                   var_block.charAt(index+1) == 'T' &&
-                                   var_block.charAt(index+2) == '%')
+                                if(var_block.charAt(index) == '%')
                                 {
-                                        index += 3;
+                                        index += 1;
                                         states = config_states.find_IN_or_OUT;
                                 } else {
                                         // you fucked it up again
@@ -714,8 +728,26 @@ public class Analyser {
                                         pin = var_block.charAt(index+1);
                                         index += 2;
                                         states = config_states.find_var_type;
-                                } else {
+                                } else if (var_block.charAt(index) == ':') {
+                                        address = band;
+                                        band = "";
+                                        index += 1;
                                         states = config_states.find_var_type;
+                                } else if (var_block.charAt(index) == '0' ||
+                                           var_block.charAt(index) == '1' ||
+                                           var_block.charAt(index) == '2' ||
+                                           var_block.charAt(index) == '3' ||
+                                           var_block.charAt(index) == '4' ||
+                                           var_block.charAt(index) == '5' ||
+                                           var_block.charAt(index) == '6' ||
+                                           var_block.charAt(index) == '7' ||
+                                           var_block.charAt(index) == '8' ||
+                                           var_block.charAt(index) == '9') 
+                                {
+                                        band = band + var_block.charAt(index);
+                                        index += 1;
+                                } else {
+                                    // you made it worse
                                 }
                                 break;
                         case find_var_type:
@@ -780,14 +812,14 @@ public class Analyser {
                 String value = "";
                 Variable tmp;
                 
-                for (;index < var_block.length();) {
+                for (;index < var_block.length() && index > -1;) {
                         switch (state){
                         case find_semicollon:
                                 log.log(4, key, "\tState: find_semicollon");
                                 if(!(var_block.charAt(index) == ';')) {
-                                        semicollon_pos = index;
                                         index += 1;
                                 } else {
+                                        semicollon_pos = index;
                                         state = var_states.type_or_value_or_name;
                                         index -= 1;
                                 }
@@ -802,13 +834,16 @@ public class Analyser {
                                 }
                                 else if((byte)var_block.charAt(index) <= 90 &&
                                         (byte)var_block.charAt(index) >= 65 &&
-                                        var_block.charAt(index) == ':')
+                                        var_block.charAt(index-1) == ':')
                                 {
                                         band = var_block.charAt(index) + band;
                                         index -= 2;
                                         state = var_states.get_type;
-                                } else if(var_block.charAt(index) == ';') {
-                                        index -= 1;
+                                } else if(var_block.charAt(index) == ';' ||
+                                        index == 0) {
+                                        if(index == 0) {
+                                                band = var_block.charAt(index) + band;
+                                        }
                                         state = var_states.get_last_name;
                                 } else if(var_block.charAt(index) == ',') {
                                         index -= 1;
@@ -864,7 +899,7 @@ public class Analyser {
                                         type  = "";
                                         value = "";
                                         id += 1;
-                                        index = semicollon_pos;
+                                        index = semicollon_pos+1;
                                         state = var_states.find_semicollon;
                                 }
                                 else if(!names.isEmpty() &&
@@ -886,7 +921,7 @@ public class Analyser {
                                         type  = "";
                                         value = "";
                                         id += 1;
-                                        index = semicollon_pos;
+                                        index = semicollon_pos+1;
                                         state = var_states.find_semicollon;
                                 }
                                 else if(!names.isEmpty() &&
@@ -912,7 +947,7 @@ public class Analyser {
                                         type  = "";
                                         value = "";
                                         id += 1;
-                                        index = semicollon_pos;
+                                        index = semicollon_pos+1;
                                         state = var_states.find_semicollon;
                                 } else {
                                         // fucked it up
@@ -1015,14 +1050,7 @@ public class Analyser {
 		log.log(key, 4, "input: "+input);
 		log.log(key, 4, "context: "+context);
 		
-		process_vars(context, input, "CHANGE", "CHANGE");
-		
-		//int varid = get_varid_by_name(context, input);
-		/*if(!(valueid_abilities.get(new Integer(varid)) == null))
-		{
-			com_channel_queue.offer(new IO_Package());
-			}*/
-		
+		process_vars(context, input, "CHANGE", "CHANGE");		
 	}
 
 	/**
@@ -1039,30 +1067,12 @@ public class Analyser {
 		log.log(key, 4, "input: "  +input);
 		log.log(key, 4, "context: "+context);
 		
-		/* type is integer all the time */
-		/*String[]  splitted  = input.split(":=");
-		Integer   tmp       = contextstore.get(context).get(splitted[0]);
-
-		if (tmp == null) {
-			log.log(key, 4, "variable not yet defined.");
-			fill_up_the_containers(context, new StringBuilder(splitted[0] + ":INT:=" + splitted[1]));
-		} else {
-			log.log(key, 4, "variable allready defined");
-
-/*HashMap<String, Integer> percontext; //= new HashMap<>();
-			  typebyid.remove(tmp);
-			  valuebyid.remove(tmp);
-			  percontext = contextstore.get(context);
-			  percontext.remove(splitted[0]);
-			  contextstore.put(context, percontext);  // aaaah fuck it, tooo late man .... 
-			fill_up_the_containers(context, new StringBuilder(input + "@" ));
-                        }*/
                 process_vars(context, input, "RUNTIME", "RUNTIME");
                 
 		generate_symbols_list();
 	}
 
-                /**
+        /**
          * get_com_channel_queue returns the linkedblockingqueue for the IOInterface
 	 * communikation.
 	 * <p>
@@ -1298,7 +1308,7 @@ public class Analyser {
                 String[] fun_param_split;
                 boolean  is_program = false;
                 
-                if (function_call[1].equals("")){
+                if (function_call.length > 1){
                         fun_param = function_call[1].split(",");
                 } else {
                         fun_param = null;

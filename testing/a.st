@@ -50,4 +50,4 @@ VAR_CONFIG
 	test.blub AT X32.2;
 	test.bluber AT X33.12;
 	test.ratatazonk AT X34.7;
-END_VAR
+END_VAR_CONFIG
