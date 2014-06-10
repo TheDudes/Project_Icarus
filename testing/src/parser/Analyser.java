@@ -108,6 +108,7 @@ public class Analyser {
 
         /* different things */
         private        ArrayList<String> symbolnames;
+        int id = 0;
         
 	/* logger */
 	private final Logger  log;
@@ -198,7 +199,7 @@ public class Analyser {
                                         if(code.charAt(index+4) == 'I' &&
                                            code.charAt(index+5) == 'F')
                                         {
-                                                if_map.put(new Integer(if_stack.pop()), new Integer(index+5));
+                                                if_map.put(new Integer(if_stack.pop()), new Integer(index));
                                                 index += 6;
                                         }
                                         else if(code.charAt(index+4 ) == 'P' &&
@@ -209,7 +210,7 @@ public class Analyser {
                                                 code.charAt(index+9 ) == 'A' &&
                                                 code.charAt(index+10) == 'M')
                                         {
-                                                program_map.put(new Integer(program_stack.pop()), new Integer(index+10));
+                                                program_map.put(new Integer(program_stack.pop()), new Integer(index));
                                                 context = "";
                                                 context_type = "";
                                                 index += 11;
@@ -223,7 +224,7 @@ public class Analyser {
                                                 code.charAt(index+10) == 'O' &&
                                                 code.charAt(index+11) == 'N')
                                         {
-                                                function_map.put(new Integer(function_stack.pop()), new Integer(index+11));
+                                                function_map.put(new Integer(function_stack.pop()), new Integer(index));
                                                 context = "";
                                                 context_type = "";
                                                 index += 12;
@@ -243,7 +244,7 @@ public class Analyser {
                                                 code.charAt(index+16) == 'C' &&
                                                 code.charAt(index+17) == 'K')
                                         {
-                                                function_block_map.put(new Integer(function_block_stack.pop()), new Integer(index+17));
+                                                function_block_map.put(new Integer(function_block_stack.pop()), new Integer(index));
                                                 context = "";
                                                 context_type = "";
                                                 index += 18;
@@ -252,7 +253,7 @@ public class Analyser {
                                                 code.charAt(index+5) == 'O' &&
                                                 code.charAt(index+6) == 'R')
                                         {
-                                                for_map.put(new Integer(for_stack.pop()), new Integer(index+6));
+                                                for_map.put(new Integer(for_stack.pop()), new Integer(index));
                                                 index += 7;
                                         }
                                         else if(code.charAt(index+4) == 'W' && //WHILE
@@ -261,7 +262,7 @@ public class Analyser {
                                                 code.charAt(index+7) == 'L' &&
                                                 code.charAt(index+8) == 'E')
                                         {
-                                                while_map.put(new Integer(while_stack.pop()), new Integer(index+8));
+                                                while_map.put(new Integer(while_stack.pop()), new Integer(index));
                                                 index += 9;
                                         }
                                         else if(code.charAt(index+4) == 'R' && //REPEAT
@@ -271,7 +272,7 @@ public class Analyser {
                                                 code.charAt(index+8) == 'A' &&
                                                 code.charAt(index+9) == 'T')
                                         {
-                                                repeat_map.put(new Integer(repeat_stack.pop()), new Integer(index+9));
+                                                repeat_map.put(new Integer(repeat_stack.pop()), new Integer(index));
                                                 index += 10;
                                         }
                                         
@@ -800,9 +801,10 @@ public class Analyser {
         process_vars(String context, String var_block, String var_type, String context_type)
         {
                 log.log(4, key, "process_vars() called");
-                context_varname_var.put(context, new HashMap<String,Variable>());
+                if(!context_varname_var.containsKey(context))
+                    context_varname_var.put(context, new HashMap<String,Variable>());
                 var_states state = var_states.find_semicollon;
-                int id = 0;
+                //int id = 0;
                 int index = 0;
                 int semicollon_pos = 0;
 
@@ -1150,9 +1152,9 @@ public class Analyser {
 	         	return new Integer[] {new Integer(elseincase+4), new Integer(builder.toString().indexOf("END_CASE", caseopen)) };
 	         }
                  */
-		
-		log.log(key, 4, "Case is fucked up");
-		throw new Exception("Case is fucked up");
+		return local_tmp;
+		//log.log(key, 4, "Case is fucked up");
+		//throw new Exception("Case is fucked up");
 	}
 
 	/**

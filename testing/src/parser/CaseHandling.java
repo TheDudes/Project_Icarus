@@ -186,7 +186,7 @@ CaseHandling
                         case create_case_lookup:
                                 if (!old_cases_list.isEmpty()) {
                                         Integer end_old_case = new Integer(index+offset);
-                                        Integer collon_old_case = new Integer(old_collon);
+                                        Integer collon_old_case = new Integer(old_collon+offset+1);
                                         for (Integer a_case : old_cases_list)
                                                 cases_map.put(a_case, new Integer[]{collon_old_case, end_old_case});
                                 }
