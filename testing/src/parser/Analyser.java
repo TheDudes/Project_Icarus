@@ -584,7 +584,7 @@ public class Analyser {
                                                 code.charAt(index+5) == 'A' &&
                                                 code.charAt(index+6) == 'R')
                                         {
-                                                var_map.put(new Integer(var_stack.pop()), new Integer(index+6));
+                                                var_map.put(new Integer(var_stack.pop()), new Integer(index+6)); //BLUB
                                                 process_vars(context, var_block, "VAR", context_type);
                                                 var_block = "";
                                                 state = states.mainloop;

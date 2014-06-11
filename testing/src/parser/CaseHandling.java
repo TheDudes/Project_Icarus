@@ -200,7 +200,7 @@ CaseHandling
                                 System.exit(1);
                                 break;
                         case end:
-                                end_case_e = else_part[1];
+                                end_case_e = else_part[1] + offset;
                                 index = code.length();
                                 break;
                         }
