@@ -517,7 +517,8 @@ public class Keyword_Handler
         String function_name      = "";
         int jump_index = 0;
 
-        for(int i = 0; i < condition.length(); i++)
+        int i;
+        for(i = 0; i < condition.length(); i++)
         {
             if(condition.charAt(i) == '(')
             {
@@ -536,7 +537,11 @@ public class Keyword_Handler
             else
                 function_name += condition.charAt(i);
         }
-
+        if(i == condition.length())
+        {
+            System.out.print("could not evaluate blublbublu fixme\n");
+            System.exit(0);
+        }
 
         INDEX = semicolon_position;
 
