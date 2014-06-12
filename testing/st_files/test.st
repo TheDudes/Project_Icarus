@@ -8,7 +8,7 @@ VAR
     test : INT := 133;
     test2 : INT := 4432;
 END_VAR
-
+(*
 FOR hihihi := 0 TO 50 BY 1 DO
     FOR asdf:=0 TO 100 BY 1 DO
         PRINT(inner_loop=, asdf);
@@ -19,7 +19,7 @@ FOR hihihi := 0 TO 50 BY 1 DO
        PRINT(outter_loop_else=, hohoho);
     END_IF
 END_FOR
-
+*)
 PRINT(between=,blub);
 PRINT(between=, test);
 PRINT(between=,test2);

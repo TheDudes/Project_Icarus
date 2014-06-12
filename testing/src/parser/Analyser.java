@@ -140,6 +140,8 @@ public class Analyser {
                 log.log(4, key, "run build_function_structure()", "\n");
                 build_function_structure();
                 log.log(4, key, "build_function_structure finished", "\n");
+                
+                generate_symbols_list();
 	}
 
 
@@ -998,6 +1000,10 @@ public class Analyser {
 				symbolnames.add(value.getKey());
 			}
 		}
+                symbolnames.add("true");
+                symbolnames.add("TRUE");
+                symbolnames.add("false");
+                symbolnames.add("FALSE");
 		/* now sort the new generated list from long to short, with a dirty inline class ;) */
 		/*
 		 * negativer Rückgabewert: Der erste Parameter ist untergeordnet
@@ -1040,18 +1046,42 @@ public class Analyser {
 		log.log(4, key, "context: ", context, "\n");
 		
 		String tmp = null;
-                Variable return_value;
-                
+                boolean var_in_context = false;
+                String rv = null;  // return value
+                /*
 		for (String item : symbolnames) {
 			if (tmp == null) {
-				return_value = context_varname_var.get(context).get(item);
-                                tmp = input.replaceAll(item, return_value != null ? return_value.get_value() : item);
+				var_in_context = context_varname_var.get(context).containsKey(item);
+                                tmp = input.replaceAll(item, return_value != null ? return_value.get_value() ? : item);
 			} else {
                                 return_value = context_varname_var.get(context).get(item);
 				tmp = tmp.replaceAll(item, return_value != null ? return_value.get_value() : item);
                 
 			}
-		}
+		} */
+                
+                for (String item:symbolnames) {
+                        if(context_varname_var.get(context).containsKey(item)){
+                                if (tmp == null) {
+                                        rv = context_varname_var.get(context).get(item).get_value();
+                                        tmp = input.replaceAll(item, /*rv == "true" || rv == "TRUE" || rv == "false" || rv == "FALSE" ? item :*/ rv);
+                                        tmp = tmp.replaceAll("false", "!!!");
+                                        tmp = tmp.replaceAll("FALSE", "!!!");
+                                        tmp = tmp.replaceAll("true", "###");
+                                        tmp = tmp.replaceAll("TRUE", "###");
+                                } else {
+                                        rv = context_varname_var.get(context).get(item).get_value();
+                                        tmp = tmp.replaceAll(item, /*rv == "true" || rv == "TRUE" || rv == "false" || rv == "FALSE" ? item :*/ rv);
+                                        tmp = tmp.replaceAll("false", "!!!");
+                                        tmp = tmp.replaceAll("FALSE", "!!!");
+                                        tmp = tmp.replaceAll("true", "###");
+                                        tmp = tmp.replaceAll("TRUE", "###");
+                                }
+                        }
+                }
+                
+                tmp = tmp.replaceAll("!!!", "false");
+                tmp = tmp.replaceAll("###", "true");
 
 		log.log(4, key, "return value: ", tmp, "\n");
 		
@@ -1362,7 +1392,7 @@ public class Analyser {
         public void
         reset_function(String context)
         {
-                for (Variable var : functioname_inputid_var.get(context).values()) {
+                for (Variable var : context_varname_var.get(context).values()) {
                         var.set_default_value();
                 }
         }
