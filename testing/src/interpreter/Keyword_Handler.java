@@ -515,23 +515,26 @@ public class Keyword_Handler
         int    semicolon_position = offset.get_semicolon(INDEX, code);
         String condition          = code.substring(INDEX, semicolon_position + 1);
         String function_name      = "";
+        int jump_index = 0;
 
         for(int i = 0; i < condition.length(); i++)
         {
             if(condition.charAt(i) == '(')
             {
-                //int [2] = container functioncall (function name, condition.substring (index +1, condition.length() )
-                //index = int [1];
+                jump_index = container.call_function_or_program(function_name, condition.substring(INDEX + 1, condition.length()));
+                log.log(4, log_key, "recursive function call , INDEX = ", new Integer(INDEX).toString(), "\n");
+                interpreter.interpret(code, jump_index, code.length());
+                log.log(4, log_key, "return from recursive function call , INDEX = ", new Integer(INDEX).toString(), "\n");
+                break;
             }
             else if (condition.charAt(i) == ':')
             {
+                log.log(4, log_key, "set_value call , INDEX = ", new Integer(INDEX).toString(), "\n");
                 container.set_value(condition, context_stack.peek());
                 break;
             }
             else
-            {
                 function_name += condition.charAt(i);
-            }
         }
 
 

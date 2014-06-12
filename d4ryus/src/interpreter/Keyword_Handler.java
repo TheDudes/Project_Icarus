@@ -467,7 +467,7 @@ public class Keyword_Handler
                                   recursive_positions[0].toString(), " <--> ",
                                   recursive_positions[1].toString(), "\n");
 
-        INDEX = container.get_end_case(INDEX) + 7;
+        INDEX = container.get_end_case(INDEX);
 
         log.log(4, log_key, "return found_CASE, INDEX = ", new Integer(INDEX).toString(), "\n");
         return INDEX;

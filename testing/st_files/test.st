@@ -12,7 +12,7 @@ END_VAR
 FOR hihihi := 0 TO 50 BY 1 DO
     FOR asdf:=0 TO 1000 BY 1 DO
         PRINT(inner_loop=, asdf);
-    END_FOR 
+    END_FOR
     IF blah = 3 THEN
        PRINT(outter_loop_if_true=, hihihi);
     ELSE

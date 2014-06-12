@@ -13,6 +13,7 @@ linc - Config_Reader -> default/serach in working directory
                      -> add Log_keywords
                      -> add engine keywords
                      -> maybe source option
+                     -> config key - show values
 ------------------------------------------------------------------------------
 all - verbosity 0: error and startup
                 1: PRINT messages, on terminal?
