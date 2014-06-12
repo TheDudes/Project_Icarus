@@ -1,7 +1,5 @@
-########################################
+\n\n
 ERROR: <short error message>
-DETAILED ERROR:
-<detailed error message multiple lines>
+DETAILED ERROR: <detailed error message multiple lines>
 DUMP:
 <detailed information off things>
-########################################
