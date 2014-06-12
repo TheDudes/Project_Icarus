@@ -231,8 +231,8 @@ public class Logger
         if (( verbosity == 0 ) && !silent )
         {
             /* Calculuate the ratio of statusbar (will be 0.5 on 50%) */
-            float ratio = x / (float)n;
-            int percentage = (int)( (ratio * 100) + 0.5);
+            float ratio = (float)x / (float)n;
+            int percentage = (int)( (ratio * 100.0) + 0.5);
 
             /* Only update when resolution fit's */
             if ( percentage % r != 0 )
@@ -258,7 +258,7 @@ public class Logger
                 System.out.print(" ");
 
             /* enter a new line, then go up 1 line (cursor will be at beginning) */
-            if ((ratio*100 + r) >= 100.0)
+            if ((ratio*100.0 + r) >= 100.0)
                 System.out.print("]\n");
             else
                 System.out.print("]\n\033[F");

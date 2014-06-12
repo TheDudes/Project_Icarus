@@ -246,8 +246,8 @@ public class Interpreter
                       (code.charAt(INDEX + 7) == 'N') )
             {
                 log.log(3, log_key, "found Keyword FUNCTION,     INDEX = ", new Integer(INDEX).toString(), "\n");
-                handler.found_FUNCTION(INDEX, code);
-                break;
+                INDEX = handler.found_FUNCTION(INDEX, code);
+                continue;
             }
             else /* if no match is found */
             {

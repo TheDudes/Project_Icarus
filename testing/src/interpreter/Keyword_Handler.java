@@ -483,6 +483,11 @@ public class Keyword_Handler
     {
         log.log(4, log_key, "call   found_FUNCTION, INDEX = ", new Integer(INDEX).toString(), "\n");
 
+        int var_pos = offset.get_VAR(INDEX, code);
+        context_stack.push(code.substring(INDEX + 8, var_pos));
+
+        INDEX = container.get_end_var(var_pos);
+
         log.log(4, log_key, "return found_FUNCTION, INDEX = ", new Integer(INDEX).toString(), "\n");
         return INDEX;
     }
@@ -496,6 +501,8 @@ public class Keyword_Handler
     public int found_END_FUNCTION(int INDEX, String code)
     {
         log.log(4, log_key, "call   found_END_FUNCTION, INDEX = ", new Integer(INDEX).toString(), "\n");
+
+        context_stack.pop();
 
         log.log(4, log_key, "return found_END_FUNCTION, INDEX = ", new Integer(INDEX).toString(), "\n");
         return INDEX;
