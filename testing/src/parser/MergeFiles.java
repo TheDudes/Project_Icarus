@@ -17,6 +17,7 @@
 package parser;
 
 import java.io.*;
+import java.util.*;
 
 import logger.*;
 /**
@@ -28,14 +29,17 @@ import logger.*;
 
 public class MergeFiles {
 
+        /* all the files as array */
 	private final String[] args;
 	
-	// logger
-	//private static boolean logstat;
+	/* logger */
 	private final Logger log;
+        /* mainkey */
 	private final String mainkey = "parser";
-	private final String subkey = "MergeFiles";
-	private final String key = mainkey+"-"+subkey;
+        /* subkey */
+        private final String subkey = "MergeFiles";
+        /* key */
+        private final String key = mainkey+"-"+subkey;
     
 	/**
 	 * MergeFiles will merge all st files together and deletes all unneeded
@@ -63,7 +67,7 @@ public class MergeFiles {
 		StringBuilder  builder  = new StringBuilder();
 		boolean        flag     = false;
 		
-		log.log(key, 3, "Inside merge_all()");
+		log.log(3, key, "Inside merge_all()");
 	        
 		for (String item : args)
 		{
@@ -111,16 +115,30 @@ public class MergeFiles {
 				    }
 			    }
 			catch (FileNotFoundException fnfe) {
-				log.log(key, 0, "File not found: "+ item);
-				System.err.println("File not found: " + item);
+                                log.log(0, key,
+                                        "\n\n",
+                                        "ERROR: File not found\n",
+                                        "DETAILED ERROR: can't find file \"",item,"\"\n",
+                                        "DUMP:\n",
+                                        Arrays.toString(args)
+                                        );
+                                log.kill();
+                                System.exit(1);
 			}
-			catch (IOException ioe) {
-				log.log(key, 0, "Can't read from file: "+item);
-				System.err.println("Can't read from file: " + item);
+                        catch (IOException ioe) {
+                                log.log(0, key,
+                                        "\n\n",
+                                        "ERROR: Can't read from file\n",
+                                        "DETAILED ERROR: file \"",item,"\" not readable\n",
+                                        "DUMP:\n",
+                                        Arrays.toString(args)
+                                        );
+                                log.kill();
+                                System.exit(1);
 			}
 		}
 		
-		log.log(key, 3, "Merged code: "+builder.toString());
+		log.log(3, key, "Merged code: "+builder.toString());
 		return builder;
 		    
 	}

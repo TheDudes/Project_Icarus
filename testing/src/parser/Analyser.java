@@ -29,48 +29,13 @@ import logger.*;
 public class Analyser {
 
 
-        private enum states {mainloop, find_context, var_handling, case_handling}
+        private enum analyse_states {mainloop, find_context, var_handling, case_handling}
         private enum var_states {find_semicollon, type_or_value_or_name, get_type, get_value, get_name, get_last_name, write_to_structure}
         private enum config_states {start, find_context, find_var_name, find_type, find_address, find_var_type, find_AT_percent, find_IN_or_OUT, find_pin}
-        
-	/* These list are holding pointers, these pointers are indexes of the programmstring. */
-//	private final ArrayList<Integer>  program_cursor         = new ArrayList<>();
-//	private final ArrayList<Integer>  function_cursor        = new ArrayList<>();
-//	private final ArrayList<Integer>  function_block_cursor  = new ArrayList<>();
-//	private final ArrayList<Integer>  global_cursor          = new ArrayList<>();
-//	private final ArrayList<Integer>  config_cursor          = new ArrayList<>();
-//	private final ArrayList<Integer>  var_all                = new ArrayList<>();
-//	private final ArrayList<Integer>  if_all                 = new ArrayList<>();
-//	private final ArrayList<Integer>  case_all               = new ArrayList<>();
-//	private final ArrayList<Integer>  for_all                = new ArrayList<>();
-//	private final ArrayList<Integer>  while_all              = new ArrayList<>();
-//	private final ArrayList<Integer>  repeat_all             = new ArrayList<>();
-//	//private final ArrayList<Integer> exit_all = new ArrayList<>();
-//	private final ArrayList<Integer>  var_input_all          = new ArrayList<>();
-//	private final ArrayList<Integer>  var_output_all         = new ArrayList<>();
-//
-////	private final StringBuilder builder;
+
+        /* all the code as a String */
         private final String code;
         
-	/* iterration preperation for our program string  */
-//	private final int                       LISTCOUNT  = 13;
-//	private final List<ArrayList<Integer>>  blocks     = new ArrayList<>();
-//	private final String[][]                keywords   = {
-//		{"PROGRAM", "END_PROGRAM"},
-//		{"FUNCTION", "END_FNUNCTION"},
-//		{"FUNCTION_BLOCK", "END_FUNCTION_BLOCK"},
-//		{"VAR_GLOBAL", "END_VAR"},
-//		{"VAR_CONFIG", "END_VAR"},
-//		{"CASE", "END_CASE"},
-//		{"FOR", "END_FOR"},
-//		{"WHILE", "END_WHILE"},
-//		{"REPEAT", "END_REPEAT"},
-//		{"VAR_INPUT", "END_VAR"},
-//		{"VAR_OUTPUT", "END_VAR"},
-//		{"IF", "END_IF"},
-//		{"VAR", "END_VAR"}
-//	};
-//
         /* stacks */
         private final intStack program_stack;
         private final intStack function_stack;
@@ -83,43 +48,42 @@ public class Analyser {
         private final intStack var_stack;
 
         /* tree maps */
-        private final TreeMap<Integer,Integer> program_map;
-        private final TreeMap<Integer,Integer> function_map;
-        private final TreeMap<Integer,Integer> function_block_map;
-        private final TreeMap<Integer,Integer> var_map;
+        private final TreeMap<Integer,Integer>      program_map;
+        private final TreeMap<Integer,Integer>      function_map;
+        private final TreeMap<Integer,Integer>      function_block_map;
+        private final TreeMap<Integer,Integer>      var_map;
         private final TreeMap<Integer,CaseHandling> case_map;
-        private final TreeMap<Integer,Integer> for_map;
-        private final TreeMap<Integer,Integer> while_map;
-        private final TreeMap<Integer,Integer> repeat_map;
-        private final TreeMap<Integer,Integer> if_map;
+        private final TreeMap<Integer,Integer>      for_map;
+        private final TreeMap<Integer,Integer>      while_map;
+        private final TreeMap<Integer,Integer>      repeat_map;
+        private final TreeMap<Integer,Integer>      if_map;
 
         /* variable container */
-        private final HashMap<String,MappedByte> address_mappedbyte_in;
-        private final HashMap<String,MappedByte> address_mappedbyte_out;
+        private final HashMap<String,MappedByte>               address_mappedbyte_in;
+        private final HashMap<String,MappedByte>               address_mappedbyte_out;
         private final HashMap<String,HashMap<String,Variable>> context_varname_var;
         private       int var_config_start;
         private       int var_global_start;
         private final HashMap<String,HashMap<Integer,Variable>> functioname_inputid_var;
-        private final HashMap<String,Integer> program_startpoint;
-        private final HashMap<String,Integer> function_startpoint;
+        private final HashMap<String,Integer>                   program_startpoint;
+        private final HashMap<String,Integer>                   function_startpoint;
 
         /* device lbq */
         private final  LinkedBlockingQueue<IO_Package>  com_channel_queue;
 
         /* different things */
-        private        ArrayList<String> symbolnames;
-        int id = 0;
+        private ArrayList<String> symbolnames;
+        private       int   id = 0;
+        private final TYPES types;
         
 	/* logger */
 	private final Logger  log;
+        /* mainkey */
 	private final String  mainkey  = "parser";
+        /* subkey */
 	private final String  subkey   = "Analyser";
+        /* key */
 	private final String  key      = " ["+mainkey + "-" + subkey+"] ";
-
-
-        {
-                System.out.println("Static constructor");
-        }
 
 	/**
 	 * the Constructor takes a StringBuilder, which was prepared by MergeAllFiles
@@ -130,12 +94,12 @@ public class Analyser {
 	public
 	Analyser(StringBuilder builder, Logger log)
 	{
-                System.out.println("Inside Analyser");
                 this.log      = log;
-		//this.builder  = builder;
                 this.code     = builder.toString();
 
-                log.log(4, key, "Analyser is doing stuff please wait ...");
+                log.log(3, key, "Analyser is doing stuff please wait ...");
+
+                types = new TYPES(log);
                 
                 program_stack        = new intStack(100);
                 function_stack       = new intStack(100);
@@ -168,21 +132,31 @@ public class Analyser {
 
                 var_global_start = -1;
                 var_config_start = -1;
-                
+
+                log.log(4, key, "run analyse()");
                 analyse();
+                log.log(4, key, "analyse() finished");
+                
+                log.log(4, key, "run build_function_structure()");
                 build_function_structure();
+                log.log(4, key, "build_function_structure finished");
 	}
 
 
+        /**
+         * analyse is the main function here, analyse iterates through the code with a statemachine
+         * and stores all information found in the correct structures
+         */
         private void
         analyse()
         {
-                log.log(4, key, "analyse() called");
-                states state        = states.mainloop;
-                String context      = "";
-                String context_type = "";
-                String var_block    = "";
-                Integer temp_start  = null;
+                log.log(4, key, "\tanalyse() called");
+                analyse_states state        = analyse_states.mainloop;
+                String         context      = "";
+                String         context_type = "";
+                String         var_block    = "";
+                Integer        temp_start   = null;
+
                 
                 for (int index = 0; index < code.length();)
                 {
@@ -199,7 +173,9 @@ public class Analyser {
                                         if(code.charAt(index+4) == 'I' &&
                                            code.charAt(index+5) == 'F')
                                         {
-                                                if_map.put(new Integer(if_stack.pop()), new Integer(index));
+                                                Integer tmp = new Integer(index);
+                                                log.log(4, key, "\tEND_IF index: ", tmp.toString());
+                                                if_map.put(new Integer(if_stack.pop()), tmp);
                                                 index += 6;
                                         }
                                         else if(code.charAt(index+4 ) == 'P' &&
@@ -210,7 +186,9 @@ public class Analyser {
                                                 code.charAt(index+9 ) == 'A' &&
                                                 code.charAt(index+10) == 'M')
                                         {
-                                                program_map.put(new Integer(program_stack.pop()), new Integer(index));
+                                                Integer tmp = new Integer(index);
+                                                log.log(4, key, "\tEND_PROGRAM index: ", tmp.toString());
+                                                program_map.put(new Integer(program_stack.pop()), tmp);
                                                 context = "";
                                                 context_type = "";
                                                 index += 11;
@@ -224,7 +202,9 @@ public class Analyser {
                                                 code.charAt(index+10) == 'O' &&
                                                 code.charAt(index+11) == 'N')
                                         {
-                                                function_map.put(new Integer(function_stack.pop()), new Integer(index));
+                                                Integer tmp = new Integer(index);
+                                                log.log(4, key, "\tEND_FUNCTION index: ", tmp.toString());
+                                                function_map.put(new Integer(function_stack.pop()), tmp);
                                                 context = "";
                                                 context_type = "";
                                                 index += 12;
@@ -244,7 +224,9 @@ public class Analyser {
                                                 code.charAt(index+16) == 'C' &&
                                                 code.charAt(index+17) == 'K')
                                         {
-                                                function_block_map.put(new Integer(function_block_stack.pop()), new Integer(index));
+                                                Integer tmp = new Integer(index);
+                                                log.log(4, key, "\tEND_FUNCTION_BLOCK index: ", tmp.toString());
+                                                function_block_map.put(new Integer(function_block_stack.pop()), tmp);
                                                 context = "";
                                                 context_type = "";
                                                 index += 18;
@@ -253,7 +235,9 @@ public class Analyser {
                                                 code.charAt(index+5) == 'O' &&
                                                 code.charAt(index+6) == 'R')
                                         {
-                                                for_map.put(new Integer(for_stack.pop()), new Integer(index));
+                                                Integer tmp = new Integer(index);
+                                                log.log(4, key, "\tEND_FOR index: ", tmp.toString());
+                                                for_map.put(new Integer(for_stack.pop()), tmp);
                                                 index += 7;
                                         }
                                         else if(code.charAt(index+4) == 'W' && //WHILE
@@ -262,7 +246,9 @@ public class Analyser {
                                                 code.charAt(index+7) == 'L' &&
                                                 code.charAt(index+8) == 'E')
                                         {
-                                                while_map.put(new Integer(while_stack.pop()), new Integer(index));
+                                                Integer tmp = new Integer(index);
+                                                log.log(4, key, "\tEND_WHILE index: ", tmp.toString());
+                                                while_map.put(new Integer(while_stack.pop()), tmp);
                                                 index += 9;
                                         }
                                         else if(code.charAt(index+4) == 'R' && //REPEAT
@@ -272,7 +258,9 @@ public class Analyser {
                                                 code.charAt(index+8) == 'A' &&
                                                 code.charAt(index+9) == 'T')
                                         {
-                                                repeat_map.put(new Integer(repeat_stack.pop()), new Integer(index));
+                                                Integer tmp = new Integer(index);
+                                                log.log(4, key, "\tEND_REPEAT index: ", tmp.toString());
+                                                repeat_map.put(new Integer(repeat_stack.pop()), tmp);
                                                 index += 10;
                                         }
                                         
@@ -287,8 +275,10 @@ public class Analyser {
                                             code.charAt(index-3) == 'L' &&
                                             code.charAt(index-4) == 'E')
                                         {
+                                                log.log(4, key, "\tELSEIF index: ", new Integer(index).toString());
                                                 index += 2;
                                         } else {
+                                                log.log(4, key, "\tIF index: ", new Integer(index).toString());
                                                 if_stack.push(index);
                                                 index += 2;
                                         }
@@ -301,10 +291,12 @@ public class Analyser {
                                         code.charAt(index+5) == 'A' &&
                                         code.charAt(index+6) == 'M')
                                 {
+                                        Integer tmp = new Integer(index);
+                                        log.log(4, key, "\tPROGRAM index: ", tmp.toString());
                                         program_stack.push(index);
-                                        state = states.find_context;
+                                        state = analyse_states.find_context;
                                         context_type = "PROGRAM";
-                                        temp_start = new Integer(index);
+                                        temp_start = tmp;
                                         index += 7;
                                 }
                                 else if(code.charAt(index  ) == 'F' && //FUNCTION
@@ -316,10 +308,12 @@ public class Analyser {
                                         code.charAt(index+6) == 'O' &&
                                         code.charAt(index+7) == 'N')
                                 {
+                                        Integer tmp = new Integer(index);
+                                        log.log(4, key, "\tFUNCTION index: ", tmp.toString());
                                         function_stack.push(index);
-                                        state = states.find_context;
+                                        state = analyse_states.find_context;
                                         context_type = "FUNCTION";
-                                        temp_start = new Integer(index);
+                                        temp_start = tmp;
                                         index += 8;
                                 }
                                 else if(code.charAt(index   ) == 'F' && //FUNCTION_BLOCK
@@ -337,8 +331,9 @@ public class Analyser {
                                         code.charAt(index+12) == 'C' &&
                                         code.charAt(index+13) == 'K')
                                 {
+                                        log.log(4, key, "\tFUNCTION_BLOCK index: ", new Integer(index).toString());
                                         function_block_stack.push(index);
-                                        state = states.find_context;
+                                        state = analyse_states.find_context;
                                         context_type = "FUNCTION_BLOCK";
                                         index += 14;
                                 }
@@ -353,8 +348,9 @@ public class Analyser {
                                         code.charAt(index+8) == 'A' &&
                                         code.charAt(index+9) == 'L')
                                 {
+                                        log.log(4, key, "\tVAR_BLOCK index: ", new Integer(index).toString());
                                         var_stack.push(index);
-                                        state = states.var_handling;
+                                        state = analyse_states.var_handling;
                                         index += 10;
                                 }
                                 else if(code.charAt(index  ) == 'V' && //VAR_CONFIG
@@ -368,8 +364,9 @@ public class Analyser {
                                         code.charAt(index+8) == 'I' &&
                                         code.charAt(index+9) == 'G')
                                 {
+                                        log.log(4, key, "\tVAR_CONFIG index: ", new Integer(index).toString());
                                         var_stack.push(index);
-                                        state = states.var_handling;
+                                        state = analyse_states.var_handling;
                                         index += 10;
                                 }
                                 else if(code.charAt(index  ) == 'C' && //CASE
@@ -377,7 +374,8 @@ public class Analyser {
                                         code.charAt(index+2) == 'S' &&
                                         code.charAt(index+3) == 'E')
                                 {
-                                        state = states.case_handling;
+                                        log.log(4, key, "\tCASE index: ", new Integer(index).toString());
+                                        state = analyse_states.case_handling;
                                         case_stack.push(index);
                                         index += 4;
                                 }
@@ -385,6 +383,7 @@ public class Analyser {
                                         code.charAt(index+1) == 'O' &&
                                         code.charAt(index+2) == 'R')
                                 {
+                                        log.log(4, key, "\tFOR index: ", new Integer(index).toString());
                                         for_stack.push(index);
                                         index += 3;
                                 }
@@ -394,6 +393,7 @@ public class Analyser {
                                         code.charAt(index+3) == 'L' &&
                                         code.charAt(index+4) == 'E')
                                 {
+                                        log.log(4, key, "\tWHILE index: ", new Integer(index).toString());
                                         while_stack.push(index);
                                         index += 5;
                                 }
@@ -404,6 +404,7 @@ public class Analyser {
                                         code.charAt(index+4) == 'A' &&
                                         code.charAt(index+5) == 'T')
                                 {
+                                        log.log(4, key, "\tREPEAT index: ", new Integer(index).toString());
                                         repeat_stack.push(index);
                                         index += 6;
                                 }
@@ -417,8 +418,9 @@ public class Analyser {
                                         code.charAt(index+7) == 'U' &&
                                         code.charAt(index+8) == 'T')
                                 {
+                                        log.log(4, key, "\tVAR_INPUT index: ", new Integer(index).toString());
                                         var_stack.push(index);
-                                        state = states.var_handling;
+                                        state = analyse_states.var_handling;
                                         index += 9;
                                 }
                                 else if(code.charAt(index  ) == 'V' && //VAR_OUTPUT
@@ -432,8 +434,9 @@ public class Analyser {
                                         code.charAt(index+8) == 'U' &&
                                         code.charAt(index+9) == 'T')
                                 {
+                                        log.log(4, key, "\tVAR_OUTPUT index: ", new Integer(index).toString());
                                         var_stack.push(index);
-                                        state = states.var_handling;
+                                        state = analyse_states.var_handling;
                                         index += 10;
                                 }
                                 else if(code.charAt(index  ) == 'V' && //VAR_GLOBAL
@@ -447,27 +450,22 @@ public class Analyser {
                                         code.charAt(index+8) == 'U' &&
                                         code.charAt(index+9) == 'T')
                                 {
+                                        log.log(4, key, "\tVAR_IN_OUT index: ", new Integer(index).toString());
                                         var_stack.push(index);
-                                        state = states.var_handling;
+                                        state = analyse_states.var_handling;
                                         index += 10;
                                 }
                                 else if(code.charAt(index  ) == 'V' && //VAR
                                         code.charAt(index+1) == 'A' &&
                                         code.charAt(index+2) == 'R')
                                 {
+                                        log.log(4, key, "\tVAR index: ", new Integer(index).toString());
                                         var_stack.push(index);
-                                        state = states.var_handling;
+                                        state = analyse_states.var_handling;
                                         index += 3;
                                 } else {
                                     index += 1;
                                 }
-                               
-                                
-        /*{"VAR_INPUT", "END_VAR"},-
-        {"VAR_OUTPUT", "END_VAR"},-
-        {"IF", "END_IF"},
-        {"VAR", "END_VAR"}*/
-
                                 break;
                         case find_context:
                                 if(code.charAt(index  ) == 'V' &&
@@ -475,13 +473,15 @@ public class Analyser {
                                    code.charAt(index+2) == 'R')
                                 {
                                         if (context_type.equals("PROGRAM")){
+                                                log.log(4, key, "\tPROGRAM found index", new Integer(temp_start).toString(), ", NAME", context);
                                                 program_startpoint.put(context, temp_start);
                                                 temp_start = null;
                                         } else if (context_type.equals("FUNCTION")) {
+                                                log.log(4, key, "\tFUNCTION found index", new Integer(temp_start).toString(), ", NAME", context);
                                                 function_startpoint.put(context, temp_start);
                                                 temp_start = null;
                                         }
-                                        state = states.mainloop;
+                                        state = analyse_states.mainloop;
                                 } else {
                                         context += code.charAt(index);
                                         index += 1;
@@ -503,10 +503,11 @@ public class Analyser {
                                            code.charAt(index+11) == 'U' &&
                                            code.charAt(index+12) == 'T')
                                         {
+                                                log.log(4, key, "\tEND_VAR_INPUT index: ", new Integer(index).toString());
                                                 var_map.put(new Integer(var_stack.pop()), new Integer(index+12));
                                                 process_vars(context, var_block, "VAR_INPUT", context_type);
                                                 var_block = "";
-                                                state = states.mainloop;
+                                                state = analyse_states.mainloop;
                                                 index += 13;
                                         }
                                         else if(code.charAt(index+4 ) == 'V' && //VAR_OUTPUT
@@ -520,10 +521,11 @@ public class Analyser {
                                                 code.charAt(index+12) == 'U' &&
                                                 code.charAt(index+13) == 'T')
                                         {
+                                                log.log(4, key, "\tEND_VAR_OUTPUT index: ", new Integer(index).toString());
                                                 var_map.put(new Integer(var_stack.pop()), new Integer(index+13));
                                                 process_vars(context, var_block, "VAR_OUTPUR", context_type);
                                                 var_block = "";
-                                                state = states.mainloop;
+                                                state = analyse_states.mainloop;
                                                 index += 14;
                                         }
                                         else if(code.charAt(index+4 ) == 'V' && //VAR_IN_OUT
@@ -537,10 +539,11 @@ public class Analyser {
                                                 code.charAt(index+12) == 'U' &&
                                                 code.charAt(index+13) == 'T')
                                         {
+                                                log.log(4, key, "\tEND_VAR_IN_OUT index: ", new Integer(index).toString());
                                                 var_map.put(new Integer(var_stack.pop()), new Integer(index+13));
                                                 process_vars(context, var_block, "VAR_IN_OUT", context_type);
                                                 var_block = "";
-                                                state = states.mainloop;
+                                                state = analyse_states.mainloop;
                                                 index += 14;
                                         }
                                         
@@ -555,11 +558,11 @@ public class Analyser {
                                                 code.charAt(index+12) == 'A' &&
                                                 code.charAt(index+13) == 'L')
                                         {
+                                                log.log(4, key, "\tEND_VAR_GLOBAL index: ", new Integer(index).toString());
                                                 var_global_start = var_stack.pop();
                                                 var_map.put(new Integer(var_global_start), new Integer(index+13));
-                                                //process_vars(context, var_block, "VAR_GLOBAL", context_type);
                                                 var_block = "";
-                                                state = states.mainloop;
+                                                state = analyse_states.mainloop;
                                                 index += 14;
                                         }
                                         else if(code.charAt(index+4 ) == 'V' && //VAR_CONFIG
@@ -573,21 +576,22 @@ public class Analyser {
                                                 code.charAt(index+12) == 'I' &&
                                                 code.charAt(index+13) == 'G')
                                         {
+                                                log.log(4, key, "\tEND_VAR_CONFIG index: ", new Integer(index).toString());
                                                 var_config_start = var_stack.pop();
                                                 var_map.put(new Integer(var_config_start), new Integer(index+13));
-                                                //process_vars(context, var_block, "VAR_CONFIG", context_type);
                                                 var_block = "";
-                                                state = states.mainloop;
+                                                state = analyse_states.mainloop;
                                                 index += 14;
                                         }
                                         else if(code.charAt(index+4) == 'V' && //VAR
                                                 code.charAt(index+5) == 'A' &&
                                                 code.charAt(index+6) == 'R')
                                         {
+                                                log.log(4, key, "\tEND_VAR index: ", new Integer(index).toString());
                                                 var_map.put(new Integer(var_stack.pop()), new Integer(index+6)); //BLUB
                                                 process_vars(context, var_block, "VAR", context_type);
                                                 var_block = "";
-                                                state = states.mainloop;
+                                                state = analyse_states.mainloop;
                                                 index += 7;
                                         }
                                         else
@@ -612,7 +616,7 @@ public class Analyser {
                                         int case_start = case_stack.pop();
                                         case_map.put(new Integer(case_start), new CaseHandling(code.substring(case_start, index+8), case_start));
                                         index += 8;
-                                        state = states.mainloop;
+                                        state = analyse_states.mainloop;
                                 } else {
                                     index += 1;
                                 }
@@ -627,13 +631,18 @@ public class Analyser {
         }
 
         
-
-        
+        /**
+         * process_var_config loops through a var_config block with a statemachine
+         * there it will find all the needed informations and will create
+         * the device inforamtions needed for the communication
+         *
+         * @param var_block the varblock as a String
+         */        
         private void
         process_var_config(String var_block)
         {
-                config_states states;
-                states = config_states.start;
+                config_states analyse_states;
+                analyse_states = config_states.start;
                 //int count;
 
                 String band = "";
@@ -648,7 +657,7 @@ public class Analyser {
                 MappedByte mbyte;
                 
                 for (int index = 0; index < var_block.length();){
-                        switch(states){
+                        switch(analyse_states){
                         case start:
                                 if(var_block.charAt(index  ) == 'V' &&
                                    var_block.charAt(index+1) == 'A' &&
@@ -662,7 +671,7 @@ public class Analyser {
                                    var_block.charAt(index+9) == 'G')
                                 {
                                         index += 10;
-                                        states = config_states.find_context;
+                                        analyse_states = config_states.find_context;
                                 } else {
                                         // hey man, you fucked it up .....
                                 }
@@ -672,7 +681,7 @@ public class Analyser {
                                         context = band;
                                         index += 1;
                                         band = "";
-                                        states = config_states.find_var_name;
+                                        analyse_states = config_states.find_var_name;
                                 } else {
                                         band = band + var_block.charAt(index);
                                         index += 1;
@@ -685,7 +694,7 @@ public class Analyser {
                                         var_name = band;
                                         index += 2;
                                         band = "";
-                                        states = config_states.find_AT_percent;
+                                        analyse_states = config_states.find_AT_percent;
                                 } else {
                                         band = band + var_block.charAt(index);
                                         index += 1;
@@ -695,7 +704,7 @@ public class Analyser {
                                 if(var_block.charAt(index) == '%')
                                 {
                                         index += 1;
-                                        states = config_states.find_IN_or_OUT;
+                                        analyse_states = config_states.find_IN_or_OUT;
                                 } else {
                                         // you fucked it up again
                                 }
@@ -706,7 +715,7 @@ public class Analyser {
                                 {
                                         in_or_out = var_block.charAt(index);
                                         index += 1;
-                                        states = config_states.find_type;
+                                        analyse_states = config_states.find_type;
                                 } else {
                                         // and again fucked up ....
                                 }
@@ -717,7 +726,7 @@ public class Analyser {
                                 {
                                         type = var_block.charAt(index);
                                         index += 1;
-                                        states = config_states.find_address;
+                                        analyse_states = config_states.find_address;
                                 } else {
                                         // we only support X or B ....
                                 }
@@ -728,12 +737,12 @@ public class Analyser {
                                         band = "";
                                         pin = var_block.charAt(index+1);
                                         index += 2;
-                                        states = config_states.find_var_type;
+                                        analyse_states = config_states.find_var_type;
                                 } else if (var_block.charAt(index) == ':') {
                                         address = band;
                                         band = "";
                                         index += 1;
-                                        states = config_states.find_var_type;
+                                        analyse_states = config_states.find_var_type;
                                 } else if (var_block.charAt(index) == '0' ||
                                            var_block.charAt(index) == '1' ||
                                            var_block.charAt(index) == '2' ||
@@ -787,7 +796,7 @@ public class Analyser {
                                                 var_type = "";
                                                 in_or_out = '0';
                                         }
-                                        states = config_states.find_context;
+                                        analyse_states = config_states.find_context;
                                 } else {
                                         band = band + var_block.charAt(index);
                                         index += 1;
@@ -796,7 +805,17 @@ public class Analyser {
                         }
                 }
         }
-        
+
+        /**
+         * process_vars loops through a var_block with a statemachine
+         * there it will find all the needed informations and will create
+         * the variables in the structures
+         *
+         * @param context is the current context the variables are in
+         * @param var_block the varblock as a String
+         * @param var_type the type of the varblock
+         * @param context_type the type of the context the varblock is in
+         */
         private void
         process_vars(String context, String var_block, String var_type, String context_type)
         {
@@ -887,14 +906,14 @@ public class Analyser {
                                 {
                                         if (context_type == "GLOBAL"){
                                                 for (String name : names){
-                                                tmp = new Variable(context, id, type, name, value, context_type, var_type);
+                                                tmp = new Variable(types, context, id, type, name, value, context_type, var_type);
                                                         for (HashMap<String,Variable> name_variable : context_varname_var.values()) {
                                                                 name_variable.put(name, tmp);
                                                         }
                                                 }
                                         } else {
                                                 for (String name : names){
-                                                        context_varname_var.get(context).put(name, new Variable(context, id, type, name, value, context_type, var_type));
+                                                        context_varname_var.get(context).put(name, new Variable(types, context, id, type, name, value, context_type, var_type));
                                                 }
                                         }
                                         names  = new ArrayList<>();
@@ -909,14 +928,14 @@ public class Analyser {
                                 {
                                         if (context_type == "GLOBAL"){
                                                 for (String name : names){
-                                                        tmp = new Variable(context, id, type, name, context_type, var_type);
+                                                        tmp = new Variable(types, context, id, type, name, context_type, var_type);
                                                         for (HashMap<String,Variable> name_variable : context_varname_var.values()) {
                                                                 name_variable.put(name, tmp);
                                                         }
                                                 }
                                         } else {
                                                 for (String name : names){
-                                                        context_varname_var.get(context).put(name, new Variable(context, id, type, name, context_type, var_type));
+                                                        context_varname_var.get(context).put(name, new Variable(types, context, id, type, name, context_type, var_type));
                                                 }
                                         }
                                         names  = new ArrayList<>();
@@ -931,7 +950,7 @@ public class Analyser {
                                 {
                                         if (context_type == "GLOBAL"){
                                                 for (String name : names) {
-                                                        tmp = new Variable(context, id, "INT", name, value, context_type, var_type);
+                                                        tmp = new Variable(types, context, id, "INT", name, value, context_type, var_type);
                                                         for (HashMap<String,Variable> name_variable : context_varname_var.values()) {
                                                                 name_variable.put(name, tmp);
                                                         }
@@ -942,7 +961,7 @@ public class Analyser {
                                                 }
                                         } else {
                                                 for (String name : names){
-                                                        context_varname_var.get(context).put(name, new Variable(context, id, "INT", name, value, context_type, var_type));
+                                                        context_varname_var.get(context).put(name, new Variable(types, context, id, "INT", name, value, context_type, var_type));
                                                 }
                                         }
                                         names  = new ArrayList<>();
@@ -971,7 +990,7 @@ public class Analyser {
 	{
 		symbolnames = new ArrayList<>();
 		
-		log.log(key, 4, "generate_symbols_list called.");
+		log.log(4, key, "generate_symbols_list called.");
 		// String context;
 		for (Map.Entry<String, HashMap<String, Variable>> percontext : context_varname_var.entrySet()) {
 			// context = percontext.getKey();
@@ -1003,7 +1022,7 @@ public class Analyser {
 				}
 			});
 		
-		log.log(key, 4, "symbols list: "+Arrays.toString(symbolnames.toArray()));
+		log.log(4, key, "symbols list: ", Arrays.toString(symbolnames.toArray()));
 	}
 
         /**
@@ -1016,28 +1035,31 @@ public class Analyser {
 	public String
 	replace_vars(String input, String context)
 	{
-		log.log(key, 4, "replace_vars called.");
-		log.log(key, 4, "input: "+input);
-		log.log(key, 4, "context: "+context);
+		log.log(4, key, "replace_vars called.");
+		log.log(4, key, "input: ", input);
+		log.log(4, key, "context: ", context);
 		
 		String tmp = null;
-
+                Variable return_value;
+                
 		for (String item : symbolnames) {
 			if (tmp == null) {
-				tmp = input.replaceAll(item, context_varname_var.get(context).get(item).get_value());
+				return_value = context_varname_var.get(context).get(item);
+                                tmp = input.replaceAll(item, return_value != null ? return_value.get_value() : "NOBODY_SHOULD_USE_THIS");
 			} else {
-				tmp = tmp.replaceAll(item, context_varname_var.get(context).get(item).get_value());
+                                return_value = context_varname_var.get(context).get(item);
+				tmp = tmp.replaceAll(item, return_value != null ? return_value.get_value() : "NOBODY_SHOULD_USE_THIS");
                 
 			}
 		}
 
-		log.log(key, 4, "return value: "+tmp);
+		log.log(4, key, "return value: ", tmp);
 		
 		return tmp;
 	}
 
         /**
-	 * setValue accepts whole variable lines like: var,var1,var2:=5; OR
+	 * set_value accepts whole variable lines like: var,var1,var2:=5; OR
 	 * var3:=3.45; and sets the new value in the right containers depending on
 	 * there context.
 	 *
@@ -1048,9 +1070,9 @@ public class Analyser {
 	public void
 	set_value(String input, String context) throws Exception
 	{
-		log.log(key, 4, "set_value called.");
-		log.log(key, 4, "input: "+input);
-		log.log(key, 4, "context: "+context);
+		log.log(4, key, "set_value called.");
+		log.log(4, key, "input: ", input);
+		log.log(4, key, "context: ", context);
 		
 		process_vars(context, input, "CHANGE", "CHANGE");		
 	}
@@ -1065,9 +1087,9 @@ public class Analyser {
 	public void
 	add_var(String input, String context) throws Exception
 	{
-		log.log(key, 4, "add_var called.");
-		log.log(key, 4, "input: "  +input);
-		log.log(key, 4, "context: "+context);
+		log.log(4, key, "add_var called.");
+		log.log(4, key, "input: ", input);
+		log.log(4, key, "context: ", context);
 		
                 process_vars(context, input, "RUNTIME", "RUNTIME");
                 
@@ -1086,10 +1108,15 @@ public class Analyser {
 	public LinkedBlockingQueue<IO_Package>
 	get_com_channel_queue()
 	{
-		log.log(key, 4, "get_com_channel_queue called.");
+		log.log(4, key, "get_com_channel_queue called.");
 		return com_channel_queue;
 	}
 
+        /**
+         * update_device can update the informations acording to the byte address
+         * @param byte_address the byte address as a String
+         * @param value the byte to set
+         */
         public void
 	update_device(String byte_address, byte value)
 	{
@@ -1105,9 +1132,9 @@ public class Analyser {
 	public int
 	get_end_if(int if_open)
 	{
-		log.log(key, 4, "get_end_if called.");
+		log.log(4, key, "get_end_if called.");
 		int local_tmp = if_map.get(new Integer(if_open)).intValue();
-		log.log(key, 4, "end_if: "+local_tmp);
+		log.log(4, key, "end_if: ", new Integer(local_tmp).toString());
 		return local_tmp;
 	}
 
@@ -1136,25 +1163,10 @@ public class Analyser {
 	public Integer[]
 	get_case_coordinates(int caseopen, int value) throws Exception
 	{
-		log.log(key, 4, "get_case_coordinates called.");
+		log.log(4, key, "get_case_coordinates called.");
                 Integer[] local_tmp = case_map.get(new Integer(caseopen)).get_case_collon(value);
-                log.log(key, 4, "case coordinates: "+Arrays.toString(local_tmp));
-                 /*
-                 Integer[] local_tmp = casevalue.get(new Integer(caseopen)).get(new Integer(value));
-	         if (local_tmp != null) {
-	         	log.log(key, 4, "case coordinates: "+Arrays.toString(local_tmp));
-	         	return local_tmp;
-	         }
-	         
-	         int elseincase = builder.toString().indexOf("ELSE", caseopen);
-               
-	         if (elseincase < get_end_case(caseopen)) {
-	         	return new Integer[] {new Integer(elseincase+4), new Integer(builder.toString().indexOf("END_CASE", caseopen)) };
-	         }
-                 */
+                log.log(4, key, "case coordinates: ", Arrays.toString(local_tmp));
 		return local_tmp;
-		//log.log(key, 4, "Case is fucked up");
-		//throw new Exception("Case is fucked up");
 	}
 
 	/**
@@ -1166,99 +1178,99 @@ public class Analyser {
 	public int
 	get_end_case(int caseopen)
 	{
-		log.log(key, 4, "get_end_case called.");
+		log.log(4, key, "get_end_case called.");
                 int local_tmp = case_map.get(caseopen).get_end_case();
-		log.log(key, 4, "end_case: "+ local_tmp);
+		log.log(4, key, "end_case: ", new Integer(local_tmp).toString());
 		return local_tmp;
 	}
 
         /**
 	 * lookup function, throw in the index of a var and geht the index of a end_var
 	 *
-	 * @param a index of a var
+	 * @param var_open index of a var
 	 * @return int
 	 */
 	public int
 	get_end_var(int var_open)
 	{
-		log.log(key, 4, "get_end_var called.");
+		log.log(4, key, "get_end_var called.");
 		int local_tmp = var_map.get(new Integer(var_open)).intValue();
-		log.log(key, 4, "end_var: "+local_tmp);
+		log.log(4, key, "end_var: ", new Integer(local_tmp).toString());
 		return local_tmp;
 	}
 
         /**
 	 * lookup function, throw in the index of a program and geht the index of a end_program
 	 *
-	 * @param a index of a program
+	 * @param program_open index of a program
 	 * @return int
 	 */
 	public int
-	get_end_program(int var_open)
+	get_end_program(int program_open)
 	{
-		log.log(key, 4, "get_end_program called.");
-		int local_tmp = program_map.get(new Integer(var_open)).intValue();
-		log.log(key, 4, "end_program: "+local_tmp);
+		log.log(4, key, "get_end_program called.");
+		int local_tmp = program_map.get(new Integer(program_open)).intValue();
+		log.log(4, key, "end_program: ", new Integer(local_tmp).toString());
 		return local_tmp;
 	}
 
         /**
 	 * lookup function, throw in the index of a function and geht the index of a end_function
 	 *
-	 * @param a index of a function
+	 * @param function_open index of a function
 	 * @return int
 	 */
 	public int
 	get_end_function(int function_open)
 	{
-		log.log(key, 4, "get_end_function called.");
+		log.log(4, key, "get_end_function called.");
 		int local_tmp = function_map.get(new Integer(function_open)).intValue();
-		log.log(key, 4, "end_function: "+local_tmp);
+		log.log(4, key, "end_function: ", new Integer(local_tmp).toString());
 		return local_tmp;
 	}
 
         /**
 	 * lookup function, throw in the index of a function_block and geht the index of a end_function_block
 	 *
-	 * @param a index of a function_block
+	 * @param function_block_open index of a function_block
 	 * @return int
 	 */
 	public int
 	get_end_function_block(int function_block_open)
 	{
-		log.log(key, 4, "get_end_function_block called.");
+		log.log(4, key, "get_end_function_block called.");
 		int local_tmp = function_block_map.get(new Integer(function_block_open)).intValue();
-		log.log(key, 4, "end_function_block: "+local_tmp);
+		log.log(4, key, "end_function_block: ", new Integer(local_tmp).toString());
 		return local_tmp;
 	}
 
         /**
 	 * lookup function, throw in the index of a for and geht the index of a end_for
 	 *
-	 * @param a index of a for
+	 * @param for_open index of a for
 	 * @return int
 	 */
 	public int
 	get_end_for(int for_open)
 	{
-		log.log(key, 4, "get_end_for called.");
+		log.log(4, key, "get_end_for called.");
 		int local_tmp = for_map.get(new Integer(for_open)).intValue();
-		log.log(key, 4, "end_for: "+local_tmp);
+		log.log(4, key, "end_for: ", new Integer(local_tmp).toString());
 		return local_tmp;
 	}
 
         /**
 	 * lookup function, throw in the index of a while and geht the index of a end_while
 	 *
-	 * @param a index of a while
+	 * @param while_open index of a while
 	 * @return int
 	 */
 	public int
 	get_end_while(int while_open)
 	{
-		log.log(key, 4, "get_end_while called.");
+		log.log(4, key, "get_end_while called.");
 		int local_tmp = while_map.get(new Integer(while_open)).intValue();
-		log.log(key, 4, "end_while: "+local_tmp);
+		log.log(4, key, "end_while: ", new Integer(local_tmp).toString());
 		return local_tmp;
 	}
 
@@ -1271,9 +1283,9 @@ public class Analyser {
 	public int
 	get_end_repeat(int repeat_open)
 	{
-		log.log(key, 4, "get_end_repeat called.");
+		log.log(4, key, "get_end_repeat called.");
 		int local_tmp = repeat_map.get(new Integer(repeat_open)).intValue();
-		log.log(key, 4, "end_repeat: "+local_tmp);
+		log.log(4, key, "end_repeat: ", new Integer(local_tmp).toString());
 		return local_tmp;
 	}
 
@@ -1299,12 +1311,10 @@ public class Analyser {
                         count = 0;
                         temp = new TreeMap<>();
                 }
-                
-                //functioname_inputid_var
         }
         
         public int
-        call_function_or_program(String... function_call)
+        call_function_or_program(String[] function_call)
         {
                 String[] fun_param;
                 String[] fun_param_split;
@@ -1313,8 +1323,16 @@ public class Analyser {
                 if (function_call.length == 2){
                         fun_param = function_call[1].split(",");
                 } else if (function_call.length > 2) {
+                        log.log(0,key,
+                                "\n\n",
+                                "ERROR: i expected two params at all",
+                                "DETAILED ERROR: i got more then two params",
+                                "greetings \"call_function_or_program\"",
+                                "DUMP:\n", Arrays.toString(function_call)
+                                );
+                        log.kill();
                         System.exit(1);
-                        return 235;
+                        return 1;
                 } else {
                         fun_param = null;
                         is_program = true;

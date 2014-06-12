@@ -1,7 +1,5 @@
 package parser;
 
-import sun.swing.DefaultLookup;
-
 import Ninti.*;
 
 public class
@@ -23,13 +21,13 @@ Variable
         private MappedByte mbyte;
 
         public
-        Variable(String context, int id, String type, String name, String str_value, String context_type, String var_type)
+        Variable(TYPES types, String context, int id, String type, String name, String str_value, String context_type, String var_type)
         {
                 this.context = context;
                 this.id      = id;
                 this.type    = type;
                 this.name    = name;
-                this.types   = new TYPES();
+                this.types   = types;
                 try { this.value   = types.get_type(type, str_value); }
                 catch (Exception e) { System.exit(1); }
                 this.context_type = context_type;
@@ -38,13 +36,13 @@ Variable
         }
 
         public
-        Variable(String context, int id, String type, String name, String context_type, String var_type)
+        Variable(TYPES types, String context, int id, String type, String name, String context_type, String var_type)
         {
                 this.context = context;
                 this.id      = id;
                 this.type    = type;
                 this.name    = name;
-                this.types   = new TYPES();
+                this.types   = types;
                 try { this.value   = types.get_type(type); }
                 catch (Exception e) { System.exit(1); }
                 this.context_type = context_type;
@@ -67,11 +65,7 @@ Variable
         public void
         set_value(String str_value)
         {
-                try {
-                        this.value = types.get_type(type, str_value);
-                } catch (UnsignedException e) {
-                        System.out.println("asdfasfdsadfasdfsadf");
-                }
+                this.value = types.get_type(type, str_value);
         }
  
         public void
