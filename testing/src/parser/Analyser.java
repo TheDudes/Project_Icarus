@@ -1045,10 +1045,10 @@ public class Analyser {
 		for (String item : symbolnames) {
 			if (tmp == null) {
 				return_value = context_varname_var.get(context).get(item);
-                                tmp = input.replaceAll(item, return_value != null ? return_value.get_value() : "NOBODY_SHOULD_USE_THIS");
+                                tmp = input.replaceAll(item, return_value != null ? return_value.get_value() : item);
 			} else {
                                 return_value = context_varname_var.get(context).get(item);
-				tmp = tmp.replaceAll(item, return_value != null ? return_value.get_value() : "NOBODY_SHOULD_USE_THIS");
+				tmp = tmp.replaceAll(item, return_value != null ? return_value.get_value() : item);
                 
 			}
 		}
