@@ -28,7 +28,7 @@ import logger.*;
  */
 public class Analyser {
 
-
+        
         private enum analyse_states {mainloop, find_context, var_handling, case_handling}
         private enum var_states {find_semicollon, type_or_value_or_name, get_type, get_value, get_name, get_last_name, write_to_structure}
         private enum config_states {start, find_context, find_var_name, find_type, find_address, find_var_type, find_AT_percent, find_IN_or_OUT, find_pin}
@@ -652,10 +652,10 @@ public class Analyser {
                 String context   = "";
                 String var_name  = "";
                 char   in_or_out = ' ';
-                char   type      = ' ';
+                //char   type      = ' ';
                 String address   = "";
                 char   pin       = '9';
-                String var_type  = "";
+                //String var_type  = "";
                 MappedByte mbyte;
                 
                 for (int index = 0; index < var_block.length();){
@@ -726,7 +726,7 @@ public class Analyser {
                                 if(var_block.charAt(index) == 'X' ||
                                    var_block.charAt(index) == 'B')
                                 {
-                                        type = var_block.charAt(index);
+                                        //type = var_block.charAt(index);
                                         index += 1;
                                         analyse_states = config_states.find_address;
                                 } else {
@@ -766,7 +766,7 @@ public class Analyser {
                                 if(var_block.charAt(index) == ':'){
                                         index += 1;
                                 } else if (var_block.charAt(index) == ';') {
-                                        var_type = band;
+                                        //var_type = band;
                                         band = "";
                                         index += 1;
                                         if (pin != '9') {
@@ -781,21 +781,22 @@ public class Analyser {
                                                 context = "";
                                                 var_name = "";
                                                 address = "";
-                                                var_type = "";
+                                                //var_type = "";
                                                 in_or_out = '0';
                                         } else {
                                                 mbyte = new MappedByte(address);
                                                 mbyte.set_byte(Byte.parseByte(context_varname_var.get(context).get(var_name).get_value()));
                                                 context_varname_var.get(context).get(var_name).set_mapped_byte(mbyte);
-                                                if (in_or_out == 'I')
+                                                if (in_or_out == 'I'){
                                                         address_mappedbyte_in.put(address, mbyte);
                                                 // TODO - put the I packages in the linked blocking queue
-                                                else
+                                                        com_channel_queue.offer(context_varname_var.get(context).get(var_name).get_IOPackage());
+                                                } else
                                                         address_mappedbyte_out.put(address, mbyte);
                                                 context = "";
                                                 var_name = "";
                                                 address = "";
-                                                var_type = "";
+                                                //var_type = "";
                                                 in_or_out = '0';
                                         }
                                         analyse_states = config_states.find_context;
@@ -960,6 +961,10 @@ public class Analyser {
                                         } else if (var_type == "CHANGE"){
                                                 for (String name : names) {
                                                         context_varname_var.get(context).get(name).set_value(value);
+                                                        tmp = context_varname_var.get(context).get(name);
+                                                        if(tmp.has_mapping()){
+                                                                com_channel_queue.offer(tmp.get_IOPackage());
+                                                        }
                                                 }
                                         } else {
                                                 for (String name : names){
@@ -1046,19 +1051,7 @@ public class Analyser {
 		log.log(4, key, "context: ", context, "\n");
 		
 		String tmp = null;
-                boolean var_in_context = false;
                 String rv = null;  // return value
-                /*
-		for (String item : symbolnames) {
-			if (tmp == null) {
-				var_in_context = context_varname_var.get(context).containsKey(item);
-                                tmp = input.replaceAll(item, return_value != null ? return_value.get_value() ? : item);
-			} else {
-                                return_value = context_varname_var.get(context).get(item);
-				tmp = tmp.replaceAll(item, return_value != null ? return_value.get_value() : item);
-                
-			}
-		} */
                 
                 for (String item:symbolnames) {
                         if(context_varname_var.get(context).containsKey(item)){
@@ -1307,7 +1300,7 @@ public class Analyser {
         /**
 	 * lookup function, throw in the index of a repeat and geht the index of a end_repeat
 	 *
-	 * @param a index of a repeat
+	 * @param repeat_open index of a repeat
 	 * @return int
 	 */
 	public int
@@ -1319,7 +1312,9 @@ public class Analyser {
 		return local_tmp;
 	}
 
-
+        /**
+         * build_function_structure creates a function lookup table 
+         */
         private void
         build_function_structure()
         {
@@ -1342,7 +1337,14 @@ public class Analyser {
                         temp = new TreeMap<>();
                 }
         }
-        
+
+        /**
+         * call_function_or_program is the function which processes a function and his parameters
+         * it will return the index of the FUNCTION in the code and sets the variable values
+         *
+         * @param  function_call the function or program name and the parameters as array
+         * @return the F in FUNCTION
+         */
         public int
         call_function_or_program(String[] function_call)
         {
@@ -1364,7 +1366,7 @@ public class Analyser {
                         System.exit(1);
                         return 1;
                 } else {
-                        fun_param = null;
+                        fun_param = new String[0];
                         is_program = true;
                 }
                 
@@ -1389,6 +1391,11 @@ public class Analyser {
                 return function_startpoint.get(function_call[0]).intValue();
         }
 
+        /**
+         * reset_function will reset the function variables to there default values
+         *
+         * @param context the contextname as String
+         */
         public void
         reset_function(String context)
         {

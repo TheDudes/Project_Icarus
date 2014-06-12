@@ -19,6 +19,7 @@ Variable
         private byte       abilities;
         private boolean    to_poll;
         private MappedByte mbyte;
+        private boolean    has_mapping = false;
 
         public
         Variable(TYPES types, String context, int id, String type, String name, String str_value, String context_type, String var_type)
@@ -80,6 +81,7 @@ Variable
         set_mapped_byte(MappedByte mbyte)
         {
                 this.mbyte = mbyte;
+                this.has_mapping = true;
         }
         
         public void
@@ -87,6 +89,7 @@ Variable
         {
                 this.mbyte = mbyte;
                 this.pin = pin;
+                this.has_mapping = true;
         }
 
         public IO_Package
@@ -111,5 +114,11 @@ Variable
         set_default_value()
         {
                 value = default_value;
+        }
+
+        public boolean
+        has_mapping()
+        {
+                return has_mapping;
         }
 }
