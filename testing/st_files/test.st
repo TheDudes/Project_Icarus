@@ -39,7 +39,7 @@ END_CASE
 
 amazing();
 amazing(a:=TRUE);
-
+amazing();
 END_PROGRAM
 
 

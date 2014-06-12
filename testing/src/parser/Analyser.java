@@ -1338,21 +1338,22 @@ public class Analyser {
                         is_program = true;
                 }
                 
-                if (fun_param.length == 0)
-                for (String para : fun_param){
-                        fun_param_split = para.split(":=");
-                        if (fun_param_split.length == fun_param.length){
-                                for (int i = 0; i < fun_param_split.length; i++){
-                                        functioname_inputid_var.get(function_call[0]).get(new Integer(i)).set_value(fun_param_split[i]);
-                                }
-                        } else {
-                                for (int i = 0; i < fun_param_split.length; i++){
-                                        context_varname_var.get(function_call[0]).get(fun_param_split[i]).set_value(fun_param_split[i+1]);
-                                        i += 1;
+                if (!(fun_param.length == 0)) {
+                        for (String para : fun_param){
+                                fun_param_split = para.split(":=");
+                                if (fun_param_split.length == fun_param.length){
+                                        for (int i = 0; i < fun_param_split.length; i++){
+                                                functioname_inputid_var.get(function_call[0]).get(new Integer(i)).set_value(fun_param_split[i]);
+                                        }
+                                } else {
+                                        for (int i = 0; i < fun_param_split.length; i++){
+                                                context_varname_var.get(function_call[0]).get(fun_param_split[i]).set_value(fun_param_split[i+1]);
+                                                i += 1;
+                                        }
                                 }
                         }
                 }
-
+                        
                 if (is_program)
                         return program_startpoint.get(function_call[0]).intValue();
                 return function_startpoint.get(function_call[0]).intValue();
