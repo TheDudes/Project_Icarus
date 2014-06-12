@@ -522,7 +522,7 @@ public class Keyword_Handler
         {
             if(condition.charAt(i) == '(')
             {
-                jump_index = container.call_function_or_program(function_name, condition.substring(INDEX + 1, condition.length()));
+                jump_index = container.call_function_or_program(function_name, condition.substring(i + 1, condition.length()-2));
                 log.log(4, log_key, "recursive function call , INDEX = ", new Integer(INDEX).toString(), "\n");
                 interpreter.interpret(code, jump_index, code.length());
                 log.log(4, log_key, "return from recursive function call , INDEX = ", new Integer(INDEX).toString(), "\n");

@@ -1338,6 +1338,7 @@ public class Analyser {
                         is_program = true;
                 }
                 
+                if (fun_param.length == 0)
                 for (String para : fun_param){
                         fun_param_split = para.split(":=");
                         if (fun_param_split.length == fun_param.length){
