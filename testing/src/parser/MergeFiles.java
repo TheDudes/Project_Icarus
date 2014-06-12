@@ -67,7 +67,7 @@ public class MergeFiles {
 		StringBuilder  builder  = new StringBuilder();
 		boolean        flag     = false;
 		
-		log.log(3, key, "Inside merge_all()");
+		log.log(3, key, "Inside merge_all()", "\n");
 	        
 		for (String item : args)
 		{
@@ -120,7 +120,7 @@ public class MergeFiles {
                                         "ERROR: File not found\n",
                                         "DETAILED ERROR: can't find file \"",item,"\"\n",
                                         "DUMP:\n",
-                                        Arrays.toString(args)
+                                        Arrays.toString(args), "\n"
                                         );
                                 log.kill();
                                 System.exit(1);
@@ -131,14 +131,14 @@ public class MergeFiles {
                                         "ERROR: Can't read from file\n",
                                         "DETAILED ERROR: file \"",item,"\" not readable\n",
                                         "DUMP:\n",
-                                        Arrays.toString(args)
+                                        Arrays.toString(args), "\n"
                                         );
                                 log.kill();
                                 System.exit(1);
 			}
 		}
 		
-		log.log(3, key, "Merged code: "+builder.toString());
+		log.log(3, key, "Merged code: "+builder.toString(), "\n");
 		return builder;
 		    
 	}

@@ -39,7 +39,7 @@ public class InfoCollector {
 	/* logger */
 	private final String  mainkey = "parser";
 	private final String  subkey = "InfoCollector";
-	private final String  key = mainkey+"-"+subkey;
+	private final String  key = " ["+mainkey+"-"+subkey+"] ";
 
 	/**
 	 * InfoCollector is a Interfaceclass which has all the functions from a
@@ -65,17 +65,17 @@ public class InfoCollector {
         {
 		this.log = log;
 
-		log.log(1, key, "parsing file ...");
+		log.log(1, key, "parsing file ...", "\n");
 
-		log.log(2, key, "merge all Files ...");
+		log.log(2, key, "merge all Files ...", "\n");
 		allthecode = new MergeFiles(log, configreader.get_st_filepaths()).merge_all();
-		log.log(2, key, "Files merged.");
+		log.log(2, key, "Files merged.", "\n");
 
-		log.log(2, key, "analyse the code ...");
+		log.log(2, key, "analyse the code ...", "\n");
 		analyser = new Analyser(allthecode, log);
-		log.log(2, key, "Analysed.");
+		log.log(2, key, "Analysed.", "\n");
 
-		log.log(1, key, "file parsed.");
+		log.log(1, key, "file parsed.", "\n");
 	}
 
         /* local functions */
@@ -87,7 +87,7 @@ public class InfoCollector {
 	public StringBuilder
 	get_all_the_code()
 	{
-		log.log(4, key, "getAllTheCode called.");
+		log.log(4, key, "getAllTheCode called.", "\n");
 		return allthecode;
 	}
 
@@ -103,7 +103,7 @@ public class InfoCollector {
 	public int
 	get_end_if(int a)
 	{
-		log.log(4, key, "getEndIf called.");
+		log.log(4, key, "getEndIf called.", "\n");
 		return analyser.get_end_if(a);
 	}
 
@@ -133,7 +133,7 @@ public class InfoCollector {
 	public Integer[]
 	get_case_coordinates(int caseopen, int value) throws Exception
 	{
-		log.log(4, key, "getCaseCoordinates called.");
+		log.log(4, key, "getCaseCoordinates called.", "\n");
 		return analyser.get_case_coordinates(caseopen, value);
 	}
 
@@ -147,7 +147,7 @@ public class InfoCollector {
 	public int
 	get_end_case(int a)
 	{
-		log.log(4, key, "getEndCase called.");
+		log.log(4, key, "getEndCase called.", "\n");
 		return analyser.get_end_case(a);
 	}
 
@@ -160,7 +160,7 @@ public class InfoCollector {
 	public int
 	get_end_var(int a)
 	{
-		log.log(4, key, "getEndVar called.");
+		log.log(4, key, "getEndVar called.", "\n");
 		return analyser.get_end_var(a);
 	}
 
@@ -173,7 +173,7 @@ public class InfoCollector {
 	public int
 	get_end_program(int a)
 	{
-		log.log(4, key, "getEndProgram called.");
+		log.log(4, key, "getEndProgram called.", "\n");
 		return analyser.get_end_program(a);
 	}
 
@@ -186,7 +186,7 @@ public class InfoCollector {
 	public int
 	get_end_function(int a)
 	{
-		log.log(4, key, "getEndFunction called.");
+		log.log(4, key, "getEndFunction called.", "\n");
 		return analyser.get_end_function(a);
 	}
 
@@ -199,7 +199,7 @@ public class InfoCollector {
 	public int
 	get_end_function_block(int a)
 	{
-		log.log(4, key, "getEndFunctionBlock called.");
+		log.log(4, key, "getEndFunctionBlock called.", "\n");
 		return analyser.get_end_function_block(a);
 	}
 
@@ -212,7 +212,7 @@ public class InfoCollector {
 	public int
 	get_end_for(int a)
 	{
-		log.log(4, key, "getEndFor called.");
+		log.log(4, key, "getEndFor called.", "\n");
 		return analyser.get_end_for(a);
 	}
 
@@ -225,7 +225,7 @@ public class InfoCollector {
 	public int
 	get_end_while(int a)
 	{
-		log.log(4, key, "getEndWhile called.");
+		log.log(4, key, "getEndWhile called.", "\n");
 		return analyser.get_end_while(a);
 	}
 
@@ -238,7 +238,7 @@ public class InfoCollector {
 	public int
 	get_end_repeat(int a)
 	{
-		log.log(4, key, "getEndRepeat called.");
+		log.log(4, key, "getEndRepeat called.", "\n");
 		return analyser.get_end_repeat(a);
 	}
 
@@ -253,7 +253,7 @@ public class InfoCollector {
 	public String
 	replace_vars(String input, String context)
 	{
-		log.log(4, key, "replaceVars called.");
+		log.log(4, key, "replaceVars called.", "\n");
 		return analyser.replace_vars(input, context);
 	}
 
@@ -270,7 +270,7 @@ public class InfoCollector {
 	public void
 	set_value(String input, String context) throws Exception
 	{
-		log.log(4, key, "setValue called.");
+		log.log(4, key, "setValue called.", "\n");
 		analyser.set_value(input, context);
 	}
 
@@ -283,7 +283,7 @@ public class InfoCollector {
 	public void
 	add_var(String input, String context) throws Exception
 	{
-		log.log(4, key, "addVar called.");
+		log.log(4, key, "addVar called.", "\n");
 		analyser.add_var(input, context);
 	}
 

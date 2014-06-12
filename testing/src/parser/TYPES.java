@@ -100,7 +100,7 @@ public class TYPES {
                                 "\n\n",
                                 "ERROR: unsigned type can't go negativ\n",
                                 "DETAILED ERROR: \"",type,"\" is not known\n",
-                                "DUMP: "
+                                "DUMP: ", "\n"
                                 );
                         log.kill();
                         System.exit(1);
@@ -109,7 +109,7 @@ public class TYPES {
                         "\n\n",
                         "ERROR: unknown type\n",
                         "DETAILED ERROR: \"",type,"\" is not known\n",
-                        "DUMP: "
+                        "DUMP: ", "\n"
                         );
                 log.kill();
                 System.exit(1);
@@ -178,7 +178,7 @@ public class TYPES {
                                 "\n\n",
                                 "ERROR: ",e.toString(),"\n",
                                 "DETAILED ERROR: \"",value,"\" overflows \"",type,"\"\n",
-                                "DUMP: "
+                                "DUMP: ", "\n"
                                 );
                         log.kill();
                         System.exit(1);
@@ -188,7 +188,7 @@ public class TYPES {
                                 "ERROR: Value out of range\n",
                                 "DETAILED ERROR: \"",value,"\" doesn't fit\n",
                                 "in \"",type,"\"\n",
-                                "DUMP: "
+                                "DUMP: ", "\n"
                                 );
                         log.kill();
                         System.exit(1);
@@ -198,7 +198,7 @@ public class TYPES {
                         "ERROR: unknown type\n",
                         "DETAILED ERROR: \"",type,"\" is not known\n",
                         "for value ",value,"\n",
-                        "DUMP: "
+                        "DUMP: ", "\n"
                         );
                 log.kill();
                 System.exit(1);
