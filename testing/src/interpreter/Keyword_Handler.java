@@ -526,6 +526,7 @@ public class Keyword_Handler
                 log.log(4, log_key, "recursive function call , INDEX = ", new Integer(INDEX).toString(), "\n");
                 interpreter.interpret(code, jump_index, code.length());
                 log.log(4, log_key, "return from recursive function call , INDEX = ", new Integer(INDEX).toString(), "\n");
+                container.reset_function(function_name);
                 break;
             }
             else if (condition.charAt(i) == ':')

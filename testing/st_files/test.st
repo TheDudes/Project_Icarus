@@ -10,7 +10,7 @@ VAR
 END_VAR
 
 FOR hihihi := 0 TO 50 BY 1 DO
-    FOR asdf:=0 TO 1000 BY 1 DO
+    FOR asdf:=0 TO 100 BY 1 DO
         PRINT(inner_loop=, asdf);
     END_FOR
     IF blah = 3 THEN
@@ -37,11 +37,21 @@ CASE blah OF
         PRINT(case_else=, blah);
 END_CASE
 
+amazing();
+amazing(a:=TRUE);
+
 END_PROGRAM
+
+
+FUNCTION amazing
+VAR_INPUT
+    a:BOOL:=FALSE;
+END_VAR_INPUT
+    PRINT(thisisa=, a);
+END_FUNCTION
 
 VAR_CONFIG
 	Test.blub AT %QX32.2 : BOOL;
 	Test.blah AT %IB33 : BYTE;
 	Test.ratatazonk AT %IX34.7 : BOOL;
 END_VAR_CONFIG
-
