@@ -320,7 +320,7 @@ public class InfoCollector {
         public int
         call_function_or_program(String... function_call)
         {
-                return analyser.call_function(function_call);
+                return analyser.call_function_or_program(function_call);
         }
 
         public void

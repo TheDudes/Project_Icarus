@@ -1304,14 +1304,17 @@ public class Analyser {
         }
         
         public int
-        call_function(String... function_call)
+        call_function_or_program(String... function_call)
         {
                 String[] fun_param;
                 String[] fun_param_split;
                 boolean  is_program = false;
                 
-                if (function_call.length > 1){
+                if (function_call.length == 2){
                         fun_param = function_call[1].split(",");
+                } else if (function_call.length > 2) {
+                        System.exit(1);
+                        return 235;
                 } else {
                         fun_param = null;
                         is_program = true;
