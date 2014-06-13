@@ -59,7 +59,7 @@ public class Synchronous_IO_worker implements Runnable {
                 BufferedInputStream inFromServer = new BufferedInputStream(client.getInputStream());
                 BufferedOutputStream outToServer = new BufferedOutputStream(client.getOutputStream());) {
 
-            logWriter.log(4, key, "Streams established");
+            logWriter.log(4, key, "Streams established \n");
             PacketWriter packetWriter = new PacketWriter(outToServer);
             PacketReader packetReader = new PacketReader(inFromServer);
             while (alive || !lbq.isEmpty()) {
@@ -69,7 +69,7 @@ public class Synchronous_IO_worker implements Runnable {
                 logWriter.log(3, key, "IO_Package received."
                         , " Device ID: ", ioPackage.byte_address
                         , " Pin ID: ", ioPackage.pin_id
-                        , " New Value: ", Byte.toString(ioPackage.value));
+                        , " New Value: ", Byte.toString(ioPackage.value), "\n");
 
                 if (ioPackage.to_poll == true) {
 
@@ -77,25 +77,25 @@ public class Synchronous_IO_worker implements Runnable {
 
                     logWriter.log(3, key, "Wrote IO_Packet with Device ID: "
                             , ioPackage.byte_address
-                            , " to the IO Manager for Polling");
+                            , " to the IO Manager for Polling \n");
 
                 } else {
                     write_package(packetWriter);                //writes a value to the ioManager
 
                     logWriter.log(4, key, "Wrote IO_Packet with Device ID: "
                             , ioPackage.byte_address
-                            , " to the IO Mangager for Writing");
+                            , " to the IO Mangager for Writing \n");
 
                 }
 
                 IO_Packet ioPacket = packetReader.readPacket();
                 if(ioPacket.getRWFlag() == 0){
                     logWriter.log(0, key, "Error received from IO Manager with Device ID: "
-                            , Integer.toString(ioPacket.getGeraeteId()));
+                            , Integer.toString(ioPacket.getGeraeteId()), "\n");
 
                 }
                 else{
-                logWriter.log(3, key, "Succesfully ", pollOrWrite);
+                logWriter.log(3, key, "Succesfully ", pollOrWrite, "\n");
                 }
 
             }
