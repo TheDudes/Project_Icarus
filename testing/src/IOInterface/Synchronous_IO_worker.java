@@ -87,21 +87,22 @@ public class Synchronous_IO_worker implements Runnable {
                             , " to the IO Mangager for Writing");
 
                 }
-                
+
                 IO_Packet ioPacket = packetReader.readPacket();
                 if(ioPacket.getRWFlag() == 0){
                     logWriter.log(0, key, "Error received from IO Manager with Device ID: "
                             , Integer.toString(ioPacket.getGeraeteId()));
-                    
+
                 }
                 else{
                 logWriter.log(3, key, "Succesfully ", pollOrWrite);
-                }     
+                }
 
             }
 
         } catch (Exception e) {
             System.err.println(e.getMessage());
+            logWriter.log(0, key, "maaaan, what the fuck are u doing\n");
             logWriter.log(0, key, e.getMessage());
             System.exit(1);
         }
@@ -117,7 +118,7 @@ public class Synchronous_IO_worker implements Runnable {
      */
     private void polling_init(PacketWriter packetWriter) throws IOException {
         rwFlag = 11;
-        pollOrWrite = " initialized IO Package for polling"; 
+        pollOrWrite = " initialized IO Package for polling";
       IO_Packet ioPacket = new IO_Packet(new Integer(ioPackage.byte_address)
               , new Integer(ioPackage.pin_id)
               , namespaceID, count

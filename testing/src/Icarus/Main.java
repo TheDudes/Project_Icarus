@@ -25,6 +25,7 @@ import parser.*;
 import linc.*;
 import interpreter.*;
 import logger.*;
+import IOInterface.*;
 
 /**
  * @author d4ryus - https://github.com/d4ryus/
@@ -44,6 +45,7 @@ public class Main
           static Logger        log;
           static InfoCollector container;
           static Interpreter   interpreter;
+          static SynchronousIO io;
 
     /**
      * main funcion which will start Icarus
@@ -58,6 +60,7 @@ public class Main
         log         = new Logger(config);
         container   = new InfoCollector(config, log);
         interpreter = new Interpreter(container, log, config);
+        io          = new SynchronousIO(log, config, container);
 
         log.log(0, log_key, "starting Icarus.\n");
         double blub = 0.0;
