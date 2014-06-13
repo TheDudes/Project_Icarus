@@ -17,7 +17,7 @@
  *
  * @author Jonas Huber <Jonas_Huber2@gmx.de>
  */
-package Ninti;
+package datatypes;
 
 /**
  * 

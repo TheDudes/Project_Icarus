@@ -19,8 +19,7 @@ package parser;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.io.*;
 
-import linc.Config_Reader;
-
+import config.Config_Reader;
 import logger.*;
 
 /**
@@ -31,18 +30,19 @@ import logger.*;
  * @version 1.0
  */
 
-public class InfoCollector {
+public class ParserContainer {
 	private final StringBuilder  allthecode;
 	private final Analyser       analyser;
 	private final Logger         log;
 
 	/* logger */
 	private final String  mainkey = "parser";
-	private final String  subkey = "InfoCollector";
+	private final String  subkey = "ParserContainer";
 	private final String  key = " ["+mainkey+"-"+subkey+"] ";
-
+        private final int     log_level = Integer.parseInt(System.getProperty("loglevel"));
+        
 	/**
-	 * InfoCollector is a Interfaceclass which has all the functions from a
+	 * ParserContainer is a Interfaceclass which has all the functions from a
 	 * lot of different classes to make the life for others easyer
 	 * <p>
 	 * the Constructor simply takes a array of String which are filenames.
@@ -60,22 +60,22 @@ public class InfoCollector {
 	 * @see Config_Reader
 	 * @see LogWriter
 	 */
-	public InfoCollector (Config_Reader configreader, Logger log)
+	public ParserContainer (Config_Reader configreader, Logger log)
         throws FileNotFoundException, IOException, Exception
         {
 		this.log = log;
 
-		log.log(1, key, "parsing file ...", "\n");
+		if(log_level >= 1) log.log(1, key, "parsing file ...", "\n");
 
-		log.log(2, key, "merge all Files ...", "\n");
+		if(log_level >= 2) log.log(2, key, "merge all Files ...", "\n");
 		allthecode = new MergeFiles(log, configreader.get_st_filepaths()).merge_all();
-		log.log(2, key, "Files merged.", "\n");
+		if(log_level >= 2) log.log(2, key, "Files merged.", "\n");
 
-		log.log(2, key, "analyse the code ...", "\n");
+		if(log_level >= 2) log.log(2, key, "analyse the code ...", "\n");
 		analyser = new Analyser(allthecode, log);
-		log.log(2, key, "Analysed.", "\n");
+		if(log_level >= 2) log.log(2, key, "Analysed.", "\n");
 
-		log.log(1, key, "file parsed.", "\n");
+		if(log_level >= 1) log.log(1, key, "file parsed.", "\n");
 	}
 
         /* local functions */
@@ -87,7 +87,7 @@ public class InfoCollector {
 	public StringBuilder
 	get_all_the_code()
 	{
-		log.log(4, key, "getAllTheCode called.", "\n");
+		if(log_level >= 4) log.log(4, key, "getAllTheCode called.", "\n");
 		return allthecode;
 	}
 
@@ -103,7 +103,7 @@ public class InfoCollector {
 	public int
 	get_end_if(int a)
 	{
-		log.log(4, key, "getEndIf called.", "\n");
+		if(log_level >= 4) log.log(4, key, "getEndIf called.", "\n");
 		return analyser.get_end_if(a);
 	}
 
@@ -133,7 +133,7 @@ public class InfoCollector {
 	public Integer[]
 	get_case_coordinates(int caseopen, int value) throws Exception
 	{
-		log.log(4, key, "getCaseCoordinates called.", "\n");
+		if(log_level >= 4) log.log(4, key, "getCaseCoordinates called.", "\n");
 		return analyser.get_case_coordinates(caseopen, value);
 	}
 
@@ -147,7 +147,7 @@ public class InfoCollector {
 	public int
 	get_end_case(int a)
 	{
-		log.log(4, key, "getEndCase called.", "\n");
+		if(log_level >= 4) log.log(4, key, "getEndCase called.", "\n");
 		return analyser.get_end_case(a);
 	}
 
@@ -160,7 +160,7 @@ public class InfoCollector {
 	public int
 	get_end_var(int a)
 	{
-		log.log(4, key, "getEndVar called.", "\n");
+		if(log_level >= 4) log.log(4, key, "getEndVar called.", "\n");
 		return analyser.get_end_var(a);
 	}
 
@@ -173,7 +173,7 @@ public class InfoCollector {
 	public int
 	get_end_program(int a)
 	{
-		log.log(4, key, "getEndProgram called.", "\n");
+		if(log_level >= 4) log.log(4, key, "getEndProgram called.", "\n");
 		return analyser.get_end_program(a);
 	}
 
@@ -186,7 +186,7 @@ public class InfoCollector {
 	public int
 	get_end_function(int a)
 	{
-		log.log(4, key, "getEndFunction called.", "\n");
+		if(log_level >= 4) log.log(4, key, "getEndFunction called.", "\n");
 		return analyser.get_end_function(a);
 	}
 
@@ -199,7 +199,7 @@ public class InfoCollector {
 	public int
 	get_end_function_block(int a)
 	{
-		log.log(4, key, "getEndFunctionBlock called.", "\n");
+		if(log_level >= 4) log.log(4, key, "getEndFunctionBlock called.", "\n");
 		return analyser.get_end_function_block(a);
 	}
 
@@ -212,7 +212,7 @@ public class InfoCollector {
 	public int
 	get_end_for(int a)
 	{
-		log.log(4, key, "getEndFor called.", "\n");
+		if(log_level >= 4) log.log(4, key, "getEndFor called.", "\n");
 		return analyser.get_end_for(a);
 	}
 
@@ -225,7 +225,7 @@ public class InfoCollector {
 	public int
 	get_end_while(int a)
 	{
-		log.log(4, key, "getEndWhile called.", "\n");
+		if(log_level >= 4) log.log(4, key, "getEndWhile called.", "\n");
 		return analyser.get_end_while(a);
 	}
 
@@ -238,7 +238,7 @@ public class InfoCollector {
 	public int
 	get_end_repeat(int a)
 	{
-		log.log(4, key, "getEndRepeat called.", "\n");
+		if(log_level >= 4) log.log(4, key, "getEndRepeat called.", "\n");
 		return analyser.get_end_repeat(a);
 	}
 
@@ -253,7 +253,7 @@ public class InfoCollector {
 	public String
 	replace_vars(String input, String context)
 	{
-		log.log(4, key, "replaceVars called.", "\n");
+		if(log_level >= 4) log.log(4, key, "replaceVars called.", "\n");
 		return analyser.replace_vars(input, context);
 	}
 
@@ -270,7 +270,7 @@ public class InfoCollector {
 	public void
 	set_value(String input, String context) throws Exception
 	{
-		log.log(4, key, "setValue called.", "\n");
+		if(log_level >= 4) log.log(4, key, "setValue called.", "\n");
 		analyser.set_value(input, context);
 	}
 
@@ -283,7 +283,7 @@ public class InfoCollector {
 	public void
 	add_var(String input, String context) throws Exception
 	{
-		log.log(4, key, "addVar called.", "\n");
+		if(log_level >= 4) log.log(4, key, "addVar called.", "\n");
 		analyser.add_var(input, context);
 	}
 
@@ -302,18 +302,33 @@ public class InfoCollector {
 		return analyser.get_com_channel_queue();
 	}
 
+        /**
+         * update_device can update the informations acording to the byte address
+         * @param byte_address the byte address as a String
+         * @param value the byte to set
+         */
 	public void
 	update_device(String byte_address, byte value)
 	{
 		analyser.update_device(byte_address, value);
 	}
 
+        /**
+         * call_function_or_program is the function which processes a function and his parameters
+         * it will return the index of the FUNCTION in the code and sets the variable values
+         * @param  function_call the function or program name and the parameters as array
+         * @return the F in FUNCTION
+         */
         public int
         call_function_or_program(String... function_call)
         {
                 return analyser.call_function_or_program(function_call);
         }
 
+        /**
+         * reset_function will reset the function variables to there default values
+         * @param context the contextname as String
+         */
         public void
         reset_function(String context)
         {

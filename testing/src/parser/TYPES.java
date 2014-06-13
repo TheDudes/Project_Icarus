@@ -17,7 +17,7 @@
 package parser;
 
 
-import Ninti.*;
+import datatypes.*;
 import logger.*;
 
 /**
@@ -40,12 +40,12 @@ public class TYPES {
                 this.log = log;
         }
 
-/**
+        /**
 	 * getType only need a String representing a type, like DINT
 	 * it then creates a new Object of this type and returns it.
 	 * @param type typeString like DINT, SINT, TIME ...
 	 * @return Object of the right type
-	 * @throws Ninti.UnsignedException
+	 * @throws datatypes.UnsignedException
 	 */
 	public Object
 	get_type(String type)
@@ -123,7 +123,7 @@ public class TYPES {
 	 * @param type typeString like DINT, SINT, TIME ...
 	 * @param value valueString like "2.3", "32323" ...
 	 * @return Object of the right type with the new value
-	 * @throws Ninti.UnsignedException
+	 * @throws datatypes.UnsignedException
 	 */
 	public Object
 	get_type(String type, String value)

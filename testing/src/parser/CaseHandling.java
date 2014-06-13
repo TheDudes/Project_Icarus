@@ -1,8 +1,29 @@
+/**
+ * Copyright (c) 2014, HAW-Landshut
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
 
 package parser;
 
 import java.util.*;
 
+/**
+ * this class can handle a case block
+ * <p>
+ * @author Simon Mages <mages.simon@googlemail.com>
+ * @version 1.0
+ */
 public class
 CaseHandling
 {
@@ -20,7 +41,11 @@ CaseHandling
         private intStack case_stack = new intStack(100);
 
         enum states {start, jump_behind_of, find_colon, find_end_case, find_number, from_to, create_case_lookup, failed, end}
-        
+
+        /**
+         * @param code all the code as a single String
+         * @param offset the position index in the Analyser routine
+         */
         public
         CaseHandling(String code, int offset)
         {
@@ -30,6 +55,10 @@ CaseHandling
                 eval();
         }
 
+        /**
+         * eval will evaluate the case structure and will save all the
+         * future information in the coresponding structures
+         */
         private void
         eval()
         {
@@ -208,13 +237,25 @@ CaseHandling
 
                 
         }
-        
+
+        /**
+         * get_end_case returns the index of the END_CASE in this CASE
+         * <p>
+         * @return index of the END_CASE >E<
+         */
         public int
         get_end_case()
         {
                 return end_case_e;
         }
 
+        /**
+         * get_case_collon will return the index of the collon which is the
+         * right one for the case variable
+         * <p>
+         * @param a_case the evaluated value of a case
+         * @return an integer array with [0] is the collon of the starting case and [1] the start of the next one
+         */
         public Integer[]
         get_case_collon(int a_case)
         {

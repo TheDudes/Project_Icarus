@@ -19,7 +19,7 @@
 
 package logger;
 
-import linc.*;
+import config.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

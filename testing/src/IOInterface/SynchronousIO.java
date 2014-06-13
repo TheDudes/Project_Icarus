@@ -14,7 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 package IOInterface;
-import linc.Config_Reader;
+
+import config.Config_Reader;
 import logger.*;
 import parser.*;
 import java.net.*;
@@ -36,7 +37,7 @@ public class SynchronousIO{
     * @param confReader Config_Reader so we can get the hostname and port for the Sockets
     * @param infoColl we have to get this object as we have to pass it on to the Synchronous_IO_worker
     */
-    public SynchronousIO(Logger logger, Config_Reader confReader, InfoCollector infoColl){
+    public SynchronousIO(Logger logger, Config_Reader confReader, ParserContainer infoColl){
        logger.log(0, logKey, "trying to establish a connection to the IO Manager\n");
        try{
             syncSocket = new Socket(confReader.get_string("hostname"), confReader.get_int("sync_port", 1, 65536));

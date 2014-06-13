@@ -17,28 +17,28 @@
  *
  * @author Jonas Huber <Jonas_Huber2@gmx.de>
  */
-package Ninti;
+package datatypes;
 
 /**
  * 
  * @author Jonas Huber <Jonas_Huber2@gmx.de>
  */
-public class UINT extends SubCheckConvert {
+public class ULINT extends SubCheckConvert {
 
-    private final String MAX_VALUE = "65535";
-    // Variable who holds the Max Value of the UINT                        
+    private final String MAX_VALUE = "18446744073709551615";
+    // Variable who holds the Max Value of the ULINT                        
     private String MaxForSub = MAX_VALUE;
     // Variable to hold the String for subtracts
     private StringBuilder value;
-    // Variable to hold the Value of the Unsigned Integer
+    // Variable to hold the Value of the Unsigned Long Int
 
     /**
      * Constructor
      *
-     * @param aValue value of the integer given in strings
+     * @param aValue is value of the integer given in strings
      * @throws UnsignedException
      */
-    public UINT(String aValue) throws UnsignedException {
+    public ULINT(String aValue) throws UnsignedException {
 
         StringBuilder temp = new StringBuilder(aValue);
         while (check(temp, MAX_VALUE)) {
@@ -52,11 +52,23 @@ public class UINT extends SubCheckConvert {
     /**
      * GETTER
      *
-     * @return value of the unsigned integer
+     * @return value of the unsigned long integer
      */
     @Override
     public String toString() {
         return value.toString();
     }
 
+//    public static void main(String... args) throws Exception {
+//
+//        String a = "18446744073709551617";
+//        System.out.println(a);
+//        ULINT b = new ULINT(a);
+//        System.out.println(b.ulintValue());
+//        
+//        
+//        String c = "257";
+//        USINT d = new USINT(c);
+//        System.out.println(d.usintValue());
+//    }
 }

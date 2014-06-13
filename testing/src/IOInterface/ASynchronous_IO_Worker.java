@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class ASynchronous_IO_Worker implements Runnable{
     private Logger logger;
-    private InfoCollector infoColl;
+    private ParserContainer infoColl;
     private ServerSocket sSocket;
     private boolean alive = true;
     private IO_Packet incomingPacket;
@@ -17,10 +17,10 @@ public class ASynchronous_IO_Worker implements Runnable{
     /**
     *
     * @param logWriter Logger used to write logs via the .log function
-    * @param infoColl InfoCollector used to pass the data we get from the network
+    * @param infoColl ParserContainer used to pass the data we get from the network
     * @param sSocket ServerSocket that we use to establish a connection to the other IOManager, gets initiated in the class that initiates this one
     */
-    ASynchronous_IO_Worker(Logger logWriter, InfoCollector infoColl, ServerSocket sSocket){
+    ASynchronous_IO_Worker(Logger logWriter, ParserContainer infoColl, ServerSocket sSocket){
         this.logger = logWriter;
         this.infoColl = infoColl;
         this.sSocket = sSocket;
@@ -31,7 +31,7 @@ public class ASynchronous_IO_Worker implements Runnable{
 
     @Override
     /**
-    * creates a Socket if a connection is incoming, then reads the stuff we get and passes it to the InfoCollector
+    * creates a Socket if a connection is incoming, then reads the stuff we get and passes it to the ParserContainer
     */
     public void run(){
         while(alive){

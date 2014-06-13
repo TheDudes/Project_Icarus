@@ -25,7 +25,7 @@ import java.util.Properties;
 
 import parser.*;
 
-import linc.*;
+import config.*;
 
 import interpreter.*;
 
@@ -48,7 +48,7 @@ public class Main
 
           static Config_Reader config;
           static Logger        log;
-          static InfoCollector container;
+          static ParserContainer container;
           static Interpreter   interpreter;
           static SynchronousIO io;
 
@@ -68,7 +68,7 @@ public class Main
             propertie = new Properties(System.getProperties());
             propertie.setProperty("loglevel", Integer.toHexString(config.get_int("verbosity_level", 0, 4)));
             System.setProperties(propertie);
-        container   = new InfoCollector(config, log);
+        container   = new ParserContainer(config, log);
         interpreter = new Interpreter(container, log, config);
         io          = new SynchronousIO(log, config, container);
 

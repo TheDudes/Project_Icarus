@@ -18,11 +18,10 @@ package parser;
 
 /**
  * This class is only for the communication with the IOInterface
- *
+ * <p>
  * @author Simon Mages <mages.simon@googlemail.com>
  * @version 1.0
  */
-
 public class
 IO_Package
 {
@@ -61,6 +60,9 @@ IO_Package
 		this.to_poll    = to_poll;
 	}
 
+        /**
+         * set_polling_true will set the polling flag to true
+         */
         public void
         set_polling_true()
         {

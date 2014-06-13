@@ -13,26 +13,50 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-
 /**
  *
  * @author Jonas Huber <Jonas_Huber2@gmx.de>
  */
-
-
-package Ninti;
-
+package datatypes;
 
 /**
  * 
  * @author Jonas Huber <Jonas_Huber2@gmx.de>
  */
-public class UnsignedException extends Exception {
-    
-            private static final long serialVersionUID = 7526472295622776147L;
-    
-        UnsignedException() {
-            super("Signed number in an unsigned Datatype");
+public class UDINT extends SubCheckConvert {
+
+    private final String MAX_VALUE = "4294967295";
+    // Variable who holds the Max Value of the ULINT                        
+    private String MaxForSub = MAX_VALUE;
+    // Variable to hold the String for subtracts
+    private StringBuilder value;
+    // Variable to hold the Value of the Unsigned double Int
+
+    /**
+     * Constructor
+     *
+     * @param aValue value of the integer given in strings
+     * @throws UnsignedException
+     */
+    public UDINT(String aValue) throws UnsignedException {
+
+        StringBuilder temp = new StringBuilder(aValue);
+        while (check(temp, MAX_VALUE)) {
+            temp = sub(temp, MaxForSub);
+
         }
+        value = temp;
+
+    }
+
+    /**
+     * GETTER
+     *
+     * @return value of the unsigned double integer
+     */
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 
 }

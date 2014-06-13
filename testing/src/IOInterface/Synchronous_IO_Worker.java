@@ -36,7 +36,7 @@ public class Synchronous_IO_Worker implements Runnable{
    /* The value of the parameter syncSocket is not used */
     /* --fixme-- */
    /* Empty block should be documented */
-    public Synchronous_IO_Worker(Logger logger, InfoCollector infoColl, Socket syncSocket){
+    public Synchronous_IO_Worker(Logger logger, ParserContainer infoColl, Socket syncSocket){
     }
 
    /* --fixme-- */

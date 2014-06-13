@@ -21,7 +21,7 @@ package interpreter;
 
 import logger.*;
 import parser.*;
-import linc.*;
+import config.*;
 
 import java.util.Stack;
 
@@ -36,7 +36,7 @@ import java.util.Stack;
 public class Keyword_Handler
 {
     final private String                log_key = " [Interpreter-Keyword_Handler]: ";
-    final private InfoCollector         container;
+    final private ParserContainer         container;
     final private Engine                engine;
     final private Logger                log;
     final private Interpreter           interpreter;
@@ -48,12 +48,12 @@ public class Keyword_Handler
     final private Stack<Integer>        if_position_stack;
 
     /**
-     * @param container used InfoCollector object
+     * @param container used ParserContainer object
      * @param log used LogWriter object
      * @param config used Config_Reader
      * @param interpreter used Interpreter, need for recursive calls (CASE, ...)
      */
-    public Keyword_Handler(InfoCollector container, Logger log, Config_Reader config, Interpreter interpreter)
+    public Keyword_Handler(ParserContainer container, Logger log, Config_Reader config, Interpreter interpreter)
     {
         log.log(2, log_key, "init Keyword_Handler...\n");
 

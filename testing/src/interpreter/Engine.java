@@ -20,7 +20,7 @@
 package interpreter;
 
 import logger.*;
-import linc.*;
+import config.*;
 
 import javax.script.*;
 

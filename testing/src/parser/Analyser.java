@@ -13,6 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
+
 package parser;
 
 import java.util.Properties;
@@ -23,13 +24,12 @@ import logger.*;
 
 /**
  * This class locates all block beginnings and endings
- *
  * @author Simon Mages <mages.simon@googlemail.com>
  * @version 1.0
  */
-public class Analyser {
-
-        
+public class
+Analyser
+{
         private enum analyse_states {mainloop, find_context, var_handling, case_handling}
         private enum var_states {find_semicollon, type_or_value_or_name, get_type, get_value, get_name, get_last_name, write_to_structure}
         private enum config_states {start, find_context, find_var_name, find_type, find_address, find_var_type, find_AT_percent, find_IN_or_OUT, find_pin}
@@ -86,7 +86,6 @@ public class Analyser {
 
 	/**
 	 * the Constructor takes a StringBuilder, which was prepared by MergeAllFiles
-	 *
 	 * @param builder StringBuilder prepared by MergeAllFiles
 	 * @param log Logger from above
 	 */
@@ -595,7 +594,14 @@ public class Analyser {
                                         }
                                         else
                                         {
-                                                // some exception, because of the END_ in a var block
+                                                        log.log(0, key,
+                                                                "\n\n",
+                                                                "ERROR: END_* in VAR_* block ....\n",
+                                                                "DETAILED ERROR: END_ block in VAR block detected\n",
+                                                                "DUMP: ", "\n"
+                                                                );
+                                                        log.kill();
+                                                        System.exit(1);
                                         }
                                 } else {
                                         var_block += code.charAt(index);
@@ -612,6 +618,7 @@ public class Analyser {
                                    code.charAt(index+6) == 'S' &&
                                    code.charAt(index+7) == 'E')
                                 {
+                                        if(log_level >= 4) log.log(4, key, "\tEND_CASE index: ", new Integer(index).toString(), "\n");
                                         int case_start = case_stack.pop();
                                         case_map.put(new Integer(case_start), new CaseHandling(code.substring(case_start, index+8), case_start));
                                         index += 8;
@@ -634,12 +641,13 @@ public class Analyser {
          * process_var_config loops through a var_config block with a statemachine
          * there it will find all the needed informations and will create
          * the device inforamtions needed for the communication
-         *
          * @param var_block the varblock as a String
          */        
         private void
         process_var_config(String var_block)
         {
+                if(log_level >= 4) log.log(4, key, "process VAR_CONFIG", "\n");
+
                 config_states analyse_states;
                 analyse_states = config_states.start;
                 //int count;
@@ -705,7 +713,14 @@ public class Analyser {
                                         index += 1;
                                         analyse_states = config_states.find_IN_or_OUT;
                                 } else {
-                                        // you fucked it up again
+                                                log.log(0, key,
+                                                        "\n\n",
+                                                        "ERROR: % expected\n",
+                                                        "DETAILED ERROR: error in VAR_CONFIG @", context, ".", var_name, "\n",
+                                                        "DUMP: ", "\n"
+                                                        );
+                                                log.kill();
+                                                System.exit(1);
                                 }
                                 break;
                         case find_IN_or_OUT:
@@ -716,7 +731,14 @@ public class Analyser {
                                         index += 1;
                                         analyse_states = config_states.find_type;
                                 } else {
-                                        // and again fucked up ....
+                                        log.log(0, key,
+                                                "\n\n",
+                                                "ERROR: I or Q expected\n",
+                                                "DETAILED ERROR: error in VAR_CONFIG @", context, ".", var_name, "\n",
+                                                "DUMP: ", "\n"
+                                                );
+                                        log.kill();
+                                        System.exit(1);
                                 }
                                 break;
                         case find_type:
@@ -727,7 +749,14 @@ public class Analyser {
                                         index += 1;
                                         analyse_states = config_states.find_address;
                                 } else {
-                                        // we only support X or B ....
+                                        log.log(0, key,
+                                                "\n\n",
+                                                "ERROR: X or B expected\n",
+                                                "DETAILED ERROR: error in VAR_CONFIG @", context, ".", var_name, "\n",
+                                                "DUMP: ", "\n"
+                                                );
+                                        log.kill();
+                                        System.exit(1);
                                 }
                                 break;
                         case find_address:
@@ -756,29 +785,35 @@ public class Analyser {
                                         band = band + var_block.charAt(index);
                                         index += 1;
                                 } else {
-                                    // you made it worse
+                                        log.log(0, key,
+                                                "\n\n",
+                                                "ERROR: address format error\n",
+                                                "DETAILED ERROR: error in VAR_CONFIG @", context, ".", var_name, "\n",
+                                                "DUMP: ", "\n"
+                                                );
+                                        log.kill();
+                                        System.exit(1);
                                 }
                                 break;
                         case find_var_type:
                                 if(var_block.charAt(index) == ':'){
                                         index += 1;
                                 } else if (var_block.charAt(index) == ';') {
-                                        //var_type = band;
                                         band = "";
                                         index += 1;
                                         if (pin != '9') {
                                                 mbyte = new MappedByte(address);
                                                 mbyte.set_bit(""+pin, Boolean.parseBoolean(context_varname_var.get(context).get(var_name).get_value()));
                                                 context_varname_var.get(context).get(var_name).set_mapped_byte(mbyte, ""+pin);
-                                                if (in_or_out == 'I')
+                                                if (in_or_out == 'I'){
                                                         address_mappedbyte_in.put(address, mbyte);
-                                                else
+                                                }else{
                                                         address_mappedbyte_out.put(address, mbyte);
+                                                }
                                                 pin = '9';
                                                 context = "";
                                                 var_name = "";
                                                 address = "";
-                                                //var_type = "";
                                                 in_or_out = '0';
                                         } else {
                                                 mbyte = new MappedByte(address);
@@ -786,14 +821,12 @@ public class Analyser {
                                                 context_varname_var.get(context).get(var_name).set_mapped_byte(mbyte);
                                                 if (in_or_out == 'I'){
                                                         address_mappedbyte_in.put(address, mbyte);
-                                                // TODO - put the I packages in the linked blocking queue
                                                         com_channel_queue.offer(context_varname_var.get(context).get(var_name).get_IOPackage());
                                                 } else
                                                         address_mappedbyte_out.put(address, mbyte);
                                                 context = "";
                                                 var_name = "";
                                                 address = "";
-                                                //var_type = "";
                                                 in_or_out = '0';
                                         }
                                         analyse_states = config_states.find_context;
@@ -810,7 +843,6 @@ public class Analyser {
          * process_vars loops through a var_block with a statemachine
          * there it will find all the needed informations and will create
          * the variables in the structures
-         *
          * @param context is the current context the variables are in
          * @param var_block the varblock as a String
          * @param var_type the type of the varblock
@@ -820,10 +852,11 @@ public class Analyser {
         process_vars(String context, String var_block, String var_type, String context_type)
         {
                 if(log_level >= 4) log.log(4, key, "process_vars() called", "\n");
+
                 if(!context_varname_var.containsKey(context))
                     context_varname_var.put(context, new HashMap<String,Variable>());
+
                 var_states state = var_states.find_semicollon;
-                //int id = 0;
                 int index = 0;
                 int semicollon_pos = 0;
 
@@ -836,7 +869,6 @@ public class Analyser {
                 for (;index < var_block.length() && index > -1;) {
                         switch (state){
                         case find_semicollon:
-                                if(log_level >= 4) log.log(4, key, "\tState: find_semicollon", "\n");
                                 if(!(var_block.charAt(index) == ';')) {
                                         index += 1;
                                 } else {
@@ -846,7 +878,6 @@ public class Analyser {
                                 }
                                 break;
                         case type_or_value_or_name:
-                                if(log_level >= 4) log.log(4, key, "\tState: type_or_value_or_name", "\n");
                                 if(var_block.charAt(index  ) == '=' && // :=
                                    var_block.charAt(index-1) == ':')
                                 {
@@ -879,24 +910,28 @@ public class Analyser {
                                 value = band;
                                 band = "";
                                 state = var_states.type_or_value_or_name;
+                                if(log_level >= 4) log.log(4, key, "\tvalue: ", value, "\n");
                                 break;
                         case get_type:
                                 if(log_level >= 4) log.log(4, key, "\tState: get_type", "\n");
                                 type = band;
                                 band = "";
                                 state = var_states.type_or_value_or_name;
+                                if(log_level >= 4) log.log(4, key, "\ttype: ", type, "\n");
                                 break;
                         case get_name:
                                 if(log_level >= 4) log.log(4, key, "\tState: get_name", "\n");
                                 names.add(band);
-                                band = "";
                                 state = var_states.type_or_value_or_name;
+                                if(log_level >= 4) log.log(4, key, "\tname: ", band, "\n");
+                                band = "";
                                 break;
                         case get_last_name:
                                 if(log_level >= 4) log.log(4, key, "\tState: get_last_name", "\n");
                                 names.add(band);
-                                band = "";
                                 state = var_states.write_to_structure;
+                                if(log_level >= 4) log.log(4, key, "\tname: ", band, "\n");
+                                band = "";
                                 break;
                         case write_to_structure:
                                 if(log_level >= 4) log.log(4, key, "\tState: write_to_structure", "\n");
@@ -905,6 +940,7 @@ public class Analyser {
                                    value != "")
                                 {
                                         if (context_type == "GLOBAL"){
+                                                if(log_level >= 4) log.log(4, key, "\tSet in GLOBAL", "\n");
                                                 for (String name : names){
                                                 tmp = new Variable(types, context, id, type, name, value, context_type, var_type);
                                                         for (HashMap<String,Variable> name_variable : context_varname_var.values()) {
@@ -912,6 +948,7 @@ public class Analyser {
                                                         }
                                                 }
                                         } else {
+                                                if(log_level >= 4) log.log(4, key, "\tSet int ", context, "\n");
                                                 for (String name : names){
                                                         context_varname_var.get(context).put(name, new Variable(types, context, id, type, name, value, context_type, var_type));
                                                 }
@@ -927,6 +964,7 @@ public class Analyser {
                                         type  != "")
                                 {
                                         if (context_type == "GLOBAL"){
+                                                if(log_level >= 4) log.log(4, key, "\tSet in GLOBAL", "\n");
                                                 for (String name : names){
                                                         tmp = new Variable(types, context, id, type, name, context_type, var_type);
                                                         for (HashMap<String,Variable> name_variable : context_varname_var.values()) {
@@ -934,6 +972,7 @@ public class Analyser {
                                                         }
                                                 }
                                         } else {
+                                                if(log_level >= 4) log.log(4, key, "\tSet in ", context, "\n");
                                                 for (String name : names){
                                                         context_varname_var.get(context).put(name, new Variable(types, context, id, type, name, context_type, var_type));
                                                 }
@@ -949,6 +988,7 @@ public class Analyser {
                                         value != "")
                                 {
                                         if (context_type == "GLOBAL"){
+                                                if(log_level >= 4) log.log(4, key, "\tSet in GLOBAL", "\n");
                                                 for (String name : names) {
                                                         tmp = new Variable(types, context, id, "INT", name, value, context_type, var_type);
                                                         for (HashMap<String,Variable> name_variable : context_varname_var.values()) {
@@ -956,6 +996,7 @@ public class Analyser {
                                                         }
                                                 }
                                         } else if (var_type == "CHANGE"){
+                                                if(log_level >= 4) log.log(4, key, "\tSet in CHANGE", "\n");
                                                 for (String name : names) {
                                                         context_varname_var.get(context).get(name).set_value(value);
                                                         tmp = context_varname_var.get(context).get(name);
@@ -964,6 +1005,7 @@ public class Analyser {
                                                         }
                                                 }
                                         } else {
+                                                if(log_level >= 4) log.log(4, key, "\tSet in ", context, "\n");
                                                 for (String name : names){
                                                         context_varname_var.get(context).put(name, new Variable(types, context, id, "INT", name, value, context_type, var_type));
                                                 }
@@ -986,7 +1028,6 @@ public class Analyser {
         /**
 	 * generateSymbolsList creates a list with all the Symbols sorted from long
 	 * to short
-	 * <p>
 	 * This function is private
 	 */
 	private void
@@ -995,9 +1036,7 @@ public class Analyser {
 		symbolnames = new ArrayList<>();
 		
 		if(log_level >= 4) log.log(4, key, "generate_symbols_list called.", "\n");
-		// String context;
 		for (Map.Entry<String, HashMap<String, Variable>> percontext : context_varname_var.entrySet()) {
-			// context = percontext.getKey();
 			for (Map.Entry<String, Variable> value : percontext.getValue().entrySet()) {
 				symbolnames.add(value.getKey());
 			}
@@ -1035,7 +1074,6 @@ public class Analyser {
 
         /**
 	 * replaceVars replaces all variable names in a given string with its values
-	 *
 	 * @param input string with variable names in it
 	 * @param context the context in which this variables should be
 	 * @return the input string with all replaced variables
@@ -1054,14 +1092,14 @@ public class Analyser {
                         if(context_varname_var.get(context).containsKey(item)){
                                 if (tmp == null) {
                                         rv = context_varname_var.get(context).get(item).get_value();
-                                        tmp = input.replaceAll(item, /*rv == "true" || rv == "TRUE" || rv == "false" || rv == "FALSE" ? item :*/ rv);
+                                        tmp = input.replaceAll(item, rv);
                                         tmp = tmp.replaceAll("false", "!!!");
                                         tmp = tmp.replaceAll("FALSE", "!!!");
                                         tmp = tmp.replaceAll("true", "###");
                                         tmp = tmp.replaceAll("TRUE", "###");
                                 } else {
                                         rv = context_varname_var.get(context).get(item).get_value();
-                                        tmp = tmp.replaceAll(item, /*rv == "true" || rv == "TRUE" || rv == "false" || rv == "FALSE" ? item :*/ rv);
+                                        tmp = tmp.replaceAll(item, rv);
                                         tmp = tmp.replaceAll("false", "!!!");
                                         tmp = tmp.replaceAll("FALSE", "!!!");
                                         tmp = tmp.replaceAll("true", "###");
@@ -1082,7 +1120,6 @@ public class Analyser {
 	 * set_value accepts whole variable lines like: var,var1,var2:=5; OR
 	 * var3:=3.45; and sets the new value in the right containers depending on
 	 * there context.
-	 *
 	 * @param input String with variable line.
 	 * @param context String representing
 	 * @throws java.lang.Exception the context
@@ -1099,7 +1136,6 @@ public class Analyser {
 
 	/**
 	 * addVar will add a variable to a context like setValue
-	 *
 	 * @param input String with variable line.
 	 * @param context String representing the context
 	 * @throws java.lang.Exception
@@ -1119,8 +1155,6 @@ public class Analyser {
         /**
          * get_com_channel_queue returns the linkedblockingqueue for the IOInterface
 	 * communikation.
-	 * <p>
-	 * the LinkedBlockingQueue with the type IO_Package
 	 * @return LinkedBlockingQueue with IO_Package Type
 	 * @see LinkedBlockingQueue
 	 * @see IO_Package
@@ -1145,7 +1179,6 @@ public class Analyser {
 
         /**
 	 * lookup function, throw in the index of a if and geht the index of a end_if
-	 *
 	 * @param a index of an if
 	 * @return int
 	 */
@@ -1191,7 +1224,6 @@ public class Analyser {
 
 	/**
 	 * lookup function, throw in the index of a case and geht the index of an end_case
-	 *
 	 * @param caseopen index of the "C" od CASE
 	 * @return int
 	 */
@@ -1206,7 +1238,6 @@ public class Analyser {
 
         /**
 	 * lookup function, throw in the index of a var and geht the index of a end_var
-	 *
 	 * @param var_open index of a var
 	 * @return int
 	 */
@@ -1221,7 +1252,6 @@ public class Analyser {
 
         /**
 	 * lookup function, throw in the index of a program and geht the index of a end_program
-	 *
 	 * @param program_open index of a program
 	 * @return int
 	 */
@@ -1236,7 +1266,6 @@ public class Analyser {
 
         /**
 	 * lookup function, throw in the index of a function and geht the index of a end_function
-	 *
 	 * @param function_open index of a function
 	 * @return int
 	 */
@@ -1251,7 +1280,6 @@ public class Analyser {
 
         /**
 	 * lookup function, throw in the index of a function_block and geht the index of a end_function_block
-	 *
 	 * @param function_block_open index of a function_block
 	 * @return int
 	 */
@@ -1266,7 +1294,6 @@ public class Analyser {
 
         /**
 	 * lookup function, throw in the index of a for and geht the index of a end_for
-	 *
 	 * @param for_open index of a for
 	 * @return int
 	 */
@@ -1281,7 +1308,6 @@ public class Analyser {
 
         /**
 	 * lookup function, throw in the index of a while and geht the index of a end_while
-	 *
 	 * @param while_open index of a while
 	 * @return int
 	 */
@@ -1296,7 +1322,6 @@ public class Analyser {
 
         /**
 	 * lookup function, throw in the index of a repeat and geht the index of a end_repeat
-	 *
 	 * @param repeat_open index of a repeat
 	 * @return int
 	 */
@@ -1315,6 +1340,7 @@ public class Analyser {
         private void
         build_function_structure()
         {
+                if(log_level >= 4) log.log(4, key, "build_function_structure called.", "\n");
                 TreeMap<Integer,Variable> temp = new TreeMap<>();
                 HashMap<Integer,Variable> helper;
                 int count = 0;
@@ -1338,19 +1364,20 @@ public class Analyser {
         /**
          * call_function_or_program is the function which processes a function and his parameters
          * it will return the index of the FUNCTION in the code and sets the variable values
-         *
          * @param  function_call the function or program name and the parameters as array
          * @return the F in FUNCTION
          */
         public int
         call_function_or_program(String[] function_call)
         {
+                if(log_level >= 4) log.log(4, key, "call_function_or_program called.", "\n");
                 String[] fun_param;
                 String[] fun_param_split;
                 boolean  is_program = false;
                 
                 if (function_call.length == 2){
                         fun_param = function_call[1].split(",");
+                        if(log_level >= 4) log.log(4, key, "\tis function.", "\n");
                 } else if (function_call.length > 2) {
                         if(log_level >= 0) log.log(0,key,
                                 "\n\n",
@@ -1363,6 +1390,7 @@ public class Analyser {
                         System.exit(1);
                         return 1;
                 } else {
+                        if(log_level >= 4) log.log(4, key, "\tis program.", "\n");
                         fun_param = new String[0];
                         is_program = true;
                 }
@@ -1390,12 +1418,12 @@ public class Analyser {
 
         /**
          * reset_function will reset the function variables to there default values
-         *
          * @param context the contextname as String
          */
         public void
         reset_function(String context)
         {
+                if(log_level >= 4) log.log(4, key, "reset_function called for: ", context, "\n");
                 for (Variable var : context_varname_var.get(context).values()) {
                         var.set_default_value();
                 }

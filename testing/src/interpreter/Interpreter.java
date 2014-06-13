@@ -21,7 +21,7 @@ package interpreter;
 
 import logger.*;
 import parser.*;
-import linc.*;
+import config.*;
 
 /**
  * @author d4ryus - https://github.com/d4ryus/
@@ -41,7 +41,7 @@ public class Interpreter
      * @param log used LogWriter
      * @param config Config_Reader object which will be passed to Engine
      */
-    public Interpreter(InfoCollector container, Logger log, Config_Reader config)
+    public Interpreter(ParserContainer container, Logger log, Config_Reader config)
     {
         log.log(2, log_key, "init Interpreter...\n");
 

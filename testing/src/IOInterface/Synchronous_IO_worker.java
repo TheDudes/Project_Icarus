@@ -45,7 +45,7 @@ public class Synchronous_IO_worker implements Runnable {
      * @param infoCollector
      * @param client
      */
-    public Synchronous_IO_worker(Logger logWriter, InfoCollector infoCollector, Socket client) {
+    public Synchronous_IO_worker(Logger logWriter, ParserContainer infoCollector, Socket client) {
 
         this.logWriter = logWriter;
         this.lbq = infoCollector.get_com_channel_queue();
