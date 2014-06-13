@@ -103,7 +103,7 @@ public class Engine
                                    new Double(avg).toString(),
                                    "ms avg)\n");
             }
-            log.log(0, i + 1, total_evaluations, 1, 40, log_key, "engine warmup...");
+            log.print_statusbar(i + 1, total_evaluations, 1, 40, "engine warmup...");
         }
         log.log(2, log_key, "100 evaluations done, avg time: (",
                             new Double(avg / 100).toString(),

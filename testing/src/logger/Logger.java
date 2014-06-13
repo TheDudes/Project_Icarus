@@ -220,48 +220,34 @@ public class Logger
     /**
      * will check for verbosity and add the String[] to the queue, this
      * log function will also print out a statusbar in ascii art
-     * @param verbosity incomming message verbosity
-     * @param args message in String array
+     * @param message which will be added in front of the bar
      * @param x actual value
      * @param n max value
      * @param r resolution
      * @param w bar width
      */
-    public void log(int verbosity, int x, int n, int r, int w, String... args)
+    public void print_statusbar(int x, int n, int r, int w, String message)
     {
         if (!silent)
         {
             /* Calculuate the ratio of statusbar (will be 0.5 on 50%) */
-            double ratio;
-            if(x == n)
-                ratio = 1.0;
-            else
-                ratio = (double)x / (double)n;
+            double ratio      = (double)x / (double)n;
 
-            int percentage = (int)( (ratio * 100.0) + 0.5);
+            /* Calculate the percentage of current status */
+            int    percentage = (int)( (ratio * 100.0) + 0.5);
 
-            /* Only update when resolution fit's, or something changed */
+            /* Only update when resolution fit's, or percentage has changed */
             if (   !(percentage % r    == 0)
                  || (percentage_before == percentage) )
                 return;
 
             percentage_before = percentage;
 
-            String message = new String();
-            for (int i = 0; i < args.length; i++)
-            {
-                if(i == 0) continue;
-                message += args[i];
-            }
-
+            /* Calculate the length of current state */
             int c =(int)( (ratio * (double)w ) + 0.5);
 
-            /* go up 1 line (cursor will be at beginning) */
-            System.out.print("]\033[F");
-
-
-            /* print out the message + the ratio in % */
-            System.out.print(message + " " + percentage + "%[");
+            /* go up 1 line and print out the message + the ratio in % */
+            System.out.print("]\033[F" + message + " " + percentage + "%[");
 
             /* print out the actual bar */
             int i;
