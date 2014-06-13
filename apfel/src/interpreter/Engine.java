@@ -99,7 +99,7 @@ public class Engine
             if (i % 100 == 0 && i != 0)
             {
                 avg = avg / 100;
-                log.log(0, i, total_evaluations, 1, 40, log_key, "engine warmup...");
+                log.log(0, i, total_evaluations, 1, 40, log_key, "engine warmup...\n");
                 log.log(2, log_key, "100 evaluations done, avg time: (", new Double(avg).toString(), "ms avg)\n");
             }
         }
