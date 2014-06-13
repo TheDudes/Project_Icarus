@@ -42,24 +42,3 @@ amazing(a:=TRUE, b:=TRUE, c:=TRUE, d:=TRUE, e:=TRUE);
 amazing();
 END_PROGRAM
 
-
-FUNCTION amazing
-VAR_INPUT
-    a:BOOL:=FALSE;
-    b:BOOL:=FALSE;
-    c:BOOL:=FALSE;
-    d:BOOL:=FALSE;
-    e:BOOL:=FALSE;
-END_VAR_INPUT
-    PRINT(thisisa=, a);
-    PRINT(thisisb=, b);
-    PRINT(thisisc=, c);
-    PRINT(thisisd=, d);
-    PRINT(thisise=, e);
-END_FUNCTION
-
-VAR_CONFIG
-	Test.blub AT %QX32.2 : BOOL;
-	Test.blah AT %IB33 : BYTE;
-	Test.ratatazonk AT %IX34.7 : BOOL;
-END_VAR_CONFIG
