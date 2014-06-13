@@ -231,8 +231,8 @@ public class Logger
         if (( verbosity == 0 ) && !silent )
         {
             /* Calculuate the ratio of statusbar (will be 0.5 on 50%) */
-            float ratio = x / (float)n;
-            int percentage = (int)( (ratio * 100) + 0.5);
+            float ratio = (float)x / (float)n;
+            int percentage = (int)( (ratio * 100.0) + 1.0);
 
             /* Only update when resolution fit's */
             if ( percentage % r != 0 )
@@ -245,7 +245,11 @@ public class Logger
                 message += args[i];
             }
 
-            int c =(int)( ((ratio ) * w) + 0.5);
+            int c =(int)( (ratio * (float)w ) + 0.5);
+
+            /* go up 1 line (cursor will be at beginning) */
+            System.out.print("]\033[F");
+
 
             /* print out the message + the ratio in % */
             System.out.print(message + " " + percentage + "%[");
@@ -257,16 +261,15 @@ public class Logger
             for (i=c; i<w; i++)
                 System.out.print(" ");
 
-            /* enter a new line, then go up 1 line (cursor will be at beginning) */
-            if ((ratio*100 + r) >= 100.0)
-                System.out.print("]\n");
-            else
-                System.out.print("]\n\033[F");
+            System.out.print("]\n");
 
-            queue.offer(args);
+            //queue.offer(args);
         }
         else if ( verbosity <= this.verboseLevel )
-            queue.offer(args);
+        {
+
+        }
+            //queue.offer(args);
     }
 
     /**
