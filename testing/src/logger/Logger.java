@@ -56,6 +56,7 @@ public class Logger
     final private int     verboseLevel;
     final private int     max_backup_files;
           private boolean alive = true;
+          private int     percentage_before = 0;
 
     /**
      * LogWriter Constructor
@@ -228,15 +229,23 @@ public class Logger
      */
     public void log(int verbosity, int x, int n, int r, int w, String... args)
     {
-        if (( verbosity == 0 ) && !silent )
+        if (!silent)
         {
             /* Calculuate the ratio of statusbar (will be 0.5 on 50%) */
-            float ratio = (float)x / (float)n;
-            int percentage = (int)( (ratio * 100.0) + 1.0);
+            double ratio;
+            if(x == n)
+                ratio = 1.0;
+            else
+                ratio = (double)x / (double)n;
 
-            /* Only update when resolution fit's */
-            if ( percentage % r != 0 )
+            int percentage = (int)( (ratio * 100.0) + 0.5);
+
+            /* Only update when resolution fit's, or something changed */
+            if (   !(percentage % r    == 0)
+                 || (percentage_before == percentage) )
                 return;
+
+            percentage_before = percentage;
 
             String message = new String();
             for (int i = 0; i < args.length; i++)
@@ -245,7 +254,7 @@ public class Logger
                 message += args[i];
             }
 
-            int c =(int)( (ratio * (float)w ) + 0.5);
+            int c =(int)( (ratio * (double)w ) + 0.5);
 
             /* go up 1 line (cursor will be at beginning) */
             System.out.print("]\033[F");
@@ -262,14 +271,7 @@ public class Logger
                 System.out.print(" ");
 
             System.out.print("]\n");
-
-            //queue.offer(args);
         }
-        else if ( verbosity <= this.verboseLevel )
-        {
-
-        }
-            //queue.offer(args);
     }
 
     /**
