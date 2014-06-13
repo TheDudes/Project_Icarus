@@ -22,6 +22,6 @@ public class testServer{
             writer.close();
             clientSocket.close();
         }
-        servSocket.close();
+//        servSocket.close();
     }
 }

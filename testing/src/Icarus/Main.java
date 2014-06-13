@@ -21,9 +21,14 @@
 
 package Icarus;
 
+import java.util.Properties;
+
 import parser.*;
+
 import linc.*;
+
 import interpreter.*;
+
 import logger.*;
 import IOInterface.*;
 
@@ -47,6 +52,7 @@ public class Main
           static Interpreter   interpreter;
           static SynchronousIO io;
 
+        static Properties propertie;
     /**
      * main funcion which will start Icarus
      * @param args not used yet
@@ -58,10 +64,17 @@ public class Main
 
         config      = new Config_Reader("./icarus.conf");
         log         = new Logger(config);
+        /* Set System Property to make it easy to ignore logs */
+            propertie = new Properties(System.getProperties());
+            propertie.setProperty("loglevel", Integer.toHexString(config.get_int("verbosity_level", 0, 4)));
+            System.setProperties(propertie);
         container   = new InfoCollector(config, log);
         interpreter = new Interpreter(container, log, config);
         io          = new SynchronousIO(log, config, container);
 
+        
+            
+        
         log.log(0, log_key, "starting Icarus.\n");
         double blub = 0.0;
         for(int i = 0; i < 10; i++ )

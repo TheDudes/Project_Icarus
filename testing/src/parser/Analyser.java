@@ -15,8 +15,9 @@
  */
 package parser;
 
-import java.util.*;
+import java.util.Properties;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.*;
 
 import logger.*;
 
@@ -78,12 +79,10 @@ public class Analyser {
         
 	/* logger */
 	private final Logger  log;
-        /* mainkey */
 	private final String  mainkey  = "parser";
-        /* subkey */
 	private final String  subkey   = "Analyser";
-        /* key */
 	private final String  key      = " ["+mainkey + "-" + subkey+"] ";
+        private final int     log_level = Integer.parseInt(System.getProperty("loglevel"));
 
 	/**
 	 * the Constructor takes a StringBuilder, which was prepared by MergeAllFiles
@@ -96,9 +95,8 @@ public class Analyser {
 	{
                 this.log      = log;
                 this.code     = builder.toString();
-
-                log.log(3, key, "Analyser is doing stuff please wait ...", "\n");
-
+                if(log_level >= 3) log.log(3, key, "Analyser is doing stuff please wait ...", "\n");
+                
                 types = new TYPES(log);
                 
                 program_stack        = new intStack(100);
@@ -132,14 +130,13 @@ public class Analyser {
 
                 var_global_start = -1;
                 var_config_start = -1;
-
-                log.log(4, key, "run analyse()", "\n");
-                analyse();
-                log.log(4, key, "analyse() finished", "\n");
                 
-                log.log(4, key, "run build_function_structure()", "\n");
+                if(log_level >= 4) log.log(4, key, "run analyse()", "\n");
+                analyse();
+                if(log_level >= 4) log.log(4, key, "analyse() finished", "\n");
+                if(log_level >= 4) log.log(4, key, "run build_function_structure()", "\n");
                 build_function_structure();
-                log.log(4, key, "build_function_structure finished", "\n");
+                if(log_level >= 4) log.log(4, key, "build_function_structure finished", "\n");
                 
                 generate_symbols_list();
 	}
@@ -152,7 +149,7 @@ public class Analyser {
         private void
         analyse()
         {
-                log.log(4, key, "\tanalyse() called", "\n");
+                if(log_level >= 4) log.log(4, key, "\tanalyse() called", "\n");
                 analyse_states state        = analyse_states.mainloop;
                 String         context      = "";
                 String         context_type = "";
@@ -165,7 +162,7 @@ public class Analyser {
 
                         switch (state){
                         case mainloop:
-                                log.log(4, key, "\tState: mainloop", "\n");
+                                if(log_level >= 4) log.log(4, key, "\tState: mainloop", "\n");
                                 /*end checks*/
                                 if (code.charAt(index  ) == 'E' &&
                                     code.charAt(index+1) == 'N' &&
@@ -176,7 +173,7 @@ public class Analyser {
                                            code.charAt(index+5) == 'F')
                                         {
                                                 Integer tmp = new Integer(index);
-                                                log.log(4, key, "\tEND_IF index: ", tmp.toString(), "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tEND_IF index: ", tmp.toString(), "\n");
                                                 if_map.put(new Integer(if_stack.pop()), tmp);
                                                 index += 6;
                                         }
@@ -189,7 +186,7 @@ public class Analyser {
                                                 code.charAt(index+10) == 'M')
                                         {
                                                 Integer tmp = new Integer(index);
-                                                log.log(4, key, "\tEND_PROGRAM index: ", tmp.toString(), "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tEND_PROGRAM index: ", tmp.toString(), "\n");
                                                 program_map.put(new Integer(program_stack.pop()), tmp);
                                                 context = "";
                                                 context_type = "";
@@ -205,7 +202,7 @@ public class Analyser {
                                                 code.charAt(index+11) == 'N')
                                         {
                                                 Integer tmp = new Integer(index);
-                                                log.log(4, key, "\tEND_FUNCTION index: ", tmp.toString(), "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tEND_FUNCTION index: ", tmp.toString(), "\n");
                                                 function_map.put(new Integer(function_stack.pop()), tmp);
                                                 context = "";
                                                 context_type = "";
@@ -227,7 +224,7 @@ public class Analyser {
                                                 code.charAt(index+17) == 'K')
                                         {
                                                 Integer tmp = new Integer(index);
-                                                log.log(4, key, "\tEND_FUNCTION_BLOCK index: ", tmp.toString(), "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tEND_FUNCTION_BLOCK index: ", tmp.toString(), "\n");
                                                 function_block_map.put(new Integer(function_block_stack.pop()), tmp);
                                                 context = "";
                                                 context_type = "";
@@ -238,7 +235,7 @@ public class Analyser {
                                                 code.charAt(index+6) == 'R')
                                         {
                                                 Integer tmp = new Integer(index);
-                                                log.log(4, key, "\tEND_FOR index: ", tmp.toString(), "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tEND_FOR index: ", tmp.toString(), "\n");
                                                 for_map.put(new Integer(for_stack.pop()), tmp);
                                                 index += 7;
                                         }
@@ -249,7 +246,7 @@ public class Analyser {
                                                 code.charAt(index+8) == 'E')
                                         {
                                                 Integer tmp = new Integer(index);
-                                                log.log(4, key, "\tEND_WHILE index: ", tmp.toString(), "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tEND_WHILE index: ", tmp.toString(), "\n");
                                                 while_map.put(new Integer(while_stack.pop()), tmp);
                                                 index += 9;
                                         }
@@ -261,7 +258,7 @@ public class Analyser {
                                                 code.charAt(index+9) == 'T')
                                         {
                                                 Integer tmp = new Integer(index);
-                                                log.log(4, key, "\tEND_REPEAT index: ", tmp.toString(), "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tEND_REPEAT index: ", tmp.toString(), "\n");
                                                 repeat_map.put(new Integer(repeat_stack.pop()), tmp);
                                                 index += 10;
                                         }
@@ -277,10 +274,10 @@ public class Analyser {
                                             code.charAt(index-3) == 'L' &&
                                             code.charAt(index-4) == 'E')
                                         {
-                                                log.log(4, key, "\tELSEIF index: ", new Integer(index).toString(), "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tELSEIF index: ", new Integer(index).toString(), "\n");
                                                 index += 2;
                                         } else {
-                                                log.log(4, key, "\tIF index: ", new Integer(index).toString(), "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tIF index: ", new Integer(index).toString(), "\n");
                                                 if_stack.push(index);
                                                 index += 2;
                                         }
@@ -294,7 +291,7 @@ public class Analyser {
                                         code.charAt(index+6) == 'M')
                                 {
                                         Integer tmp = new Integer(index);
-                                        log.log(4, key, "\tPROGRAM index: ", tmp.toString(), "\n");
+                                        if(log_level >= 4) log.log(4, key, "\tPROGRAM index: ", tmp.toString(), "\n");
                                         program_stack.push(index);
                                         state = analyse_states.find_context;
                                         context_type = "PROGRAM";
@@ -311,7 +308,7 @@ public class Analyser {
                                         code.charAt(index+7) == 'N')
                                 {
                                         Integer tmp = new Integer(index);
-                                        log.log(4, key, "\tFUNCTION index: ", tmp.toString(), "\n");
+                                        if(log_level >= 4) log.log(4, key, "\tFUNCTION index: ", tmp.toString(), "\n");
                                         function_stack.push(index);
                                         state = analyse_states.find_context;
                                         context_type = "FUNCTION";
@@ -333,7 +330,7 @@ public class Analyser {
                                         code.charAt(index+12) == 'C' &&
                                         code.charAt(index+13) == 'K')
                                 {
-                                        log.log(4, key, "\tFUNCTION_BLOCK index: ", new Integer(index).toString(), "\n");
+                                        if(log_level >= 4) log.log(4, key, "\tFUNCTION_BLOCK index: ", new Integer(index).toString(), "\n");
                                         function_block_stack.push(index);
                                         state = analyse_states.find_context;
                                         context_type = "FUNCTION_BLOCK";
@@ -350,7 +347,7 @@ public class Analyser {
                                         code.charAt(index+8) == 'A' &&
                                         code.charAt(index+9) == 'L')
                                 {
-                                        log.log(4, key, "\tVAR_BLOCK index: ", new Integer(index).toString(), "\n");
+                                        if(log_level >= 4) log.log(4, key, "\tVAR_BLOCK index: ", new Integer(index).toString(), "\n");
                                         var_stack.push(index);
                                         state = analyse_states.var_handling;
                                         index += 10;
@@ -366,7 +363,7 @@ public class Analyser {
                                         code.charAt(index+8) == 'I' &&
                                         code.charAt(index+9) == 'G')
                                 {
-                                        log.log(4, key, "\tVAR_CONFIG index: ", new Integer(index).toString(), "\n");
+                                        if(log_level >= 4) log.log(4, key, "\tVAR_CONFIG index: ", new Integer(index).toString(), "\n");
                                         var_stack.push(index);
                                         state = analyse_states.var_handling;
                                         index += 10;
@@ -376,7 +373,7 @@ public class Analyser {
                                         code.charAt(index+2) == 'S' &&
                                         code.charAt(index+3) == 'E')
                                 {
-                                        log.log(4, key, "\tCASE index: ", new Integer(index).toString(), "\n");
+                                        if(log_level >= 4) log.log(4, key, "\tCASE index: ", new Integer(index).toString(), "\n");
                                         state = analyse_states.case_handling;
                                         case_stack.push(index);
                                         index += 4;
@@ -385,7 +382,7 @@ public class Analyser {
                                         code.charAt(index+1) == 'O' &&
                                         code.charAt(index+2) == 'R')
                                 {
-                                        log.log(4, key, "\tFOR index: ", new Integer(index).toString(), "\n");
+                                        if(log_level >= 4) log.log(4, key, "\tFOR index: ", new Integer(index).toString(), "\n");
                                         for_stack.push(index);
                                         index += 3;
                                 }
@@ -395,7 +392,7 @@ public class Analyser {
                                         code.charAt(index+3) == 'L' &&
                                         code.charAt(index+4) == 'E')
                                 {
-                                        log.log(4, key, "\tWHILE index: ", new Integer(index).toString(), "\n");
+                                        if(log_level >= 4) log.log(4, key, "\tWHILE index: ", new Integer(index).toString(), "\n");
                                         while_stack.push(index);
                                         index += 5;
                                 }
@@ -406,7 +403,7 @@ public class Analyser {
                                         code.charAt(index+4) == 'A' &&
                                         code.charAt(index+5) == 'T')
                                 {
-                                        log.log(4, key, "\tREPEAT index: ", new Integer(index).toString(), "\n");
+                                        if(log_level >= 4) log.log(4, key, "\tREPEAT index: ", new Integer(index).toString(), "\n");
                                         repeat_stack.push(index);
                                         index += 6;
                                 }
@@ -420,7 +417,7 @@ public class Analyser {
                                         code.charAt(index+7) == 'U' &&
                                         code.charAt(index+8) == 'T')
                                 {
-                                        log.log(4, key, "\tVAR_INPUT index: ", new Integer(index).toString(), "\n");
+                                        if(log_level >= 4) log.log(4, key, "\tVAR_INPUT index: ", new Integer(index).toString(), "\n");
                                         var_stack.push(index);
                                         state = analyse_states.var_handling;
                                         index += 9;
@@ -436,7 +433,7 @@ public class Analyser {
                                         code.charAt(index+8) == 'U' &&
                                         code.charAt(index+9) == 'T')
                                 {
-                                        log.log(4, key, "\tVAR_OUTPUT index: ", new Integer(index).toString(), "\n");
+                                        if(log_level >= 4) log.log(4, key, "\tVAR_OUTPUT index: ", new Integer(index).toString(), "\n");
                                         var_stack.push(index);
                                         state = analyse_states.var_handling;
                                         index += 10;
@@ -452,7 +449,7 @@ public class Analyser {
                                         code.charAt(index+8) == 'U' &&
                                         code.charAt(index+9) == 'T')
                                 {
-                                        log.log(4, key, "\tVAR_IN_OUT index: ", new Integer(index).toString(), "\n");
+                                        if(log_level >= 4) log.log(4, key, "\tVAR_IN_OUT index: ", new Integer(index).toString(), "\n");
                                         var_stack.push(index);
                                         state = analyse_states.var_handling;
                                         index += 10;
@@ -461,7 +458,7 @@ public class Analyser {
                                         code.charAt(index+1) == 'A' &&
                                         code.charAt(index+2) == 'R')
                                 {
-                                        log.log(4, key, "\tVAR index: ", new Integer(index).toString(), "\n");
+                                        if(log_level >= 4) log.log(4, key, "\tVAR index: ", new Integer(index).toString(), "\n");
                                         var_stack.push(index);
                                         state = analyse_states.var_handling;
                                         index += 3;
@@ -475,11 +472,11 @@ public class Analyser {
                                    code.charAt(index+2) == 'R')
                                 {
                                         if (context_type.equals("PROGRAM")){
-                                                log.log(4, key, "\tPROGRAM found index", new Integer(temp_start).toString(), ", NAME", context, "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tPROGRAM found index", new Integer(temp_start).toString(), ", NAME", context, "\n");
                                                 program_startpoint.put(context, temp_start);
                                                 temp_start = null;
                                         } else if (context_type.equals("FUNCTION")) {
-                                                log.log(4, key, "\tFUNCTION found index", new Integer(temp_start).toString(), ", NAME", context, "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tFUNCTION found index", new Integer(temp_start).toString(), ", NAME", context, "\n");
                                                 function_startpoint.put(context, temp_start);
                                                 temp_start = null;
                                         }
@@ -505,7 +502,7 @@ public class Analyser {
                                            code.charAt(index+11) == 'U' &&
                                            code.charAt(index+12) == 'T')
                                         {
-                                                log.log(4, key, "\tEND_VAR_INPUT index: ", new Integer(index).toString(), "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tEND_VAR_INPUT index: ", new Integer(index).toString(), "\n");
                                                 var_map.put(new Integer(var_stack.pop()), new Integer(index+12));
                                                 process_vars(context, var_block, "VAR_INPUT", context_type);
                                                 var_block = "";
@@ -523,7 +520,7 @@ public class Analyser {
                                                 code.charAt(index+12) == 'U' &&
                                                 code.charAt(index+13) == 'T')
                                         {
-                                                log.log(4, key, "\tEND_VAR_OUTPUT index: ", new Integer(index).toString(), "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tEND_VAR_OUTPUT index: ", new Integer(index).toString(), "\n");
                                                 var_map.put(new Integer(var_stack.pop()), new Integer(index+13));
                                                 process_vars(context, var_block, "VAR_OUTPUR", context_type);
                                                 var_block = "";
@@ -541,7 +538,7 @@ public class Analyser {
                                                 code.charAt(index+12) == 'U' &&
                                                 code.charAt(index+13) == 'T')
                                         {
-                                                log.log(4, key, "\tEND_VAR_IN_OUT index: ", new Integer(index).toString(), "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tEND_VAR_IN_OUT index: ", new Integer(index).toString(), "\n");
                                                 var_map.put(new Integer(var_stack.pop()), new Integer(index+13));
                                                 process_vars(context, var_block, "VAR_IN_OUT", context_type);
                                                 var_block = "";
@@ -560,7 +557,7 @@ public class Analyser {
                                                 code.charAt(index+12) == 'A' &&
                                                 code.charAt(index+13) == 'L')
                                         {
-                                                log.log(4, key, "\tEND_VAR_GLOBAL index: ", new Integer(index).toString(), "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tEND_VAR_GLOBAL index: ", new Integer(index).toString(), "\n");
                                                 var_global_start = var_stack.pop();
                                                 var_map.put(new Integer(var_global_start), new Integer(index+13));
                                                 var_block = "";
@@ -578,7 +575,7 @@ public class Analyser {
                                                 code.charAt(index+12) == 'I' &&
                                                 code.charAt(index+13) == 'G')
                                         {
-                                                log.log(4, key, "\tEND_VAR_CONFIG index: ", new Integer(index).toString(), "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tEND_VAR_CONFIG index: ", new Integer(index).toString(), "\n");
                                                 var_config_start = var_stack.pop();
                                                 var_map.put(new Integer(var_config_start), new Integer(index+13));
                                                 var_block = "";
@@ -589,7 +586,7 @@ public class Analyser {
                                                 code.charAt(index+5) == 'A' &&
                                                 code.charAt(index+6) == 'R')
                                         {
-                                                log.log(4, key, "\tEND_VAR index: ", new Integer(index).toString(), "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tEND_VAR index: ", new Integer(index).toString(), "\n");
                                                 var_map.put(new Integer(var_stack.pop()), new Integer(index+6)); //BLUB
                                                 process_vars(context, var_block, "VAR", context_type);
                                                 var_block = "";
@@ -822,7 +819,7 @@ public class Analyser {
         private void
         process_vars(String context, String var_block, String var_type, String context_type)
         {
-                log.log(4, key, "process_vars() called", "\n");
+                if(log_level >= 4) log.log(4, key, "process_vars() called", "\n");
                 if(!context_varname_var.containsKey(context))
                     context_varname_var.put(context, new HashMap<String,Variable>());
                 var_states state = var_states.find_semicollon;
@@ -839,7 +836,7 @@ public class Analyser {
                 for (;index < var_block.length() && index > -1;) {
                         switch (state){
                         case find_semicollon:
-                                log.log(4, key, "\tState: find_semicollon", "\n");
+                                if(log_level >= 4) log.log(4, key, "\tState: find_semicollon", "\n");
                                 if(!(var_block.charAt(index) == ';')) {
                                         index += 1;
                                 } else {
@@ -849,7 +846,7 @@ public class Analyser {
                                 }
                                 break;
                         case type_or_value_or_name:
-                                log.log(4, key, "\tState: type_or_value_or_name", "\n");
+                                if(log_level >= 4) log.log(4, key, "\tState: type_or_value_or_name", "\n");
                                 if(var_block.charAt(index  ) == '=' && // :=
                                    var_block.charAt(index-1) == ':')
                                 {
@@ -878,31 +875,31 @@ public class Analyser {
                                 }
                                 break;
                         case get_value:
-                                log.log(4, key, "\tState: get_value", "\n");
+                                if(log_level >= 4) log.log(4, key, "\tState: get_value", "\n");
                                 value = band;
                                 band = "";
                                 state = var_states.type_or_value_or_name;
                                 break;
                         case get_type:
-                                log.log(4, key, "\tState: get_type", "\n");
+                                if(log_level >= 4) log.log(4, key, "\tState: get_type", "\n");
                                 type = band;
                                 band = "";
                                 state = var_states.type_or_value_or_name;
                                 break;
                         case get_name:
-                                log.log(4, key, "\tState: get_name", "\n");
+                                if(log_level >= 4) log.log(4, key, "\tState: get_name", "\n");
                                 names.add(band);
                                 band = "";
                                 state = var_states.type_or_value_or_name;
                                 break;
                         case get_last_name:
-                                log.log(4, key, "\tState: get_last_name", "\n");
+                                if(log_level >= 4) log.log(4, key, "\tState: get_last_name", "\n");
                                 names.add(band);
                                 band = "";
                                 state = var_states.write_to_structure;
                                 break;
                         case write_to_structure:
-                                log.log(4, key, "\tState: write_to_structure", "\n");
+                                if(log_level >= 4) log.log(4, key, "\tState: write_to_structure", "\n");
                                 if(!names.isEmpty() &&
                                    type  != "" &&
                                    value != "")
@@ -997,7 +994,7 @@ public class Analyser {
 	{
 		symbolnames = new ArrayList<>();
 		
-		log.log(4, key, "generate_symbols_list called.", "\n");
+		if(log_level >= 4) log.log(4, key, "generate_symbols_list called.", "\n");
 		// String context;
 		for (Map.Entry<String, HashMap<String, Variable>> percontext : context_varname_var.entrySet()) {
 			// context = percontext.getKey();
@@ -1033,7 +1030,7 @@ public class Analyser {
 				}
 			});
 		
-		log.log(4, key, "symbols list: ", Arrays.toString(symbolnames.toArray()), "\n");
+		if(log_level >= 4) log.log(4, key, "symbols list: ", Arrays.toString(symbolnames.toArray()), "\n");
 	}
 
         /**
@@ -1046,9 +1043,9 @@ public class Analyser {
 	public String
 	replace_vars(String input, String context)
 	{
-		log.log(4, key, "replace_vars called.", "\n");
-		log.log(4, key, "input: ", input, "\n");
-		log.log(4, key, "context: ", context, "\n");
+		if(log_level >= 4) log.log(4, key, "replace_vars called.", "\n");
+		if(log_level >= 4) log.log(4, key, "input: ", input, "\n");
+		if(log_level >= 4) log.log(4, key, "context: ", context, "\n");
 		
 		String tmp = null;
                 String rv = null;  // return value
@@ -1076,7 +1073,7 @@ public class Analyser {
                 tmp = tmp.replaceAll("!!!", "false");
                 tmp = tmp.replaceAll("###", "true");
 
-		log.log(4, key, "return value: ", tmp, "\n");
+		if(log_level >= 4) log.log(4, key, "return value: ", tmp, "\n");
 		
 		return tmp;
 	}
@@ -1093,9 +1090,9 @@ public class Analyser {
 	public void
 	set_value(String input, String context) throws Exception
 	{
-		log.log(4, key, "set_value called.", "\n");
-		log.log(4, key, "input: ", input, "\n");
-		log.log(4, key, "context: ", context, "\n");
+		if(log_level >= 4) log.log(4, key, "set_value called.", "\n");
+		if(log_level >= 4) log.log(4, key, "input: ", input, "\n");
+		if(log_level >= 4) log.log(4, key, "context: ", context, "\n");
 		
 		process_vars(context, input, "CHANGE", "CHANGE");		
 	}
@@ -1110,9 +1107,9 @@ public class Analyser {
 	public void
 	add_var(String input, String context) throws Exception
 	{
-		log.log(4, key, "add_var called.", "\n");
-		log.log(4, key, "input: ", input, "\n");
-		log.log(4, key, "context: ", context, "\n");
+		if(log_level >= 4) log.log(4, key, "add_var called.", "\n");
+		if(log_level >= 4) log.log(4, key, "input: ", input, "\n");
+		if(log_level >= 4) log.log(4, key, "context: ", context, "\n");
 		
                 process_vars(context, input, "RUNTIME", "RUNTIME");
                 
@@ -1131,7 +1128,7 @@ public class Analyser {
 	public LinkedBlockingQueue<IO_Package>
 	get_com_channel_queue()
 	{
-		log.log(4, key, "get_com_channel_queue called.", "\n");
+		if(log_level >= 4) log.log(4, key, "get_com_channel_queue called.", "\n");
 		return com_channel_queue;
 	}
 
@@ -1155,9 +1152,9 @@ public class Analyser {
 	public int
 	get_end_if(int if_open)
 	{
-		log.log(4, key, "get_end_if called.", "\n");
+		if(log_level >= 4) log.log(4, key, "get_end_if called.", "\n");
 		int local_tmp = if_map.get(new Integer(if_open)).intValue();
-		log.log(4, key, "end_if: ", new Integer(local_tmp).toString(), "\n");
+		if(log_level >= 4) log.log(4, key, "end_if: ", new Integer(local_tmp).toString(), "\n");
 		return local_tmp;
 	}
 
@@ -1186,9 +1183,9 @@ public class Analyser {
 	public Integer[]
 	get_case_coordinates(int caseopen, int value) throws Exception
 	{
-		log.log(4, key, "get_case_coordinates called.", "\n");
+		if(log_level >= 4) log.log(4, key, "get_case_coordinates called.", "\n");
                 Integer[] local_tmp = case_map.get(new Integer(caseopen)).get_case_collon(value);
-                log.log(4, key, "case coordinates: ", Arrays.toString(local_tmp), "\n");
+                if(log_level >= 4) log.log(4, key, "case coordinates: ", Arrays.toString(local_tmp), "\n");
 		return local_tmp;
 	}
 
@@ -1201,9 +1198,9 @@ public class Analyser {
 	public int
 	get_end_case(int caseopen)
 	{
-		log.log(4, key, "get_end_case called.", "\n");
+		if(log_level >= 4) log.log(4, key, "get_end_case called.", "\n");
                 int local_tmp = case_map.get(caseopen).get_end_case();
-		log.log(4, key, "end_case: ", new Integer(local_tmp).toString(), "\n");
+		if(log_level >= 4) log.log(4, key, "end_case: ", new Integer(local_tmp).toString(), "\n");
 		return local_tmp;
 	}
 
@@ -1216,9 +1213,9 @@ public class Analyser {
 	public int
 	get_end_var(int var_open)
 	{
-		log.log(4, key, "get_end_var called.", "\n");
+		if(log_level >= 4) log.log(4, key, "get_end_var called.", "\n");
 		int local_tmp = var_map.get(new Integer(var_open)).intValue();
-		log.log(4, key, "end_var: ", new Integer(local_tmp).toString(), "\n");
+		if(log_level >= 4) log.log(4, key, "end_var: ", new Integer(local_tmp).toString(), "\n");
 		return local_tmp;
 	}
 
@@ -1231,9 +1228,9 @@ public class Analyser {
 	public int
 	get_end_program(int program_open)
 	{
-		log.log(4, key, "get_end_program called.", "\n");
+		if(log_level >= 4) log.log(4, key, "get_end_program called.", "\n");
 		int local_tmp = program_map.get(new Integer(program_open)).intValue();
-		log.log(4, key, "end_program: ", new Integer(local_tmp).toString(), "\n");
+		if(log_level >= 4) log.log(4, key, "end_program: ", new Integer(local_tmp).toString(), "\n");
 		return local_tmp;
 	}
 
@@ -1246,9 +1243,9 @@ public class Analyser {
 	public int
 	get_end_function(int function_open)
 	{
-		log.log(4, key, "get_end_function called.", "\n");
+		if(log_level >= 4) log.log(4, key, "get_end_function called.", "\n");
 		int local_tmp = function_map.get(new Integer(function_open)).intValue();
-		log.log(4, key, "end_function: ", new Integer(local_tmp).toString(), "\n");
+		if(log_level >= 4) log.log(4, key, "end_function: ", new Integer(local_tmp).toString(), "\n");
 		return local_tmp;
 	}
 
@@ -1261,9 +1258,9 @@ public class Analyser {
 	public int
 	get_end_function_block(int function_block_open)
 	{
-		log.log(4, key, "get_end_function_block called.", "\n");
+		if(log_level >= 4) log.log(4, key, "get_end_function_block called.", "\n");
 		int local_tmp = function_block_map.get(new Integer(function_block_open)).intValue();
-		log.log(4, key, "end_function_block: ", new Integer(local_tmp).toString(), "\n");
+		if(log_level >= 4) log.log(4, key, "end_function_block: ", new Integer(local_tmp).toString(), "\n");
 		return local_tmp;
 	}
 
@@ -1276,9 +1273,9 @@ public class Analyser {
 	public int
 	get_end_for(int for_open)
 	{
-		log.log(4, key, "get_end_for called.", "\n");
+		if(log_level >= 4) log.log(4, key, "get_end_for called.", "\n");
 		int local_tmp = for_map.get(new Integer(for_open)).intValue();
-		log.log(4, key, "end_for: ", new Integer(local_tmp).toString(), "\n");
+		if(log_level >= 4) log.log(4, key, "end_for: ", new Integer(local_tmp).toString(), "\n");
 		return local_tmp;
 	}
 
@@ -1291,9 +1288,9 @@ public class Analyser {
 	public int
 	get_end_while(int while_open)
 	{
-		log.log(4, key, "get_end_while called.", "\n");
+		if(log_level >= 4) log.log(4, key, "get_end_while called.", "\n");
 		int local_tmp = while_map.get(new Integer(while_open)).intValue();
-		log.log(4, key, "end_while: ", new Integer(local_tmp).toString(), "\n");
+		if(log_level >= 4) log.log(4, key, "end_while: ", new Integer(local_tmp).toString(), "\n");
 		return local_tmp;
 	}
 
@@ -1306,9 +1303,9 @@ public class Analyser {
 	public int
 	get_end_repeat(int repeat_open)
 	{
-		log.log(4, key, "get_end_repeat called.", "\n");
+		if(log_level >= 4) log.log(4, key, "get_end_repeat called.", "\n");
 		int local_tmp = repeat_map.get(new Integer(repeat_open)).intValue();
-		log.log(4, key, "end_repeat: ", new Integer(local_tmp).toString(), "\n");
+		if(log_level >= 4) log.log(4, key, "end_repeat: ", new Integer(local_tmp).toString(), "\n");
 		return local_tmp;
 	}
 
@@ -1355,7 +1352,7 @@ public class Analyser {
                 if (function_call.length == 2){
                         fun_param = function_call[1].split(",");
                 } else if (function_call.length > 2) {
-                        log.log(0,key,
+                        if(log_level >= 0) log.log(0,key,
                                 "\n\n",
                                 "ERROR: i expected two params at all",
                                 "DETAILED ERROR: i got more then two params",
