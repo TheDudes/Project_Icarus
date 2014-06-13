@@ -27,7 +27,7 @@ import java.util.*;
 public class
 CaseHandling
 {
-        private boolean has_else  = false;
+        //private boolean has_else  = false; //delete in the future
         private int[]   else_part = new int[2];
 
         private String  code;
@@ -105,7 +105,7 @@ CaseHandling
                                         code.charAt(index+2) == 'S' &&
                                         code.charAt(index+3) == 'E')
                                 {
-                                        has_else = true;
+                                        //has_else = true; //delete in the future
                                         index += 3;
                                         else_part[0] = index;
                                 } else if(code.charAt(index  ) == 'E' &&

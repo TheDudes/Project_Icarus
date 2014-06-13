@@ -29,10 +29,10 @@ intStack
 {
 	private final int   EMPTY = 0;
 	
-	private int   count = 0;
+//	private int   count = 0; // not used
 	private int   index = -1;
 	
-	private int   stack_size;
+//	private int   stack_size;
 	private int[] stack;
 	private int   pop_value;
 	private int   peek_value;
@@ -43,16 +43,17 @@ intStack
 	public
 	intStack(int stack_size)
 	{
-		this.stack_size = stack_size;
+//		this.stack_size = stack_size;
 		stack           = new int[stack_size];
 		index = 0;
-		count = 0;
+//		count = 0;
 	}
 
         /**
          * peek will return the top element of the stack without removing it
          * <p>
          * @return returns the value of the top value without deleting it
+         * @throws StackOverflowError
          */
 	public int
 	peek() throws StackOverflowError
@@ -70,6 +71,7 @@ intStack
          * push will push a element on the stack
          * <p>
          * @param new_top is the pushed value
+         * @throws StackOverflowError
          */
 	public void
 	push(int new_top) throws StackOverflowError
@@ -77,7 +79,7 @@ intStack
 		try {
 			stack[index] = new_top;
 			index++;
-			count++;
+//			count++;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			throw new StackOverflowError(e+" Stackindex: "+index);
 		}
@@ -87,13 +89,14 @@ intStack
          * pop will return and delete the top value of the stack
          * <p>
          * @return returns the top values and deletes it from the stack
+         * @throws StackOverflowError
          */
 	public int
 	pop() throws StackOverflowError
 	{
 		try {
 			index--;
-			count--;
+//			count--;
 			
 			pop_value    = stack[index];
 			stack[index] = EMPTY;
@@ -114,7 +117,6 @@ intStack
 	{
 		if (index == -1)
 			return true;
-		else
-			return false;
+                return false;
 	}
 }

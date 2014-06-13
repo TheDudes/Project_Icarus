@@ -34,6 +34,9 @@ public class TYPES {
 	private final String  subkey   = "TYPES";
 	private final String  key      = " ["+mainkey + "-" + subkey+"] ";
 
+        /**
+         * @param log the logger to write logs
+         */
         public
         TYPES(Logger log)
         {
@@ -45,10 +48,9 @@ public class TYPES {
 	 * it then creates a new Object of this type and returns it.
 	 * @param type typeString like DINT, SINT, TIME ...
 	 * @return Object of the right type
-	 * @throws datatypes.UnsignedException
 	 */
 	public Object
-	get_type(String type)
+        get_type(String type)
 	{
                 try {
                         switch(type) {
@@ -123,7 +125,6 @@ public class TYPES {
 	 * @param type typeString like DINT, SINT, TIME ...
 	 * @param value valueString like "2.3", "32323" ...
 	 * @return Object of the right type with the new value
-	 * @throws datatypes.UnsignedException
 	 */
 	public Object
 	get_type(String type, String value)

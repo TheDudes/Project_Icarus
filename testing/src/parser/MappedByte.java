@@ -50,7 +50,7 @@ MappedByte
         {
                 int bit_num = Integer.parseInt(bit);
                 bits[bit_num] = value;
-                byte tmp = 0b0000_0000;
+//                byte tmp = 0b0000_0000;
 
                 switch(bit_num){
                 case 7:
@@ -150,6 +150,7 @@ MappedByte
          * toString returns the String representation of this byte
          * @return the string representation of this byte
          */
+        @Override
         public String
         toString()
         {

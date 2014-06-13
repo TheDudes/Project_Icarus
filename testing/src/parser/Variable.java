@@ -16,10 +16,6 @@
 
 package parser;
 
-
-import datatypes.*;
-
-
 /**
  * this class stores all the informations a variable kann have
  * and should be aware of.
@@ -30,6 +26,8 @@ import datatypes.*;
 public class
 Variable
 {
+        /* a lot unused variables here, but who knows what crazy ideas we will have in the future,
+         thats why they are here :) */
         private String     var_type;
         private String     context_type;
         private String     context;
@@ -121,7 +119,7 @@ Variable
 
         /**
          * set_value can set the value of this variable
-         * @param new value as string
+         * @param str_value new value as string
          */
         public void
         set_value(String str_value)

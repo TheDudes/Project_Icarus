@@ -16,7 +16,6 @@
 
 package parser;
 
-import java.util.Properties;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.*;
 
@@ -32,7 +31,7 @@ Analyser
 {
         private enum analyse_states {mainloop, find_context, var_handling, case_handling}
         private enum var_states {find_semicollon, type_or_value_or_name, get_type, get_value, get_name, get_last_name, write_to_structure}
-        private enum config_states {start, find_context, find_var_name, find_type, find_address, find_var_type, find_AT_percent, find_IN_or_OUT, find_pin}
+        private enum config_states {start, find_context, find_var_name, find_type, find_address, find_var_type, find_AT_percent, find_IN_or_OUT}
 
         /* all the code as a String */
         private final String code;
@@ -471,11 +470,11 @@ Analyser
                                    code.charAt(index+2) == 'R')
                                 {
                                         if (context_type.equals("PROGRAM")){
-                                                if(log_level >= 4) log.log(4, key, "\tPROGRAM found index", new Integer(temp_start).toString(), ", NAME", context, "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tPROGRAM found index", temp_start.toString(), ", NAME", context, "\n");
                                                 program_startpoint.put(context, temp_start);
                                                 temp_start = null;
                                         } else if (context_type.equals("FUNCTION")) {
-                                                if(log_level >= 4) log.log(4, key, "\tFUNCTION found index", new Integer(temp_start).toString(), ", NAME", context, "\n");
+                                                if(log_level >= 4) log.log(4, key, "\tFUNCTION found index", temp_start.toString(), ", NAME", context, "\n");
                                                 function_startpoint.put(context, temp_start);
                                                 temp_start = null;
                                         }
@@ -1179,7 +1178,7 @@ Analyser
 
         /**
 	 * lookup function, throw in the index of a if and geht the index of a end_if
-	 * @param a index of an if
+	 * @param if_open index of an if
 	 * @return int
 	 */
 	public int
@@ -1231,7 +1230,7 @@ Analyser
 	get_end_case(int caseopen)
 	{
 		if(log_level >= 4) log.log(4, key, "get_end_case called.", "\n");
-                int local_tmp = case_map.get(caseopen).get_end_case();
+                int local_tmp = case_map.get(new Integer(caseopen)).get_end_case();
 		if(log_level >= 4) log.log(4, key, "end_case: ", new Integer(local_tmp).toString(), "\n");
 		return local_tmp;
 	}

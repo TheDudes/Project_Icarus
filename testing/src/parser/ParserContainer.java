@@ -55,10 +55,7 @@ public class ParserContainer {
 	 * @throws java.lang.Exception
 	 * @see MergeFiles
 	 * @see Analyser
-	 * @see Match
-	 * @see Symbols
 	 * @see Config_Reader
-	 * @see LogWriter
 	 */
 	public ParserContainer (Config_Reader configreader, Logger log)
         throws FileNotFoundException, IOException, Exception
@@ -98,7 +95,6 @@ public class ParserContainer {
 	 * corresponding END_IF at the E
 	 * @param a index of IF as int
 	 * @return the index of the corresponding END_IF at the E
-	 * @see Match
 	 */
 	public int
 	get_end_if(int a)
@@ -128,7 +124,6 @@ public class ParserContainer {
 	 * @param value int value of the variable we run this CASE for
 	 * @return an Integer array, [0] is the startindex and [1] is the endindex
 	 * @throws Exception
-	 * @see Match
 	 */
 	public Integer[]
 	get_case_coordinates(int caseopen, int value) throws Exception
@@ -141,8 +136,6 @@ public class ParserContainer {
 	 * getEndCase takes the index of the CASE and returns the index of the END_CASE
 	 * @param a index of a CASE
 	 * @return index of the END_CASE
-
-	 * @see Match
 	 */
 	public int
 	get_end_case(int a)
@@ -155,7 +148,6 @@ public class ParserContainer {
 	 * getEndVar takes the index of the VAR and returns the index of the END_VAR
 	 * @param a index of a VAR
 	 * @return index of the END_VAR
-	 * @see Match
 	 */
 	public int
 	get_end_var(int a)
@@ -168,7 +160,6 @@ public class ParserContainer {
 	 * getEndProgram takes the index of the PROGRAM and returns the index of the END_PROGRAM
 	 * @param a index of a PROGRAM
 	 * @return index of the END_PROGRAM
-	 * @see Match
 	 */
 	public int
 	get_end_program(int a)
@@ -181,7 +172,6 @@ public class ParserContainer {
 	 * getEndFunction takes the index of the FUNCTION and returns the index of the END_FUNCTION
 	 * @param a index of a FUNCTION
 	 * @return index of the END_FUNCTION
-	 * @see Match
 	 */
 	public int
 	get_end_function(int a)
@@ -194,7 +184,6 @@ public class ParserContainer {
 	 * getEndFunctionBlock takes the index of the FUNCTION_BLOCK and returns the index of the END_FUNCTION_BLOCK
 	 * @param a index of a FUNCTION_BLOCK
 	 * @return index of the END_FUNCTION_BLOCK
-	 * @see Match
 	 */
 	public int
 	get_end_function_block(int a)
@@ -207,7 +196,6 @@ public class ParserContainer {
 	 * getEndFor takes the index of the FOR and returns the index of the END_FOR
 	 * @param a index of a FOR
 	 * @return index of the END_FOR
-	 * @see Match
 	 */
 	public int
 	get_end_for(int a)
@@ -220,7 +208,6 @@ public class ParserContainer {
 	 * getEndWhile takes the index of the WHILE and returns the index of the END_WHILE
 	 * @param a index of a WHILE
 	 * @return index of the END_WHILE
-	 * @see Match
 	 */
 	public int
 	get_end_while(int a)
@@ -233,7 +220,6 @@ public class ParserContainer {
 	 * getEndRepeat takes the index of the REPEAT and returns the index of the END_REPEAT
 	 * @param a index of a REPEAT
 	 * @return index of the END_REPEAT
-	 * @see Match
 	 */
 	public int
 	get_end_repeat(int a)
@@ -248,9 +234,8 @@ public class ParserContainer {
 	 * @param input string with variable names in it
 	 * @param context the context in which this variables should be
 	 * @return the input string with all replaced variables
-	 * @see Symbols
 	 */
-	public String
+        public String
 	replace_vars(String input, String context)
 	{
 		if(log_level >= 4) log.log(4, key, "replaceVars called.", "\n");
