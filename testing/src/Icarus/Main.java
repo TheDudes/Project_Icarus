@@ -72,9 +72,6 @@ public class Main
         interpreter = new Interpreter(container, log, config);
         io          = new SynchronousIO(log, config, container);
 
-        
-            
-        
         log.log(0, log_key, "starting Icarus.\n");
         double blub = 0.0;
         for(int i = 0; i < 10; i++ )

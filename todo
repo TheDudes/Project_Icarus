@@ -9,33 +9,34 @@
 | | +--------------------------------------------------------------------+ | |
 | +------------------------------------------------------------------------+ |
 +----------------------------------------------------------------------------+
-linc - Config_Reader -> default/serach in working directory
-                     -> add Log_keywords
+linc - Config_Reader -> add Log_keywords
                      -> add engine keywords
-                     -> maybe source option
-                     -> config key - show values
+                     -> maybe source option for multiple files
+                     -> config key - to show/hide values
 ------------------------------------------------------------------------------
-all - verbosity 0: error and startup
-                1: PRINT messages, on terminal?
-                2: init of objects?
-                3: even more
-                4: fucking everything
-change all logs to non deprecated version!
+all -> change ERROR messages on system exit
+    -> add log.kill b4 System.exit to clean up
+    -> verbosity 0: error and startup
+                 1: PRINT messages, on terminal?
+                 2: init of objects?
+                 3: even more
+                 4: fucking everything
 ------------------------------------------------------------------------------
-tux -> call_function should return int[2] (start and end point)
-    -> call_function in Analyser.java got error on 1301 (should be if(! ...)
-    -> String " ... " implementation for PRINT function
+tux -> String " ... " implementation for PRINT function
+    -> log key parser parser
+    -> log key buggy (no [])
 ------------------------------------------------------------------------------
-page 160: Keywords
-    -> ARRAY...OF
-    -> AT
-    -> CONFIGURATION...END_CONFIGURATION
-    ...
-------------------------------------------------------------------------------
-me  -> run frankze files
-    -> functions
+me  -> functions with return value
     -> make list of stuff
-    -> trying out everyyyything
+    -> make list of all warnings
+    -> try out new logging method
+------------------------------------------------------------------------------
+else:
+    -> change all logs to non deprecated version!
+    -> fix all warnings
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 function-declaration------------
 FUNCTION [name] : [type of return value]
