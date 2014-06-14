@@ -404,23 +404,24 @@ public class Keyword_Handler
                 INDEX = i + 1;
                 if(!flag)
                 {
-                    final_string += engine.eval(
-                                        container.replace_vars(
+                    if(eval != null)
+                        final_string += engine.eval(
+                                            container.replace_vars(
                                             eval, context_stack.peek() ), true);
                     eval = null;
                 }
                 break;
             }
 
-            if( code.charAt(i) == '"')
+            if(code.charAt(i) == '"')
             {
                 if(flag)
                     flag = false;
                 else
                 {
                     if(eval != null)
-                    final_string += engine.eval(
-                                        container.replace_vars(
+                        final_string += engine.eval(
+                                            container.replace_vars(
                                             eval, context_stack.peek() ), true);
                     eval = null;
                     flag = true;

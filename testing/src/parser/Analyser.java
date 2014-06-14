@@ -36,7 +36,7 @@ Analyser
 
         /* all the code as a String */
         private final String code;
-        
+
         /* stacks */
         private final intStack program_stack;
         private final intStack function_stack;
@@ -76,7 +76,7 @@ Analyser
         private ArrayList<String> symbolnames;
         private       int   id = 0;
         private final TYPES types;
-        
+
 	/* logger */
 	private final Logger  log;
 	private final String  mainkey  = "parser";
@@ -95,9 +95,9 @@ Analyser
                 this.log      = log;
                 this.code     = builder.toString();
                 if(log_level >= 3) log.log(3, key, "Analyser is doing stuff please wait ...", "\n");
-                
+
                 types = new TYPES(log);
-                
+
                 program_stack        = new intStack(100);
                 function_stack       = new intStack(100);
                 function_block_stack = new intStack(100);
@@ -128,14 +128,14 @@ Analyser
 
                 var_global_start = -1;
                 var_config_start = -1;
-                
+
                 if(log_level >= 4) log.log(4, key, "run analyse()", "\n");
                 analyse();
                 if(log_level >= 4) log.log(4, key, "analyse() finished", "\n");
                 if(log_level >= 4) log.log(4, key, "run build_function_structure()", "\n");
                 build_function_structure();
                 if(log_level >= 4) log.log(4, key, "build_function_structure finished", "\n");
-                
+
                 generate_symbols_list();
 	}
 
@@ -154,7 +154,7 @@ Analyser
                 String         var_block    = "";
                 Integer        temp_start   = null;
 
-                
+
                 for (int index = 0; index < code.length();)
                 {
 
@@ -260,8 +260,8 @@ Analyser
                                                 repeat_map.put(new Integer(repeat_stack.pop()), tmp);
                                                 index += 10;
                                         }
-                                        
-                                        
+
+
                                 }
                                 /*normal checks*/
                                 else if(code.charAt(index  ) == 'I' &&
@@ -543,7 +543,7 @@ Analyser
                                                 state = analyse_states.mainloop;
                                                 index += 14;
                                         }
-                                        
+
                                         else if(code.charAt(index+4 ) == 'V' && //VAR_GLOBAL
                                                 code.charAt(index+5 ) == 'A' &&
                                                 code.charAt(index+6 ) == 'R' &&
@@ -635,13 +635,13 @@ Analyser
                         process_var_config(code.substring(var_config_start, var_map.get(new Integer(var_config_start)).intValue()));
         }
 
-        
+
         /**
          * process_var_config loops through a var_config block with a statemachine
          * there it will find all the needed informations and will create
          * the device inforamtions needed for the communication
          * @param var_block the varblock as a String
-         */        
+         */
         private void
         process_var_config(String var_block)
         {
@@ -661,7 +661,7 @@ Analyser
                 char   pin       = '9';
                 //String var_type  = "";
                 MappedByte mbyte;
-                
+
                 for (int index = 0; index < var_block.length();){
                         switch(analyse_states){
                         case start:
@@ -779,7 +779,7 @@ Analyser
                                            var_block.charAt(index) == '6' ||
                                            var_block.charAt(index) == '7' ||
                                            var_block.charAt(index) == '8' ||
-                                           var_block.charAt(index) == '9') 
+                                           var_block.charAt(index) == '9')
                                 {
                                         band = band + var_block.charAt(index);
                                         index += 1;
@@ -866,7 +866,7 @@ Analyser
                 ArrayList<String> names = new ArrayList<>();
                 String value = "";
                 Variable tmp;
-                
+
                 for (;index < var_block.length() && index > -1;) {
                         switch (state){
                         case find_semicollon:
@@ -1035,7 +1035,7 @@ Analyser
 	generate_symbols_list()
 	{
 		symbolnames = new ArrayList<>();
-		
+
 		if(log_level >= 4) log.log(4, key, "generate_symbols_list called.", "\n");
 		for (Map.Entry<String, HashMap<String, Variable>> percontext : context_varname_var.entrySet()) {
 			for (Map.Entry<String, Variable> value : percontext.getValue().entrySet()) {
@@ -1055,7 +1055,7 @@ Analyser
 		Collections.sort(symbolnames, new Comparator<String>() {
 				private int alen;
 				private int blen;
-				
+
 				@Override public int
 					compare(String a, String b) {
 					alen = a.length();
@@ -1069,7 +1069,7 @@ Analyser
 					}
 				}
 			});
-		
+
 		if(log_level >= 4) log.log(4, key, "symbols list: ", Arrays.toString(symbolnames.toArray()), "\n");
 	}
 
@@ -1085,10 +1085,10 @@ Analyser
 		if(log_level >= 4) log.log(4, key, "replace_vars called.", "\n");
 		if(log_level >= 4) log.log(4, key, "input: ", input, "\n");
 		if(log_level >= 4) log.log(4, key, "context: ", context, "\n");
-		
+
 		String tmp = null;
                 String rv = null;  // return value
-                
+
                 for (String item:symbolnames) {
                         if(context_varname_var.get(context).containsKey(item)){
                                 if (tmp == null) {
@@ -1108,12 +1108,12 @@ Analyser
                                 }
                         }
                 }
-                
+
                 tmp = tmp.replaceAll("!!!", "false");
                 tmp = tmp.replaceAll("###", "true");
 
 		if(log_level >= 4) log.log(4, key, "return value: ", tmp, "\n");
-		
+
 		return tmp;
 	}
 
@@ -1131,8 +1131,8 @@ Analyser
 		if(log_level >= 4) log.log(4, key, "set_value called.", "\n");
 		if(log_level >= 4) log.log(4, key, "input: ", input, "\n");
 		if(log_level >= 4) log.log(4, key, "context: ", context, "\n");
-		
-		process_vars(context, input, "CHANGE", "CHANGE");		
+
+		process_vars(context, input, "CHANGE", "CHANGE");
 	}
 
 	/**
@@ -1147,9 +1147,9 @@ Analyser
 		if(log_level >= 4) log.log(4, key, "add_var called.", "\n");
 		if(log_level >= 4) log.log(4, key, "input: ", input, "\n");
 		if(log_level >= 4) log.log(4, key, "context: ", context, "\n");
-		
+
                 process_vars(context, input, "RUNTIME", "RUNTIME");
-                
+
 		generate_symbols_list();
 	}
 
@@ -1336,7 +1336,7 @@ Analyser
 	}
 
         /**
-         * build_function_structure creates a function lookup table 
+         * build_function_structure creates a function lookup table
          */
         private void
         build_function_structure()
@@ -1375,7 +1375,7 @@ Analyser
                 String[] fun_param;
                 String[] fun_param_split;
                 boolean  is_program = false;
-                
+
                 if (function_call.length == 2){
                         fun_param = function_call[1].split(",");
                         if(log_level >= 4) log.log(4, key, "\tis function.", "\n");
@@ -1395,7 +1395,7 @@ Analyser
                         fun_param = new String[0];
                         is_program = true;
                 }
-                
+
                 if (!(fun_param.length == 0)) {
                         for (String para : fun_param){
                                 fun_param_split = para.split(":=");
@@ -1411,7 +1411,7 @@ Analyser
                                 }
                         }
                 }
-                        
+
                 if (is_program)
                         return program_startpoint.get(function_call[0]).intValue();
                 return function_startpoint.get(function_call[0]).intValue();

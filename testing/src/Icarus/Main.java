@@ -79,6 +79,8 @@ public class Main
         }
 
         log.log(0, log_key, "exiting Icarus.\n");
+        /* --fixme-- */
+        /* add killing IO threads here! */
         log.kill();
     }
 
