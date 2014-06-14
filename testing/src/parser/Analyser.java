@@ -29,6 +29,7 @@ import logger.*;
 public class
 Analyser
 {
+        /* all the states of my statemachines */
         private enum analyse_states {mainloop, find_context, var_handling, case_handling}
         private enum var_states {find_semicollon, type_or_value_or_name, get_type, get_value, get_name, get_last_name, write_to_structure}
         private enum config_states {start, find_context, find_var_name, find_type, find_address, find_var_type, find_AT_percent, find_IN_or_OUT}
@@ -106,7 +107,6 @@ Analyser
                 while_stack          = new intStack(100);
                 repeat_stack         = new intStack(100);
                 if_stack             = new intStack(100);
-
 
                 program_map        = new TreeMap<>();
                 function_map       = new TreeMap<>();
@@ -820,7 +820,9 @@ Analyser
                                                 context_varname_var.get(context).get(var_name).set_mapped_byte(mbyte);
                                                 if (in_or_out == 'I'){
                                                         address_mappedbyte_in.put(address, mbyte);
-                                                        com_channel_queue.offer(context_varname_var.get(context).get(var_name).get_IOPackage());
+                                                        IO_Package iop = context_varname_var.get(context).get(var_name).get_IOPackage();
+                                                        iop.set_polling_true();
+                                                        com_channel_queue.offer(iop);
                                                 } else
                                                         address_mappedbyte_out.put(address, mbyte);
                                                 context = "";
