@@ -1,5 +1,8 @@
 \n\n
 ERROR: <short error message>
+       <even more short error message>
 DETAILED ERROR: <detailed error message multiple lines>
+    <which i indented to be more readable>
 DUMP:
 <detailed information off things>
+\n\n
