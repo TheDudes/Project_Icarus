@@ -151,10 +151,8 @@ public class Synchronous_IO_worker implements Runnable {
      * @throws java.io.IOException
      */
     private void write_package(PacketWriter packetWriter) throws IOException {
-        logWriter.log(0, key, "buddy do u reach write package function?\n");
         rwFlag = 0;
         pollOrWrite = " wrote IO Package";
-        logWriter.log(0, key, "more?\n");
 
         if (ioPackage.pin_id == null) {
             IO_Packet ioPacket = new IO_Packet(new Integer(ioPackage.byte_address), namespaceID, count, rwFlag, ioPackage.value);
