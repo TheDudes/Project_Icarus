@@ -80,7 +80,7 @@ public class Synchronous_IO_worker implements Runnable {
             logWriter.log(0, key, "packetwriter? \n");
             PacketReader packetReader = new PacketReader(inFromServer);
             logWriter.log(0, key, "packetreader?\n");
-            while (alive || !lbq.isEmpty()) {
+            while (alive || !lbq.isEmpty() ) {
                 logWriter.log(0, key, "first inside while \n");
                 ioPackage = lbq.take();
                 logWriter.log(0, key, "lbq take\n");
@@ -113,6 +113,13 @@ public class Synchronous_IO_worker implements Runnable {
         } catch (IOException e) {
             logWriter.log(0, key, "\n\n");
             logWriter.log(0, key, "ERROR: Could not create Socket, is the IO Manager running?\n");
+            logWriter.log(0, key, "DETAILED ERROR: \n");
+            logWriter.log(0, key, e.getMessage(), "\n");
+            logWriter.kill();
+            System.exit(1);
+        } catch (NumberFormatException e) {
+            logWriter.log(0, key, "\n\n");
+            logWriter.log(0, key, "ERROR: Could not create Socket, NumberFormatException occured\n");
             logWriter.log(0, key, "DETAILED ERROR: \n");
             logWriter.log(0, key, e.getMessage(), "\n");
             logWriter.kill();
@@ -163,7 +170,9 @@ public class Synchronous_IO_worker implements Runnable {
         rwFlag = 0;
         pollOrWrite = " wrote IO Package";
         logWriter.log(0, key, "more?\n");
+
         IO_Packet ioPacket = new IO_Packet(new Integer(ioPackage.byte_address), new Integer(ioPackage.pin_id), namespaceID, count, rwFlag, ioPackage.value);
+
         logWriter.log(0, key, "something wrong here? \n");
         packetWriter.write(ioPacket);
         logWriter.log(0, key, "after write\n");
