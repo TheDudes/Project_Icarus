@@ -1,4 +1,3 @@
-
 VAR_CONFIG
 	Test.blub AT %QX32.2 : BOOL;
 	Test.blah AT %IB33 : BYTE;

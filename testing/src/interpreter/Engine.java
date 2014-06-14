@@ -135,13 +135,23 @@ public class Engine
         }
         catch(ScriptException e)
         {
-            log.log(0, log_key, "could not evalue condition:", condition, "\n");
+            log.log(0, log_key,
+                "\n\n",
+                "ERROR: evaluation error\n",
+                "DETAILED ERROR: Engine.java ScriptException\n",
+                "   could not evaluate: '", condition, "'\n\n"
+            );
             log.kill();
             System.exit(1);
         }
         catch(NullPointerException e)
         {
-            log.log(0, log_key, "could not evalue condition:", condition, "\n");
+            log.log(0, log_key,
+                "\n\n",
+                "ERROR: evaluation error\n",
+                "DETAILED ERROR: Engine.java NullPointerException\n",
+                "   could not evaluate: '", condition, "'\n\n"
+            );
             log.kill();
             System.exit(1);
         }

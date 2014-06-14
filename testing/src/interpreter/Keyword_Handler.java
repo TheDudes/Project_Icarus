@@ -393,17 +393,60 @@ public class Keyword_Handler
     {
         log.log(4, log_key, "call   found_PRINT, INDEX = ", new Integer(INDEX).toString(), "\n");
 
-        int semicolon_position = offset.get_semicolon(INDEX + 6, code);
-        String print_string    = code.substring(INDEX + 6, semicolon_position - 1);
+        String final_string = "[PRINT]: ";
+        String eval = null;
+        boolean flag = false;
+        for(int i = INDEX + 6; i < code.length(); i++)
+        {
+            if(    (code.charAt(i)     == ')')
+                && (code.charAt(i + 1) == ';') )
+            {
+                INDEX = i + 1;
+                if(!flag)
+                {
+                    final_string += engine.eval(
+                                        container.replace_vars(
+                                            eval, context_stack.peek() ), true);
+                    eval = null;
+                }
+                break;
+            }
 
-        int comma_position     = offset.get_comma(print_string);
-        String text            = print_string.substring(0, comma_position);
-        String values          = print_string.substring(comma_position + 1,print_string.length());
+            if( code.charAt(i) == '"')
+            {
+                if(flag)
+                    flag = false;
+                else
+                {
+                    if(eval != null)
+                    final_string += engine.eval(
+                                        container.replace_vars(
+                                            eval, context_stack.peek() ), true);
+                    eval = null;
+                    flag = true;
+                }
+                continue;
+            }
 
-        values = container.replace_vars(values, context_stack.peek());
+            if(    (code.charAt(i)     == '\\')
+                && (code.charAt(i + 1) == '"') )
+            {
+                i += 1;
+                continue;
+            }
 
-        log.log(1, " [PRINT]: ", text, values, "\n");
-        INDEX = semicolon_position;
+            if(flag)
+                final_string += code.charAt(i);
+            else
+            {
+                if(eval == null)
+                    eval = code.charAt(i) + "";
+                else
+                    eval += code.charAt(i);
+            }
+        }
+
+        log.log(1, log_key, final_string, "\n");
 
         log.log(4, log_key, "return found_PRINT, INDEX = ", new Integer(INDEX).toString(), "\n");
         return INDEX;
@@ -569,6 +612,7 @@ public class Keyword_Handler
             }
             function_name += condition.charAt(i);
         }
+
         if(i == condition.length())
         {
             /* not a function call nor a set value */
