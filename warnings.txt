@@ -1,0 +1,61 @@
+testing/src/config/Config_Reader.java|215 col 12 warning| Javadoc: Missing tag for return type
+testing/src/config/Config_Reader.java|215 col 31 warning| Javadoc: Missing tag for parameter key
+testing/src/config/Config_Reader.java|215 col 43 warning| Javadoc: Missing tag for declared exception ClassCastException
+testing/src/config/Config_Reader.java|221 col 29 warning| The expression of type Object is unboxed into int
+testing/src/config/Config_Reader.java|257 col 33 warning| The expression of type Object is unboxed into int
+testing/src/config/Config_Reader.java|328 col 49 warning| Javadoc: Missing tag for declared exception ClassCastException
+testing/src/config/Config_Reader.java|334 col 32 warning| The expression of type Object is unboxed into double
+testing/src/config/Config_Reader.java|368 col 37 warning| The expression of type Object is unboxed into boolean
+testing/src/config/Config_Reader.java|485 col 50 warning| The expression of type int is boxed into Integer
+testing/src/config/Config_Reader.java|486 col 51 warning| The expression of type int is boxed into Integer
+testing/src/config/Config_Reader.java|487 col 42 warning| The expression of type boolean is boxed into Boolean
+testing/src/config/Config_Reader.java|488 col 49 warning| The expression of type boolean is boxed into Boolean
+testing/src/config/Config_Reader.java|489 col 45 warning| The expression of type int is boxed into Integer
+testing/src/config/Config_Reader.java|490 col 46 warning| The expression of type int is boxed into Integer
+testing/src/IOInterface/ASynchronous_IO_Worker.java|7 col 14 warning| Javadoc: Missing comment for public declaration
+testing/src/IOInterface/ASynchronous_IO_Worker.java|80 col 20 warning| Resource 'closeSocket' should be managed by try-with-resource
+testing/src/IOInterface/EchoServer.java|20 col 24 warning| Javadoc: Missing comment for public declaration
+testing/src/IOInterface/EchoServer.java|24 col 22 warning| Resource leak: 'serverSocket' is never closed
+testing/src/IOInterface/EchoServer.java|32 col 20 warning| Potential resource leak: 'clientSocket' may not be closed
+testing/src/IOInterface/IO_Packet.java|35 col 12 warning| Javadoc: Missing tag for return type
+testing/src/IOInterface/IO_Packet.java|43 col 12 warning| Javadoc: Missing tag for return type
+testing/src/IOInterface/IO_Packet.java|50 col 12 warning| Javadoc: Missing tag for return type
+testing/src/IOInterface/IO_Packet.java|57 col 12 warning| Javadoc: Missing tag for return type
+testing/src/IOInterface/IO_Packet.java|64 col 12 warning| Javadoc: Missing tag for return type
+testing/src/IOInterface/IO_Packet.java|71 col 12 warning| Javadoc: Missing tag for return type
+testing/src/IOInterface/PacketReader.java|11 col 37 warning| Javadoc: Missing tag for parameter in
+testing/src/IOInterface/PacketWriter.java|6 col 14 warning| Javadoc: Missing comment for public declaration
+testing/src/IOInterface/PacketWriter.java|13 col 38 warning| Javadoc: Missing tag for parameter out
+testing/src/IOInterface/PacketWriter.java|25 col 48 warning| Javadoc: Missing tag for declared exception IOException
+testing/src/IOInterface/PacketWriter.java|52 col 51 warning| Javadoc: Missing tag for declared exception IOException
+testing/src/IOInterface/PacketWriter.java|85 col 20 warning| The method getBytes(int) from the type PacketWriter can be declared as static
+testing/src/IOInterface/PacketWriter.java|88 col 23 warning| The expression of type int is boxed into Integer
+testing/src/IOInterface/PacketWriter.java|91 col 25 warning| The expression of type int is boxed into Integer
+testing/src/IOInterface/PacketWriter.java|110 col 20 warning| The method getBytesFromInt(int) from the type PacketWriter can be declared as static
+testing/src/IOInterface/PacketWriter.java|114 col 25 warning| The expression of type int is boxed into Integer
+testing/src/IOInterface/PacketWriter.java|151 col 31 warning| The expression of type int is boxed into Integer
+testing/src/IOInterface/PacketWriter.java|163 col 17 warning| The method flush() of type PacketWriter should be tagged with @Override since it actually overrides a superclass method
+testing/src/IOInterface/PacketWriter.java|172 col 17 warning| The method close() of type PacketWriter should be tagged with @Override since it actually overrides a superclass method
+testing/src/IOInterface/Synchronous_IO_worker.java|79 col 26 warning| Potential resource leak: 'packetWriter' may not be closed
+testing/src/IOInterface/Synchronous_IO_worker.java|81 col 26 warning| Resource leak: 'packetReader' is never closed
+testing/src/IOInterface/Synchronous_IO_worker.java|95 col 56 warning| The expression of type Integer is unboxed into int
+testing/src/IOInterface/Synchronous_IO_worker.java|95 col 93 warning| The expression of type Integer is unboxed into int
+testing/src/IOInterface/Synchronous_IO_worker.java|155 col 44 warning| The expression of type Integer is unboxed into int
+testing/src/IOInterface/Synchronous_IO_worker.java|155 col 81 warning| The expression of type Integer is unboxed into int
+testing/src/IOInterface/testServer.java|4 col 8 warning| The import IOInterface is never used
+testing/src/IOInterface/testServer.java|6 col 8 warning| The import java.util is never used
+testing/src/IOInterface/testServer.java|8 col 14 warning| Javadoc: Missing comment for public declaration
+testing/src/IOInterface/testServer.java|10 col 24 warning| Javadoc: Missing comment for public declaration
+testing/src/IOInterface/testServer.java|11 col 22 warning| Resource leak: 'servSocket' is never closed
+testing/src/IOInterface/testServer.java|16 col 26 warning| Resource 'reader' should be managed by try-with-resource
+testing/src/IOInterface/testServer.java|17 col 26 warning| Resource 'writer' should be managed by try-with-resource
+testing/src/logger/Logger.java|312 col 17 warning| Potential resource leak: 'file_writer' may not be closed
+testing/src/parser/Analyser.java|473 col 109 warning| Potential null pointer access: The variable temp_start may be null at this location
+testing/src/parser/Analyser.java|477 col 110 warning| Potential null pointer access: The variable temp_start may be null at this location
+testing/src/parser/Analyser.java|1110 col 23 warning| Potential null pointer access: The variable tmp may be null at this location
+testing/src/parser/Variable.java|32 col 28 warning| The value of the field Variable.context_type is not used
+testing/src/parser/Variable.java|33 col 28 warning| The value of the field Variable.context is not used
+testing/src/parser/Variable.java|36 col 28 warning| The value of the field Variable.name is not used
+testing/src/parser/Variable.java|40 col 28 warning| The value of the field Variable.device is not used
+testing/src/parser/Variable.java|42 col 28 warning| The value of the field Variable.abilities is not used
+testing/src/parser/Variable.java|43 col 28 warning| The value of the field Variable.to_poll is not used
