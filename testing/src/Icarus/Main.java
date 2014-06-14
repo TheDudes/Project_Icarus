@@ -79,8 +79,8 @@ public class Main
         }
 
         log.log(0, log_key, "exiting Icarus.\n");
-        /* --fixme-- */
-        /* add killing IO threads here! */
+      //  io.kill(log); i think it's lincs fault because if i outcomment his async kill there's no exception be thrown
+      //  but the program is still not shuting down
         log.kill();
     }
 
