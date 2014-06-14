@@ -30,6 +30,23 @@ public class IO_Packet{
     }
 
     /**
+    * @param gId the Id of the device we want to read/do stuff with
+    * @param nId the namespaceId of the device
+    * @param count the number of pins we want to read as an integer
+    * @param rwflag a flag that represents if we want to write/read/poll the pin(s)
+    * @param value the value we want to set, if we want to write something this is 00000000
+    */
+    public IO_Packet(int gId, int nId, int count, byte rwflag, byte value){
+        geraeteId = gId;
+        PIN = 0;
+        namespaceId = nId;
+        this.count = count;
+        this.rwflag = rwflag;
+        this.value = value;
+    }
+
+
+    /**
     * returns the deviceId of the device we want to read or that was read
     */
     public int getGeraeteId(){
