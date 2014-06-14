@@ -69,7 +69,7 @@ public class Synchronous_IO_worker implements Runnable {
 
             PacketWriter packetWriter = new PacketWriter(outToServer);
             PacketReader packetReader = new PacketReader(inFromServer);
-            while (alive || !lbq.isEmpty()) {
+            while (alive) {
                 ioPackage = lbq.take();
                 logWriter.log(3, key, "IO_Package received.", " Device ID: ", ioPackage.byte_address, " Pin ID: ", ioPackage.pin_id, " New Value: ", Byte.toString(ioPackage.value), "\n");
 
@@ -93,56 +93,58 @@ public class Synchronous_IO_worker implements Runnable {
                     logWriter.log(0, key, "Succesfully", pollOrWrite, "\n");
                 }
             }
+           
             inFromServer.close();
+           
             outToServer.close();
+            
             client.close();
-            kill();
-
+           
 
         } catch (IOException e) {
             logWriter.log(0, key,
-                "\n\n",
-                "ERROR: Could not create Socket, is the IO Manager running?\n",
-                "trying to connect to host: ",
-                configReader.get_string("hostname"),
-                "  on hostname: ",
-                ((Integer)configReader.get_int("sync_port")).toString(),
-                "\n",
-                "DETAILED ERROR: \n    ",
-                e.getMessage(), "\n\n"
+                    "\n\n",
+                    "ERROR: Could not create Socket, is the IO Manager running?\n",
+                    "trying to connect to host: ",
+                    configReader.get_string("hostname"),
+                    "  on hostname: ",
+                    ((Integer) configReader.get_int("sync_port")).toString(),
+                    "\n",
+                    "DETAILED ERROR: \n    ",
+                    e.getMessage(), "\n\n"
             );
             logWriter.kill();
             System.exit(1);
         } catch (NumberFormatException e) {
             logWriter.log(0, key,
-                "\n\n",
-                "ERROR: Could not create Socket, NumberFormatException occured\n",
-                "DETAILED ERROR: \n    ",
-                e.getMessage(), "\n\n"
+                    "\n\n",
+                    "ERROR: Could not create Socket, NumberFormatException occured\n",
+                    "DETAILED ERROR: \n    ",
+                    e.getMessage(), "\n\n"
             );
             logWriter.kill();
             System.exit(1);
         } catch (IllegalArgumentException e) {
             logWriter.log(0, key,
-                "\n\n",
-                "ERROR: Could not create Socket, IllegalArgumentException occured\n",
-                "DETAILED ERROR: \n    ",
-                e.getMessage(), "\n\n"
+                    "\n\n",
+                    "ERROR: Could not create Socket, IllegalArgumentException occured\n",
+                    "DETAILED ERROR: \n    ",
+                    e.getMessage(), "\n\n"
             );
             logWriter.kill();
             System.exit(1);
         } catch (Exception e) {
             logWriter.log(0, key,
-                "\n\n",
-                "ERROR: An Exception occured inside of Synchronous_IO_Worker\n",
-                "       thread, but dont know which.\n",
-                "DETAILED ERROR: \n    ",
-                e.getMessage(), "\n\n"
+                    "\n\n",
+                    "ERROR: An Exception occured inside of Synchronous_IO_Worker\n",
+                    "       thread, but dont know which.\n",
+                    "DETAILED ERROR: \n    ",
+                    e.getMessage(), "\n\n"
             );
             logWriter.kill();
             System.exit(1);
-        }
 
+        }
     }
 
     /**
@@ -190,6 +192,7 @@ public class Synchronous_IO_worker implements Runnable {
      * kills the running thread
      */
     public void kill() {
+        logWriter.log(1, key, "Triggered kill() in SyncedWorkerThread\n");
         alive = false;
     }
 }
