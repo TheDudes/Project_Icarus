@@ -46,13 +46,12 @@ public class Main
           static String hostname;
           static String code;
 
-          static Config_Reader config;
-          static Logger        log;
+          static Config_Reader   config;
+          static Logger          log;
           static ParserContainer container;
-          static Interpreter   interpreter;
-          static SynchronousIO io;
-
-        static Properties propertie;
+          static Interpreter     interpreter;
+          static SynchronousIO   io;
+          static Properties      propertie;
     /**
      * main funcion which will start Icarus
      * @param args not used yet
@@ -91,6 +90,6 @@ public class Main
     private static void print_startup_message()
     {
         System.out.println("Staring Icarus Structure Text Interpreter!");
-        System.out.println("verion: 0.8 (Alpha!)");
+        System.out.println("verion: 0.85 (Alpha! but pretty close to beta now)");
     }
 }
