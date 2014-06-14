@@ -40,15 +40,18 @@ tux -> String " ... " implementation for PRINT function
 ------------------------------------------------------------------------------
 me  -> functions with return value                                      [done]
     -> check how function returning works
-    -> string "" implementation for PRINT method
+    -> string "" implementation for PRINT method                        [done]
     -> implement ERROR messages                                         [done]
+    -> fix error message on Engine code                                 [done]
+    -> remove unused branches                                           [done]
+    -> move not need files from branches up to root branch              [done]
     -> fix all warnings                                                 [done]
     -> fix all imports to be in the same order                          [done]
     -> add log.exit to all system.exit                                  [done]
     -> fix statusbar now showing 100%                                   [done]
     -> make list of stuff we can do now
     -> make list of all warnings                                        [done]
-    -> try out new logging method
+    -> try out new logging method                                       [meet]
 ------------------------------------------------------------------------------
 else:
     -> change all logs to non deprecated version!                       [done]
