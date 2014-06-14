@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * file: Icarus/src/interpreter/Interpreter.java
+ * file: /src/interpreter/Interpreter.java
  * vim: foldmethod=syntax:
  */
 
@@ -28,7 +28,7 @@ import config.*;
  * <p>
  * class where the main interpret function is located.
  * <p>
- * @version 0.8
+ * @version 0.85
  */
 public class Interpreter
 {

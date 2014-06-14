@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * file: Icarus/src/Icarus/main.java
+ * file: /src/Icarus/main.java
  * vim: foldmethod=syntax:
  */
 
@@ -35,7 +35,7 @@ import java.io.File;
  * <p>
  * Logger, used to write log files.
  * <p>
- * @version 0.8
+ * @version 0.85
  */
 public class Logger
 {

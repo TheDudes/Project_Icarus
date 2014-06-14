@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * file: Icarus/src/interpreter/Keyword_Handler.java
+ * file: /src/interpreter/Keyword_Handler.java
  * vim: foldmethod=syntax:
  */
 
@@ -31,7 +31,7 @@ import java.util.Stack;
  * class which holds all the keyword related Functions, these are used
  * to handle found Keywords, for example push and pop stacks.
  * <p>
- * @version 0.8
+ * @version 0.85
  */
 public class Keyword_Handler
 {

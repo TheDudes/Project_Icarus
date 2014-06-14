@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * file: Icarus/src/interpreter/Offset.java
+ * file: /src/interpreter/Offset.java
  * vim: foldmethod=syntax:
  */
 
@@ -27,7 +27,7 @@ import logger.*;
  * class which holds all the offset related Functions, these are used
  * to get the index of the next Keyword, for example.
  * <p>
- * @version 0.8
+ * @version 0.85
  */
 public class Offset_Handler
 {

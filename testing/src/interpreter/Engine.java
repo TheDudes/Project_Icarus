@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * file: Icarus/src/interpreter/Engine_Warmup.java
+ * file: /src/interpreter/Engine_Warmup.java
  * vim: foldmethod=syntax:
  */
 
@@ -30,7 +30,7 @@ import javax.script.*;
  * class which is used to warmup the JavaScript engine, the engine
  * is used to evaluate conditions.
  * <p>
- * @version 0.8
+ * @version 0.85
  */
 public class Engine
 {

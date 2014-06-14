@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * file: Icarus/src/interpreter/Container_LOOP.java
+ * file: src/interpreter/Container_LOOP.java
  * vim: foldmethod=syntax:
  */
 package interpreter;
@@ -23,7 +23,7 @@ package interpreter;
  * <p>
  * class/struct to hold Loop values.
  * <p>
- * @version 0.8
+ * @version 0.85
  */
 public class Container_LOOP
 {

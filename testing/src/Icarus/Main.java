@@ -13,31 +13,26 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * file: Icarus/src/Icarus/main.java
- * @author d4ryus - https://github.com/d4ryus/
- * @version 0.8
+ * file: /src/Icarus/main.java
  * vim: foldmethod=syntax:
  */
 
 package Icarus;
 
-import java.util.Properties;
-
-import parser.*;
-
-import config.*;
-
-import interpreter.*;
-
 import logger.*;
+import parser.*;
+import config.*;
+import interpreter.*;
 import IOInterface.*;
+
+import java.util.Properties;
 
 /**
  * @author d4ryus - https://github.com/d4ryus/
  * <p>
  * Main, here is where the magic happens.
  * <p>
- * @version 0.8
+ * @version 0.85
  */
 public class Main
 {
