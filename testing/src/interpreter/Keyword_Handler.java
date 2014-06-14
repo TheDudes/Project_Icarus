@@ -36,7 +36,7 @@ import java.util.Stack;
 public class Keyword_Handler
 {
     final private String                log_key = " [Interpreter-Keyword_Handler]: ";
-    final private ParserContainer         container;
+    final private ParserContainer       container;
     final private Engine                engine;
     final private Logger                log;
     final private Interpreter           interpreter;
@@ -522,7 +522,7 @@ public class Keyword_Handler
         int    semicolon_position = offset.get_semicolon(INDEX, code);
         String condition          = code.substring(INDEX, semicolon_position + 1);
         String function_name      = "";
-        int jump_index = 0;
+        int    jump_index         = 0;
 
         int i;
         for(i = 0; i < condition.length(); i++)
@@ -536,7 +536,8 @@ public class Keyword_Handler
                 container.reset_function(function_name);
                 break;
             }
-            else if (condition.charAt(i) == ':')
+            else if (    (condition.charAt(i)     == ':')
+                      && (condition.charAt(i + 1) == '=') )
             {
                 log.log(4, log_key, "set_value call , INDEX = ", new Integer(INDEX).toString(), "\n");
                 container.set_value(condition, context_stack.peek());
@@ -547,7 +548,11 @@ public class Keyword_Handler
         }
         if(i == condition.length())
         {
-            System.out.print("could not evaluate blublbublu fixme\n");
+            log.log(0, log_key, "\n\n");
+            log.log(0, log_key, "ERROR: syntax error\n");
+            log.log(0, log_key, "DETAILED ERROR: ");
+            log.log(0, log_key, "could not evaluate: '", function_name, "'\n\n");
+            log.kill();
             System.exit(0);
         }
 

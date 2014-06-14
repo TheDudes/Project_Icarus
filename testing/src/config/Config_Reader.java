@@ -265,6 +265,7 @@ public class Config_Reader {
                         logWriter.log(0, logKey, "DETAILED ERROR: ");
                         logWriter.log(0, logKey, "'", key, "' is set to: '", new Integer(toReturn).toString(), "'\n");
                         logWriter.log(0, logKey, "should be between '", new Integer(min).toString(),"' and '", new Integer(max).toString(), "'\n");
+                        logWriter.kill();
                     }
                     else
                     {
@@ -288,6 +289,7 @@ public class Config_Reader {
                         logWriter.log(0, logKey, "value: '", key, "' is not a int!\n");
                         logWriter.log(0, logKey, "DETAILED ERROR: ");
                         logWriter.log(0, logKey, "'", key, "' is set to: '", get_string(key), "'\n");
+                        logWriter.kill();
                 }
                 else
                 {
@@ -376,6 +378,7 @@ public class Config_Reader {
                         logWriter.log(0, logKey, "value: '", key, "' is not a boolean!\n");
                         logWriter.log(0, logKey, "DETAILED ERROR: ");
                         logWriter.log(0, logKey, "'", key, "' is set to: '", get_string(key), "'\n");
+                        logWriter.kill();
                 }
                 else
                 {
