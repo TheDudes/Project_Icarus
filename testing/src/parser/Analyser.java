@@ -30,7 +30,7 @@ public class
 Analyser
 {
         /* all the states of my statemachines */
-        private enum analyse_states {mainloop, find_context, var_handling, case_handling}
+        private enum analyse_states {mainloop, find_context, var_handling, case_handling, ignore_string}
         private enum var_states {find_semicollon, type_or_value_or_name, get_type, get_value, get_name, get_last_name, write_to_structure}
         private enum config_states {start, find_context, find_var_name, find_type, find_address, find_var_type, find_AT_percent, find_IN_or_OUT}
 
@@ -161,8 +161,13 @@ Analyser
                         switch (state){
                         case mainloop:
                                 if(log_level >= 4) log.log(4, key, "\tState: mainloop", "\n");
+
+                                if(code.charAt(index) == '"'){
+                                        state = analyse_states.ignore_string;
+                                        index += 1;
+                                }
                                 /*end checks*/
-                                if (code.charAt(index  ) == 'E' &&
+                                else if (code.charAt(index  ) == 'E' &&
                                     code.charAt(index+1) == 'N' &&
                                     code.charAt(index+2) == 'D' &&
                                     code.charAt(index+3) == '_')
@@ -624,6 +629,21 @@ Analyser
                                         state = analyse_states.mainloop;
                                 } else {
                                     index += 1;
+                                }
+                                break;
+                        case ignore_string:
+                                if(code.charAt(index  ) == '\\' &&
+                                   code.charAt(index+1) == '"')
+                                {
+                                        index += 2;
+                                }
+                                else if(code.charAt(index) == '"')
+                                {
+                                        state = analyse_states.mainloop;
+                                        index += 1;
+                                }
+                                else {
+                                        index += 1;
                                 }
                                 break;
                         }
