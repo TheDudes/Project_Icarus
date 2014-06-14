@@ -393,7 +393,7 @@ public class Keyword_Handler
     {
         log.log(4, log_key, "call   found_PRINT, INDEX = ", new Integer(INDEX).toString(), "\n");
 
-        String final_string = "[PRINT]: ";
+        String final_string = "";
         String eval = null;
         boolean flag = false;
         for(int i = INDEX + 6; i < code.length(); i++)
@@ -405,10 +405,12 @@ public class Keyword_Handler
                 if(!flag)
                 {
                     if(eval != null)
+                    {
                         final_string += engine.eval(
                                             container.replace_vars(
                                             eval, context_stack.peek() ), true);
-                    eval = null;
+                        eval = null;
+                    }
                 }
                 break;
             }
@@ -416,14 +418,18 @@ public class Keyword_Handler
             if(code.charAt(i) == '"')
             {
                 if(flag)
+                {
                     flag = false;
+                }
                 else
                 {
                     if(eval != null)
+                    {
                         final_string += engine.eval(
                                             container.replace_vars(
                                             eval, context_stack.peek() ), true);
-                    eval = null;
+                        eval = null;
+                    }
                     flag = true;
                 }
                 continue;
@@ -437,17 +443,19 @@ public class Keyword_Handler
             }
 
             if(flag)
+            {
                 final_string += code.charAt(i);
+            }
             else
             {
                 if(eval == null)
-                    eval = code.charAt(i) + "";
+                    eval = "" + code.charAt(i);
                 else
                     eval += code.charAt(i);
             }
         }
 
-        log.log(1, log_key, final_string, "\n");
+        log.log(1, " [PRINT]: ", final_string, "\n");
 
         log.log(4, log_key, "return found_PRINT, INDEX = ", new Integer(INDEX).toString(), "\n");
         return INDEX;

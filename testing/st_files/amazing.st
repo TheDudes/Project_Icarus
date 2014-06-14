@@ -6,9 +6,9 @@ VAR_INPUT
     d:BOOL:=FALSE;
     e:BOOL:=FALSE;
 END_VAR_INPUT
-    PRINT(thisisa=, a);
-    PRINT(thisisb=, b);
-    PRINT(thisisc=, c);
-    PRINT(thisisd=, d);
-    PRINT(thisise=, e);
+    PRINT("thisisa= "a);
+    PRINT("thisisb= "b);
+    PRINT("thisisc= "c);
+    PRINT("thisisd= "d);
+    PRINT("thisise= "e);
 END_FUNCTION
