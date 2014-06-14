@@ -525,10 +525,12 @@ public class Keyword_Handler
         int    jump_index         = 0;
 
         int i;
+        int ii;
         for(i = 0; i < condition.length(); i++)
         {
             if(condition.charAt(i) == '(')
             {
+                /* just a simple function call */
                 jump_index = container.call_function_or_program(function_name, condition.substring(i + 1, condition.length()-2));
                 log.log(4, log_key, "recursive function call , INDEX = ", new Integer(INDEX).toString(), "\n");
                 interpreter.interpret(code, jump_index, code.length());
@@ -536,18 +538,40 @@ public class Keyword_Handler
                 container.reset_function(function_name);
                 break;
             }
-            else if (    (condition.charAt(i)     == ':')
-                      && (condition.charAt(i + 1) == '=') )
+            if (    (condition.charAt(i)     == ':')
+                 && (condition.charAt(i + 1) == '=') )
             {
-                log.log(4, log_key, "set_value call , INDEX = ", new Integer(INDEX).toString(), "\n");
-                container.set_value(condition, context_stack.peek());
+                /* check now if function call with return value, or just normal set value */
+                function_name = "";
+                for (ii = i; ii < condition.length(); ii++)
+                {
+                    if(condition.charAt(i) == '(')
+                    {
+                         /* function call with return value */
+                        jump_index = container.call_function_or_program(function_name, condition.substring(ii + 1, condition.length()-2));
+                        log.log(4, log_key, "recursive function call with return value, INDEX = ", new Integer(INDEX).toString(), "\n");
+                        interpreter.interpret(code, jump_index, code.length());
+                        log.log(4, log_key, "return from recursive function call with return value, INDEX = ", new Integer(INDEX).toString(), "\n");
+                        /* set return value b4 reset_function */
+                        container.reset_function(function_name);
+                        break;
+                    }
+                    function_name += condition.charAt(ii);
+                }
+                if(ii == condition.length())
+                {
+                    /* just set value */
+                    log.log(4, log_key, "set_value call , INDEX = ", new Integer(INDEX).toString(), "\n");
+                    container.set_value(condition, context_stack.peek());
+                    break;
+                }
                 break;
             }
-            else
-                function_name += condition.charAt(i);
+            function_name += condition.charAt(i);
         }
         if(i == condition.length())
         {
+            /* not a function call nor a set value */
             log.log(0, log_key, "\n\n");
             log.log(0, log_key, "ERROR: syntax error\n");
             log.log(0, log_key, "DETAILED ERROR: ");
