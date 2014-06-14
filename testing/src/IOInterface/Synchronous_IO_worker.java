@@ -91,6 +91,12 @@ public class Synchronous_IO_worker implements Runnable {
                     logWriter.log(0, key, "Succesfully ", pollOrWrite, "\n");
                 }
             }
+            inFromServer.close();
+            outToServer.close();
+            client.close();
+            kill();
+            
+            
         } catch (IOException e) {
             logWriter.log(0, key, "\n\n");
             logWriter.log(0, key, "ERROR: Could not create Socket, is the IO Manager running?\n");
