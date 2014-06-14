@@ -40,14 +40,14 @@ public class SynchronousIO{
     public SynchronousIO(Logger logger, Config_Reader confReader, ParserContainer infoColl){
        logger.log(0, logKey, "trying to establish a connection to the IO Manager\n");
        try{
-            syncSocket = new Socket(confReader.get_string("hostname"), confReader.get_int("sync_port", 1, 65536));
+           // syncSocket = new Socket(confReader.get_string("hostname"), confReader.get_int("sync_port", 1, 65536));
             /* --fixme-- */
             /* Potential resource leak: 'aSyncSocket' may not be closed */
-            ServerSocket aSyncSocket = new ServerSocket(confReader.get_int("async_port", 1, 65536));
+           // ServerSocket aSyncSocket = new ServerSocket(confReader.get_int("async_port", 1, 65536));
             logger.log(0, logKey, "established the connection to the IO Manager\n");
             logger.log(4, logKey, "creating the workers\n");
-            syncWorker = new Synchronous_IO_worker(logger, infoColl, syncSocket);
-            asyncWorker = new ASynchronous_IO_Worker(logger, infoColl, aSyncSocket);
+            syncWorker = new Synchronous_IO_worker(logger, infoColl, confReader);
+            //asyncWorker = new ASynchronous_IO_Worker(logger, infoColl, aSyncSocket);
             syncWorkerThread = new Thread(syncWorker);
             syncWorkerThread.start();
             logger.log(4, logKey, "created the syncWorker, exiting constructor\n");
