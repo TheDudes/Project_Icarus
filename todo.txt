@@ -11,30 +11,47 @@
 +----------------------------------------------------------------------------+
 linc - Config_Reader -> add Log_keywords
                      -> add engine keywords
+                     -> check for possible wrong values and print error [done]
                      -> maybe source option for multiple files
                      -> config key - to show/hide values
 ------------------------------------------------------------------------------
-all -> change ERROR messages on system exit
+all -> get interpreter to run                                           [done]
+    -> change ERROR messages on system exit
+    -> if there is a kill() with lbq, throw him a bone
     -> add log.kill b4 System.exit to clean up
+    -> fix most of the warnings                                         [done]
+    -> get io to work                                                   [done]
     -> verbosity 0: error and startup
                  1: PRINT messages, on terminal?
                  2: init of objects?
                  3: even more
                  4: fucking everything
-    -> if there is a kill() with lbq, throw him a bone
 ------------------------------------------------------------------------------
 tux -> String " ... " implementation for PRINT function
+    -> implement functions                                              [done]
+    -> implement new log                                                [done]
+    -> implement Error                                                  [done]
+    -> fix but with replacing true on for loop
+    -> implement case                                                   [done]
+    -> fix case on ELSE or END_CASE                                     [done]
     -> log key parser parser
-    -> log key buggy (no [])
-    -> add newlines to ur ERROR messages, or make more calls to log
+    -> log key buggy (no [], parser mergefiles or something like that
+    -> add newlines to ur ERROR messages. double newline on end
 ------------------------------------------------------------------------------
-me  -> functions with return value
-    -> make list of stuff
-    -> make list of all warnings
+me  -> functions with return value                                      [done]
+    -> check how function returning works
+    -> string "" implementation for PRINT method
+    -> implement ERROR messages                                         [done]
+    -> fix all warnings                                                 [done]
+    -> fix all imports to be in the same order                          [done]
+    -> add log.exit to all system.exit                                  [done]
+    -> fix statusbar now showing 100%                                   [done]
+    -> make list of stuff we can do now
+    -> make list of all warnings                                        [done]
     -> try out new logging method
 ------------------------------------------------------------------------------
 else:
-    -> change all logs to non deprecated version!
+    -> change all logs to non deprecated version!                       [done]
     -> fix all warnings
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
