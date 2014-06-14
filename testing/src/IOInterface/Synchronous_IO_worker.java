@@ -85,7 +85,7 @@ public class Synchronous_IO_worker implements Runnable {
                 ioPackage = lbq.take();
                 logWriter.log(0, key, "lbq take\n");
                 logWriter.log(3, key, "IO_Package received.", " Device ID: ", ioPackage.byte_address, " Pin ID: ", ioPackage.pin_id, " New Value: ", Byte.toString(ioPackage.value), "\n");
-                
+
                 if (ioPackage.to_poll == true) {
                     logWriter.log(0, key, "inside if to poll\n");
                     logWriter.log(0, key, "buddy? do u get this?\n");
@@ -96,29 +96,40 @@ public class Synchronous_IO_worker implements Runnable {
                     packetWriter.write(ioPacket);                //initiates polling and writes the package to the ioManager
                     logWriter.log(0, key, " polling init\n");
                     logWriter.log(3, key, "Wrote IO_Packet with Device ID: ", ioPackage.byte_address, " to the IO Manager for Polling \n");
-
                 } else {
                     logWriter.log(0, key, "inside if to write normal packet\n");
                     write_package(packetWriter);                //writes a value to the ioManager
                     logWriter.log(0, key, "after write package\n");
                     logWriter.log(4, key, "Wrote IO_Packet with Device ID: ", ioPackage.byte_address, " to the IO Mangager for Writing \n");
-
                 }
 
                 IO_Packet ioPacket = packetReader.readPacket();
                 if (ioPacket.getRWFlag() == 0) {
                     logWriter.log(0, key, "Error received from IO Manager with Device ID: ", Integer.toString(ioPacket.getGeraeteId()), "\n");
-
                 } else {
                     logWriter.log(3, key, "Succesfully ", pollOrWrite, "\n");
                 }
-
             }
-
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            logWriter.log(0, key, "maaaan, what the fuck are u doing\n");
+        } catch (IOException e) {
+            logWriter.log(0, key, "\n\n");
+            logWriter.log(0, key, "ERROR: Could not create Socket, is the IO Manager running?\n");
+            logWriter.log(0, key, "DETAILED ERROR: \n");
             logWriter.log(0, key, e.getMessage(), "\n");
+            logWriter.kill();
+            System.exit(1);
+        } catch (IllegalArgumentException e) {
+            logWriter.log(0, key, "\n\n");
+            logWriter.log(0, key, "ERROR: Could not create Socket, IllegalArgumentException occured\n");
+            logWriter.log(0, key, "DETAILED ERROR: \n");
+            logWriter.log(0, key, e.getMessage(), "\n");
+            logWriter.kill();
+            System.exit(1);
+        } catch (Exception e) {
+            logWriter.log(0, key, "\n\n");
+            logWriter.log(0, key, "ERROR: An Exception occured inside of Synchronous IO Worker thread, but dont know which.\n");
+            logWriter.log(0, key, "DETAILED ERROR: \n");
+            logWriter.log(0, key, e.getMessage(), "\n");
+            logWriter.kill();
             System.exit(1);
         }
 
@@ -164,6 +175,5 @@ public class Synchronous_IO_worker implements Runnable {
      */
     public void kill() {
         alive = false;
-
     }
 }

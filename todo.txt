@@ -21,6 +21,7 @@ all -> change ERROR messages on system exit
                  2: init of objects?
                  3: even more
                  4: fucking everything
+    -> if there is a kill() with lbq, throw him a bone
 ------------------------------------------------------------------------------
 tux -> String " ... " implementation for PRINT function
     -> log key parser parser
