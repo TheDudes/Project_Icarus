@@ -50,7 +50,7 @@ public class SynchronousIO{
             //asyncWorker = new ASynchronous_IO_Worker(logger, infoColl, aSyncSocket);
             syncWorkerThread = new Thread(syncWorker);
             syncWorkerThread.start();
-            logger.log(4, logKey, "created the syncWorker, exiting constructor\n");
+            logger.log(4, logKey, "created the syncWorker\n");
             asyncWorkerThread = new Thread(asyncWorker);
             asyncWorkerThread.start();
             logger.log(4, logKey, "created the asyncWorker, exiting constructor\n");
@@ -69,6 +69,15 @@ public class SynchronousIO{
                 }
             }
        }
+    }
+
+    /**
+    * calls the kill functions of the two workers so they stop, this should also close all of their 
+    * resources, as well as those in the SynchronousIO themselves (although there are none atm)
+    */
+    public void kill(){
+        syncWorker.kill();
+        asyncWorker.kill();
     }
 
 }
