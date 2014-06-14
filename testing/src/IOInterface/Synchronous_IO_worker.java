@@ -95,34 +95,43 @@ public class Synchronous_IO_worker implements Runnable {
             outToServer.close();
             client.close();
             kill();
-            
-            
+
+
         } catch (IOException e) {
-            logWriter.log(0, key, "\n\n");
-            logWriter.log(0, key, "ERROR: Could not create Socket, is the IO Manager running?\n");
-            logWriter.log(0, key, "DETAILED ERROR: \n");
-            logWriter.log(0, key, e.getMessage(), "\n");
+            logWriter.log(0, key,
+                "\n\n",
+                "ERROR: Could not create Socket, is the IO Manager running?\n",
+                "DETAILED ERROR: \n    ",
+                e.getMessage(), "\n\n"
+            );
             logWriter.kill();
             System.exit(1);
         } catch (NumberFormatException e) {
-            logWriter.log(0, key, "\n\n");
-            logWriter.log(0, key, "ERROR: Could not create Socket, NumberFormatException occured\n");
-            logWriter.log(0, key, "DETAILED ERROR: \n");
-            logWriter.log(0, key, e.getMessage(), "\n");
+            logWriter.log(0, key,
+                "\n\n",
+                "ERROR: Could not create Socket, NumberFormatException occured\n",
+                "DETAILED ERROR: \n    ",
+                e.getMessage(), "\n\n"
+            );
             logWriter.kill();
             System.exit(1);
         } catch (IllegalArgumentException e) {
-            logWriter.log(0, key, "\n\n");
-            logWriter.log(0, key, "ERROR: Could not create Socket, IllegalArgumentException occured\n");
-            logWriter.log(0, key, "DETAILED ERROR: \n");
-            logWriter.log(0, key, e.getMessage(), "\n");
+            logWriter.log(0, key,
+                "\n\n",
+                "ERROR: Could not create Socket, IllegalArgumentException occured\n",
+                "DETAILED ERROR: \n    ",
+                e.getMessage(), "\n\n"
+            );
             logWriter.kill();
             System.exit(1);
         } catch (Exception e) {
-            logWriter.log(0, key, "\n\n");
-            logWriter.log(0, key, "ERROR: An Exception occured inside of Synchronous IO Worker thread, but dont know which.\n");
-            logWriter.log(0, key, "DETAILED ERROR: \n");
-            logWriter.log(0, key, e.getMessage(), "\n");
+            logWriter.log(0, key,
+                "\n\n",
+                "ERROR: An Exception occured inside of Synchronous_IO_Worker\n",
+                "       thread, but dont know which.\n",
+                "DETAILED ERROR: \n    ",
+                e.getMessage(), "\n\n"
+            );
             logWriter.kill();
             System.exit(1);
         }

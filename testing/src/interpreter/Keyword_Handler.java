@@ -572,10 +572,12 @@ public class Keyword_Handler
         if(i == condition.length())
         {
             /* not a function call nor a set value */
-            log.log(0, log_key, "\n\n");
-            log.log(0, log_key, "ERROR: syntax error\n");
-            log.log(0, log_key, "DETAILED ERROR: ");
-            log.log(0, log_key, "could not evaluate: '", function_name, "'\n\n");
+            log.log(0, log_key,
+                "\n\n",
+                "ERROR: syntax error\n",
+                "DETAILED ERROR:\n",
+                "   could not evaluate: '", function_name, "'\n\n"
+            );
             log.kill();
             System.exit(0);
         }

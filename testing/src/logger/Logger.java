@@ -153,8 +153,12 @@ public class Logger
 
         if(!file_from.renameTo(file_to))
         {
-            System.out.println(
-                    "error near logfile rotating, could not move file");
+            System.out.print(
+                "\n\n" +
+                "ERROR: could not move logfiles.\n" +
+                "DETAILED ERROR:\n" +
+                "   was not able to rotate the logfiles, maybe path wrong/not created?\n\n"
+            );
             System.exit(1);
         }
     }

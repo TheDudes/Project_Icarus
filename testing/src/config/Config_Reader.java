@@ -259,22 +259,26 @@ public class Config_Reader {
                 {
                     if(logWriterInit)
                     {
-                        logWriter.log(0, logKey, "\n\n");
-                        logWriter.log(0, logKey, "ERROR: value from config file is not valid.\n");
-                        logWriter.log(0, logKey, "value: '", key, "' is not valid!\n");
-                        logWriter.log(0, logKey, "DETAILED ERROR: ");
-                        logWriter.log(0, logKey, "'", key, "' is set to: '", new Integer(toReturn).toString(), "'\n");
-                        logWriter.log(0, logKey, "should be between '", new Integer(min).toString(),"' and '", new Integer(max).toString(), "'\n");
+                        logWriter.log(0, logKey,
+                            "\n\n",
+                            "ERROR: value from config file is not valid.\n",
+                            "DETAILED ERROR:\n",
+                            "   value: '", key, "' is not valid!\n",
+                            "   '", key, "' is set to: '", new Integer(toReturn).toString(), "'\n",
+                            "   should be between '", new Integer(min).toString(),"' and '", new Integer(max).toString(), "'\n\n"
+                        );
                         logWriter.kill();
                     }
                     else
                     {
-                        System.out.print("\n\n");
-                        System.out.print("ERROR: value from config file is not valid.\n");
-                        System.out.print("value '" + key + "' is not valid!\n");
-                        System.out.print("DETAILED ERROR: ");
-                        System.out.print("'" + key + "' is set to: '" + toReturn + "'\n");
-                        System.out.print("should be between '" + min + "' and '" + max + "'\n");
+                        System.out.print(
+                            "\n\n" +
+                            "ERROR: value from config file is not valid.\n" +
+                            "DETAILED ERROR:\n" +
+                            "   value '" + key + "' is not valid!\n" +
+                            "   '" + key + "' is set to: '" + toReturn + "'\n" +
+                            "   should be between '" + min + "' and '" + max + "'\n\n"
+                        );
                     }
                     System.exit(0);
                     return -1;
@@ -284,20 +288,24 @@ public class Config_Reader {
             {
                 if(logWriterInit)
                 {
-                        logWriter.log(0, logKey, "\n\n");
-                        logWriter.log(0, logKey, "ERROR: value from config file is not valid.\n");
-                        logWriter.log(0, logKey, "value: '", key, "' is not a int!\n");
-                        logWriter.log(0, logKey, "DETAILED ERROR: ");
-                        logWriter.log(0, logKey, "'", key, "' is set to: '", get_string(key), "'\n");
+                        logWriter.log(0, logKey,
+                            "\n\n",
+                            "ERROR: value from config file is not valid.\n",
+                            "DETAILED ERROR:\n",
+                            "    value: '", key, "' is not a int!\n",
+                            "   '", key, "' is set to: '", get_string(key), "'\n\n"
+                        );
                         logWriter.kill();
                 }
                 else
                 {
-                    System.out.print("\n\n");
-                    System.out.print("ERROR: value from config file is not valid.\n");
-                    System.out.print("value '" + key + "' is not a int!\n");
-                    System.out.print("DETAILED ERROR: ");
-                    System.out.print("'" + key + "' is set to: '" + get_string(key) + "'\n");
+                    System.out.print(
+                        "\n\n" +
+                        "ERROR: value from config file is not valid.\n" +
+                        "DETAILED ERROR:\n" +
+                        "   value '" + key + "' is not a int!\n" +
+                        "   '" + key + "' is set to: '" + get_string(key) + "'\n\n"
+                    );
                 }
                 System.exit(0);
                 return -1;
@@ -373,20 +381,24 @@ public class Config_Reader {
             {
                 if(logWriterInit)
                 {
-                        logWriter.log(0, logKey, "\n\n");
-                        logWriter.log(0, logKey, "ERROR: value from config file is not valid.\n");
-                        logWriter.log(0, logKey, "value: '", key, "' is not a boolean!\n");
-                        logWriter.log(0, logKey, "DETAILED ERROR: ");
-                        logWriter.log(0, logKey, "'", key, "' is set to: '", get_string(key), "'\n");
+                        logWriter.log(0, logKey,
+                            "\n\n",
+                            "ERROR: value from config file is not valid.\n",
+                            "DETAILED ERROR:\n",
+                            "   value: '", key, "' is not a boolean!\n",
+                            "   '", key, "' is set to: '", get_string(key), "'\n\n"
+                        );
                         logWriter.kill();
                 }
                 else
                 {
-                        System.out.print("\n\n");
-                        System.out.print("ERROR: value from config file is not valid.\n");
-                        System.out.print("value: '" + key + "' is not a boolean!\n");
-                        System.out.print("DETAILED ERROR: ");
-                        System.out.print("'" + key + "' is set to: '" + get_string(key) + "'\n");
+                        System.out.print(
+                            "\n\n" +
+                            "ERROR: value from config file is not valid.\n" +
+                            "DETAILED ERROR:\n" +
+                            "   value: '" + key + "' is not a boolean!\n" +
+                            "   '" + key + "' is set to: '" + get_string(key) + "'\n\n"
+                        );
                 }
                 System.exit(0);
                 return false;

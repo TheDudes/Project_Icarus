@@ -26,6 +26,7 @@ all -> change ERROR messages on system exit
 tux -> String " ... " implementation for PRINT function
     -> log key parser parser
     -> log key buggy (no [])
+    -> add newlines to ur ERROR messages, or make more calls to log
 ------------------------------------------------------------------------------
 me  -> functions with return value
     -> make list of stuff
