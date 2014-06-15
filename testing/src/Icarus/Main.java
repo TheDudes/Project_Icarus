@@ -63,8 +63,8 @@ public class Main
             propertie.setProperty("loglevel", Integer.toHexString(config.get_int("verbosity_level", 0, 4)));
             System.setProperties(propertie);
         container   = new ParserContainer(config, log);
-        interpreter = new Interpreter(container, log, config);
         io          = new SynchronousIO(log, config, container);
+        interpreter = new Interpreter(container, log, config);
 
         log.log(0, log_key, "starting Icarus.\n");
         double blub = 0.0;
