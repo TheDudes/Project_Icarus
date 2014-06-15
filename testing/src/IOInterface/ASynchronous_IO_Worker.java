@@ -1,6 +1,7 @@
 package IOInterface;
 import logger.*;
 import parser.*;
+import config.*;
 import java.net.*;
 import java.io.IOException;
 
@@ -20,10 +21,11 @@ public class ASynchronous_IO_Worker implements Runnable{
     * @param infoColl ParserContainer used to pass the data we get from the network
     * @param sSocket ServerSocket that we use to establish a connection to the other IOManager, gets initiated in the class that initiates this one
     */
-    ASynchronous_IO_Worker(Logger logWriter, ParserContainer infoColl, ServerSocket sSocket){
+    ASynchronous_IO_Worker(Logger logWriter, ParserContainer infoColl, Config_Reader confReader) throws IOException{
         this.logger = logWriter;
         this.infoColl = infoColl;
-        this.sSocket = sSocket;
+        ServerSocket aSyncSocket = new ServerSocket(confReader.get_int("async_port", 1, 65536));
+        sSocket = aSyncSocket;
         serverPort = sSocket.getLocalPort();
         serverAddress = sSocket.getInetAddress();
         logger.log(1, logKey, "contructor done\n");
@@ -35,14 +37,14 @@ public class ASynchronous_IO_Worker implements Runnable{
     */
     public void run(){
         while(alive){
-            logger.log(1, logKey, "worker is now running in the while(alive) loop\n");
+            logger.log(0, logKey, "worker is now running in the while(alive) loop\n");
             try(
                 Socket cSocket = sSocket.accept();
             ){
                 logger.log(2, logKey, "accepted an incoming connection\n");
                 if(!alive){
                     logger.log(1, logKey, "server got the dead signal, shutting down now\n");
-                    continue;
+                    break;
                 }
                 try(
                     PacketReader reader = new PacketReader(cSocket.getInputStream());
@@ -73,9 +75,9 @@ public class ASynchronous_IO_Worker implements Runnable{
     * so we create a connection to the server and close it again
     */
     public void kill(){
-        logger.log(2, logKey, "called the kill method\n");
+        logger.log(0, logKey, "called the kill method\n");
         alive = false;
-        logger.log(2, logKey, "set the alive flag to false\n");
+        logger.log(0, logKey, "set the alive flag to false\n");
         try{
             Socket closeSocket = new Socket(serverAddress, serverPort);
             closeSocket.close();

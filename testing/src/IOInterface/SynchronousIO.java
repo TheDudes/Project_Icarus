@@ -47,7 +47,7 @@ public class SynchronousIO{
             logger.log(0, logKey, "established the connection to the IO Manager\n");
             logger.log(4, logKey, "creating the workers\n");
             syncWorker = new Synchronous_IO_worker(logger, infoColl, confReader);
-            //asyncWorker = new ASynchronous_IO_Worker(logger, infoColl, aSyncSocket);
+            asyncWorker = new ASynchronous_IO_Worker(logger, infoColl, confReader);
             syncWorkerThread = new Thread(syncWorker);
             syncWorkerThread.start();
             logger.log(4, logKey, "created the syncWorker\n");
