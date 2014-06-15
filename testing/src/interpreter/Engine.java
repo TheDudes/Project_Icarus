@@ -27,8 +27,7 @@ import javax.script.*;
 /**
  * @author d4ryus - https://github.com/d4ryus/
  * <p>
- * class which is used to warmup the JavaScript engine, the engine
- * is used to evaluate conditions.
+ * class which is used to evaluate conditions.
  * <p>
  * @version 0.85
  */

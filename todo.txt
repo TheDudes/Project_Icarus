@@ -64,6 +64,8 @@ d4ryus:
         -> create error message, then print
         -> make list of stuff we can do now
         -> make list of stuff we cannot do
+[done]  -> fix bug with only one log file
+[done]  -> fix engine warmup count
 [done]  -> add flag for showing statusbar
 [done]  -> if no log backup is specified log to the same file
 [done]  -> fix exception with lowercase letters on log size

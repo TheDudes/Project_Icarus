@@ -106,6 +106,12 @@ public class Logger
      */
     private void recursive_move(int count)
     {
+        if(max_backup_files == 0)
+        {
+            File file= new File(log_file_path + log_file_name + log_file_ending);
+            file.delete();
+            return;
+        }
         if (count == max_backup_files)
             return;
 
