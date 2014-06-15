@@ -37,6 +37,7 @@ public class Engine
     final private ScriptEngine engine;
     final private Logger       log;
     final private String       log_key = " [engine]: ";
+    final private boolean      show_bar;
 
     /**
      * @param log Logger Object
@@ -48,6 +49,7 @@ public class Engine
         log.log(2, log_key, "init Engine...\n");
         ScriptEngineManager factory = new ScriptEngineManager();
         engine                      = factory.getEngineByName("JavaScript");
+        show_bar = config.get_boolean("Engine_show_bar");
         if(config.get_boolean("Engine_Warmup"))
             warmup();
         log.log(2, log_key, "init Engine done.\n");
@@ -103,7 +105,8 @@ public class Engine
                                    new Double(avg).toString(),
                                    "ms avg)\n");
             }
-            log.print_statusbar(i + 1, total_evaluations, 1, 40, "engine warmup...");
+            if(show_bar)
+                log.print_statusbar(i + 1, total_evaluations, 1, 40, "engine warmup...");
         }
         log.log(2, log_key, "100 evaluations done, avg time: (",
                             new Double(avg / 100).toString(),
