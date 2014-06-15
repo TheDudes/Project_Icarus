@@ -107,13 +107,10 @@ public class Synchronous_IO_worker implements Runnable {
             logWriter.log(0, key,
                     "\n\n",
                     "ERROR: Could not create Socket, is the IO Manager running?\n",
-                    "trying to connect to host: ",
-                    configReader.get_string("hostname"),
-                    "  on hostname: ",
-                    ((Integer) configReader.get_int("sync_port")).toString(),
-                    "\n",
-                    "DETAILED ERROR: \n    ",
-                    e.getMessage(), "\n\n"
+                    "DETAILED ERROR:\n",
+                    "    trying to connect to host: ", configReader.get_string("hostname"),
+                    "\n    on port: ", ((Integer) configReader.get_int("sync_port")).toString(),
+                    "\n    message: ", e.getMessage(), "\n\n"
             );
             logWriter.kill();
             System.exit(1);
