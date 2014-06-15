@@ -67,16 +67,11 @@ public class Main
         interpreter = new Interpreter(container, log, config);
 
         log.log(0, log_key, "starting Icarus.\n");
-        double blub = 0.0;
+
+        code = container.get_all_the_code().toString();
+
         for(int i = 0; i < 10; i++ )
-        {
-            blub = System.currentTimeMillis();
-
-            code = container.get_all_the_code().toString();
             interpreter.interpret(code, 0, code.length());
-
-            log.log(0, log_key, new Double(System.currentTimeMillis() - blub).toString(), "ms.\n");
-        }
 
         log.log(0, log_key, "exiting Icarus.\n");
       //  io.kill(log); i think it's lincs fault because if i outcomment his async kill there's no exception be thrown

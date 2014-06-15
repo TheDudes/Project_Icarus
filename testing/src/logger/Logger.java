@@ -262,6 +262,7 @@ public class Logger
                 message += args[i];
             }
             System.out.print(message);
+            System.out.flush();
             queue.offer(args);
         }
         else if ( verbosity <= this.verboseLevel )
@@ -299,10 +300,6 @@ public class Logger
 
             /* go up 1 line and print out the message + the ratio in % */
             System.out.print("]\033[F" + message + " " + percentage + "%[");
-            //System.out.print("\r" + message + " " + percentage + "%[");
-            //for(int i = 0; i < 62; i++)
-            //    System.out.print("\b");
-            //System.out.print(message + " " + percentage + "%[");
 
             /* print out the actual bar */
             int i;
@@ -312,8 +309,6 @@ public class Logger
                 System.out.print(" ");
 
             System.out.print("]\n");
-            //System.out.print("]");
-            //System.out.flush();
         }
     }
 

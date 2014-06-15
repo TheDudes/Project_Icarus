@@ -58,12 +58,12 @@ tux:
 d4ryus:
 
         -> add something like a "goto exit" to cleanup all threads
-        -> implement Mhz
         -> fixme on Exceptions which are thrown by parser
         -> check how function returning works
         -> create error message, then print
         -> make list of stuff we can do now
         -> make list of stuff we cannot do
+[done]  -> implement takt_frequency
 [done]  -> fix bug with only one log file
 [done]  -> fix engine warmup count
 [done]  -> add flag for showing statusbar

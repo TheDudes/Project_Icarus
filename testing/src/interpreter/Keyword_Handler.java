@@ -24,6 +24,7 @@ import parser.*;
 import config.*;
 
 import java.util.Stack;
+import java.util.concurrent.*;
 
 /**
  * @author d4ryus - https://github.com/d4ryus/
@@ -46,6 +47,8 @@ public class Keyword_Handler
     final private Stack<String>         context_stack;
     final private Stack<Boolean>        if_stack;
     final private Stack<Integer>        if_position_stack;
+          private long                  start_time;
+    final private long                  max_time;
 
     /**
      * @param container used ParserContainer object
@@ -60,6 +63,8 @@ public class Keyword_Handler
         this.container   = container;
         this.log         = log;
         this.interpreter = interpreter;
+
+        max_time = (long)((1000 / (config.get_int("takt_frequency", 1, 1000))) + 0.5);
 
         engine = new Engine(log, config);
         offset = new Offset_Handler(log);
@@ -84,6 +89,7 @@ public class Keyword_Handler
     {
         log.log(4, log_key, "call   found_PROGRAM, INDEX = ", new Integer(INDEX).toString(), "\n");
 
+        start_time = System.currentTimeMillis();
         int var = offset.get_VAR(INDEX, code);
         context_stack.push(code.substring(INDEX + 7, var));
         INDEX   = container.get_end_var(var);
@@ -490,6 +496,39 @@ public class Keyword_Handler
         log.log(4, " [interpreter-end]: ", "end of Program Reached, Breaking for Loop, poping context_stack\n");
         context_stack.pop();
         INDEX += 10;
+        long time_it_took = System.currentTimeMillis() - start_time;
+        if(time_it_took > max_time)
+        {
+            log.log(0, log_key, "couldn't keep up, took me:  ",
+                                    new Long(time_it_took).toString(), "ms, ",
+                                "max time: ",
+                                    new Long(max_time).toString(), "ms, ",
+                                "trying better next time!\n");
+        }
+        else
+        {
+            long sleep_time = max_time - time_it_took;
+            log.log(0, log_key, "in takt! time: ",
+                                    new Long(time_it_took).toString(), "ms, sleep: ",
+                                    new Long(sleep_time).toString(), "ms... ");
+            try
+            {
+                TimeUnit.MILLISECONDS.sleep(sleep_time);
+                log.log(0, log_key, "me back! lets go for another round\n");
+            }
+            catch(InterruptedException e)
+            {
+                log.log(0, log_key,
+                    "\n\n",
+                    "ERROR: interrupted on taktfrequenzy sleep!\n",
+                    "DETAILED ERROR:\n",
+                    "   everything went good, i went faster as i should,\n",
+                    "   so i went for a short nap, but suddenly i got interrupted :(\n\n"
+                );
+                log.kill();
+                System.exit(1);
+            }
+        }
 
         log.log(4, log_key, "return found_END_PROGRAM, INDEX = ", new Integer(INDEX).toString(), "\n");
         return INDEX;
