@@ -74,8 +74,7 @@ public class Main
             interpreter.interpret(code, 0, code.length());
 
         log.log(0, log_key, "exiting Icarus.\n");
-      //  io.kill(log); i think it's lincs fault because if i outcomment his async kill there's no exception be thrown
-      //  but the program is still not shuting down
+
         io.kill();
         log.kill();
     }
