@@ -31,6 +31,7 @@ public class SynchronousIO{
     private ASynchronous_IO_Worker asyncWorker;
     private Thread asyncWorkerThread;
     private Socket syncSocket;
+    private Logger logger;
 
     /**
     * @param logger LogWriter so we can log the stuff we want to print
@@ -38,6 +39,7 @@ public class SynchronousIO{
     * @param infoColl we have to get this object as we have to pass it on to the Synchronous_IO_worker
     */
     public SynchronousIO(Logger logger, Config_Reader confReader, ParserContainer infoColl){
+        this.logger = logger;
        logger.log(0, logKey, "trying to establish a connection to the IO Manager\n");
        try{
            
@@ -76,6 +78,7 @@ public class SynchronousIO{
     * resources, as well as those in the SynchronousIO themselves (although there are none atm)
     */
     public void kill(){
+        logger.log(0, logKey, "exiting IO \n");
         syncWorker.kill();
         asyncWorker.kill();
     }

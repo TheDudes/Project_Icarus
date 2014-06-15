@@ -37,7 +37,7 @@ public class ASynchronous_IO_Worker implements Runnable{
     */
     public void run(){
         while(alive){
-            logger.log(0, logKey, "worker is now running in the while(alive) loop\n");
+            logger.log(2, logKey, "worker is now running in the while(alive) loop\n");
             try(
                 Socket cSocket = sSocket.accept();
             ){

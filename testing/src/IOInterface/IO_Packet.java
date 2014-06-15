@@ -21,6 +21,7 @@ public class IO_Packet{
     * @param value the value we want to set, if we want to write something this is 00000000
     */
     public IO_Packet(int gId, int pin, int nId, int count, byte rwflag, byte value){
+        
         geraeteId = gId;
         PIN = pin;
         namespaceId = nId;
