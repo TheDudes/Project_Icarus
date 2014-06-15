@@ -171,6 +171,10 @@ public class Logger
      */
     private static long evaluate_size(String config_value)
     {
+        /*
+         * remove all whitespaces and characters after first char,
+         * so that the string looks like 100M instead of 100 Megabyte
+         */
         String s = "";
         for(int i = 0; i < config_value.length(); i++)
         {

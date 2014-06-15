@@ -8,16 +8,12 @@
 all:
 
         -> System.exit( 0 or 1? )
-        -> change ERROR messages on system exit
-        -> if there is a kill() with lbq, throw him a bone
-        -> add log.kill b4 System.exit to clean up
         -> verbosity 0: error and startup
                      1: PRINT messages, on terminal?
                      2: init of objects?
                      3: even more
                      4: fucking everything
 [done]  -> fix most of the warnings
-[done]  -> get IO to work
 [done]  -> get interpreter to run
 -------------------------------------------------------------------------------
 linc:
@@ -32,11 +28,18 @@ linc:
 csb/linc:
 
         -> kill()
+        -> change ERROR messages on system exit
+        -> if there is a kill() with lbq/socket, throw him a bone
+[done]  -> get IO to work
 -------------------------------------------------------------------------------
 linc/tux:
 
         -> lib feature maybe
         -> fix all warnings
+-------------------------------------------------------------------------------
+linc/tux/csb:
+
+        -> add log.kill b4 System.exit to clean up
 -------------------------------------------------------------------------------
 tux:
 
@@ -61,6 +64,9 @@ d4ryus:
         -> create error message, then print
         -> make list of stuff we can do now
         -> make list of stuff we cannot do
+[done]  -> fix exception with lowercase letters on log size
+[done]  -> add oportunity to specify log file size with full names
+[done]  -> add error message for log file size
 [done]  -> add error message to log
 [done]  -> functions with return value
 [done]  -> string "" implementation for PRINT method
