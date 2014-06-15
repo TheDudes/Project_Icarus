@@ -40,10 +40,7 @@ public class SynchronousIO{
     public SynchronousIO(Logger logger, Config_Reader confReader, ParserContainer infoColl){
        logger.log(0, logKey, "trying to establish a connection to the IO Manager\n");
        try{
-           // syncSocket = new Socket(confReader.get_string("hostname"), confReader.get_int("sync_port", 1, 65536));
-            /* --fixme-- */
-            /* Potential resource leak: 'aSyncSocket' may not be closed */
-           // ServerSocket aSyncSocket = new ServerSocket(confReader.get_int("async_port", 1, 65536));
+           
             logger.log(0, logKey, "established the connection to the IO Manager\n");
             logger.log(4, logKey, "creating the workers\n");
             syncWorker = new Synchronous_IO_worker(logger, infoColl, confReader);
@@ -57,7 +54,8 @@ public class SynchronousIO{
        }
        catch(Exception e){
             logger.log(0, logKey, "Exception while trying to establish a connection to the IO Manager:" , e .getMessage(), "\n");
-            System.exit(0);
+            logger.kill();
+            System.exit(1);
        }
        finally{
            if(syncSocket != null){
@@ -66,6 +64,8 @@ public class SynchronousIO{
                 }
                 catch(Exception e){
                     logger.log(0, logKey, "Exception in Exception when trying to close the socket: " , e.getMessage(), "\n");
+                    logger.kill();
+                    System.exit(1);
                 }
             }
        }

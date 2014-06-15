@@ -56,10 +56,14 @@ public class ASynchronous_IO_Worker implements Runnable{
                 }
                 catch(IOException e){
                     logger.log(0, logKey, "caught an exception: " , e.getMessage(), "\n");
+                    logger.kill();
+                    System.exit(1);
                 }
             }
             catch(IOException e){
                 logger.log(0, logKey, "caught an exception while accepting a new connection: " , e.getMessage(), "\n");
+                logger.kill();
+                System.exit(1);
             }
         }
         try{
@@ -67,6 +71,8 @@ public class ASynchronous_IO_Worker implements Runnable{
         }
         catch(IOException e){
             logger.log(0, logKey, "caught an exception when trying to close the serverSocket: " , e.getMessage(), "\n");
+            logger.kill();
+            System.exit(1);
         }
     }
 
@@ -84,6 +90,8 @@ public class ASynchronous_IO_Worker implements Runnable{
         }
         catch(IOException e){
             logger.log(0, logKey, "caught an exception while establishing the last connection to the server: " , e.getMessage(), "\n");
+            logger.kill();
+            System.exit(1);
         }
     }
 
