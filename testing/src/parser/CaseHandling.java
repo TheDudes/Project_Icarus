@@ -40,7 +40,7 @@ CaseHandling
         private ArrayList<Integer> old_cases_list = new ArrayList<>();
         private intStack case_stack = new intStack(100);
 
-        enum states {start, jump_behind_of, find_colon, find_end_case, find_number, from_to, create_case_lookup, failed, end}
+        enum states {start, jump_behind_of, find_colon, find_end_case, find_number, from_to, create_case_lookup, failed, end, ignore_string}
 
         /**
          * @param code all the code as a single String
