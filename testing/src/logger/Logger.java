@@ -159,6 +159,7 @@ public class Logger
                 "DETAILED ERROR:\n" +
                 "   was not able to rotate the logfiles, maybe path wrong/not created?\n\n"
             );
+            kill();
             System.exit(1);
         }
     }
@@ -168,35 +169,71 @@ public class Logger
      * @param s string containing the log size
      * @return value after identification and calculation
      */
-    private static long evaluate_size(String s)
+    private static long evaluate_size(String config_value)
     {
-        if(s.contains("M") || s.contains("m") )
+        String s = "";
+        for(int i = 0; i < config_value.length(); i++)
         {
-            return 1024*1024*
-                    (long)Long.parseLong(s.substring(0, s.indexOf("M",0)));
-        }
-        else if(s.contains("B") || s.contains("b"))
-        {
-            return (long)Long.parseLong(s.substring(0, s.indexOf("B",0)));
-        }
-        else if(s.contains("K") || s.contains("k"))
-        {
-            return 1024*
-                    (long)Long.parseLong(s.substring(0, s.indexOf("K",0)));
-        }
-        else if(s.contains("G") || s.contains("g"))
-        {
-            return 1024*1024*1024*
-                    (long)Long.parseLong(s.substring(0, s.indexOf("G",0)));
-        }
-        else
-        {
-            System.out.print("could not evalute Logfile Size from: "
-                                    + s + "\n");
-            System.exit(0);
-            return 1;
+            if( config_value.charAt(i) >= '0' &&
+                config_value.charAt(i) <= '9' )
+            {
+                s += config_value.charAt(i);
+                continue;
+            }
+            else if (config_value.charAt(i) == ' ')
+            {
+                continue;
+            }
+            else
+            {
+                s += config_value.charAt(i);
+                break;
+            }
+
         }
 
+        if(     s.contains("B"))
+            return
+                (long)Long.parseLong(s.substring(0, s.indexOf("B",0)));
+        else if(s.contains("b"))
+            return
+                (long)Long.parseLong(s.substring(0, s.indexOf("b",0)));
+        else if(s.contains("K"))
+            return 1024*
+                (long)Long.parseLong(s.substring(0, s.indexOf("K",0)));
+        else if(s.contains("k"))
+            return 1024*
+                (long)Long.parseLong(s.substring(0, s.indexOf("k",0)));
+        else if(s.contains("M"))
+            return 1024*1024*
+                (long)Long.parseLong(s.substring(0, s.indexOf("M",0)));
+        else if(s.contains("m"))
+            return 1024*1024*
+                (long)Long.parseLong(s.substring(0, s.indexOf("m",0)));
+        else if(s.contains("G"))
+            return 1024*1024*1024*
+                (long)Long.parseLong(s.substring(0, s.indexOf("G",0)));
+        else if(s.contains("g"))
+            return 1024*1024*1024*
+                (long)Long.parseLong(s.substring(0, s.indexOf("g",0)));
+        else
+        {
+            System.out.print(
+                "\n\n" +
+                "ERROR: value from config file is not valid.\n" +
+                "DETAILED ERROR:\n" +
+                "   value 'Log_file_max_size' is not valid!\n" +
+                "   'Log_file_max_size' is set to: '" + config_value + "'\n" +
+                "   should be be set to something like:\n" +
+                "       -100B/100b or 100 Byte     for 100 Bytes\n"     +
+                "       -100K/100k or 100 Kilobyte for 100 Kilobytes\n" +
+                "       -100M/100m or 100 Megabyte for 100 Megabytes\n" +
+                "       -100G/100g or 100 Gigabyte for 100 Gigabytes\n" +
+                "   as expected the size can vary.\n\n"
+            );
+            System.exit(0);
+            return -1;
+        }
     }
 
     /**
@@ -252,6 +289,10 @@ public class Logger
 
             /* go up 1 line and print out the message + the ratio in % */
             System.out.print("]\033[F" + message + " " + percentage + "%[");
+            //System.out.print("\r" + message + " " + percentage + "%[");
+            //for(int i = 0; i < 62; i++)
+            //    System.out.print("\b");
+            //System.out.print(message + " " + percentage + "%[");
 
             /* print out the actual bar */
             int i;
@@ -261,6 +302,8 @@ public class Logger
                 System.out.print(" ");
 
             System.out.print("]\n");
+            //System.out.print("]");
+            //System.out.flush();
         }
     }
 

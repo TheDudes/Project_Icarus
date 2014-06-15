@@ -1,80 +1,89 @@
-+----------------------------------------------------------------------------+
-| +------------------------------------------------------------------------+ |
-| |                                TODO                                    | |
-| +------------------------------------------------------------------------+ |
-+----------------------------------------------------------------------------+
++-----------------------------------------------------------------------------+
+| +-------------------------------------------------------------------------+ |
+| |                                 TODO                                    | |
+| +-------------------------------------------------------------------------+ |
++-----------------------------------------------------------------------------+
 
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 all:
 
-       -> System.exit( 0 or 1? )
-       -> change ERROR messages on system exit
-       -> if there is a kill() with lbq, throw him a bone
-       -> add log.kill b4 System.exit to clean up
-       -> verbosity 0: error and startup
-                    1: PRINT messages, on terminal?
-                    2: init of objects?
-                    3: even more
-                    4: fucking everything
-[done] -> fix most of the warnings
-[done] -> get IO to work
-[done] -> get interpreter to run
-------------------------------------------------------------------------------
+        -> System.exit( 0 or 1? )
+        -> change ERROR messages on system exit
+        -> if there is a kill() with lbq, throw him a bone
+        -> add log.kill b4 System.exit to clean up
+        -> verbosity 0: error and startup
+                     1: PRINT messages, on terminal?
+                     2: init of objects?
+                     3: even more
+                     4: fucking everything
+[done]  -> fix most of the warnings
+[done]  -> get IO to work
+[done]  -> get interpreter to run
+-------------------------------------------------------------------------------
 linc:
 
-       -> add Log_keywords
-       -> add engine keywords
-       -> maybe source option for multiple files
-       -> config key - to show/hide values
-       -> update example_config
-[done] -> check for possible wrong values and print error
-------------------------------------------------------------------------------
+        -> add Log_keywords
+        -> add engine keywords
+        -> maybe source option for multiple files
+        -> config key - to show/hide values
+        -> update example_config
+[done]  -> check for possible wrong values and print error
+-------------------------------------------------------------------------------
+csb/linc:
+
+        -> kill()
+-------------------------------------------------------------------------------
+linc/tux:
+
+        -> lib feature maybe
+        -> fix all warnings
+-------------------------------------------------------------------------------
 tux:
 
-       -> String " ... " implementation for PRINT function
-       -> fix exception throwing
-       -> fix but with replacing true on for loop
-       -> log key parser parser
-       -> log key buggy (no [], parser mergefiles or something like that
-       -> add newlines to ur ERROR messages. double newline on end
-[done] -> implement case
-[done] -> fix case on ELSE or END_CASE
-[done] -> implement functions
-[done] -> implement new log
-[done] -> implement Error
-------------------------------------------------------------------------------
+        -> String " ... " implementation for PRINT function
+        -> fix exception throwing
+        -> fix but with replacing true on for loop
+        -> log key parser parser
+        -> log key buggy (no [], parser mergefiles or something like that
+        -> add newlines to ur ERROR messages. double newline on end
+[done]  -> implement case
+[done]  -> fix case on ELSE or END_CASE
+[done]  -> implement functions
+[done]  -> implement new log
+[done]  -> implement Error
+-------------------------------------------------------------------------------
 d4ryus:
 
-       -> add something like a "goto exit" to cleanup all threads
-       -> implement Mhz
-       -> fixme on Exceptions which are thrown by parser
-       -> check how function returning works
-       -> create error message, then print
-       -> make list of stuff we can do now
-       -> make list of stuff we cannot do
-[done] -> functions with return value
-[done] -> string "" implementation for PRINT method
-[done] -> implement ERROR messages
-[done] -> fix error message on Engine code
-[done] -> remove unused branches
-[done] -> move not need files from branches up to root branch
-[done] -> fix all warnings
-[done] -> fix all imports to be in the same order
-[done] -> add log.exit to all system.exit
-[done] -> fix statusbar now showing 100%
-[done] -> make list of all warnings
-[meet] -> try out new logging method
-------------------------------------------------------------------------------
-doing:
+        -> add something like a "goto exit" to cleanup all threads
+        -> implement Mhz
+        -> fixme on Exceptions which are thrown by parser
+        -> check how function returning works
+        -> create error message, then print
+        -> make list of stuff we can do now
+        -> make list of stuff we cannot do
+[done]  -> add error message to log
+[done]  -> functions with return value
+[done]  -> string "" implementation for PRINT method
+[done]  -> implement ERROR messages
+[done]  -> fix error message on Engine code
+[done]  -> remove unused branches
+[done]  -> move not need files from branches up to root branch
+[done]  -> fix all warnings
+[done]  -> fix all imports to be in the same order
+[done]  -> add log.exit to all system.exit
+[done]  -> fix statusbar now showing 100%
+[done]  -> make list of all warnings
+[meet]  -> try out new logging method
+-------------------------------------------------------------------------------
+else:
 
-       -> fix all warnings
-[done] -> change all logs to non deprecated version!
-------------------------------------------------------------------------------
+[done]  -> change all logs to non deprecated version!
+-------------------------------------------------------------------------------
 
 
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 just information from here:
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 function-declaration------------
 FUNCTION [name] : [type of return value]
     VAR
@@ -102,4 +111,4 @@ FUNCTION SIMPLE_FUN : REAL
     SIMPLE_FUN := A*B/C;
 END_FUNCTION
 end-example-function------------
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
