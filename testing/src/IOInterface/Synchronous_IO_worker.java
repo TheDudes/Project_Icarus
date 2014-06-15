@@ -71,6 +71,9 @@ public class Synchronous_IO_worker implements Runnable {
             PacketReader packetReader = new PacketReader(inFromServer);
             while (alive) {
                 ioPackage = lbq.take();
+                if (ioPackage.byte_address.equals("Fake")) {
+                    break;
+                }
                 logWriter.log(3, key, "IO_Package received.", " Device ID: ", ioPackage.byte_address, " Pin ID: ", ioPackage.pin_id, " New Value: ", Byte.toString(ioPackage.value), "\n");
 
                 if (ioPackage.to_poll == true) {
@@ -93,13 +96,12 @@ public class Synchronous_IO_worker implements Runnable {
                     logWriter.log(0, key, "Succesfully", pollOrWrite, "\n");
                 }
             }
-           
+
             inFromServer.close();
-           
+
             outToServer.close();
-            
+
             client.close();
-           
 
         } catch (IOException e) {
             logWriter.log(0, key,
@@ -194,5 +196,7 @@ public class Synchronous_IO_worker implements Runnable {
     public void kill() {
         logWriter.log(1, key, "Triggered kill() in SyncedWorkerThread\n");
         alive = false;
+        IO_Package fakePackage = new IO_Package("Fake", "Fake", rwFlag, 'I', true);
+        lbq.add(fakePackage);
     }
 }
