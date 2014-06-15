@@ -42,7 +42,7 @@ public class SynchronousIO{
         this.logger = logger;
        logger.log(0, logKey, "trying to establish a connection to the IO Manager\n");
        try{
-           
+
             logger.log(0, logKey, "established the connection to the IO Manager\n");
             logger.log(4, logKey, "creating the workers\n");
             syncWorker = new Synchronous_IO_worker(logger, infoColl, confReader);
@@ -74,13 +74,13 @@ public class SynchronousIO{
     }
 
     /**
-    * calls the kill functions of the two workers so they stop, this should also close all of their 
+    * calls the kill functions of the two workers so they stop, this should also close all of their
     * resources, as well as those in the SynchronousIO themselves (although there are none atm)
     */
     public void kill(){
         logger.log(0, logKey, "exiting IO \n");
         syncWorker.kill();
-        asyncWorker.kill();
+        //asyncWorker.kill();
     }
 
 }
