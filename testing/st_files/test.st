@@ -8,18 +8,17 @@ VAR
     test       : INT  : = 133;
     test2      : INT  : = 4432;
 END_VAR
-(*
-FOR hihihi := 0 TO 50 BY 1 DO
+
+FOR hihihi := 0 TO 30 BY 1 DO
     FOR asdf:=0 TO 100 BY 1 DO
         PRINT("inner_loop="asdf);
     END_FOR
     IF blah = 3 THEN
        PRINT("outter_loop_if_true="hihihi);
     ELSE
-       PRINT("outter_loop_else="hohoho);
+       PRINT("outter_loop_else="asdf);
     END_IF
 END_FOR
-*)
 PRINT("between="blub);
 PRINT("between="test);
 PRINT("between="test2);
