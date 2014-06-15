@@ -78,8 +78,6 @@ public class Synchronous_IO_worker implements Runnable {
 
                 if (ioPackage.to_poll == true) {
 
-                    rwFlag = 11;
-                    pollOrWrite = " initialized IO Package for polling";
                     polling_init(packetWriter);
                     packetWriter.flush();
                     logWriter.log(3, key, "Wrote IO_Packet with Device ID: ", ioPackage.byte_address, " to the IO Manager for Polling \n");
@@ -156,7 +154,7 @@ public class Synchronous_IO_worker implements Runnable {
     private void polling_init(PacketWriter packetWriter) throws IOException {
         rwFlag = 11;
         pollOrWrite = " initialized IO Package for polling";
-        logWriter.log(0, key, ioPackage.byte_address, "\t", Integer.toString(ioPackage.value), "\n");
+      //  logWriter.log(0, key, ioPackage.byte_address, "\t", Integer.toString(ioPackage.value), "\n");
         if (ioPackage.pin_id == null) {
             IO_Packet ioPacket = new IO_Packet(new Integer(ioPackage.byte_address), namespaceID, count, rwFlag, ioPackage.value);
             packetWriter.write(ioPacket);
