@@ -28,7 +28,7 @@ public class ASynchronous_IO_Worker implements Runnable{
         sSocket = aSyncSocket;
         serverPort = sSocket.getLocalPort();
         serverAddress = sSocket.getInetAddress();
-        logger.log(1, logKey, "contructor done\n");
+        logger.log(1, logKey, "constructor done\n");
     }
 
     @Override
@@ -75,9 +75,9 @@ public class ASynchronous_IO_Worker implements Runnable{
     * so we create a connection to the server and close it again
     */
     public void kill(){
-        logger.log(0, logKey, "called the kill method\n");
+        logger.log(1, logKey, "called the kill method\n");
         alive = false;
-        logger.log(0, logKey, "set the alive flag to false\n");
+        logger.log(1, logKey, "set the alive flag to false\n");
         try{
             Socket closeSocket = new Socket(serverAddress, serverPort);
             closeSocket.close();
