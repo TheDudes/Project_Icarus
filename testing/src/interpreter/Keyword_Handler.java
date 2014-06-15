@@ -510,11 +510,10 @@ public class Keyword_Handler
             long sleep_time = max_time - time_it_took;
             log.log(0, log_key, "in takt! time: ",
                                     new Long(time_it_took).toString(), "ms, sleep: ",
-                                    new Long(sleep_time).toString(), "ms... ");
+                                    new Long(sleep_time).toString(), "ms... \n");
             try
             {
                 TimeUnit.MILLISECONDS.sleep(sleep_time);
-                log.log(0, log_key, "me back! lets go for another round\n");
             }
             catch(InterruptedException e)
             {
