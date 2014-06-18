@@ -36,17 +36,14 @@ import java.util.Properties;
  */
 public class Main
 {
-    final static String log_key = " [main]: ";
-          static String config_path;
-          static String hostname;
-          static String code;
+    final private static String log_key = " [main]: ";
 
-          static Config_Reader   config;
-          static Logger          log;
-          static ParserContainer container;
-          static Interpreter     interpreter;
-          static SynchronousIO   io;
-          static Properties      propertie;
+          private static Config_Reader   config      = null;
+          private static Logger          log         = null;
+          private static ParserContainer container   = null;
+          private static Interpreter     interpreter = null;
+          private static SynchronousIO   io          = null;
+          private static Properties      propertie;
     /**
      * main funcion which will start Icarus
      * @param args not used yet
@@ -68,7 +65,7 @@ public class Main
 
         log.log(0, log_key, "starting Icarus.\n");
 
-        code = container.get_all_the_code().toString();
+        String code = container.get_all_the_code().toString();
 
         for(int i = 0; i < 20; i++ )
             interpreter.interpret(code, 0, code.length());
@@ -90,6 +87,7 @@ public class Main
      */
     public static void exit()
     {
+        if(io != null)
         {
             log.log(0, log_key, "killing io.\n");
             io.kill();
