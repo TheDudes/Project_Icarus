@@ -34,13 +34,13 @@ linc/tux:
 -------------------------------------------------------------------------------
 tux:
 
+[ !! ]  -> log key parser parser
+[ !! ]  -> log key buggy (no [], parser mergefiles or something like that
+[ !! ]  -> exception handling
         -> String " ... " implementation for PRINT function
         -> fix exception throwing
         -> fix but with replacing true on for loop
-[ !! ]  -> log key parser parser
-[ !! ]  -> log key buggy (no [], parser mergefiles or something like that
         -> add newlines to ur ERROR messages. double newline on end
-[ !! ]  -> exception handling
 [done]  -> implement case
 [done]  -> fix case on ELSE or END_CASE
 [done]  -> implement functions
@@ -50,12 +50,15 @@ tux:
 d4ryus:
 
 [ !! ]  -> fixme on Exceptions which are thrown by parser
+[ !! ]  -> fixme/Exception handling
+[ !! ]  -> configureable takt sleep +/-
+[ !! ]  -> awesome print functions with "info dump"
+[ !! ]  -> awesome status print of average takt after 1/5/10 min etc
+[ !! ]  -> awesome print function of a value that changed to be nsa 2.0
         -> check how function returning works
         -> create error message, then print
         -> make list of stuff we can do now
         -> make list of stuff we cannot do
-[ !! ]  -> fixme/Exception handling
-[ !! ]  -> configureable takt sleep +/-
 [done]  -> add something like a "goto exit" to cleanup all threads
 [done]  -> change log keys
 [done]  -> implement takt_frequency
