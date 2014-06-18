@@ -36,7 +36,7 @@ import java.util.concurrent.*;
  */
 public class Keyword_Handler
 {
-    final private String                log_key = " [Interpreter-Keyword_Handler]: ";
+    final private String                log_key = " [Keyword_Handler]: ";
     final private ParserContainer       container;
     final private Engine                engine;
     final private Logger                log;

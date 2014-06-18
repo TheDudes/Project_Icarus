@@ -49,6 +49,7 @@ tux:
         -> log key parser parser
         -> log key buggy (no [], parser mergefiles or something like that
         -> add newlines to ur ERROR messages. double newline on end
+        -> exception handling
 [done]  -> implement case
 [done]  -> fix case on ELSE or END_CASE
 [done]  -> implement functions
@@ -63,6 +64,9 @@ d4ryus:
         -> create error message, then print
         -> make list of stuff we can do now
         -> make list of stuff we cannot do
+        -> fixme/Exception handling
+        -> configureable takt sleep +/-
+[done]  -> change log keys
 [done]  -> implement takt_frequency
 [done]  -> fix bug with only one log file
 [done]  -> fix engine warmup count

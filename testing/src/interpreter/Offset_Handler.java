@@ -31,7 +31,7 @@ import logger.*;
  */
 public class Offset_Handler
 {
-    final private String    log_key = " [Interpreter-Offset]: ";
+    final private String    log_key = " [Offset_Handler]: ";
     final private Logger log;
 
     /**
