@@ -7,12 +7,7 @@
 -------------------------------------------------------------------------------
 all:
 
-        -> System.exit( 0 or 1? )
-        -> verbosity 0: error and startup
-                     1: PRINT messages, on terminal?
-                     2: init of objects?
-                     3: even more
-                     4: fucking everything
+[ !! ]  -> import Icarus.Main;  ->  Main.exit();
 [done]  -> fix most of the warnings
 [done]  -> get interpreter to run
 -------------------------------------------------------------------------------
@@ -22,13 +17,13 @@ linc:
         -> add engine keywords
         -> maybe source option for multiple files
         -> config key - to show/hide values
-        -> update example_config
+[ !! ]  -> update example_config
 [done]  -> check for possible wrong values and print error
 -------------------------------------------------------------------------------
 csb/linc:
 
-        -> kill()
-        -> change ERROR messages on system exit
+[ !! ]  -> kill()
+[ !! ]  -> change ERROR messages on system exit
         -> if there is a kill() with lbq/socket, throw him a bone
 [done]  -> get IO to work
 -------------------------------------------------------------------------------
@@ -37,19 +32,15 @@ linc/tux:
         -> lib feature maybe
         -> fix all warnings
 -------------------------------------------------------------------------------
-linc/tux/csb:
-
-        -> add log.kill b4 System.exit to clean up
--------------------------------------------------------------------------------
 tux:
 
         -> String " ... " implementation for PRINT function
         -> fix exception throwing
         -> fix but with replacing true on for loop
-        -> log key parser parser
-        -> log key buggy (no [], parser mergefiles or something like that
+[ !! ]  -> log key parser parser
+[ !! ]  -> log key buggy (no [], parser mergefiles or something like that
         -> add newlines to ur ERROR messages. double newline on end
-        -> exception handling
+[ !! ]  -> exception handling
 [done]  -> implement case
 [done]  -> fix case on ELSE or END_CASE
 [done]  -> implement functions
@@ -58,14 +49,14 @@ tux:
 -------------------------------------------------------------------------------
 d4ryus:
 
-        -> add something like a "goto exit" to cleanup all threads
-        -> fixme on Exceptions which are thrown by parser
+[ !! ]  -> fixme on Exceptions which are thrown by parser
         -> check how function returning works
         -> create error message, then print
         -> make list of stuff we can do now
         -> make list of stuff we cannot do
-        -> fixme/Exception handling
-        -> configureable takt sleep +/-
+[ !! ]  -> fixme/Exception handling
+[ !! ]  -> configureable takt sleep +/-
+[done]  -> add something like a "goto exit" to cleanup all threads
 [done]  -> change log keys
 [done]  -> implement takt_frequency
 [done]  -> fix bug with only one log file
@@ -91,6 +82,11 @@ d4ryus:
 -------------------------------------------------------------------------------
 else:
 
+        -> verbosity 0: error and startup
+                     1: PRINT messages, on terminal?
+                     2: init of objects?
+                     3: even more
+                     4: fucking everything
 [done]  -> change all logs to non deprecated version!
 -------------------------------------------------------------------------------
 

@@ -19,6 +19,7 @@
 
 package interpreter;
 
+import Icarus.Main;
 import logger.*;
 import config.*;
 
@@ -143,8 +144,7 @@ public class Engine
                 "DETAILED ERROR: Engine.java ScriptException\n",
                 "   could not evaluate: '", condition, "'\n\n"
             );
-            log.kill();
-            System.exit(1);
+            Main.exit();
         }
         catch(NullPointerException e)
         {
@@ -154,8 +154,7 @@ public class Engine
                 "DETAILED ERROR: Engine.java NullPointerException\n",
                 "   could not evaluate: '", condition, "'\n\n"
             );
-            log.kill();
-            System.exit(1);
+            Main.exit();
         }
         log.log(4,  log_key, "return_engine_eval with: ", condition, "\n");
         return obj;

@@ -19,6 +19,7 @@
 
 package logger;
 
+import Icarus.Main;
 import config.*;
 
 import java.text.SimpleDateFormat;
@@ -165,8 +166,7 @@ public class Logger
                 "DETAILED ERROR:\n" +
                 "   was not able to rotate the logfiles, maybe path wrong/not created?\n\n"
             );
-            kill();
-            System.exit(1);
+            Main.exit();
         }
     }
 
@@ -241,7 +241,7 @@ public class Logger
                 "       -100G/100g or 100 Gigabyte for 100 Gigabytes\n" +
                 "   as expected the size can vary.\n\n"
             );
-            System.exit(0);
+            Main.exit();
             return -1;
         }
     }
@@ -412,13 +412,13 @@ public class Logger
             {
                 System.out.println("LogWriter: Could not open/write/create log file at path: " + path_to_log_file);
                 System.out.println("LogWriter: IOException: " + e);
-                System.exit(1);
+                Main.exit();
             }
             catch (InterruptedException ex)
             {
                 System.out.println("LogWriter: Could not take Log message from Linked Blocking Queue");
                 System.out.println("LogWriter: InterruptedException: " + ex);
-                System.exit(1);
+                Main.exit();
             }
         }
     }

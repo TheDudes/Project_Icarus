@@ -21,6 +21,9 @@ package interpreter;
 
 import logger.*;
 import parser.*;
+
+import Icarus.Main;
+
 import config.*;
 
 import java.util.Stack;
@@ -524,8 +527,7 @@ public class Keyword_Handler
                     "   everything went good, i went faster as i should,\n",
                     "   so i went for a short nap, but suddenly i got interrupted :(\n\n"
                 );
-                log.kill();
-                System.exit(1);
+                Main.exit();
             }
         }
 
@@ -669,8 +671,7 @@ public class Keyword_Handler
                 "DETAILED ERROR:\n",
                 "   could not evaluate: '", function_name, "'\n\n"
             );
-            log.kill();
-            System.exit(0);
+            Main.exit();
         }
 
         INDEX = semicolon_position;

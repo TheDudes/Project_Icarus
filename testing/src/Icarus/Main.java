@@ -84,4 +84,22 @@ public class Main
         System.out.println("Staring Icarus Structure Text Interpreter!");
         System.out.println("verion: 0.85 (Alpha! but pretty close to beta now)");
     }
+
+    /**
+     * exit function to exit Icarus and kill all threads
+     */
+    public static void exit()
+    {
+        {
+            log.log(0, log_key, "killing io.\n");
+            io.kill();
+        }
+        if(log != null)
+        {
+            log.log(0, log_key, "killing log.\n");
+            log.kill();
+        }
+        System.out.print("exiting this awesome interpreter\n");
+        System.exit(1);
+    }
 }
