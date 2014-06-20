@@ -50,8 +50,10 @@ public class Keyword_Handler
     final private Stack<String>         context_stack;
     final private Stack<Boolean>        if_stack;
     final private Stack<Integer>        if_position_stack;
+
           private long                  start_time;
     final private long                  max_time;
+    final private boolean               show_PRINT;
 
     /**
      * @param container used ParserContainer object
@@ -67,7 +69,8 @@ public class Keyword_Handler
         this.log         = log;
         this.interpreter = interpreter;
 
-        max_time = (long)((1000 / (config.get_int("takt_frequency", 1, 1000))) + 0.5);
+        max_time   = (long)((1000 / (config.get_int("takt_frequency", 1, 1000))) + 0.5);
+        show_PRINT = config.get_boolean("show_PRINT");
 
         engine = new Engine(log, config);
         offset = new Offset_Handler(log);
@@ -405,6 +408,8 @@ public class Keyword_Handler
         String final_string = "";
         String eval = null;
         boolean flag = false;
+
+        /* for loop to concat and evaluate the PRINT string */
         for(int i = INDEX + 6; i < code.length(); i++)
         {
             if(    (code.charAt(i)     == ')')
@@ -463,6 +468,9 @@ public class Keyword_Handler
                     eval += code.charAt(i);
             }
         }
+
+        if(show_PRINT)
+            System.out.println(final_string + "\n");
 
         log.log(1, " [PRINT]: ", final_string, "\n");
 
