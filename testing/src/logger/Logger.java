@@ -313,31 +313,6 @@ public class Logger
     }
 
     /**
-     * @param key message key
-     * @param msgVerboseLevel  incomming message verbosity
-     * @param logMessage log message
-     * @deprecated
-     */
-    public void log(String key, int msgVerboseLevel, String logMessage)
-    {
-        if (( msgVerboseLevel == 0 ) && !silent )
-        {
-            System.out.println(logMessage);
-            String deprecated[] = {" [deprecated] ", ""};
-            deprecated[1] = ("[" + key
-                           + "]: " + logMessage + "\n");
-            queue.offer(deprecated);
-        }
-        else if ( msgVerboseLevel <= this.verboseLevel )
-        {
-            String deprecated[] = {" [deprecated] ", ""};
-            deprecated[1] = ("[" + key
-                           + "]: " + logMessage + "\n");
-            queue.offer(deprecated);
-        }
-    }
-
-    /**
      * kill will stop the logging thread
      */
     public void kill()
@@ -390,13 +365,13 @@ public class Logger
                     {
                         queue_size = queue.size();
                         if (queue_size < 10)
-                            message = "   " + queue.size() + "| " + message;
+                            message = "   " + queue_size + "| " + message;
                         else if (queue_size < 100)
-                            message = "  " + queue.size() + "| " + message;
+                            message = "  " + queue_size + "| " + message;
                         else if (queue_size < 1000)
-                            message = " " + queue.size() + "| " + message;
+                            message = " " + queue_size + "| " + message;
                         else
-                            message = queue.size() + "| " + message;
+                            message = queue_size + "| " + message;
                         file_writer.write(message);
                         file_writer.flush();
                     }

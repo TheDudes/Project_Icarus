@@ -214,7 +214,7 @@ public class Config_Reader {
      */
     public int get_int(String key) throws ClassCastException{
         if(logWriterInit){
-            logWriter.log(4, logKey, "jumping in get_int with key" , key, "\n");
+            logWriter.log(4, logKey, "jumping in get_int with key " , key, "\n");
         }
         int toReturn;
         if(container.containsKey(key)){
@@ -248,7 +248,7 @@ public class Config_Reader {
     public int get_int(String key, int min, int max)
     {
         if(logWriterInit){
-            logWriter.log(4, logKey, "jumping in get_int with key" , key, "\n");
+            logWriter.log(4, logKey, "jumping in get_int with key " , key, "\n");
         }
         int toReturn;
         if(container.containsKey(key)){

@@ -62,6 +62,7 @@ d4ryus:
         -> create error message, then print
         -> make list of stuff we can do now
         -> make list of stuff we cannot do
+[done]  -> fix bug with queue size not displaying right
 [done]  -> add something like a "goto exit" to cleanup all threads
 [done]  -> change log keys
 [done]  -> implement takt_frequency
