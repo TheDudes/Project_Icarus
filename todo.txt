@@ -7,7 +7,7 @@
 -------------------------------------------------------------------------------
 all:
 
-[ !! ]  -> import Icarus.Main;  ->  Main.exit();
+[ !! ]  -> import Icarus.Main;  ->  log.message -> Main.exit();
 [done]  -> fix most of the warnings
 [done]  -> get interpreter to run
 -------------------------------------------------------------------------------
@@ -34,12 +34,13 @@ linc/tux:
 -------------------------------------------------------------------------------
 tux:
 
-[ !! ]  -> log key parser parser
-[ !! ]  -> log key buggy (no [], parser mergefiles or something like that
+[ !! ]  -> log bug: called parser-ParserContainer
+[ !! ]  -> log bug: no ' []: ' on parser-MergeFiles (verb. lvl 4)
 [ !! ]  -> exception handling
         -> String " ... " implementation for PRINT function
+        -> String implementation for values
         -> fix exception throwing
-        -> fix but with replacing true on for loop
+        -> fix bug with replacing true on for loop
         -> add newlines to ur ERROR messages. double newline on end
 [done]  -> implement case
 [done]  -> fix case on ELSE or END_CASE
@@ -55,6 +56,8 @@ d4ryus:
 [ !! ]  -> awesome print functions with "info dump"
 [ !! ]  -> awesome status print of average takt after 1/5/10 min etc
 [ !! ]  -> awesome print function of a value that changed to be nsa 2.0
+[ !! ]  -> specify Hz Hertz MHz MegaHertz KHz and KiloHertz, also ms.
+[ !! ]  -> flag for print function to print on stdio
         -> check how function returning works
         -> create error message, then print
         -> make list of stuff we can do now
