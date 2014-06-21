@@ -60,6 +60,7 @@ d4ryus:
 [ !! ]  -> awesome print functions with "info dump"
 [ !! ]  -> awesome status print of average takt after 1/5/10 min etc
 [ !! ]  -> awesome print function of a value that changed to be nsa 2.0
+[ !! ]  -> list of config keys with their possible values
         -> check how function returning works
         -> create error message, then print
         -> make list of stuff we can do now
