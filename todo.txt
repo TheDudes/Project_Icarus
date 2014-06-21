@@ -13,6 +13,10 @@ all:
 -------------------------------------------------------------------------------
 linc:
 
+[ !! ]  -> takt_frequenzy is string now
+[ !! ]  -> if new_takt_frequenzy is set to number only, cast exception on
+           get_string() function from config_Reader (integer cannot be casted
+           to java.lang.string, or something like that)
         -> add Log_keywords
         -> add engine keywords
         -> maybe source option for multiple files
@@ -56,11 +60,12 @@ d4ryus:
 [ !! ]  -> awesome print functions with "info dump"
 [ !! ]  -> awesome status print of average takt after 1/5/10 min etc
 [ !! ]  -> awesome print function of a value that changed to be nsa 2.0
-[ !! ]  -> specify Hz Hertz MHz MegaHertz KHz and KiloHertz, also ms.
         -> check how function returning works
         -> create error message, then print
         -> make list of stuff we can do now
         -> make list of stuff we cannot do
+[done]  -> specify Hz Hertz MHz MegaHertz KHz and KiloHertz, also ms. (well its
+           hz/Hz and ms now, since Mega and Kilo makes no sense.
 [done]  -> flag for print function to print on stdio
 [done]  -> fix bug with queue size not displaying right
 [done]  -> add something like a "goto exit" to cleanup all threads

@@ -69,7 +69,7 @@ public class Keyword_Handler
         this.log         = log;
         this.interpreter = interpreter;
 
-        max_time   = (long)((1000 / (config.get_int("takt_frequency", 1, 1000))) + 0.5);
+        max_time   = set_time(config.get_string("new_takt_frequenzy"));
         show_PRINT = config.get_boolean("show_PRINT");
 
         engine = new Engine(log, config);
@@ -83,6 +83,55 @@ public class Keyword_Handler
         log.log(2, log_key, "init stacks done.\n");
 
         log.log(2, log_key, "init Keyword_Handler done.\n");
+    }
+
+    private long set_time(String config_value)
+    {
+        String value = "0";
+        String identifier = "";
+        long time = 0;
+
+        /* loop to split string into value and identifier */
+        for (int i = 0; i < config_value.length(); i++)
+        {
+            if(    (config_value.charAt(i) >= '0')
+                && (config_value.charAt(i) <= '9') )
+            {
+                value += config_value.charAt(i);
+                continue;
+            }
+            identifier = config_value.substring(i, config_value.length());
+            time       = (long)Long.parseLong(value);
+            break;
+        }
+
+        if(identifier.equals("ms") || (identifier.length() == 0))
+        {
+            log.log(3, log_key, "calculated clock time: ", new Long(time).toString(), "ms\n");
+        }
+        else if(identifier.equals("Hz")  || identifier.equals("hz") )
+        {
+            time = (long)((1000 / time) + 0.5);
+            log.log(3, log_key, "calculated clock time: ", new Long(time).toString(), "ms\n");
+        }
+        else
+        {
+            log.log(0, log_key,
+                "\n\n" +
+                "ERROR: value from config file is not valid.\n" +
+                "DETAILED ERROR:\n" +
+                "   value 'takt_frequenzy' is not valid!\n" +
+                "   'takt_frequenzy' is set to: '" + config_value + "'\n" +
+                "   should be be set to something like:\n" +
+                "       -100ms          for 100 milliseconds\n"     +
+                "       -50hz  or 50Hz  for 50 Hertz\n" +
+                "       -0 if interpreter should evaluate without frequenzy.\n" +
+                "   as expected the size can vary.\n" +
+                "note: if no identifier (ms/hz/Hz) is specified, value is read as ms.\n\n"
+            );
+            Main.exit();
+        }
+        return time;
     }
 
     /**
@@ -507,36 +556,44 @@ public class Keyword_Handler
         log.log(4, " [interpreter-end]: ", "end of Program Reached, Breaking for Loop, poping context_stack\n");
         context_stack.pop();
         INDEX += 10;
-        long time_it_took = System.currentTimeMillis() - start_time;
-        if(time_it_took > max_time)
+        if(max_time != 0)
         {
-            log.log(0, log_key, "couldn't keep up, took me:  ",
-                                    new Long(time_it_took).toString(), "ms, ",
-                                "max time: ",
-                                    new Long(max_time).toString(), "ms, ",
-                                "trying better next time!\n");
+            long time_it_took = System.currentTimeMillis() - start_time;
+            if(time_it_took > max_time)
+            {
+                log.log(0, log_key, "couldn't keep up, took me:  ",
+                                        new Long(time_it_took).toString(), "ms, ",
+                                    "max time: ",
+                                        new Long(max_time).toString(), "ms, ",
+                                    "trying better next time!\n");
+            }
+            else
+            {
+                long sleep_time = max_time - time_it_took;
+                log.log(0, log_key, "in takt! time: ",
+                                        new Long(time_it_took).toString(), "ms, sleep: ",
+                                        new Long(sleep_time).toString(), "ms... \n");
+                try
+                {
+                    TimeUnit.MILLISECONDS.sleep(sleep_time);
+                }
+                catch(InterruptedException e)
+                {
+                    log.log(0, log_key,
+                        "\n\n",
+                        "ERROR: interrupted on taktfrequenzy sleep!\n",
+                        "DETAILED ERROR:\n",
+                        "   everything went good, i went faster as i should,\n",
+                        "   so i went for a short nap, but suddenly i got interrupted :(\n\n"
+                    );
+                    Main.exit();
+                }
+            }
         }
         else
         {
-            long sleep_time = max_time - time_it_took;
-            log.log(0, log_key, "in takt! time: ",
-                                    new Long(time_it_took).toString(), "ms, sleep: ",
-                                    new Long(sleep_time).toString(), "ms... \n");
-            try
-            {
-                TimeUnit.MILLISECONDS.sleep(sleep_time);
-            }
-            catch(InterruptedException e)
-            {
-                log.log(0, log_key,
-                    "\n\n",
-                    "ERROR: interrupted on taktfrequenzy sleep!\n",
-                    "DETAILED ERROR:\n",
-                    "   everything went good, i went faster as i should,\n",
-                    "   so i went for a short nap, but suddenly i got interrupted :(\n\n"
-                );
-                Main.exit();
-            }
+            log.log(0, log_key, "time: ",
+                    new Long(System.currentTimeMillis() - start_time).toString(), "ms\n");
         }
 
         log.log(4, log_key, "return found_END_PROGRAM, INDEX = ", new Integer(INDEX).toString(), "\n");
