@@ -1,0 +1,214 @@
+path: path [string]
+
+    path to the folder which contains the structure text files. every file
+    inside that folder with an .st notation will be sourced, and interpreted
+
+    path: containing path to the folder.
+
+    default:
+
+    example: - ./
+             - /home/someone/icarus/st_files
+             - ./st_files/
+
+
+takt_frequenzy: time,type [long][string]
+
+    given takt frequenzy, the type specifies the type of the given number. if
+    no type is specified its set to ms.
+
+    time: between 0 and max long.
+
+    type: ms    -> milliseconds
+          hz/Hz -> Hertz
+
+    default:
+
+    examples: - 100ms    -> 100 milliseconds
+              -  10hz    ->  10 hertz
+              -   5Hz    ->   5 hertz
+              - 321      -> 321 milliseconds
+
+
+Log_file_path: path [string]
+
+    path to the logfile folder
+
+    path: containing path to logfile folder.
+
+    default:
+
+    example: - ./
+             - /home/someone/icarus/logs
+             - ./logs/
+
+
+Log_file_name: name [string]
+
+    the name of the latest logfile
+
+    name: given name as string
+
+    default:
+
+    examples: - icarus
+              - super_log_latest
+              - latest
+
+
+Log_file_backup: name [string]
+
+    the name of the other logfiles (not latest)
+
+    name: given name as string
+
+    default:
+
+    examples: - old
+              - not_latest_log
+
+
+Log_file_ending: ending [string]
+
+    ending of the logfiles
+
+    ending: string containing the ĺogfile ending
+
+    default:
+
+    examples: - .log
+              - .icarus.log
+              - .log.icarus
+
+
+Log_file_max_size: size,type [int][string]
+
+    maximum size of the latest logfile, until logfile rotation is triggered
+
+    size: given size as integer value
+
+    type: typeidentfier, possible: - b,  B,  byte,     Byte     ->    1  Byte
+                                   - kb, Kb, kilobyte, Kilobyte -> 1024  Bytes
+                                   - mb, Mb, megabyte, Megabyte -> 1024² Bytes
+                                   - gb, Gb, gigabyte, Gigabyte -> 1024³ Bytes
+
+    default:
+
+    examples: - 100b  ->     100  Bytes
+              -   3gb ->  3*1024³ Bytes  (3 Gigabyte)
+              -  20mb -> 20*1024² Bytes (20 Megabyte)
+              -  10kb -> 10*1024  Bytes (10 Kilobyte)
+
+Log_check_count: count [int]
+
+    this value specifies after how many lines the config file size is getting
+    checked
+
+    count: integer containing the actual count number,
+           min: 0, max: 1 000 000
+
+    default:
+
+    examples: -  10  -> check size every  10th line written
+              - 100  -> check size every 100th line written
+
+
+Log_max_files: amount [int]
+
+    maximum number of logfiles
+
+    amount: number between 0 (only latest log file) and 999 (latest + 999)
+
+    default:
+
+    examples: -  10 -> latest logfile + 10  "backup" logs
+              - 100 -> latest logfile + 100 "backup" logs
+
+
+silent: flag [boolean]
+
+    flag to switch if messages should be printed out to console
+
+    flag: could be either true to not print (and be silent), or false to print
+          to console
+
+    default:
+
+    examples: - true  -> no messages, silent.
+              - false -> messages, not silent.
+
+show_PRINT: flag [boolean]
+
+    flag to switch if PRINT messages from st code should be shown on console
+
+    flag: could be either true, to show messages, or false to not show them.
+
+    default:
+
+    examples: -
+
+
+verbosity_level: verbosity [int]
+
+    a value to specify how verbose the log messages are, a higher level stands
+    for an more verbose logging (more logs), a lower level for less logging.
+    this option is for debugging.
+
+    verbosity: - 0 -> just log important output/ERRORs (these messages are also
+                         printed to console if the silent flag is set to false)
+               - 1 -> be a bit more verbose, show some information (PRINT
+                         messages are also verbosity 1)
+               - 2 -> even more verbose, run times are verbosity 2 for example.
+               - 3 -> here starts a more debugging like output, not recommended
+                         for normal usage.
+               - 4 -> debug mode, log files are getting rly huge here.
+
+    default:
+
+    examples: -
+
+
+Engine_Warmup: flag [boolenan]
+
+    flag to set an Engine warmup at the beginning.
+
+    flag: could be either true, to do an warmup, or false, to not do one.
+
+    default:
+
+    examples: -
+
+
+Engine_show_bar: flag [boolean]
+
+    flag to switch engine warmup bar on and off
+
+    flag: true -> show, false -> dont show
+
+    defaut:
+
+    examples: -
+
+
+Engine_bar_width: width [integer]
+
+    the engine bar width can be customized to ur liking.
+
+    width: width min: 10, max: 500. width is given in characters.
+
+    default:
+
+    examples: -  10 -> show a bar with width of  10 characters
+              - 100 -> show a bar with width of 100 characters
+
+
+Engine_warmup_evaluations: count [integer]
+
+    specifies how many evaluations the Engine warmup should do
+
+    count: a number between 200 and 1 000 000(could take rly on on a arm cpu)
+
+    default:
+
+    examples: -  200 -> do  200 evaluations
+              - 2000 -> do 2000 evaluations

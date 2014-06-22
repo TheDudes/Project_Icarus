@@ -56,15 +56,14 @@ d4ryus:
 
 [ !! ]  -> fixme on Exceptions which are thrown by parser
 [ !! ]  -> fixme/Exception handling
-[ !! ]  -> configureable takt sleep +/-
 [ !! ]  -> awesome print functions with "info dump"
 [ !! ]  -> awesome status print of average takt after 1/5/10 min etc
 [ !! ]  -> awesome print function of a value that changed to be nsa 2.0
-[ !! ]  -> list of config keys with their possible values
         -> check how function returning works
         -> create error message, then print
         -> make list of stuff we can do now
         -> make list of stuff we cannot do
+[done]  -> list of config keys with their possible values
 [done]  -> specify Hz Hertz MHz MegaHertz KHz and KiloHertz, also ms. (well its
            hz/Hz and ms now, since Mega and Kilo makes no sense.
 [done]  -> flag for print function to print on stdio

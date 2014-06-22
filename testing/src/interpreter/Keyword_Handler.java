@@ -561,7 +561,7 @@ public class Keyword_Handler
             long time_it_took = System.currentTimeMillis() - start_time;
             if(time_it_took > max_time)
             {
-                log.log(0, log_key, "couldn't keep up, took me:  ",
+                log.log(2, log_key, "couldn't keep up, took me:  ",
                                         new Long(time_it_took).toString(), "ms, ",
                                     "max time: ",
                                         new Long(max_time).toString(), "ms, ",
@@ -570,7 +570,7 @@ public class Keyword_Handler
             else
             {
                 long sleep_time = max_time - time_it_took;
-                log.log(0, log_key, "in takt! time: ",
+                log.log(2, log_key, "in takt! time: ",
                                         new Long(time_it_took).toString(), "ms, sleep: ",
                                         new Long(sleep_time).toString(), "ms... \n");
                 try
