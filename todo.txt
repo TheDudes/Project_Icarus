@@ -11,6 +11,10 @@ all:
 [done]  -> fix most of the warnings
 [done]  -> get interpreter to run
 -------------------------------------------------------------------------------
+linc/tux/d4ryus:
+
+[ !! ]  -> go through all config values and set their default
+-------------------------------------------------------------------------------
 linc:
 
 [ !! ]  -> takt_frequenzy is string now

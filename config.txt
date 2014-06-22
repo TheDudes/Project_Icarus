@@ -99,6 +99,18 @@ Log_file_max_size: size,type [int][string]
               -  20mb -> 20*1024² Bytes (20 Megabyte)
               -  10kb -> 10*1024  Bytes (10 Kilobyte)
 
+
+Log_print_timestamp: flag [boolean]
+
+    flag to enable or disable timestamp in logfiles
+
+    flag: true if timestamp should be displayed, false if not
+
+    default:
+
+    examples: -
+
+
 Log_check_count: count [int]
 
     this value specifies after how many lines the config file size is getting
