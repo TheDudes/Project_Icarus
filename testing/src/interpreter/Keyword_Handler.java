@@ -52,7 +52,7 @@ public class Keyword_Handler
     final private Stack<Integer>        if_position_stack;
 
           private long                  start_time;
-    final private long                  max_time;
+    final private long                  clock_time;
     final private boolean               show_PRINT;
 
     /**
@@ -69,7 +69,7 @@ public class Keyword_Handler
         this.log         = log;
         this.interpreter = interpreter;
 
-        max_time   = set_time(config.get_string("new_takt_frequenzy"));
+        clock_time   = set_clock_time(config.get_string("new_takt_frequenzy"));
         show_PRINT = config.get_boolean("show_PRINT");
 
         engine = new Engine(log, config);
@@ -85,7 +85,12 @@ public class Keyword_Handler
         log.log(2, log_key, "init Keyword_Handler done.\n");
     }
 
-    private long set_time(String config_value)
+    /**
+     * this functions returns the calculated clock_time from the given string
+     * @param config_value string from config file
+     * @return calculated clock_time in ms
+     */
+    private long set_clock_time(String config_value)
     {
         String value = "0";
         String identifier = "";
@@ -556,20 +561,20 @@ public class Keyword_Handler
         log.log(4, " [interpreter-end]: ", "end of Program Reached, Breaking for Loop, poping context_stack\n");
         context_stack.pop();
         INDEX += 10;
-        if(max_time != 0)
+        if(clock_time != 0)
         {
             long time_it_took = System.currentTimeMillis() - start_time;
-            if(time_it_took > max_time)
+            if(time_it_took > clock_time)
             {
                 log.log(2, log_key, "couldn't keep up, took me:  ",
                                         new Long(time_it_took).toString(), "ms, ",
                                     "max time: ",
-                                        new Long(max_time).toString(), "ms, ",
+                                        new Long(clock_time).toString(), "ms, ",
                                     "trying better next time!\n");
             }
             else
             {
-                long sleep_time = max_time - time_it_took;
+                long sleep_time = clock_time - time_it_took;
                 log.log(2, log_key, "in takt! time: ",
                                         new Long(time_it_took).toString(), "ms, sleep: ",
                                         new Long(sleep_time).toString(), "ms... \n");
