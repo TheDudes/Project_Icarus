@@ -63,6 +63,7 @@ d4ryus:
         -> create error message, then print
         -> make list of stuff we can do now
         -> make list of stuff we cannot do
+[done]  -> remove timestamp on logfiles, just print one on startup
 [done]  -> list of config keys with their possible values
 [done]  -> specify Hz Hertz MHz MegaHertz KHz and KiloHertz, also ms. (well its
            hz/Hz and ms now, since Mega and Kilo makes no sense.

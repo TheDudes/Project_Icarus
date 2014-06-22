@@ -72,7 +72,7 @@ Log_file_ending: ending [string]
 
     ending of the logfiles
 
-    ending: string containing the ĺogfile ending
+    ending: string containing the logfile ending
 
     default:
 

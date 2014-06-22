@@ -44,18 +44,22 @@ public class Logger
                           queue = new LinkedBlockingQueue<>(8192);
     final private SimpleDateFormat
                           sdf   = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss");
+
+    /* values from config file */
+    final private boolean silent;
+    final private boolean print_timestamp;
+    final private int     verboseLevel;
+    final private int     max_backup_files;
+    final private int     log_check_count;
     final private String  log_file_name;
     final private String  log_file_backup;
     final private String  log_file_ending;
-    final private String  log_key = " [Logger]: ";
-    final private long    log_file_max_size;
-    final private int     log_check_count;
-          private String  log_file_path;
           private String  path_to_log_file;
-    final private boolean silent;
+    final private long    log_file_max_size;
+
+          private String  log_file_path;
+    final private String  log_key = " [Logger]: ";
     final private Thread  thread;
-    final private int     verboseLevel;
-    final private int     max_backup_files;
           private boolean alive = true;
           private int     percentage_before = 0;
 
@@ -65,14 +69,15 @@ public class Logger
      */
     public Logger(Config_Reader config)
     {
-        verboseLevel      = config.get_int("verbosity_level", 0, 4);
-        silent            = config.get_boolean("silent");
-        max_backup_files  = config.get_int("Log_max_files", 0, 999);
-        log_file_name     = config.get_string("Log_file_name");
-        log_file_backup   = config.get_string("Log_file_backup");
-        log_file_ending   = config.get_string("Log_file_ending");
-        log_file_path     = config.get_string("Log_file_path");
-        log_check_count   = config.get_int("Log_check_count", 0, 1000000);
+        silent            = config.get_boolean( "silent"                     );
+        print_timestamp   = config.get_boolean( "Log_print_timestamp"        );
+        verboseLevel      = config.get_int    ( "verbosity_level", 0, 4      );
+        max_backup_files  = config.get_int    ( "Log_max_files",   0, 999    );
+        log_check_count   = config.get_int    ( "Log_check_count", 0, 1000000);
+        log_file_name     = config.get_string ( "Log_file_name"              );
+        log_file_backup   = config.get_string ( "Log_file_backup"            );
+        log_file_ending   = config.get_string ( "Log_file_ending"            );
+        log_file_path     = config.get_string ( "Log_file_path"              );
         log_file_max_size = evaluate_size(config.get_string("Log_file_max_size"));
         path_to_log_file  = file_rotation();
 
@@ -357,7 +362,11 @@ public class Logger
                         }
                     }
 
-                    message = sdf.format(new Long(new Date().getTime()));
+                    if(print_timestamp)
+                        message = sdf.format(new Long(new Date().getTime()));
+                    else
+                        message = "";
+
                     for(String buff : queue_element)
                         message += buff;
 
