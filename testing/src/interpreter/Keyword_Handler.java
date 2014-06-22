@@ -53,6 +53,11 @@ public class Keyword_Handler
 
           private long                  start_time;
     final private long                  clock_time;
+    final private long                  status_time;
+          private long                  count_time;
+          private long                  count_fail;
+          private long                  count_good;
+          private long                  count_both;
     final private boolean               show_PRINT;
 
     /**
@@ -69,8 +74,9 @@ public class Keyword_Handler
         this.log         = log;
         this.interpreter = interpreter;
 
-        clock_time   = set_clock_time(config.get_string("new_takt_frequenzy"));
-        show_PRINT = config.get_boolean("show_PRINT");
+        clock_time  = set_clock_time(config.get_string("new_takt_frequenzy"));
+        status_time = set_status_time(config.get_string("status_time"));
+        show_PRINT  = config.get_boolean("show_PRINT");
 
         engine = new Engine(log, config);
         offset = new Offset_Handler(log);
@@ -86,7 +92,70 @@ public class Keyword_Handler
     }
 
     /**
+     * this functions returns the calculated status_time from the given string
+     * which parsed by the config reader
+     * @param config_value string from config file
+     * @return calculated status_time in ms
+     */
+    private long set_status_time(String config_value)
+    {
+        String value = "0";
+        String identifier = "";
+        long time = 0;
+
+        /* loop to split string into value and identifier */
+        for (int i = 0; i < config_value.length(); i++)
+        {
+            if(    (config_value.charAt(i) >= '0')
+                && (config_value.charAt(i) <= '9') )
+            {
+                value += config_value.charAt(i);
+                continue;
+            }
+            identifier = config_value.substring(i, config_value.length());
+            time       = (long)Long.parseLong(value);
+            break;
+        }
+
+        if(identifier.equals("s")  || identifier.equals("seconds") || (identifier.length() == 0))
+        {
+            time *= 1000;
+            log.log(3, log_key, "calculated status time: ", new Long(time).toString(), "ms\n");
+        }
+        else if(identifier.equals("m")  || identifier.equals("minutes") )
+        {
+            time *= 1000 * 60;
+            log.log(3, log_key, "calculated status time: ", new Long(time).toString(), "ms\n");
+        }
+        else if(identifier.equals("h")  || identifier.equals("hours") )
+        {
+            time *= 1000 * 60 * 60;
+            log.log(3, log_key, "calculated status time: ", new Long(time).toString(), "ms\n");
+        }
+        else
+        {
+            log.log(0, log_key,
+                "\n\n" +
+                "ERROR: value from config file is not valid.\n" +
+                "DETAILED ERROR:\n" +
+                "   value 'status_time' is not valid!\n" +
+                "   'status_time' is set to: '" + config_value + "'\n" +
+                "   should be be set to something like:\n" +
+                "       -50s  or 50seconds  for 50  seconds\n" +
+                "       -15m  or 15minutes  for 15  minutes\n" +
+                "       -3h   or 3hours     for 3   hours\n" +
+                "       -0 if no status messages should be printed\n" +
+                "   as expected the size can vary.\n" +
+                "note: if no identifier (s/m/h/...) is specified, value is read in seconds.\n\n"
+            );
+            Main.exit();
+        }
+        return time;
+    }
+
+    /**
      * this functions returns the calculated clock_time from the given string
+     * which parsed by the config reader
      * @param config_value string from config file
      * @return calculated clock_time in ms
      */
@@ -150,9 +219,42 @@ public class Keyword_Handler
         log.log(4, log_key, "call   found_PROGRAM, INDEX = ", new Integer(INDEX).toString(), "\n");
 
         start_time = System.currentTimeMillis();
+        if(status_time != 0)
+        {
+            if(count_time >= status_time)
+            {
+                String avg_time = new Double((double)count_time/(double)count_both).toString();
+                avg_time = avg_time.substring(0, avg_time.indexOf('.') + 3);
+                if(clock_time != 0)
+                {
+                    log.log(0, log_key, new Long(count_both).toString(),
+                                        " rounds done. avg time: ",
+                                        avg_time,
+                                        "ms, ",
+                                        new Long(count_good).toString(),
+                                        " rounds went in takt, ",
+                                        new Long(count_fail).toString(),
+                                        " rounds went not in takt.\n"
+                    );
+                    count_fail = 0;
+                    count_good = 0;
+                }
+                else
+                {
+                    log.log(0, log_key, new Long(count_both).toString(),
+                                        " rounds done. avg time: ",
+                                        avg_time,
+                                        "ms\n"
+                    );
+                }
+                count_time = 0;
+                count_both = 0;
+            }
+        }
+
         int var = offset.get_VAR(INDEX, code);
         context_stack.push(code.substring(INDEX + 7, var));
-        INDEX   = container.get_end_var(var);
+        INDEX = container.get_end_var(var);
 
         log.log(4, log_key, "return found_PROGRAM, INDEX = ", new Integer(INDEX).toString(), "\n");
         return INDEX;
@@ -561,11 +663,20 @@ public class Keyword_Handler
         log.log(4, " [interpreter-end]: ", "end of Program Reached, Breaking for Loop, poping context_stack\n");
         context_stack.pop();
         INDEX += 10;
+
+        long time_it_took = System.currentTimeMillis() - start_time;
+
+        if(status_time != 0)
+        {
+            count_time += time_it_took;
+            count_both++;
+        }
+
         if(clock_time != 0)
         {
-            long time_it_took = System.currentTimeMillis() - start_time;
             if(time_it_took > clock_time)
             {
+                count_fail++;
                 log.log(2, log_key, "couldn't keep up, took me:  ",
                                         new Long(time_it_took).toString(), "ms, ",
                                     "max time: ",
@@ -574,6 +685,7 @@ public class Keyword_Handler
             }
             else
             {
+                count_good++;
                 long sleep_time = clock_time - time_it_took;
                 log.log(2, log_key, "in takt! time: ",
                                         new Long(time_it_took).toString(), "ms, sleep: ",

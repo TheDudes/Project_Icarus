@@ -30,6 +30,28 @@ takt_frequenzy: time,type [long][string]
               - 321      -> 321 milliseconds
 
 
+status_time: time,type [long][string]
+
+    this key is to specify a duration after which a little status message
+    should be displayed. this statusmessaged displays how many times the
+    interpreter went in takt, how many times not, and avg time for the last
+    evaluations. if no type is specified, time is assumed in seconds.
+
+    time: number between 0 and max long, if 0 is specified, the status will
+          not be printed.
+
+    type: s/seconds -> seconds
+          m/minutes -> minutes
+          h/hours   -> hours
+
+    default:
+
+    examples: - 20s -> display status every 20 seconds
+              - 20m -> display status every 20 minutes
+              -  2h -> display status every  2 hours
+              -  0  -> do not display any status
+
+
 Log_file_path: path [string]
 
     path to the logfile folder
