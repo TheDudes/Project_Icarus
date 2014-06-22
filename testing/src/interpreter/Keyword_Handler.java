@@ -59,6 +59,7 @@ public class Keyword_Handler
           private long                  count_good;
           private long                  count_both;
     final private boolean               show_PRINT;
+    final private boolean               show_time;
 
     /**
      * @param container used ParserContainer object
@@ -77,6 +78,7 @@ public class Keyword_Handler
         clock_time  = set_clock_time(config.get_string("new_takt_frequenzy"));
         status_time = set_status_time(config.get_string("status_time"));
         show_PRINT  = config.get_boolean("show_PRINT");
+        show_time   = config.get_boolean("show_time");
 
         engine = new Engine(log, config);
         offset = new Offset_Handler(log);
@@ -219,38 +221,6 @@ public class Keyword_Handler
         log.log(4, log_key, "call   found_PROGRAM, INDEX = ", new Integer(INDEX).toString(), "\n");
 
         start_time = System.currentTimeMillis();
-        if(status_time != 0)
-        {
-            if(count_time >= status_time)
-            {
-                String avg_time = new Double((double)count_time/(double)count_both).toString();
-                avg_time = avg_time.substring(0, avg_time.indexOf('.') + 3);
-                if(clock_time != 0)
-                {
-                    log.log(0, log_key, new Long(count_both).toString(),
-                                        " rounds done. avg time: ",
-                                        avg_time,
-                                        "ms, ",
-                                        new Long(count_good).toString(),
-                                        " rounds went in takt, ",
-                                        new Long(count_fail).toString(),
-                                        " rounds went not in takt.\n"
-                    );
-                    count_fail = 0;
-                    count_good = 0;
-                }
-                else
-                {
-                    log.log(0, log_key, new Long(count_both).toString(),
-                                        " rounds done. avg time: ",
-                                        avg_time,
-                                        "ms\n"
-                    );
-                }
-                count_time = 0;
-                count_both = 0;
-            }
-        }
 
         int var = offset.get_VAR(INDEX, code);
         context_stack.push(code.substring(INDEX + 7, var));
@@ -666,10 +636,48 @@ public class Keyword_Handler
 
         long time_it_took = System.currentTimeMillis() - start_time;
 
+        if(show_time)
+        {
+            log.log(0, log_key, "time: ",
+                new Long(time_it_took).toString(), "ms\n");
+        }
+
         if(status_time != 0)
         {
             count_time += time_it_took;
             count_both++;
+            if(count_time >= status_time)
+            {
+                String avg_time = new Double((double)count_time/(double)count_both).toString();
+
+                if(avg_time.length() - avg_time.indexOf('.') > 2)
+                    avg_time = avg_time.substring(0, avg_time.indexOf('.') + 3);
+
+                if(clock_time != 0)
+                {
+                    log.log(0, log_key, new Long(count_both).toString(),
+                                        " rounds done. avg time: ",
+                                        avg_time,
+                                        "ms, ",
+                                        new Long(count_good).toString(),
+                                        " rounds went in takt, ",
+                                        new Long(count_fail).toString(),
+                                        " rounds went not in takt.\n"
+                    );
+                    count_fail = 0;
+                    count_good = 0;
+                }
+                else
+                {
+                    log.log(0, log_key, new Long(count_both).toString(),
+                                        " rounds done. avg time: ",
+                                        avg_time,
+                                        "ms\n"
+                    );
+                }
+                count_time = 0;
+                count_both = 0;
+            }
         }
 
         if(clock_time != 0)
@@ -706,11 +714,6 @@ public class Keyword_Handler
                     Main.exit();
                 }
             }
-        }
-        else
-        {
-            log.log(0, log_key, "time: ",
-                    new Long(System.currentTimeMillis() - start_time).toString(), "ms\n");
         }
 
         log.log(4, log_key, "return found_END_PROGRAM, INDEX = ", new Integer(INDEX).toString(), "\n");

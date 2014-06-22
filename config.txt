@@ -30,6 +30,17 @@ takt_frequenzy: time,type [long][string]
               - 321      -> 321 milliseconds
 
 
+show_time flag [boolean]
+
+    flag if interpret time should be shown after each round
+
+    flag: true -> show, false -> dont show
+
+    default:
+
+    example: -
+
+
 status_time: time,type [long][string]
 
     this key is to specify a duration after which a little status message
