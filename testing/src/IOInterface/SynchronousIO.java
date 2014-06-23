@@ -80,7 +80,7 @@ public class SynchronousIO{
     public void kill(){
         logger.log(0, logKey, "exiting IO \n");
         syncWorker.kill();
-        //asyncWorker.kill();
+        asyncWorker.kill();
     }
 
 }

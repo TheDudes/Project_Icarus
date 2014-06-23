@@ -42,14 +42,14 @@ linc/tux:
 -------------------------------------------------------------------------------
 tux:
 
-[ !! ]  -> log bug: called parser-ParserContainer
 [ !! ]  -> log bug: no ' []: ' on parser-MergeFiles (verb. lvl 4)
 [ !! ]  -> exception handling
         -> String " ... " implementation for PRINT function
         -> String implementation for values
         -> fix exception throwing
-        -> fix bug with replacing true on for loop
         -> add newlines to ur ERROR messages. double newline on end
+[done]  -> fix bug with replacing true on for loop
+[done]  -> log bug: called parser-ParserContainer
 [done]  -> implement case
 [done]  -> fix case on ELSE or END_CASE
 [done]  -> implement functions

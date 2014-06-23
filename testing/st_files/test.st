@@ -25,6 +25,8 @@ PRINT("between="test2);
 
 blah := 4;
 
+PRINT("blub: " blub ", blah: " blah");
+
 CASE blah OF
     3:
         PRINT("case_3="blah);
