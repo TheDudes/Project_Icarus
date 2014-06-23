@@ -35,6 +35,7 @@ public class PacketReader extends BufferedInputStream {
      * @throws IOException
      */
     public IO_Packet readPacket() throws IOException {
+
         //array where we store the stuff we get from the parent class read in
         byte readBuffer[] = new byte[8];
 
@@ -66,14 +67,17 @@ public class PacketReader extends BufferedInputStream {
         byte geraeteId[] = new byte[2];
         geraeteId[0] = readBuffer[0];
         geraeteId[1] = readBuffer[1];
+
         //byteArray to hold the information for the pin in, will be transformed into an actual in later on
         byte pin[] = new byte[2];
         pin[0] = readBuffer[2];
         pin[1] = readBuffer[3];
+
         byte namespace = readBuffer[4];
-        byte pcount = readBuffer[5];
-        byte rwflag = readBuffer[6];
-        byte value = readBuffer[7];
+        byte pcount    = readBuffer[5];
+        byte rwflag    = readBuffer[6];
+        byte value     = readBuffer[7];
+
         //creates a new IO_Packet that we can return, the conversions from a byteArray to an int take place here
         IO_Packet returnPacket = new IO_Packet(getIntFromByte(geraeteId), getIntFromByte(pin), (int) namespace, (int) pcount, rwflag, value);
         return returnPacket;
@@ -90,21 +94,26 @@ public class PacketReader extends BufferedInputStream {
      * @throws IOException
      */
     public IO_Packet readPacketMod() throws IOException {
+
         //array where we store the stuff we get from the parent class read in
         byte readBuffer[] = new byte[8];
         super.read(readBuffer, 0, 8);
+
         //byteArray to keep the information for the geraeteId, will be transformed to an int later on
         byte geraeteId[] = new byte[2];
         geraeteId[0] = readBuffer[0];
         geraeteId[1] = readBuffer[1];
+
         //byteArray to hold the information for the pin in, will be transformed into an actual in later on
         byte pin[] = new byte[2];
         pin[0] = readBuffer[2];
         pin[1] = readBuffer[3];
+
         byte namespace = readBuffer[4];
-        byte pcount = readBuffer[5];
-        byte rwflag = readBuffer[6];
-        byte value = readBuffer[7];
+        byte pcount    = readBuffer[5];
+        byte rwflag    = readBuffer[6];
+        byte value     = readBuffer[7];
+
         //creates a new IO_Packet that we can return, the conversions from a byteArray to an int take place here
         IO_Packet returnPacket = new IO_Packet(getIntFromBytes(geraeteId), getIntFromBytes(pin), (int) namespace, (int) pcount, rwflag, value);
         return returnPacket;
