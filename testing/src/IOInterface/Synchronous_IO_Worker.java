@@ -23,18 +23,19 @@ import java.util.concurrent.LinkedBlockingQueue;
 import logger.*;
 import parser.*;
 import config.*;
+import Icarus.Main;
 
 /**
  *
  * @author Jonas Huber <Jonas_Huber2@gmx.de>
  */
-public class Synchronous_IO_worker implements Runnable {
+public class Synchronous_IO_Worker implements Runnable {
 
     private final LinkedBlockingQueue<IO_Package> lbq;
     private final Logger logWriter;
     private Socket client;
     private final Config_Reader configReader;
-    private final String key = " [Synchronous_IO_worker]: ";
+    private final String key = " [Synchronous_IO_Worker]: ";
     private IO_Package ioPackage;
     private boolean alive = true;
     private final int namespaceID = 1;
@@ -47,7 +48,7 @@ public class Synchronous_IO_worker implements Runnable {
      * @param infoCollector
      * @param configReader
      */
-    public Synchronous_IO_worker(Logger logWriter, ParserContainer infoCollector, Config_Reader configReader) {
+    public Synchronous_IO_Worker(Logger logWriter, ParserContainer infoCollector, Config_Reader configReader) {
 
         this.logWriter = logWriter;
         this.lbq = infoCollector.get_com_channel_queue();
@@ -62,23 +63,19 @@ public class Synchronous_IO_worker implements Runnable {
     public void run() {
         try {
             client = new Socket(configReader.get_string("hostname"), configReader.get_int("sync_port", 1, 65536));
-            //BufferedInputStream inFromServer = new BufferedInputStream(client.getInputStream());
-            //BufferedOutputStream outToServer = new BufferedOutputStream(client.getOutputStream());
+            BufferedInputStream inFromServer = new BufferedInputStream(client.getInputStream());
+            BufferedOutputStream outToServer = new BufferedOutputStream(client.getOutputStream());
 
             logWriter.log(4, key, "Streams established \n");
 
-            //PacketWriter packetWriter = new PacketWriter(outToServer);
-            //PacketReader packetReader = new PacketReader(inFromServer);
-            
-            PacketWriter packetWriter = new PacketWriter(client.getOutputStream());
-            PacketReader packetReader = new PacketReader(client.getInputStream());
-            
-            
+            PacketWriter packetWriter = new PacketWriter(outToServer);
+            PacketReader packetReader = new PacketReader(inFromServer);
+
             while (alive) {
                 ioPackage = lbq.take();
 
                 if (ioPackage.byte_address.equals("Fake")) {
-                    break;
+                    continue;
                 }
                 logWriter.log(3, key, "IO_Package received.", " Device ID: ", ioPackage.byte_address, " Pin ID: ", ioPackage.pin_id, " New Value: ", Byte.toString(ioPackage.value), "\n");
 
@@ -101,67 +98,49 @@ public class Synchronous_IO_worker implements Runnable {
                 }
             }
 
-            
-            packetWriter.flush();
-            System.out.println("lbq contains: "+lbq.size());
-            System.out.println("First Hald\n");
-            try {
-                Thread.sleep(5000);
-            } catch (Exception e) {
-                
-            }
             packetWriter.close();
-            
-            System.out.println("lbq contains: "+lbq.size());
-            System.out.println("Second Hald\n");
-            try {
-                Thread.sleep(5000);
-            } catch (Exception e) {
-                
-            }
             packetReader.close();
-
             client.close();
 
         } catch (IOException e) {
             logWriter.log(0, key,
                     "\n\n",
-                    "ERROR: Could not create Socket, is the IO Manager running?\n",
+                    "ERROR: \n",
+                    "    Could not create Socket, is the IO Manager running?\n",
                     "DETAILED ERROR:\n",
                     "    trying to connect to host: ", configReader.get_string("hostname"),
-                    "\n    on port: ", ((Integer) configReader.get_int("sync_port")).toString(),
+                    "\n    on port: ", ((Integer) configReader.get_int(("sync_port"), 1, 65536)).toString(),
                     "\n    message: ", e.getMessage(), "\n\n"
             );
-            logWriter.kill();
-            System.exit(1);
+            Main.exit();
         } catch (NumberFormatException e) {
             logWriter.log(0, key,
                     "\n\n",
-                    "ERROR: Could not create Socket, NumberFormatException occured\n",
+                    "ERROR: \n",
+                    "    Could not create Socket, NumberFormatException occured\n",
                     "DETAILED ERROR: \n    ",
                     e.getMessage(), "\n\n"
             );
-            logWriter.kill();
-            System.exit(1);
+            Main.exit();
         } catch (IllegalArgumentException e) {
             logWriter.log(0, key,
                     "\n\n",
-                    "ERROR: Could not create Socket, IllegalArgumentException occured\n",
+                    "ERROR: \n",
+                    "    Could not create Socket, IllegalArgumentException occured\n",
                     "DETAILED ERROR: \n    ",
                     e.getMessage(), "\n\n"
             );
-            logWriter.kill();
-            System.exit(1);
+            Main.exit();
         } catch (Exception e) {
             logWriter.log(0, key,
                     "\n\n",
-                    "ERROR: An Exception occured inside of Synchronous_IO_Worker\n",
+                    "ERROR: \n",
+                    "    An Exception occured inside of Synchronous_IO_Worker\n",
                     "       thread, but dont know which.\n",
                     "DETAILED ERROR: \n    ",
                     e.getMessage(), "\n\n"
             );
-            logWriter.kill();
-            System.exit(1);
+            Main.exit();
 
         }
     }
@@ -176,7 +155,7 @@ public class Synchronous_IO_worker implements Runnable {
     private void polling_init(PacketWriter packetWriter) throws IOException {
         rwFlag = 11;
         pollOrWrite = " initialized IO Package for polling";
-      //  logWriter.log(0, key, ioPackage.byte_address, "\t", Integer.toString(ioPackage.value), "\n");
+        //  logWriter.log(0, key, ioPackage.byte_address, "\t", Integer.toString(ioPackage.value), "\n");
         if (ioPackage.pin_id == null) {
             IO_Packet ioPacket = new IO_Packet(new Integer(ioPackage.byte_address), namespaceID, count, rwFlag, ioPackage.value);
             packetWriter.write(ioPacket);

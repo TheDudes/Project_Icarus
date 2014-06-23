@@ -5,9 +5,11 @@ import IOInterface.*;
 import java.net.*;
 import java.util.*;
 
+
 public class testServer{
 
     public static void main(String[] args) throws IOException{
+        
         ServerSocket servSocket = new ServerSocket(5021);
         Socket clientSocket;
         IO_Packet packet;
@@ -23,4 +25,7 @@ public class testServer{
         }
 //        servSocket.close();
     }
+    
+    
+    
 }
