@@ -320,6 +320,12 @@ public class ParserContainer {
                 analyser.reset_function(context);
         }
 
+        /**
+         * get_timer will return the current STTimer
+         * @param context the current context as String
+         * @param var_name the variable name as String
+         * @return the current timer
+         */
         public STTimer
         get_timer(String context, String var_name)
         {
