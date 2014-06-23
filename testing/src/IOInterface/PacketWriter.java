@@ -150,7 +150,7 @@ public class PacketWriter extends BufferedOutputStream{
         /* The expression of type int is boxed into Integer */
         Integer transformer = second;
         toReturn[0] = transformer.byteValue();
-        System.out.println(toReturn[0]);
+        //System.out.println(toReturn[0]);
         return toReturn;
     }
 

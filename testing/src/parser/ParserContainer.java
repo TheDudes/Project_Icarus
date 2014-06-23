@@ -292,7 +292,7 @@ public class ParserContainer {
          * @param byte_address the byte address as a String
          * @param value the byte to set
          */
-	public void
+	public synchronized void 
 	update_device(String byte_address, byte value)
 	{
 		analyser.update_device(byte_address, value);

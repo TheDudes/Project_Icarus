@@ -35,9 +35,9 @@ public class MergeFiles {
 	/* logger */
 	private final Logger log;
         /* mainkey */
-	private final String mainkey = "parser";
+	private final String mainkey = " [parser";
         /* subkey */
-        private final String subkey = "MergeFiles";
+        private final String subkey = "MergeFiles]: ";
         /* key */
         private final String key = mainkey+"-"+subkey;
     

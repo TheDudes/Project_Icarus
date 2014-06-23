@@ -88,7 +88,7 @@ public class Synchronous_IO_worker implements Runnable {
                 }
 
                 IO_Packet ioPacket = packetReader.readPacket();
-                if (ioPacket.getRWFlag() == 0) {
+                if (ioPacket.getValue() == 0) {
                     logWriter.log(0, key, "Error received from IO Manager with Device ID: ", Integer.toString(ioPacket.getGeraeteId()), "\n");
                 } else {
                     logWriter.log(3, key, "Succesfully", pollOrWrite, "\n");

@@ -34,6 +34,7 @@ public class EchoServer {
             in.read(array, 0, 8);
             BufferedOutputStream out = new BufferedOutputStream(clientSocket.getOutputStream());
             out.write(array, 0, 8);
+            out.flush();
 
             System.out.println(Arrays.toString(array));
         }
