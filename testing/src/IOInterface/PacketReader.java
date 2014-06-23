@@ -68,7 +68,29 @@ public class PacketReader extends BufferedInputStream {
     public IO_Packet readPacketMod() throws IOException {
         //array where we store the stuff we get from the parent class read in
         byte readBuffer[] = new byte[8];
-        super.read(readBuffer, 0, 8);
+        if(super.read(readBuffer, 0, 8)== -1){{
+            if (logger == null) {
+                System.out.print("\n\n"
+                        + "ERROR: \n    "
+                        + "Occured inside PacketReader\n"
+                        + "    Connection to Client is lost\n"
+                        + "DETAILED ERROR:\n"
+                        + "    Could not read from the Socket Stream, \n"
+                        + "    seems like Client closed his Conncetion\n\n");
+                Main.exit();
+            } else {
+                logger.log(0, key,
+                        "\n\n",
+                        "ERROR: \n    ",
+                        "Occured inside PacketReader\n",
+                        "    Connection to Server is lost\n",
+                        "DETAILED ERROR:\n",
+                        "    Could not read from the Socket Stream, \n",
+                        "    seems like Server is not running\n\n"
+                );
+                Main.exit();
+            }
+        }}
         //byteArray to keep the information for the geraeteId, will be transformed to an int later on
         byte geraeteId[] = new byte[2];
         geraeteId[0] = readBuffer[0];
