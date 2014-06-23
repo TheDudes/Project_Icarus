@@ -76,7 +76,7 @@ public class Keyword_Handler
         this.interpreter = interpreter;
 
         clock_time  = set_clock_time(config.get_string("new_takt_frequenzy"));
-        status_time = set_status_time(config.get_string("status_time"));
+        status_time = evaluate_time(config.get_string("status_time"));
         show_PRINT  = config.get_boolean("show_PRINT");
         show_time   = config.get_boolean("show_time");
 
@@ -99,7 +99,7 @@ public class Keyword_Handler
      * @param config_value string from config file
      * @return calculated status_time in ms
      */
-    private long set_status_time(String config_value)
+    private long evaluate_time(String config_value)
     {
         String value = "0";
         String identifier = "";
@@ -119,20 +119,29 @@ public class Keyword_Handler
             break;
         }
 
-        if(identifier.equals("s")  || identifier.equals("seconds") || (identifier.length() == 0))
+        if( identifier.length() == 0)
         {
             time *= 1000;
-            log.log(3, log_key, "calculated status time: ", new Long(time).toString(), "ms\n");
+            log.log(3, log_key, "calculated time: ", new Long(time).toString(), "ms\n");
         }
-        else if(identifier.equals("m")  || identifier.equals("minutes") )
+        else if(identifier.equals("ms") || identifier.equals("MS") || identifier.equals("milliseconds") )
+        {
+            log.log(3, log_key, "calculated time: ", new Long(time).toString(), "ms\n");
+        }
+        else if(identifier.equals("S")  || identifier.equals("s")  || identifier.equals("seconds") )
+        {
+            time *= 1000;
+            log.log(3, log_key, "calculated time: ", new Long(time).toString(), "ms\n");
+        }
+        else if(identifier.equals("M")  || identifier.equals("m")  || identifier.equals("minutes") )
         {
             time *= 1000 * 60;
-            log.log(3, log_key, "calculated status time: ", new Long(time).toString(), "ms\n");
+            log.log(3, log_key, "calculated time: ", new Long(time).toString(), "ms\n");
         }
-        else if(identifier.equals("h")  || identifier.equals("hours") )
+        else if(identifier.equals("H")  || identifier.equals("h")  || identifier.equals("hours") )
         {
             time *= 1000 * 60 * 60;
-            log.log(3, log_key, "calculated status time: ", new Long(time).toString(), "ms\n");
+            log.log(3, log_key, "calculated time: ", new Long(time).toString(), "ms\n");
         }
         else
         {
@@ -786,7 +795,8 @@ public class Keyword_Handler
     }
 
     /**
-     * function if no keyword was found
+     * function if no keyword was found. will figure out if its a function call,
+     * a set_value call, or a timer.
      * @param INDEX current Position
      * @param code current working code
      * @return INDEX after handling Keyword
@@ -798,7 +808,7 @@ public class Keyword_Handler
 
         int    semicolon_position = offset.get_semicolon(INDEX, code);
         String condition          = code.substring(INDEX, semicolon_position + 1);
-        String function_name      = "";
+        String identifier_name    = "";
         int    jump_index         = 0;
 
         int i;
@@ -808,32 +818,32 @@ public class Keyword_Handler
             if(condition.charAt(i) == '(')
             {
                 /* just a simple function call */
-                jump_index = container.call_function_or_program(function_name, condition.substring(i + 1, condition.length()-2));
+                jump_index = container.call_function_or_program(identifier_name, condition.substring(i + 1, condition.length()-2));
                 log.log(4, log_key, "recursive function call , INDEX = ", new Integer(INDEX).toString(), "\n");
                 interpreter.interpret(code, jump_index, code.length());
                 log.log(4, log_key, "return from recursive function call , INDEX = ", new Integer(INDEX).toString(), "\n");
-                container.reset_function(function_name);
+                container.reset_function(identifier_name);
                 break;
             }
             if (    (condition.charAt(i)     == ':')
                  && (condition.charAt(i + 1) == '=') )
             {
                 /* check now if function call with return value, or just normal set value */
-                function_name = "";
+                identifier_name = "";
                 for (ii = i; ii < condition.length(); ii++)
                 {
                     if(condition.charAt(i) == '(')
                     {
                          /* function call with return value */
-                        jump_index = container.call_function_or_program(function_name, condition.substring(ii + 1, condition.length()-2));
+                        jump_index = container.call_function_or_program(identifier_name, condition.substring(ii + 1, condition.length()-2));
                         log.log(4, log_key, "recursive function call with return value, INDEX = ", new Integer(INDEX).toString(), "\n");
                         interpreter.interpret(code, jump_index, code.length());
                         log.log(4, log_key, "return from recursive function call with return value, INDEX = ", new Integer(INDEX).toString(), "\n");
                         /* set return value b4 reset_function */
-                        container.reset_function(function_name);
+                        container.reset_function(identifier_name);
                         break;
                     }
-                    function_name += condition.charAt(ii);
+                    identifier_name += condition.charAt(ii);
                 }
                 if(ii == condition.length())
                 {
@@ -844,7 +854,29 @@ public class Keyword_Handler
                 }
                 break;
             }
-            function_name += condition.charAt(i);
+            if (    (condition.charAt(i)     == '.')
+                 && (condition.charAt(i + 1) == 'P')
+                 && (condition.charAt(i + 2) == 'T') )
+            {
+                log.log(4, log_key, "found set time of timer , INDEX = ", new Integer(INDEX).toString(), "\n");
+                STTimer timer = container.get_timer(context_stack.peek(), identifier_name);
+                timer.set_time(evaluate_time(condition.substring(i + 7, condition.length() - 1)));
+                break;
+            }
+            if (    (condition.charAt(i)     == '.')
+                 && (condition.charAt(i + 1) == 'I')
+                 && (condition.charAt(i + 2) == 'N') )
+            {
+                log.log(4, log_key, "found start timer, INDEX = ", new Integer(INDEX).toString(), "\n");
+                STTimer timer = container.get_timer(context_stack.peek(), identifier_name);
+                if(((Boolean)engine.eval(container.replace_vars(condition.substring(i + 5, condition.length() - 1),context_stack.peek() ), true )).booleanValue())
+                {
+                    timer.set_running();
+                    log.log(4, log_key, "started timer, INDEX = ", new Integer(INDEX).toString(), "\n");
+                }
+                break;
+            }
+            identifier_name += condition.charAt(i);
         }
 
         if(i == condition.length())
@@ -854,7 +886,7 @@ public class Keyword_Handler
                 "\n\n",
                 "ERROR: syntax error\n",
                 "DETAILED ERROR:\n",
-                "   could not evaluate: '", function_name, "'\n\n"
+                "   could not evaluate: '", identifier_name, "'\n\n"
             );
             Main.exit();
         }
