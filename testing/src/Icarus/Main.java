@@ -42,7 +42,7 @@ public class Main
           private static Logger          log         = null;
           private static ParserContainer container   = null;
           private static Interpreter     interpreter = null;
-          private static SynchronousIO   io          = null;
+          private static IO_Manager      io          = null;
           private static Properties      propertie;
     /**
      * main funcion which will start Icarus
@@ -60,7 +60,7 @@ public class Main
             propertie.setProperty("loglevel", Integer.toHexString(config.get_int("verbosity_level", 0, 4)));
             System.setProperties(propertie);
         container   = new ParserContainer(config, log);
-        io          = new SynchronousIO(log, config, container);
+        io          = new IO_Manager(log, config, container);
         interpreter = new Interpreter(container, log, config);
 
         log.log(0, log_key, "starting Icarus.\n");
