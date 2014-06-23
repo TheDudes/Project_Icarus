@@ -30,9 +30,9 @@ linc:
 -------------------------------------------------------------------------------
 csb/linc:
 
-[ !! ]  -> kill()
 [ !! ]  -> change ERROR messages on system exit
-        -> if there is a kill() with lbq/socket, throw him a bone
+[done]  -> if there is a kill() with lbq/socket, throw him a bone
+[done]  -> kill()
 [done]  -> get IO to work
 -------------------------------------------------------------------------------
 linc/tux:
@@ -40,14 +40,18 @@ linc/tux:
         -> lib feature maybe
         -> fix all warnings
 -------------------------------------------------------------------------------
+tux/d4ryus:
+
+[done]  -> implement timer
+-------------------------------------------------------------------------------
 tux:
 
-[ !! ]  -> log bug: no ' []: ' on parser-MergeFiles (verb. lvl 4)
 [ !! ]  -> exception handling
-        -> String " ... " implementation for PRINT function
         -> String implementation for values
         -> fix exception throwing
         -> add newlines to ur ERROR messages. double newline on end
+[done]  -> String " ... " implementation for PRINT function
+[done]  -> log bug: no ' []: ' on parser-MergeFiles (verb. lvl 4)
 [done]  -> fix bug with replacing true on for loop
 [done]  -> log bug: called parser-ParserContainer
 [done]  -> implement case
