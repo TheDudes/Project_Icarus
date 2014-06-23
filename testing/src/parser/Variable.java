@@ -214,4 +214,11 @@ Variable
         {
                 return has_mapping;
         }
+
+        
+        public STTimer
+        get_timer()
+        {
+                return (STTimer)value;
+        }
 }

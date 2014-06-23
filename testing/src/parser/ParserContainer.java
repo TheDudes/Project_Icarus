@@ -320,4 +320,9 @@ public class ParserContainer {
                 analyser.reset_function(context);
         }
 
+        public STTimer
+        get_timer(String context, String var_name)
+        {
+                return analyser.get_timer(context, var_name);
+        }
 }

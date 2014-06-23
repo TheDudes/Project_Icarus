@@ -1449,6 +1449,12 @@ Analyser
                         var.set_default_value();
                 }
         }
+
+        public STTimer
+        get_timer(String context, String var_name)
+        {
+                return context_varname_var.get(context).get(var_name).get_timer();
+        }
 }
 
 

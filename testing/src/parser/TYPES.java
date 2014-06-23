@@ -81,6 +81,8 @@ public class TYPES {
                         case "TIME_OF_DAY":
                         case "TOD":
                         case "DATE_AND_TIME":
+                        case "TON":
+                                return new STTimer();
                         case "DT":
                                 return new Integer((System.currentTimeMillis() / 1000L)+"");
                         case "STRING":
