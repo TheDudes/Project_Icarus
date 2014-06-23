@@ -1,6 +1,7 @@
 PROGRAM Test
 
 VAR
+    timer      : TON;
     blub       : BOOL : = FALSE;
     bluber     : BOOL : = TRUE;
     ratatazonk : BOOL : = TRUE;
@@ -19,6 +20,17 @@ FOR hihihi := 0 TO 30 BY 1 DO
        PRINT("outter_loop_else="asdf);
     END_IF
 END_FOR
+
+timer.PT:=T#2S;
+
+IF timer THEN
+    PRINT("timer went through");
+    timer.IN:=TRUE;
+ELSE
+    PRINT("timer is running, or dead");
+END_IF
+
+
 PRINT("between="blub);
 PRINT("between="test);
 PRINT("between="test2);
