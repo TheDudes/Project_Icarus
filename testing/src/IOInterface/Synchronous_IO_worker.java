@@ -62,15 +62,21 @@ public class Synchronous_IO_worker implements Runnable {
     public void run() {
         try {
             client = new Socket(configReader.get_string("hostname"), configReader.get_int("sync_port", 1, 65536));
-            BufferedInputStream inFromServer = new BufferedInputStream(client.getInputStream());
-            BufferedOutputStream outToServer = new BufferedOutputStream(client.getOutputStream());
+            //BufferedInputStream inFromServer = new BufferedInputStream(client.getInputStream());
+            //BufferedOutputStream outToServer = new BufferedOutputStream(client.getOutputStream());
 
             logWriter.log(4, key, "Streams established \n");
 
-            PacketWriter packetWriter = new PacketWriter(outToServer);
-            PacketReader packetReader = new PacketReader(inFromServer);
+            //PacketWriter packetWriter = new PacketWriter(outToServer);
+            //PacketReader packetReader = new PacketReader(inFromServer);
+            
+            PacketWriter packetWriter = new PacketWriter(client.getOutputStream());
+            PacketReader packetReader = new PacketReader(client.getInputStream());
+            
+            
             while (alive) {
                 ioPackage = lbq.take();
+
                 if (ioPackage.byte_address.equals("Fake")) {
                     break;
                 }
@@ -95,9 +101,25 @@ public class Synchronous_IO_worker implements Runnable {
                 }
             }
 
-            inFromServer.close();
-
-            outToServer.close();
+            
+            packetWriter.flush();
+            System.out.println("lbq contains: "+lbq.size());
+            System.out.println("First Hald\n");
+            try {
+                Thread.sleep(5000);
+            } catch (Exception e) {
+                
+            }
+            packetWriter.close();
+            
+            System.out.println("lbq contains: "+lbq.size());
+            System.out.println("Second Hald\n");
+            try {
+                Thread.sleep(5000);
+            } catch (Exception e) {
+                
+            }
+            packetReader.close();
 
             client.close();
 

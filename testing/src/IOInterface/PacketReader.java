@@ -21,7 +21,11 @@ public class PacketReader extends BufferedInputStream{
     public IO_Packet readPacket() throws IOException{
         //array where we store the stuff we get from the parent class read in
         byte readBuffer[] = new byte[8];
-        super.read(readBuffer, 0, 8);
+        if (super.read(readBuffer, 0, 8) == -1){
+            // FIXME - Error message and shit, stop the program if stream is broken
+            System.out.println("Its fucked up!!");
+            System.exit(1);
+        }
         //byteArray to keep the information for the geraeteId, will be transformed to an int later on
         byte geraeteId[] = new byte[2];
         geraeteId[0] = readBuffer[0];
