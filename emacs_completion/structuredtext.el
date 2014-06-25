@@ -94,7 +94,7 @@ ARG can be a symbol."
                 (progn
                   (setq cur-indent (current-indentation))
                   (setq not-indented nil))
-              (if (looking-at (concat "^[ \t]*" (regexp-opt '("PROGRAM" "FUNCTION" "FUNCTION_BLOCK" "VAR" "VAR_INPUT" "VAR_OUTPUT" "VAR_IN_OUT" "VAR_CONFIG" "VAR_GLOBAL" "IF" "THEN" "ELSE" "CASE" "OF" "BY" "TO" "FOR" "WHILE" "REPEAT") t)))
+              (if (looking-at (concat "^[ \t]*" (regexp-opt '("PROGRAM" "FUNCTION" "FUNCTION_BLOCK" "VAR" "VAR_INPUT" "VAR_OUTPUT" "VAR_IN_OUT" "VAR_CONFIG" "VAR_GLOBAL" "IF" "CASE" "FOR" "WHILE" "REPEAT") t)))
                   (progn
                     (setq cur-indent (+ (current-indentation) tab-width))
                     (setq not-indented nil))
