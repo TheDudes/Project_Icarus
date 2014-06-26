@@ -34,7 +34,7 @@
 (add-to-list 'auto-mode-alist '("\\.st\\'" . structuredtext-mode))
 
 ;; command to comment/uncomment text
-(defun structuredtext-comment-dwim (arg) 
+(defun structuredtext-comment-dwim (arg)
   "Comment line or region with the EMACS builtin function 'comment-dwim'.
 ARG can be a symbol."
   (interactive "*P")
@@ -53,24 +53,14 @@ ARG can be a symbol."
   "Keymap for Structured Text major mode.")
 
 ;; basic highlighting group
-(defconst structuredtext-font-lock-keywords-1
+(defconst structuredtext-font-lock-keywords
   (list
-   '((concat (concat "\\<" (regexp-opt '("PROGRAM" "END_PROGRAM" "FUNCTION" "END_FUNCTION" "FUNCTION_BLOCK" "END_FUNCTION_BLOCK" "VAR" "END_VAR" "VAR_INPUT" "END_VAR_INPUT" "VAR_OUTPUT" "END_VAR_OUTPUT" "VAR_IN_OUT" "END_VAR_IN_OUT" "VAR_CONFIG" "END_VAR_CONFIG" "VAR_GLOBAL" "END_VAR_GLOBAL" "IF" "END_IF" "THEN" "ELSE" "CASE" "END_CASE" "OF" "BY" "TO" "FOR" "END_FOR" "WHILE" "END_WHILE" "REPEAT" "END_REPEAT") t)) "\\>") . font-lock-builtin-face)
-   '("\\('w*'\\)" . font-lock-variable-name-face))
+   (cons (concat (concat "\\<" (regexp-opt '("PROGRAM" "END_PROGRAM" "FUNCTION" "END_FUNCTION" "FUNCTION_BLOCK" "END_FUNCTION_BLOCK" "VAR" "END_VAR" "VAR_INPUT" "END_VAR_INPUT" "VAR_OUTPUT" "END_VAR_OUTPUT" "VAR_IN_OUT" "END_VAR_IN_OUT" "VAR_CONFIG" "END_VAR_CONFIG" "VAR_GLOBAL" "END_VAR_GLOBAL" "IF" "END_IF" "THEN" "ELSE" "CASE" "END_CASE" "OF" "BY" "TO" "FOR" "END_FOR" "WHILE" "END_WHILE" "REPEAT" "END_REPEAT") t)) "\\>") 'font-lock-builtin-face)
+   '("\\('w*'\\)" . font-lock-variable-name-face)
+   (cons (concat (concat "\\<" (regexp-opt '("BOOL" "SINT" "INT" "DINT" "LINT" "USINT" "UINT" "UDINT" "ULINT" "REAL" "LREAL" "TIME" "DATE" "TIME_OF_DATE" "TOD" "DATE_AND_TIME" "TON" "DT" "STRING" "WSTRING" "BYTE") t)) "\\>") 'font-lock-keyword-face)
+   '("\\<\\(TRUE\\|FALSE\\)\\>" . font-lock-constant-face)
+   (cons (concat (concat "\\<" (regexp-opt '("XOR" "AND" "NOT" "MOD" "OR" "SIN" "COS" "TAN" "ASIN" "ACOS" "ATAN" "LOG" "EXP" "LN" "SQRT" "PRINT") t)) "\\>") 'font-lock-function-name-face))
   "Minimal highlighting.")
-
-;; extended highlighting group
-(defconst structuredtext-font-lock-keywords-2
-  (append structuredtext-font-lock-keywords-1
-          (list
-           '((concat (concat "\\<" (regexp-opt '("BOOL" "SINT" "INT" "DINT" "LINT" "USINT" "UINT" "UDINT" "ULINT" "REAL" "LREAL" "TIME" "DATE" "TIME_OF_DATE" "TOD" "DATE_AND_TIME" "TON" "DT" "STRING" "WSTRING" "BYTE") t)) "\\>") . font-lock-keyword-face)
-           '("\\<\\(TRUE\\|FALSE\\)\\>" . font-lock-constant-face)
-           '((concat (concat "\\<" (regexp-opt '("XOR" "AND" "NOT" "MOD" "OR" "SIN" "COS" "TAN" "ASIN" "ACOS" "ATAN" "LOG" "EXP" "LN" "SQRT" "PRINT") t)) "\\>") . font-lock-function-name-face)))
-  "Additional Keywords to highlight.")
-
-;; default highligting level
-(defvar structuredtext-font-lock-keywords structuredtext-font-lock-keywords-2
-  "Default highlighting level.")
 
 ;; indentation - this function is mostly the same as the one on the emacs wiki
 (defun structuredtext-indent-line ()

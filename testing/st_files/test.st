@@ -22,6 +22,8 @@ PROGRAM Test
                 END_IF
         END_FOR
 
+        (* this is a comment *)
+        
         timer.PT:=T#2S;
 
         IF timer THEN
