@@ -1,5 +1,10 @@
-PROGRAM Test
-
+PROGRAM Test        
+        (* 
+        this is our test ST program
+        we will extend this pice of
+        code to show all what we can
+        do
+        *)
         VAR
                 timer      : TON;
                 blub       : BOOL : = FALSE;
@@ -9,7 +14,7 @@ PROGRAM Test
                 test       : INT  : = 133;
                 test2      : INT  : = 4432;
         END_VAR
-
+        
         FOR hihihi := 0 TO 30 BY 1 DO
                 FOR asdf:=0 TO 100 BY 1 DO
                         PRINT("inner_loop="asdf);
@@ -22,8 +27,6 @@ PROGRAM Test
                 END_IF
         END_FOR
 
-        (* this is a comment *)
-        
         timer.PT:=T#2S;
 
         IF timer THEN
@@ -41,7 +44,7 @@ PROGRAM Test
         blah := 4;
 
         PRINT("blub: " blub ", blah: " blah);
-
+        
         CASE blah OF
                 3:
                 PRINT("case_3="blah);

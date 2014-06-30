@@ -55,8 +55,8 @@ ARG can be a symbol."
 ;; basic highlighting group
 (defconst structuredtext-font-lock-keywords
   (list
-   (cons (concat (concat "\\<" (regexp-opt '("PROGRAM" "END_PROGRAM" "FUNCTION" "END_FUNCTION" "FUNCTION_BLOCK" "END_FUNCTION_BLOCK" "VAR" "END_VAR" "VAR_INPUT" "END_VAR_INPUT" "VAR_OUTPUT" "END_VAR_OUTPUT" "VAR_IN_OUT" "END_VAR_IN_OUT" "VAR_CONFIG" "END_VAR_CONFIG" "VAR_GLOBAL" "END_VAR_GLOBAL" "IF" "END_IF" "THEN" "ELSE" "CASE" "END_CASE" "OF" "BY" "TO" "FOR" "END_FOR" "WHILE" "END_WHILE" "REPEAT" "END_REPEAT") t)) "\\>") 'font-lock-builtin-face)
-   '("\\('w*'\\)" . font-lock-variable-name-face)
+   (cons (concat (concat "\\<" (regexp-opt '("PROGRAM" "END_PROGRAM" "FUNCTION" "END_FUNCTION" "FUNCTION_BLOCK" "END_FUNCTION_BLOCK" "VAR" "END_VAR" "VAR_INPUT" "END_VAR_INPUT" "VAR_OUTPUT" "END_VAR_OUTPUT" "VAR_IN_OUT" "END_VAR_IN_OUT" "VAR_CONFIG" "END_VAR_CONFIG" "VAR_GLOBAL" "END_VAR_GLOBAL" "IF" "END_IF" "THEN" "ELSE" "CASE" "END_CASE" "OF" "BY" "DO" "TO" "FOR" "END_FOR" "WHILE" "END_WHILE" "REPEAT" "END_REPEAT") t)) "\\>") 'font-lock-builtin-face)
+   '("\\('w :*'\\)" . font-lock-variable-name-face)
    (cons (concat (concat "\\<" (regexp-opt '("BOOL" "SINT" "INT" "DINT" "LINT" "USINT" "UINT" "UDINT" "ULINT" "REAL" "LREAL" "TIME" "DATE" "TIME_OF_DATE" "TOD" "DATE_AND_TIME" "TON" "DT" "STRING" "WSTRING" "BYTE") t)) "\\>") 'font-lock-keyword-face)
    '("\\<\\(TRUE\\|FALSE\\)\\>" . font-lock-constant-face)
    (cons (concat (concat "\\<" (regexp-opt '("XOR" "AND" "NOT" "MOD" "OR" "SIN" "COS" "TAN" "ASIN" "ACOS" "ATAN" "LOG" "EXP" "LN" "SQRT" "PRINT") t)) "\\>") 'font-lock-function-name-face))
