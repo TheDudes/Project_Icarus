@@ -30,7 +30,7 @@ takt_frequenzy: time,type [long][string]
               - 321      -> 321 milliseconds
 
 
-show_time flag [boolean]
+show_time: flag [boolean]
 
     flag if interpret time should be shown after each round
 

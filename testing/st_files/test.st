@@ -27,6 +27,8 @@ PROGRAM Test
                 END_IF
         END_FOR
 
+        (* this is a comment *)
+
         timer.PT:=T#2S;
 
         IF timer THEN
@@ -35,7 +37,6 @@ PROGRAM Test
                 ELSE
                 PRINT("timer is running, or dead");
         END_IF
-
 
         PRINT("between="blub);
         PRINT("between="test);
@@ -59,4 +60,5 @@ PROGRAM Test
         amazing();
         amazing(a:=TRUE, b:=TRUE, c:=TRUE, d:=TRUE, e:=TRUE);
         amazing();
+
 END_PROGRAM
