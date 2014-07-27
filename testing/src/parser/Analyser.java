@@ -820,35 +820,44 @@ Analyser
                                 } else if (var_block.charAt(index) == ';') {
                                         band = "";
                                         index += 1;
-                                        if (pin != '9') {
-                                                mbyte = new MappedByte(address);
-                                                mbyte.set_bit(""+pin, Boolean.parseBoolean(context_varname_var.get(context).get(var_name).get_value()));
-                                                context_varname_var.get(context).get(var_name).set_mapped_byte(mbyte, ""+pin);
-                                                if (in_or_out == 'I'){
-                                                        address_mappedbyte_in.put(address, mbyte);
-                                                }else{
-                                                        address_mappedbyte_out.put(address, mbyte);
+                                        try {
+                                                if (pin != '9') {
+                                                        mbyte = new MappedByte(address);
+                                                        mbyte.set_bit(""+pin, Boolean.parseBoolean(context_varname_var.get(context).get(var_name).get_value()));
+                                                        context_varname_var.get(context).get(var_name).set_mapped_byte(mbyte, ""+pin);
+                                                        if (in_or_out == 'I'){
+                                                                address_mappedbyte_in.put(address, mbyte);
+                                                        }else{
+                                                                address_mappedbyte_out.put(address, mbyte);
+                                                        }
+                                                        pin = '9';
+                                                        context = "";
+                                                        var_name = "";
+                                                        address = "";
+                                                        in_or_out = '0';
+                                                } else {
+                                                        mbyte = new MappedByte(address);
+                                                        mbyte.set_byte(Byte.parseByte(context_varname_var.get(context).get(var_name).get_value()));
+                                                        context_varname_var.get(context).get(var_name).set_mapped_byte(mbyte);
+                                                        if (in_or_out == 'I'){
+                                                                address_mappedbyte_in.put(address, mbyte);
+                                                                IO_Package iop = context_varname_var.get(context).get(var_name).get_IOPackage();
+                                                                iop.set_polling_true();
+                                                                com_channel_queue.offer(iop);
+                                                        } else
+                                                                address_mappedbyte_out.put(address, mbyte);
+                                                        context = "";
+                                                        var_name = "";
+                                                        address = "";
+                                                        in_or_out = '0';
                                                 }
-                                                pin = '9';
-                                                context = "";
-                                                var_name = "";
-                                                address = "";
-                                                in_or_out = '0';
-                                        } else {
-                                                mbyte = new MappedByte(address);
-                                                mbyte.set_byte(Byte.parseByte(context_varname_var.get(context).get(var_name).get_value()));
-                                                context_varname_var.get(context).get(var_name).set_mapped_byte(mbyte);
-                                                if (in_or_out == 'I'){
-                                                        address_mappedbyte_in.put(address, mbyte);
-                                                        IO_Package iop = context_varname_var.get(context).get(var_name).get_IOPackage();
-                                                        iop.set_polling_true();
-                                                        com_channel_queue.offer(iop);
-                                                } else
-                                                        address_mappedbyte_out.put(address, mbyte);
-                                                context = "";
-                                                var_name = "";
-                                                address = "";
-                                                in_or_out = '0';
+                                        } catch (NullPointerException e) {
+                                                log.log(0, key,
+                                                        "\n\n",
+                                                        "ERROR: in VAR_CONFIG, check your names\n",
+                                                        "DETAILED ERROR: "+e+"\n",
+                                                        "DUMP: ", "var_name: ", var_name, "context: ", context, "\n"
+                                                        );
                                         }
                                         analyse_states = config_states.find_context;
                                 } else {
@@ -1067,11 +1076,7 @@ Analyser
                 symbolnames.add("false");
                 symbolnames.add("FALSE");
 		/* now sort the new generated list from long to short, with a dirty inline class ;) */
-		/*
-		 * negativer Rückgabewert: Der erste Parameter ist untergeordnet
-		 * 0 als Rückgabewert: Beide Parameter werden gleich eingeordnet
-		 * positiver Rückgabewert: Der erste Parameter ist übergeordnet
-		 */
+	        
 		Collections.sort(symbolnames, new Comparator<String>() {
 				private int alen;
 				private int blen;
