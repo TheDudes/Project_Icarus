@@ -79,7 +79,7 @@ public class Main
     private static void print_startup_message()
     {
         System.out.println("Staring Icarus Structure Text Interpreter!");
-        System.out.println("verion: 0.85 (Alpha! but pretty close to beta now)");
+        System.out.println("version: 0.85 (Alpha! but pretty close to beta now)");
     }
 
     /**
