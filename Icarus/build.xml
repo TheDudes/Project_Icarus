@@ -3,13 +3,13 @@
   <property name="project"     value="Project_Icarus"/>
   <property name="packages"    value="parser,datatypes,config,Icarus,logger,interpreter"/>
   <property name="main.class"  value="Icarus.Main"/>
-  
+
   <property name="src.dir"     value="src"/>
   <property name="build.dir"   value="build"/>
   <property name="classes.dir" value="${build.dir}/classes"/>
   <property name="javadoc.dir" value="${build.dir}/doc"/>
   <property name="jar.dir"     value="${build.dir}/jar"/>
-  
+
   <target name="clean">
     <delete dir="${build.dir}"/>
   </target>
@@ -17,11 +17,11 @@
 
   <target name="compile">
     <mkdir dir="${classes.dir}"/>
-    <javac 
-        srcdir="${src.dir}" 
+    <javac
+        srcdir="${src.dir}"
         destdir="${classes.dir}"
         includeantruntime="false"
-	fork="true">
+        fork="true">
       <compilerarg line="-g"/>
     </javac>
   </target>
@@ -37,9 +37,9 @@
              use="true"
              windowtitle="${project} Documentation"
              doctitle="&lt;h1&gt;${project}&lt;/h1&gt;">
-    </javadoc> 
+    </javadoc>
   </target>
-  
+
   <target name="jar">
     <mkdir dir="${jar.dir}"/>
         <jar destfile="${jar.dir}/${project}.jar" basedir="${classes.dir}">
@@ -56,5 +56,5 @@
   <target name="clean-build" depends="clean,compile,javadoc,jar"/>
   <target name="magic" depends="clean,compile,jar,run"/>
   <target name="all" depends="clean,compile,javadoc,jar,run"/>
-  
+
 </project>

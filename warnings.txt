@@ -1,61 +1,127 @@
-config/Config_Reader.java               | line:  215 col:  12 | warning: Javadoc: Missing tag for return type
-config/Config_Reader.java               | line:  215 col:  31 | warning: Javadoc: Missing tag for parameter key
-config/Config_Reader.java               | line:  215 col:  43 | warning: Javadoc: Missing tag for declared exception ClassCastException
-config/Config_Reader.java               | line:  221 col:  29 | warning: The expression of type Object is unboxed into int
-config/Config_Reader.java               | line:  257 col:  33 | warning: The expression of type Object is unboxed into int
-config/Config_Reader.java               | line:  328 col:  49 | warning: Javadoc: Missing tag for declared exception ClassCastException
-config/Config_Reader.java               | line:  334 col:  32 | warning: The expression of type Object is unboxed into double
-config/Config_Reader.java               | line:  368 col:  37 | warning: The expression of type Object is unboxed into boolean
-config/Config_Reader.java               | line:  485 col:  50 | warning: The expression of type int is boxed into Integer
-config/Config_Reader.java               | line:  486 col:  51 | warning: The expression of type int is boxed into Integer
-config/Config_Reader.java               | line:  487 col:  42 | warning: The expression of type boolean is boxed into Boolean
-config/Config_Reader.java               | line:  488 col:  49 | warning: The expression of type boolean is boxed into Boolean
-config/Config_Reader.java               | line:  489 col:  45 | warning: The expression of type int is boxed into Integer
-config/Config_Reader.java               | line:  490 col:  46 | warning: The expression of type int is boxed into Integer
-IOInterface/ASynchronous_IO_Worker.java | line:    7 col:  14 | warning: Javadoc: Missing comment for public declaration
-IOInterface/ASynchronous_IO_Worker.java | line:   80 col:  20 | warning: Resource 'closeSocket' should be managed by try-with-resource
-IOInterface/EchoServer.java             | line:   20 col:  24 | warning: Javadoc: Missing comment for public declaration
-IOInterface/EchoServer.java             | line:   24 col:  22 | warning: Resource leak: 'serverSocket' is never closed
-IOInterface/EchoServer.java             | line:   32 col:  20 | warning: Potential resource leak: 'clientSocket' may not be closed
-IOInterface/IO_Packet.java              | line:   35 col:  12 | warning: Javadoc: Missing tag for return type
-IOInterface/IO_Packet.java              | line:   43 col:  12 | warning: Javadoc: Missing tag for return type
-IOInterface/IO_Packet.java              | line:   50 col:  12 | warning: Javadoc: Missing tag for return type
-IOInterface/IO_Packet.java              | line:   57 col:  12 | warning: Javadoc: Missing tag for return type
-IOInterface/IO_Packet.java              | line:   64 col:  12 | warning: Javadoc: Missing tag for return type
-IOInterface/IO_Packet.java              | line:   71 col:  12 | warning: Javadoc: Missing tag for return type
-IOInterface/PacketReader.java           | line:   11 col:  37 | warning: Javadoc: Missing tag for parameter in
-IOInterface/PacketWriter.java           | line:    6 col:  14 | warning: Javadoc: Missing comment for public declaration
-IOInterface/PacketWriter.java           | line:   13 col:  38 | warning: Javadoc: Missing tag for parameter out
-IOInterface/PacketWriter.java           | line:   25 col:  48 | warning: Javadoc: Missing tag for declared exception IOException
-IOInterface/PacketWriter.java           | line:   52 col:  51 | warning: Javadoc: Missing tag for declared exception IOException
-IOInterface/PacketWriter.java           | line:   85 col:  20 | warning: The method getBytes(int) from the type PacketWriter can be declared as static
-IOInterface/PacketWriter.java           | line:   88 col:  23 | warning: The expression of type int is boxed into Integer
-IOInterface/PacketWriter.java           | line:   91 col:  25 | warning: The expression of type int is boxed into Integer
-IOInterface/PacketWriter.java           | line:  110 col:  20 | warning: The method getBytesFromInt(int) from the type PacketWriter can be declared as static
-IOInterface/PacketWriter.java           | line:  114 col:  25 | warning: The expression of type int is boxed into Integer
-IOInterface/PacketWriter.java           | line:  151 col:  31 | warning: The expression of type int is boxed into Integer
-IOInterface/PacketWriter.java           | line:  163 col:  17 | warning: The method flush() of type PacketWriter should be tagged with @Override since it actually overrides a superclass method
-IOInterface/PacketWriter.java           | line:  172 col:  17 | warning: The method close() of type PacketWriter should be tagged with @Override since it actually overrides a superclass method
-IOInterface/Synchronous_IO_worker.java  | line:   79 col:  26 | warning: Potential resource leak: 'packetWriter' may not be closed
-IOInterface/Synchronous_IO_worker.java  | line:   81 col:  26 | warning: Resource leak: 'packetReader' is never closed
-IOInterface/Synchronous_IO_worker.java  | line:   95 col:  56 | warning: The expression of type Integer is unboxed into int
-IOInterface/Synchronous_IO_worker.java  | line:   95 col:  93 | warning: The expression of type Integer is unboxed into int
-IOInterface/Synchronous_IO_worker.java  | line:  155 col:  44 | warning: The expression of type Integer is unboxed into int
-IOInterface/Synchronous_IO_worker.java  | line:  155 col:  81 | warning: The expression of type Integer is unboxed into int
-IOInterface/testServer.java             | line:    4 col:   8 | warning: The import IOInterface is never used
-IOInterface/testServer.java             | line:    6 col:   8 | warning: The import java.util is never used
-IOInterface/testServer.java             | line:    8 col:  14 | warning: Javadoc: Missing comment for public declaration
-IOInterface/testServer.java             | line:   10 col:  24 | warning: Javadoc: Missing comment for public declaration
-IOInterface/testServer.java             | line:   11 col:  22 | warning: Resource leak: 'servSocket' is never closed
-IOInterface/testServer.java             | line:   16 col:  26 | warning: Resource 'reader' should be managed by try-with-resource
-IOInterface/testServer.java             | line:   17 col:  26 | warning: Resource 'writer' should be managed by try-with-resource
-logger/Logger.java                      | line:  312 col:  17 | warning: Potential resource leak: 'file_writer' may not be closed
-parser/Analyser.java                    | line:  473 col: 109 | warning: Potential null pointer access: The variable temp_start may be null at this location
-parser/Analyser.java                    | line:  477 col: 110 | warning: Potential null pointer access: The variable temp_start may be null at this location
-parser/Analyser.java                    | line: 1110 col:  23 | warning: Potential null pointer access: The variable tmp may be null at this location
-parser/Variable.java                    | line:   32 col:  28 | warning: The value of the field Variable.context_type is not used
-parser/Variable.java                    | line:   33 col:  28 | warning: The value of the field Variable.context is not used
-parser/Variable.java                    | line:   36 col:  28 | warning: The value of the field Variable.name is not used
-parser/Variable.java                    | line:   40 col:  28 | warning: The value of the field Variable.device is not used
-parser/Variable.java                    | line:   42 col:  28 | warning: The value of the field Variable.abilities is not used
-parser/Variable.java                    | line:   43 col:  28 | warning: The value of the field Variable.to_poll is not used
+src/config/Config_Reader.java               | 138  col 27  | Unnecessary cast from String to String
+src/config/Config_Reader.java               | 215  col 12  | Javadoc: Missing tag for return type
+src/config/Config_Reader.java               | 215  col 16  | The deprecated method get_int(String) of type Config_Reader should be annotated with @Deprecated
+src/config/Config_Reader.java               | 215  col 31  | Javadoc: Missing tag for parameter key
+src/config/Config_Reader.java               | 215  col 43  | Javadoc: Missing tag for declared exception ClassCastException
+src/config/Config_Reader.java               | 221  col 29  | The expression of type Object is unboxed into int
+src/config/Config_Reader.java               | 257  col 33  | The expression of type Object is unboxed into int
+src/config/Config_Reader.java               | 338  col 49  | Javadoc: Missing tag for declared exception ClassCastException
+src/config/Config_Reader.java               | 344  col 32  | The expression of type Object is unboxed into double
+src/config/Config_Reader.java               | 378  col 37  | The expression of type Object is unboxed into boolean
+src/config/Config_Reader.java               | 500  col 41  | Unnecessary cast from int to Integer
+src/config/Config_Reader.java               | 500  col 50  | The expression of type int is boxed into Integer
+src/config/Config_Reader.java               | 501  col 42  | Unnecessary cast from int to Integer
+src/config/Config_Reader.java               | 501  col 51  | The expression of type int is boxed into Integer
+src/config/Config_Reader.java               | 502  col 33  | Unnecessary cast from boolean to Boolean
+src/config/Config_Reader.java               | 502  col 42  | The expression of type boolean is boxed into Boolean
+src/config/Config_Reader.java               | 503  col 40  | Unnecessary cast from boolean to Boolean
+src/config/Config_Reader.java               | 503  col 49  | The expression of type boolean is boxed into Boolean
+src/config/Config_Reader.java               | 504  col 36  | Unnecessary cast from int to Integer
+src/config/Config_Reader.java               | 504  col 45  | The expression of type int is boxed into Integer
+src/config/Config_Reader.java               | 505  col 37  | Unnecessary cast from int to Integer
+src/config/Config_Reader.java               | 505  col 46  | The expression of type int is boxed into Integer
+src/datatypes/SubCheckConvert.java          | 140  col 19  | Unnecessary cast from char to int
+src/datatypes/SubCheckConvert.java          | 141  col 22  | Unnecessary cast from char to int
+src/datatypes/SubCheckConvert.java          | 157  col 19  | Unnecessary cast from char to int
+src/datatypes/SubCheckConvert.java          | 158  col 22  | Unnecessary cast from char to int
+src/datatypes/SubCheckConvert.java          | 173  col 13  | Unnecessary cast from char to int
+src/interpreter/Keyword_Handler.java        | 118  col 26  | Unnecessary cast from long to long
+src/interpreter/Keyword_Handler.java        | 189  col 26  | Unnecessary cast from long to long
+src/IOInterface/ASynchronous_IO_Worker.java | 10   col 14  | Javadoc: Missing comment for public declaration
+src/IOInterface/ASynchronous_IO_Worker.java | 108  col 20  | Resource 'closeSocket' should be managed by try-with-resource
+src/IOInterface/EchoServer.java             | 20   col 24  | Javadoc: Missing comment for public declaration
+src/IOInterface/EchoServer.java             | 24   col 22  | Resource leak: 'serverSocket' is never closed
+src/IOInterface/EchoServer.java             | 32   col 20  | Potential resource leak: 'clientSocket' may not be closed
+src/IOInterface/IO_Packet.java              | 53   col 12  | Javadoc: Missing tag for return type
+src/IOInterface/IO_Packet.java              | 61   col 12  | Javadoc: Missing tag for return type
+src/IOInterface/IO_Packet.java              | 68   col 12  | Javadoc: Missing tag for return type
+src/IOInterface/IO_Packet.java              | 75   col 12  | Javadoc: Missing tag for return type
+src/IOInterface/IO_Packet.java              | 82   col 12  | Javadoc: Missing tag for return type
+src/IOInterface/IO_Packet.java              | 89   col 12  | Javadoc: Missing tag for return type
+src/IOInterface/PacketReader.java           | 18   col 37  | Javadoc: Missing tag for parameter in
+src/IOInterface/PacketReader.java           | 18   col 48  | Javadoc: Missing tag for parameter logger
+src/IOInterface/PacketReader.java           | 23   col 12  | Javadoc: Missing comment for public declaration
+src/IOInterface/PacketReader.java           | 82   col 96  | Unnecessary cast from byte to int
+src/IOInterface/PacketReader.java           | 82   col 113 | Unnecessary cast from byte to int
+src/IOInterface/PacketReader.java           | 118  col 98  | Unnecessary cast from byte to int
+src/IOInterface/PacketReader.java           | 118  col 115 | Unnecessary cast from byte to int
+src/IOInterface/PacketWriter.java           | 6    col 14  | Javadoc: Missing comment for public declaration
+src/IOInterface/PacketWriter.java           | 13   col 38  | Javadoc: Missing tag for parameter out
+src/IOInterface/PacketWriter.java           | 25   col 48  | Javadoc: Missing tag for declared exception IOException
+src/IOInterface/PacketWriter.java           | 52   col 51  | Javadoc: Missing tag for declared exception IOException
+src/IOInterface/PacketWriter.java           | 85   col 20  | The method getBytes(int) from the type PacketWriter can be declared as static
+src/IOInterface/PacketWriter.java           | 88   col 23  | The expression of type int is boxed into Integer
+src/IOInterface/PacketWriter.java           | 91   col 25  | The expression of type int is boxed into Integer
+src/IOInterface/PacketWriter.java           | 110  col 20  | The method getBytesFromInt(int) from the type PacketWriter can be declared as static
+src/IOInterface/PacketWriter.java           | 114  col 25  | The expression of type int is boxed into Integer
+src/IOInterface/PacketWriter.java           | 151  col 31  | The expression of type int is boxed into Integer
+src/IOInterface/PacketWriter.java           | 163  col 17  | The method PacketWriter.flush() is overriding a synchronized method without being synchronized
+src/IOInterface/PacketWriter.java           | 163  col 17  | The method flush() of type PacketWriter should be tagged with @Override since it actually overrides a superclass method
+src/IOInterface/PacketWriter.java           | 172  col 17  | The method close() of type PacketWriter should be tagged with @Override since it actually overrides a superclass method
+src/IOInterface/Synchronous_IO_Worker.java  | 71   col 26  | Resource 'packetWriter' should be managed by try-with-resource
+src/IOInterface/Synchronous_IO_Worker.java  | 72   col 26  | Resource 'packetReader' should be managed by try-with-resource
+src/IOInterface/Synchronous_IO_Worker.java  | 112  col 51  | The expression of type int is boxed into Integer
+src/IOInterface/Synchronous_IO_Worker.java  | 160  col 48  | The expression of type Integer is unboxed into int
+src/IOInterface/Synchronous_IO_Worker.java  | 163  col 48  | The expression of type Integer is unboxed into int
+src/IOInterface/Synchronous_IO_Worker.java  | 163  col 85  | The expression of type Integer is unboxed into int
+src/IOInterface/Synchronous_IO_Worker.java  | 180  col 48  | The expression of type Integer is unboxed into int
+src/IOInterface/Synchronous_IO_Worker.java  | 183  col 48  | The expression of type Integer is unboxed into int
+src/IOInterface/Synchronous_IO_Worker.java  | 183  col 85  | The expression of type Integer is unboxed into int
+src/IOInterface/SynchronousIO.java          | 36   col 20  | The value of the field SynchronousIO.logger is not used
+src/IOInterface/SynchronousIO.java          | 48   col 83  | The method get_int(String) from the type Config_Reader is deprecated
+src/IOInterface/SynchronousIO.java          | 49   col 26  | Resource leak: 'aSyncSocket' is never closed
+src/IOInterface/SynchronousIO.java          | 49   col 26  | The value of the local variable aSyncSocket is not used
+src/IOInterface/SynchronousIO.java          | 49   col 68  | The method get_int(String) from the type Config_Reader is deprecated
+src/IOInterface/testServer.java             | 4    col 8   | The import IOInterface is never used
+src/IOInterface/testServer.java             | 6    col 8   | The import java.util is never used
+src/IOInterface/testServer.java             | 9    col 14  | Javadoc: Missing comment for public declaration
+src/IOInterface/testServer.java             | 11   col 24  | Javadoc: Missing comment for public declaration
+src/IOInterface/testServer.java             | 13   col 22  | Resource leak: 'servSocket' is never closed
+src/IOInterface/testServer.java             | 17   col 22  | Resource leak: 'reader' is never closed
+src/IOInterface/testServer.java             | 18   col 22  | Resource leak: 'writer' is never closed
+src/logger/Logger.java                      | 84   col 29  | Access to enclosing constructor Logger.Log_Thread() is emulated by a synthetic accessor method
+src/logger/Logger.java                      | 212  col 17  | Unnecessary cast from long to long
+src/logger/Logger.java                      | 215  col 17  | Unnecessary cast from long to long
+src/logger/Logger.java                      | 218  col 17  | Unnecessary cast from long to long
+src/logger/Logger.java                      | 221  col 17  | Unnecessary cast from long to long
+src/logger/Logger.java                      | 224  col 17  | Unnecessary cast from long to long
+src/logger/Logger.java                      | 227  col 17  | Unnecessary cast from long to long
+src/logger/Logger.java                      | 230  col 17  | Unnecessary cast from long to long
+src/logger/Logger.java                      | 233  col 17  | Unnecessary cast from long to long
+src/logger/Logger.java                      | 304  col 36  | Unnecessary cast from int to double
+src/logger/Logger.java                      | 344  col 17  | Potential resource leak: 'file_writer' may not be closed
+src/logger/Logger.java                      | 346  col 40  | Read access to enclosing field Logger.path_to_log_file is emulated by a synthetic accessor method
+src/logger/Logger.java                      | 347  col 38  | Read access to enclosing field Logger.path_to_log_file is emulated by a synthetic accessor method
+src/logger/Logger.java                      | 348  col 24  | Read access to enclosing field Logger.alive is emulated by a synthetic accessor method
+src/logger/Logger.java                      | 348  col 34  | Read access to enclosing field Logger.queue is emulated by a synthetic accessor method
+src/logger/Logger.java                      | 351  col 37  | Read access to enclosing field Logger.queue is emulated by a synthetic accessor method
+src/logger/Logger.java                      | 352  col 33  | Read access to enclosing field Logger.log_check_count is emulated by a synthetic accessor method
+src/logger/Logger.java                      | 355  col 45  | Read access to enclosing field Logger.log_file_max_size is emulated by a synthetic accessor method
+src/logger/Logger.java                      | 358  col 29  | Access to enclosing method recursive_move(int) from the type Logger is emulated by a synthetic accessor method
+src/logger/Logger.java                      | 361  col 52  | Read access to enclosing field Logger.path_to_log_file is emulated by a synthetic accessor method
+src/logger/Logger.java                      | 365  col 24  | Read access to enclosing field Logger.print_timestamp is emulated by a synthetic accessor method
+src/logger/Logger.java                      | 366  col 35  | Read access to enclosing field Logger.sdf is emulated by a synthetic accessor method
+src/logger/Logger.java                      | 373  col 24  | Read access to enclosing field Logger.verboseLevel is emulated by a synthetic accessor method
+src/logger/Logger.java                      | 375  col 38  | Read access to enclosing field Logger.queue is emulated by a synthetic accessor method
+src/logger/Logger.java                      | 397  col 98  | Read access to enclosing field Logger.path_to_log_file is emulated by a synthetic accessor method
+src/parser/Analyser.java                    | 161  col 33  | The switch over the enum type Analyser.analyse_states should have a default case
+src/parser/Analyser.java                    | 478  col 109 | Potential null pointer access: The variable temp_start may be null at this location
+src/parser/Analyser.java                    | 482  col 110 | Potential null pointer access: The variable temp_start may be null at this location
+src/parser/Analyser.java                    | 686  col 32  | The switch over the enum type Analyser.config_states should have a default case
+src/parser/Analyser.java                    | 900  col 33  | The switch over the enum type Analyser.var_states should have a default case
+src/parser/Analyser.java                    | 1137 col 23  | Potential null pointer access: The variable tmp may be null at this location
+src/parser/CaseHandling.java                | 70   col 32  | The switch over the enum type CaseHandling.states should have a default case
+src/parser/CaseHandling.java                | 70   col 32  | The enum constant ignore_string needs a corresponding case label in this enum switch on CaseHandling.states
+src/parser/MappedByte.java                  | 55   col 24  | The switch statement should have a default case
+src/parser/STTimer.java                     | 5    col 1   | Javadoc: Missing comment for public declaration
+src/parser/STTimer.java                     | 55   col 9   | The method toString() of type STTimer should be tagged with @Override since it actually overrides a superclass method
+src/parser/TYPES.java                       | 56   col 32  | The switch statement should have a default case
+src/parser/TYPES.java                       | 135  col 32  | The switch statement should have a default case
+src/parser/Variable.java                    | 32   col 28  | The value of the field Variable.context_type is not used
+src/parser/Variable.java                    | 33   col 28  | The value of the field Variable.context is not used
+src/parser/Variable.java                    | 36   col 28  | The value of the field Variable.name is not used
+src/parser/Variable.java                    | 40   col 28  | The value of the field Variable.device is not used
+src/parser/Variable.java                    | 42   col 28  | The value of the field Variable.abilities is not used
+src/parser/Variable.java                    | 43   col 28  | The value of the field Variable.to_poll is not used
+src/parser/Variable.java                    | 138  col 9   | The deprecated method set_device_pin_abilities(String, byte, byte) of type Variable should be annotated with @Deprecated
+src/parser/Variable.java                    | 220  col 9   | Javadoc: Missing comment for public declaration
