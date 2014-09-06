@@ -62,47 +62,48 @@ public class Interpreter
     {
         log.log(3, log_key, "call interpret: ", new Integer(start).toString(),  ", end: ", new Integer(end).toString(), "\n");
         int INDEX = start;
+        char[] codeArray = code.toCharArray();
         for(; INDEX < end; INDEX++)
         {
             log.log(4, log_key, "for_loop_top, INDEX = ", new Integer(INDEX).toString(), "\n");
 
-            if (      (code.charAt(INDEX)     == 'I') &&
-                      (code.charAt(INDEX + 1) == 'F') )
+            if (      (codeArray[INDEX]     == 'I') &&
+                      (codeArray[INDEX + 1] == 'F') )
             {
                 log.log(3, log_key, "found Keyword IF,           INDEX = ",
                                         new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_IF(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'P') &&
-                      (code.charAt(INDEX + 1) == 'R') &&
-                      (code.charAt(INDEX + 2) == 'I') &&
-                      (code.charAt(INDEX + 3) == 'N') &&
-                      (code.charAt(INDEX + 4) == 'T') )
+            else if ( (codeArray[INDEX]     == 'P') &&
+                      (codeArray[INDEX + 1] == 'R') &&
+                      (codeArray[INDEX + 2] == 'I') &&
+                      (codeArray[INDEX + 3] == 'N') &&
+                      (codeArray[INDEX + 4] == 'T') )
             {
                 log.log(3, log_key, "found Keyword PRINT,        INDEX = ",
                                         new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_PRINT(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'E') &&
-                      (code.charAt(INDEX + 1) == 'N') &&
-                      (code.charAt(INDEX + 2) == 'D') &&
-                      (code.charAt(INDEX + 3) == '_') )
+            else if ( (codeArray[INDEX]     == 'E') &&
+                      (codeArray[INDEX + 1] == 'N') &&
+                      (codeArray[INDEX + 2] == 'D') &&
+                      (codeArray[INDEX + 3] == '_') )
             {
-                if (      (code.charAt(INDEX + 4) == 'I') &&
-                          (code.charAt(INDEX + 5) == 'F') )
+                if (      (codeArray[INDEX + 4] == 'I') &&
+                          (codeArray[INDEX + 5] == 'F') )
                 {
                     log.log(3, log_key, "found Keyword END_IF,       INDEX = ",
                                             new Integer(INDEX).toString(), "\n");
                     INDEX = handler.found_END_IF(INDEX, code);
                     continue;
                 }
-                else if ( (code.charAt(INDEX + 4) == 'W') &&
-                          (code.charAt(INDEX + 5) == 'H') &&
-                          (code.charAt(INDEX + 6) == 'I') &&
-                          (code.charAt(INDEX + 7) == 'L') &&
-                          (code.charAt(INDEX + 8) == 'E') )
+                else if ( (codeArray[INDEX + 4] == 'W') &&
+                          (codeArray[INDEX + 5] == 'H') &&
+                          (codeArray[INDEX + 6] == 'I') &&
+                          (codeArray[INDEX + 7] == 'L') &&
+                          (codeArray[INDEX + 8] == 'E') )
                 {
                     log.log(3, log_key, "found Keyword END_WHILE     INDEX = ",
                                             new Integer(INDEX).toString(),
@@ -110,36 +111,36 @@ public class Interpreter
                     INDEX = handler.found_END_WHILE(INDEX, code);
                     continue;
                 }
-                else if ( (code.charAt(INDEX + 4) == 'F') &&
-                          (code.charAt(INDEX + 5) == 'O') &&
-                          (code.charAt(INDEX + 6) == 'R') )
+                else if ( (codeArray[INDEX + 4] == 'F') &&
+                          (codeArray[INDEX + 5] == 'O') &&
+                          (codeArray[INDEX + 6] == 'R') )
                 {
                     log.log(3, log_key, "found Keyword END_FOR,      INDEX = ",
                                             new Integer(INDEX).toString(), "\n");
                     INDEX = handler.found_END_FOR(INDEX, code);
                     continue;
                 }
-                else if ( (code.charAt(INDEX + 4) == 'F') &&
-                          (code.charAt(INDEX + 5) == 'U') &&
-                          (code.charAt(INDEX + 6) == 'N') &&
-                          (code.charAt(INDEX + 7) == 'C') &&
-                          (code.charAt(INDEX + 8) == 'T') &&
-                          (code.charAt(INDEX + 9) == 'I') &&
-                          (code.charAt(INDEX + 10)== 'O') &&
-                          (code.charAt(INDEX + 11)== 'N') )
+                else if ( (codeArray[INDEX + 4] == 'F') &&
+                          (codeArray[INDEX + 5] == 'U') &&
+                          (codeArray[INDEX + 6] == 'N') &&
+                          (codeArray[INDEX + 7] == 'C') &&
+                          (codeArray[INDEX + 8] == 'T') &&
+                          (codeArray[INDEX + 9] == 'I') &&
+                          (codeArray[INDEX + 10]== 'O') &&
+                          (codeArray[INDEX + 11]== 'N') )
                 {
                     log.log(3, log_key, "found Keyword END_FUNCTION, INDEX = ",
                                             new Integer(INDEX).toString(), "\n");
                     handler.found_END_FUNCTION(INDEX, code);
                     break;
                 }
-                else if ( (code.charAt(INDEX + 4) == 'P') &&
-                          (code.charAt(INDEX + 5) == 'R') &&
-                          (code.charAt(INDEX + 6) == 'O') &&
-                          (code.charAt(INDEX + 7) == 'G') &&
-                          (code.charAt(INDEX + 8) == 'R') &&
-                          (code.charAt(INDEX + 9) == 'A') &&
-                          (code.charAt(INDEX + 10)== 'M') )
+                else if ( (codeArray[INDEX + 4] == 'P') &&
+                          (codeArray[INDEX + 5] == 'R') &&
+                          (codeArray[INDEX + 6] == 'O') &&
+                          (codeArray[INDEX + 7] == 'G') &&
+                          (codeArray[INDEX + 8] == 'R') &&
+                          (codeArray[INDEX + 9] == 'A') &&
+                          (codeArray[INDEX + 10]== 'M') )
                 {
                     log.log(3, log_key, "found Keyword END_PROGRAM,  INDEX = ",
                                             new Integer(INDEX).toString(), "\n");
@@ -147,121 +148,121 @@ public class Interpreter
                     break;
                 }
             }
-            else if ( (code.charAt(INDEX)     == 'E') &&
-                      (code.charAt(INDEX + 1) == 'L') &&
-                      (code.charAt(INDEX + 2) == 'S') &&
-                      (code.charAt(INDEX + 3) == 'E') )
+            else if ( (codeArray[INDEX]     == 'E') &&
+                      (codeArray[INDEX + 1] == 'L') &&
+                      (codeArray[INDEX + 2] == 'S') &&
+                      (codeArray[INDEX + 3] == 'E') )
             {
                 log.log(3, log_key, "found Keyword ELSE,         INDEX = ",
                                         new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_ELSE(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'E') &&
-                      (code.charAt(INDEX + 1) == 'L') &&
-                      (code.charAt(INDEX + 2) == 'S') &&
-                      (code.charAt(INDEX + 3) == 'I') &&
-                      (code.charAt(INDEX + 4) == 'F') )
+            else if ( (codeArray[INDEX]     == 'E') &&
+                      (codeArray[INDEX + 1] == 'L') &&
+                      (codeArray[INDEX + 2] == 'S') &&
+                      (codeArray[INDEX + 3] == 'I') &&
+                      (codeArray[INDEX + 4] == 'F') )
             {
                 log.log(3, log_key, "found Keyword ELSIF,        INDEX = ",
                                         new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_ELSIF(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'C') &&
-                      (code.charAt(INDEX + 1) == 'A') &&
-                      (code.charAt(INDEX + 2) == 'S') &&
-                      (code.charAt(INDEX + 3) == 'E') )
+            else if ( (codeArray[INDEX]     == 'C') &&
+                      (codeArray[INDEX + 1] == 'A') &&
+                      (codeArray[INDEX + 2] == 'S') &&
+                      (codeArray[INDEX + 3] == 'E') )
             {
                 log.log(3, log_key, "found Keyword CASE,         INDEX = ",
                                         new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_CASE(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'P') &&
-                      (code.charAt(INDEX + 1) == 'R') &&
-                      (code.charAt(INDEX + 2) == 'O') &&
-                      (code.charAt(INDEX + 3) == 'G') &&
-                      (code.charAt(INDEX + 4) == 'R') &&
-                      (code.charAt(INDEX + 5) == 'A') &&
-                      (code.charAt(INDEX + 6) == 'M') )
+            else if ( (codeArray[INDEX]     == 'P') &&
+                      (codeArray[INDEX + 1] == 'R') &&
+                      (codeArray[INDEX + 2] == 'O') &&
+                      (codeArray[INDEX + 3] == 'G') &&
+                      (codeArray[INDEX + 4] == 'R') &&
+                      (codeArray[INDEX + 5] == 'A') &&
+                      (codeArray[INDEX + 6] == 'M') )
             {
                 log.log(3, log_key, "found Keyword PROGRAM,      INDEX = ",
                                         new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_PROGRAM(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'V') &&
-                      (code.charAt(INDEX + 1) == 'A') &&
-                      (code.charAt(INDEX + 2) == 'R') )
+            else if ( (codeArray[INDEX]     == 'V') &&
+                      (codeArray[INDEX + 1] == 'A') &&
+                      (codeArray[INDEX + 2] == 'R') )
             {
                 log.log(3, log_key, "found Keyword VAR,          INDEX = ",
                                         new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_VAR(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'W') &&
-                      (code.charAt(INDEX + 1) == 'H') &&
-                      (code.charAt(INDEX + 2) == 'I') &&
-                      (code.charAt(INDEX + 3) == 'L') &&
-                      (code.charAt(INDEX + 4) == 'E') )
+            else if ( (codeArray[INDEX]     == 'W') &&
+                      (codeArray[INDEX + 1] == 'H') &&
+                      (codeArray[INDEX + 2] == 'I') &&
+                      (codeArray[INDEX + 3] == 'L') &&
+                      (codeArray[INDEX + 4] == 'E') )
             {
                 log.log(3, log_key, "found Keyword WHILE,        INDEX = ",
                                         new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_WHILE(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'F') &&
-                      (code.charAt(INDEX + 1) == 'O') &&
-                      (code.charAt(INDEX + 2) == 'R') )
+            else if ( (codeArray[INDEX]     == 'F') &&
+                      (codeArray[INDEX + 1] == 'O') &&
+                      (codeArray[INDEX + 2] == 'R') )
             {
                 log.log(3, log_key, "found Keyword FOR,          INDEX = ",
                                         new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_FOR(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'R') &&
-                      (code.charAt(INDEX + 1) == 'E') &&
-                      (code.charAt(INDEX + 2) == 'P') &&
-                      (code.charAt(INDEX + 3) == 'E') &&
-                      (code.charAt(INDEX + 4) == 'A') &&
-                      (code.charAt(INDEX + 5) == 'T') )
+            else if ( (codeArray[INDEX]     == 'R') &&
+                      (codeArray[INDEX + 1] == 'E') &&
+                      (codeArray[INDEX + 2] == 'P') &&
+                      (codeArray[INDEX + 3] == 'E') &&
+                      (codeArray[INDEX + 4] == 'A') &&
+                      (codeArray[INDEX + 5] == 'T') )
             {
                 log.log(3, log_key, "found Keyword REPEAT,       INDEX = ",
                                         new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_REPEAT(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'U') &&
-                      (code.charAt(INDEX + 1) == 'N') &&
-                      (code.charAt(INDEX + 2) == 'T') &&
-                      (code.charAt(INDEX + 3) == 'I') &&
-                      (code.charAt(INDEX + 4) == 'L') )
+            else if ( (codeArray[INDEX]     == 'U') &&
+                      (codeArray[INDEX + 1] == 'N') &&
+                      (codeArray[INDEX + 2] == 'T') &&
+                      (codeArray[INDEX + 3] == 'I') &&
+                      (codeArray[INDEX + 4] == 'L') )
             {
                 log.log(3, log_key, "found Keyword UNTIL,        INDEX = ",
                                         new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_UNTIL(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'B') &&
-                      (code.charAt(INDEX + 1) == 'R') &&
-                      (code.charAt(INDEX + 2) == 'E') &&
-                      (code.charAt(INDEX + 3) == 'A') &&
-                      (code.charAt(INDEX + 4) == 'K') )
+            else if ( (codeArray[INDEX]     == 'B') &&
+                      (codeArray[INDEX + 1] == 'R') &&
+                      (codeArray[INDEX + 2] == 'E') &&
+                      (codeArray[INDEX + 3] == 'A') &&
+                      (codeArray[INDEX + 4] == 'K') )
             {
                 log.log(3, log_key, "found Keyword BREAK,        INDEX = ",
                                         new Integer(INDEX).toString(), "\n");
                 INDEX = handler.found_BREAK(INDEX, code);
                 continue;
             }
-            else if ( (code.charAt(INDEX)     == 'F') &&
-                      (code.charAt(INDEX + 1) == 'U') &&
-                      (code.charAt(INDEX + 2) == 'N') &&
-                      (code.charAt(INDEX + 3) == 'C') &&
-                      (code.charAt(INDEX + 4) == 'T') &&
-                      (code.charAt(INDEX + 5) == 'I') &&
-                      (code.charAt(INDEX + 6) == 'O') &&
-                      (code.charAt(INDEX + 7) == 'N') )
+            else if ( (codeArray[INDEX]     == 'F') &&
+                      (codeArray[INDEX + 1] == 'U') &&
+                      (codeArray[INDEX + 2] == 'N') &&
+                      (codeArray[INDEX + 3] == 'C') &&
+                      (codeArray[INDEX + 4] == 'T') &&
+                      (codeArray[INDEX + 5] == 'I') &&
+                      (codeArray[INDEX + 6] == 'O') &&
+                      (codeArray[INDEX + 7] == 'N') )
             {
                 log.log(3, log_key, "found Keyword FUNCTION,     INDEX = ",
                                         new Integer(INDEX).toString(), "\n");
