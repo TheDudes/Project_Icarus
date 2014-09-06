@@ -8,4 +8,4 @@ integration       -> scripts to integrate icarus into the operating
 IO_Protokoll      -> the IO TCP Protocoll
 java-switcher.sh  -> a script file to switch the current jvm
 README.txt        -> this file
-testing           -> the Project itself (source files etc)
+Icarus            -> the Project itself (source files etc)
