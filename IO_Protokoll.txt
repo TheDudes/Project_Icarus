@@ -1,0 +1,31 @@
+-----------------------------------------------------------------------------------------------------------------
+| Geräte ID |  PIN ID | Namespace ID | Count | Read/Write Flag       | Value                                    |
+-----------------------------------------------------------------------------------------------------------------
+| 2 Byte    | 2 Byte  | 3 Bit        | 3 Bit | 2 Bit                 | 1 Byte                                   |
+-----------------------------------------------------------------------------------------------------------------
+|           |         |              |       | 00 = Read             | erstes Bit = Wert von erstem PIN         |
+|           |         |              |       | 01 = Write            | bei Antwort: 00000000 = write failed     |
+|           |         |              |       | 10 = Polling abmelden |              10000000 = write successful |
+|           |         |              |       | 11 = Polling anmelden |                                          |
+-----------------------------------------------------------------------------------------------------------------
+
+Befehl von uns und antwort von IO Gruppe haben die selbe Struktur wie oben
+Bei Anmeldung von Polling antwort auf synchronen channel (5021), antoworten
+danach auf asynchronem channel (5022), wieder die selbe Struktur wie oben
+
+Falls error bei write: setze Gerät mit PIN ID auf Blacklist, Blacklist wird
+alle 5 min erneut abgefragt um zu erfahren ob error behoben oder Gerät
+eingesteckt. Bei Erfolg kommt Gerät wieder von Blacklist herunter
+
+Blacklist: Map/Array/List mit GeräteId und PinID
+boolean checkBL(GeräteId, PinId)
+Paket makePaket(stuff von tux)
+void sendPaket(Paket)
+void initPolling(liste mit output Pins)
+stuffToSendToTux decipherMessage(stuff von den anderen)
+void refreshBL()
+
+
+asynchron:
+decipher message
+sendMessageToTux
