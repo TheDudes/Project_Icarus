@@ -70,6 +70,8 @@ d4ryus:
         -> create error message, then print
         -> make list of stuff we can do now
         -> make list of stuff we cannot do
+[done]  -> change String.charAt to char[]
+[done]  -> convert repo to git and push to github
 [done]  -> flag to turn on/off time display
 [done]  -> fix exception at keyword_handler, string.indexOf
 [done]  -> fixme/Exception handling
