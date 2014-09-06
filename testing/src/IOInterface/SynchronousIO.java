@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 package IOInterface;
-import linc.Config_Reader;
+import config.Config_Reader;
 import logger.*;
 import parser.*;
 import java.net.*;
@@ -27,7 +27,7 @@ import java.net.*;
 public class SynchronousIO{
 
     private String logKey = " [SynchronousIO]: ";
-    private Synchronous_IO_worker syncWorker;
+    private Synchronous_IO_Worker syncWorker;
     private Thread syncWorkerThread;
     private ASynchronous_IO_Worker asyncWorker;
     private Thread asyncWorkerThread;
@@ -41,7 +41,7 @@ public class SynchronousIO{
     * @param confReader Config_Reader so we can get the hostname and port for the Sockets
     * @param infoColl we have to get this object as we have to pass it on to the Synchronous_IO_worker
     */
-    public SynchronousIO(Logger logger, Config_Reader confReader, InfoCollector infoColl){
+    public SynchronousIO(Logger logger, Config_Reader confReader, ParserContainer infoColl){
        this.logger = logger;
        logger.log(0, logKey, "trying to establish a connection to the IO Manager\n");
        try{
@@ -49,8 +49,8 @@ public class SynchronousIO{
             ServerSocket aSyncSocket = new ServerSocket(confReader.get_int("async_port"));
             logger.log(0, logKey, "established the connection to the IO Manager\n");
             logger.log(4, logKey, "creating the workers\n"); 
-            syncWorker = new Synchronous_IO_worker(logger, infoColl, syncSocket);
-            asyncWorker = new ASynchronous_IO_Worker(logger, infoColl, aSyncSocket);
+            syncWorker = new Synchronous_IO_Worker(logger, infoColl, confReader);
+            asyncWorker = new ASynchronous_IO_Worker(logger, infoColl, confReader);
             syncWorkerThread = new Thread(syncWorker);
             syncWorkerThread.start();
             logger.log(4, logKey, "created the syncWorker, exiting constructor\n");

@@ -67,13 +67,11 @@ public class Main
 
         String code = container.get_all_the_code().toString();
 
-        for(int i = 0; i < 10; i++ )
+        for(int i = 0; i < 1000; i++ )
             interpreter.interpret(code, 0, code.length());
 
         log.log(0, log_key, "exiting Icarus.\n");
-
-        io.kill();
-        log.kill();
+        exit();
     }
 
     private static void print_startup_message()
