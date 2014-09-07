@@ -80,14 +80,6 @@ src/IOInterface/testServer.java             | 13   col 22  | Resource leak: 'ser
 src/IOInterface/testServer.java             | 17   col 22  | Resource leak: 'reader' is never closed
 src/IOInterface/testServer.java             | 18   col 22  | Resource leak: 'writer' is never closed
 src/logger/Logger.java                      | 84   col 29  | Access to enclosing constructor Logger.Log_Thread() is emulated by a synthetic accessor method
-src/logger/Logger.java                      | 212  col 17  | Unnecessary cast from long to long
-src/logger/Logger.java                      | 215  col 17  | Unnecessary cast from long to long
-src/logger/Logger.java                      | 218  col 17  | Unnecessary cast from long to long
-src/logger/Logger.java                      | 221  col 17  | Unnecessary cast from long to long
-src/logger/Logger.java                      | 224  col 17  | Unnecessary cast from long to long
-src/logger/Logger.java                      | 227  col 17  | Unnecessary cast from long to long
-src/logger/Logger.java                      | 230  col 17  | Unnecessary cast from long to long
-src/logger/Logger.java                      | 233  col 17  | Unnecessary cast from long to long
 src/logger/Logger.java                      | 304  col 36  | Unnecessary cast from int to double
 src/logger/Logger.java                      | 344  col 17  | Potential resource leak: 'file_writer' may not be closed
 src/logger/Logger.java                      | 346  col 40  | Read access to enclosing field Logger.path_to_log_file is emulated by a synthetic accessor method

@@ -209,28 +209,28 @@ public class Logger
 
         if(     s.contains("B"))
             return
-                (long)Long.parseLong(s.substring(0, s.indexOf("B",0)));
+                Long.parseLong(s.substring(0, s.indexOf("B",0)));
         else if(s.contains("b"))
             return
-                (long)Long.parseLong(s.substring(0, s.indexOf("b",0)));
+                Long.parseLong(s.substring(0, s.indexOf("b",0)));
         else if(s.contains("K"))
             return 1024*
-                (long)Long.parseLong(s.substring(0, s.indexOf("K",0)));
+                Long.parseLong(s.substring(0, s.indexOf("K",0)));
         else if(s.contains("k"))
             return 1024*
-                (long)Long.parseLong(s.substring(0, s.indexOf("k",0)));
+                Long.parseLong(s.substring(0, s.indexOf("k",0)));
         else if(s.contains("M"))
             return 1024*1024*
-                (long)Long.parseLong(s.substring(0, s.indexOf("M",0)));
+                Long.parseLong(s.substring(0, s.indexOf("M",0)));
         else if(s.contains("m"))
             return 1024*1024*
-                (long)Long.parseLong(s.substring(0, s.indexOf("m",0)));
+                Long.parseLong(s.substring(0, s.indexOf("m",0)));
         else if(s.contains("G"))
             return 1024*1024*1024*
-                (long)Long.parseLong(s.substring(0, s.indexOf("G",0)));
+                Long.parseLong(s.substring(0, s.indexOf("G",0)));
         else if(s.contains("g"))
             return 1024*1024*1024*
-                (long)Long.parseLong(s.substring(0, s.indexOf("g",0)));
+                Long.parseLong(s.substring(0, s.indexOf("g",0)));
         else
         {
             System.out.print(
