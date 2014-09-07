@@ -301,7 +301,7 @@ public class Logger
             percentage_before = percentage;
 
             /* Calculate the length of current state */
-            int c =(int)( (ratio * (double)w ) + 0.5);
+            int c = (int)( (ratio * w) + 0.5);
 
             /* go up 1 line and print out the message + the ratio in % */
             System.out.print("]\033[F" + message + " " + percentage + "%[");

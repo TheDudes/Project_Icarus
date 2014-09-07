@@ -1,6 +1,5 @@
 src/config/Config_Reader.java               | 138  col 27  | Unnecessary cast from String to String
 src/config/Config_Reader.java               | 215  col 12  | Javadoc: Missing tag for return type
-src/config/Config_Reader.java               | 215  col 16  | The deprecated method get_int(String) of type Config_Reader should be annotated with @Deprecated
 src/config/Config_Reader.java               | 215  col 31  | Javadoc: Missing tag for parameter key
 src/config/Config_Reader.java               | 215  col 43  | Javadoc: Missing tag for declared exception ClassCastException
 src/config/Config_Reader.java               | 221  col 29  | The expression of type Object is unboxed into int
@@ -55,7 +54,6 @@ src/IOInterface/PacketWriter.java           | 91   col 25  | The expression of t
 src/IOInterface/PacketWriter.java           | 110  col 20  | The method getBytesFromInt(int) from the type PacketWriter can be declared as static
 src/IOInterface/PacketWriter.java           | 114  col 25  | The expression of type int is boxed into Integer
 src/IOInterface/PacketWriter.java           | 151  col 31  | The expression of type int is boxed into Integer
-src/IOInterface/PacketWriter.java           | 163  col 17  | The method PacketWriter.flush() is overriding a synchronized method without being synchronized
 src/IOInterface/PacketWriter.java           | 163  col 17  | The method flush() of type PacketWriter should be tagged with @Override since it actually overrides a superclass method
 src/IOInterface/PacketWriter.java           | 172  col 17  | The method close() of type PacketWriter should be tagged with @Override since it actually overrides a superclass method
 src/IOInterface/Synchronous_IO_Worker.java  | 71   col 26  | Resource 'packetWriter' should be managed by try-with-resource
@@ -79,23 +77,8 @@ src/IOInterface/testServer.java             | 11   col 24  | Javadoc: Missing co
 src/IOInterface/testServer.java             | 13   col 22  | Resource leak: 'servSocket' is never closed
 src/IOInterface/testServer.java             | 17   col 22  | Resource leak: 'reader' is never closed
 src/IOInterface/testServer.java             | 18   col 22  | Resource leak: 'writer' is never closed
-src/logger/Logger.java                      | 84   col 29  | Access to enclosing constructor Logger.Log_Thread() is emulated by a synthetic accessor method
 src/logger/Logger.java                      | 304  col 36  | Unnecessary cast from int to double
-src/logger/Logger.java                      | 344  col 17  | Potential resource leak: 'file_writer' may not be closed
-src/logger/Logger.java                      | 346  col 40  | Read access to enclosing field Logger.path_to_log_file is emulated by a synthetic accessor method
-src/logger/Logger.java                      | 347  col 38  | Read access to enclosing field Logger.path_to_log_file is emulated by a synthetic accessor method
-src/logger/Logger.java                      | 348  col 24  | Read access to enclosing field Logger.alive is emulated by a synthetic accessor method
-src/logger/Logger.java                      | 348  col 34  | Read access to enclosing field Logger.queue is emulated by a synthetic accessor method
-src/logger/Logger.java                      | 351  col 37  | Read access to enclosing field Logger.queue is emulated by a synthetic accessor method
-src/logger/Logger.java                      | 352  col 33  | Read access to enclosing field Logger.log_check_count is emulated by a synthetic accessor method
-src/logger/Logger.java                      | 355  col 45  | Read access to enclosing field Logger.log_file_max_size is emulated by a synthetic accessor method
-src/logger/Logger.java                      | 358  col 29  | Access to enclosing method recursive_move(int) from the type Logger is emulated by a synthetic accessor method
-src/logger/Logger.java                      | 361  col 52  | Read access to enclosing field Logger.path_to_log_file is emulated by a synthetic accessor method
-src/logger/Logger.java                      | 365  col 24  | Read access to enclosing field Logger.print_timestamp is emulated by a synthetic accessor method
-src/logger/Logger.java                      | 366  col 35  | Read access to enclosing field Logger.sdf is emulated by a synthetic accessor method
-src/logger/Logger.java                      | 373  col 24  | Read access to enclosing field Logger.verboseLevel is emulated by a synthetic accessor method
-src/logger/Logger.java                      | 375  col 38  | Read access to enclosing field Logger.queue is emulated by a synthetic accessor method
-src/logger/Logger.java                      | 397  col 98  | Read access to enclosing field Logger.path_to_log_file is emulated by a synthetic accessor method
+src/logger/Logger.java                      | 344  col 25  | Potential resource leak: 'file_writer' may not be closed
 src/parser/Analyser.java                    | 161  col 33  | The switch over the enum type Analyser.analyse_states should have a default case
 src/parser/Analyser.java                    | 478  col 109 | Potential null pointer access: The variable temp_start may be null at this location
 src/parser/Analyser.java                    | 482  col 110 | Potential null pointer access: The variable temp_start may be null at this location
@@ -115,5 +98,4 @@ src/parser/Variable.java                    | 36   col 28  | The value of the fi
 src/parser/Variable.java                    | 40   col 28  | The value of the field Variable.device is not used
 src/parser/Variable.java                    | 42   col 28  | The value of the field Variable.abilities is not used
 src/parser/Variable.java                    | 43   col 28  | The value of the field Variable.to_poll is not used
-src/parser/Variable.java                    | 138  col 9   | The deprecated method set_device_pin_abilities(String, byte, byte) of type Variable should be annotated with @Deprecated
 src/parser/Variable.java                    | 220  col 9   | Javadoc: Missing comment for public declaration
