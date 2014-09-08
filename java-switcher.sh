@@ -21,7 +21,7 @@ setVars()
         IBM=/usr/lib/jvm/ibm-java-x86_64-71/bin
         ;;
     d4ryus)
-        ORACLE=/home/d4ryus/coding/gay_java/jdk1.8.0_05/bin
+        ORACLE=/usr/lib/jvm/java-7-oracle/bin
         OPEN=/usr/lib/jvm/java-7-openjdk/bin
         IBM=/path/to/java
         ;;
