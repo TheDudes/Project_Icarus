@@ -7,7 +7,7 @@
 -------------------------------------------------------------------------------
 all:
 
-[ !! ]  -> import Icarus.Main;  ->  log.message -> Main.exit();
+[ !! ]  -> import Icarus.Main; -> log.message -> Main.exit();
 [    ]  -> java api for io manager
 [done]  -> fix most of the warnings
 [done]  -> get interpreter to run
@@ -38,6 +38,7 @@ csb/linc:
 -------------------------------------------------------------------------------
 linc/tux:
 
+[ !! ]  -> exception if path to st_files is wrong
         -> lib feature maybe
         -> fix all warnings
 -------------------------------------------------------------------------------
