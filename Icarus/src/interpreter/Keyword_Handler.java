@@ -115,7 +115,7 @@ public class Keyword_Handler
                 continue;
             }
             identifier = config_value.substring(i, config_value.length());
-            time       = (long)Long.parseLong(value);
+            time       = Long.parseLong(value);
             break;
         }
 
@@ -186,7 +186,7 @@ public class Keyword_Handler
                 continue;
             }
             identifier = config_value.substring(i, config_value.length());
-            time       = (long)Long.parseLong(value);
+            time       = Long.parseLong(value);
             break;
         }
 

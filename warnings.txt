@@ -24,8 +24,6 @@ src/datatypes/SubCheckConvert.java          | 141  col 22  | Unnecessary cast fr
 src/datatypes/SubCheckConvert.java          | 157  col 19  | Unnecessary cast from char to int
 src/datatypes/SubCheckConvert.java          | 158  col 22  | Unnecessary cast from char to int
 src/datatypes/SubCheckConvert.java          | 173  col 13  | Unnecessary cast from char to int
-src/interpreter/Keyword_Handler.java        | 118  col 26  | Unnecessary cast from long to long
-src/interpreter/Keyword_Handler.java        | 189  col 26  | Unnecessary cast from long to long
 src/IOInterface/ASynchronous_IO_Worker.java | 10   col 14  | Javadoc: Missing comment for public declaration
 src/IOInterface/ASynchronous_IO_Worker.java | 108  col 20  | Resource 'closeSocket' should be managed by try-with-resource
 src/IOInterface/EchoServer.java             | 20   col 24  | Javadoc: Missing comment for public declaration
