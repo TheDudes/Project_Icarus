@@ -13,7 +13,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * file: /src/Icarus/main.java
+ * file: /src/Icarus/Main.java
  * vim: foldmethod=syntax:
  */
 
