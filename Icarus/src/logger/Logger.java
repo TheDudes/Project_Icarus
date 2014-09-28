@@ -21,6 +21,7 @@ package logger;
 
 import Icarus.Main;
 import config.*;
+import gui.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,11 +45,13 @@ public class Logger
                           queue = new LinkedBlockingQueue<>(8192);
     final private SimpleDateFormat
                           sdf   = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss");
+          private Log_Frame frame = null;
 
     /* values from config file */
+    final private boolean gui;
     final private boolean silent;
     final private boolean print_timestamp;
-    final private int     verboseLevel;
+    final private int     verbose_level;
     final private int     max_backup_files;
     final private int     log_check_count;
     final private String  log_file_name;
@@ -69,9 +72,10 @@ public class Logger
      */
     public Logger(Config_Reader config)
     {
+        gui               = config.get_boolean( "gui"                        );
         silent            = config.get_boolean( "silent"                     );
         print_timestamp   = config.get_boolean( "Log_print_timestamp"        );
-        verboseLevel      = config.get_int    ( "verbosity_level", 0, 4      );
+        verbose_level     = config.get_int    ( "verbosity_level", 0, 4      );
         max_backup_files  = config.get_int    ( "Log_max_files",   0, 999    );
         log_check_count   = config.get_int    ( "Log_check_count", 0, 1000000);
         log_file_name     = config.get_string ( "Log_file_name"              );
@@ -84,6 +88,8 @@ public class Logger
         thread = new Thread(new Log_Thread());
         thread.setName("Log_Thread");
         thread.start();
+        if (gui)
+            frame = new Log_Frame(verbose_level);
         log(2, log_key, "initialized Logger.\n");
         config.set_Logger(this);
     }
@@ -258,6 +264,9 @@ public class Logger
      */
     public void log(int verbosity, String... args)
     {
+        if (frame != null)
+            frame.log(verbosity, args);
+
         if (( verbosity == 0 ) && !silent )
         {
             String message = new String();
@@ -270,7 +279,7 @@ public class Logger
             System.out.flush();
             queue.offer(args);
         }
-        else if ( verbosity <= this.verboseLevel )
+        else if ( verbosity <= this.verbose_level )
             queue.offer(args);
     }
 
@@ -370,7 +379,7 @@ public class Logger
                     for(String buff : queue_element)
                         message += buff;
 
-                    if(verboseLevel == 4)
+                    if(verbose_level == 4)
                     {
                         queue_size = queue.size();
                         if (queue_size < 10)

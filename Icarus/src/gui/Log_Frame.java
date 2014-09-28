@@ -19,6 +19,7 @@
 
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -32,6 +33,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 public class Log_Frame extends JFrame
@@ -41,20 +43,22 @@ public class Log_Frame extends JFrame
     private JScrollPane       scroll_pane;
     private JTextArea         field_log;
     private JPanel            main_panel;
+    private int               gui_verbose_level;
     private String[] verbose_lvls = {"verbosity level 0", "verbosity level 1",
                                      "verbosity level 2", "verbosity level 3",
                                      "verbosity level 4"};
 
-    public Log_Frame()
+    public Log_Frame(int gui_verbose_level)
     {
         setTitle("Log");
+        this.gui_verbose_level = gui_verbose_level;
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setMinimumSize(new Dimension(500, 300));
         main_panel = new JPanel();
         setContentPane(main_panel);
         main_panel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         main_panel.setBorder(new TitledBorder(null, "Logs", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        main_panel.setLayout(new BoxLayout(main_panel, BoxLayout.Y_AXIS));
+        main_panel.setLayout(new BorderLayout(0, 0));
 
         cmb_verbose = new JComboBox<String>(verbose_lvls);
         cmb_verbose.addActionListener(new ActionListener() {
@@ -62,26 +66,38 @@ public class Log_Frame extends JFrame
                 changed_verbosity();
             }
         });
-        main_panel.add(cmb_verbose);
+        main_panel.add(cmb_verbose, BorderLayout.NORTH);
 
         field_log = new JTextArea();
         field_log.setEditable(false);
         field_log.setFont(new Font("Monospaced", Font.PLAIN, 11));
 
         scroll_pane = new JScrollPane(field_log);
-        scroll_pane.setAutoscrolls(true);
-        main_panel.add(scroll_pane);
+        main_panel.add(scroll_pane, BorderLayout.CENTER);
         setVisible(true);
     }
 
     private void changed_verbosity()
     {
-
+        String sel = cmb_verbose.getSelectedItem().toString();
+        for (int i = 0; i < verbose_lvls.length; i++) {
+            if (sel.equals(verbose_lvls[i]))
+            {
+                gui_verbose_level = i;
+                break;
+            }
+        }
     }
 
-    public void log(String log)
+    public void log(int verbosity, String... args)
     {
-        field_log.append(log);
+        if ( verbosity <= gui_verbose_level ) {
+            String message = new String();
+            for (int i = 0; i < args.length; i++)
+                message += args[i];
+            field_log.append(message);
+            field_log.setCaretPosition(field_log.getCaretPosition() + message.length());
+        }
     }
 
     public static void main(String[] args)
@@ -90,13 +106,13 @@ public class Log_Frame extends JFrame
             public void run()
             {
                 try {
-                    Log_Frame frame = new Log_Frame();
+                    Log_Frame frame = new Log_Frame(0);
                     for (int i = 0; i < 1000; i++) {
-                        frame.log("icarus " + "something went wrong\n");
-                        frame.log("configReader " + "something went wrong\n");
-                        frame.log("logger " + "something went wrong\n");
-                        frame.log("ioManager " + "something went wrong\n");
-                        frame.log("parser " + "something went wrong\n");
+                        frame.log(0, "icarus " + "something went wrong\n");
+                        frame.log(0, "configReader " + "something went wrong\n");
+                        frame.log(0, "logger " + "something went wrong\n");
+                        frame.log(0, "ioManager " + "something went wrong\n");
+                        frame.log(0, "parser " + "something went wrong\n");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
