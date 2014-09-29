@@ -47,7 +47,7 @@ public class ST_Editor extends JFrame
     public ST_Editor(String[] st_files)
     {
         setTitle("Structure Text File Editor");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setMinimumSize(new Dimension(500, 300));
         main_panel = new JPanel();
         setContentPane(main_panel);
@@ -57,7 +57,7 @@ public class ST_Editor extends JFrame
         main_panel.add(panel_top, BorderLayout.NORTH);
         panel_top.setLayout(new GridLayout(1, 3, 0, 0));
 
-        cmb_file_chooser = new JComboBox<String>(st_files);
+        cmb_file_chooser = new JComboBox<>(st_files);
         panel_top.add(cmb_file_chooser);
 
         btn_restart = new JButton("Restart Icarus");
@@ -66,15 +66,21 @@ public class ST_Editor extends JFrame
         btn_save = new JButton("Save File");
         panel_top.add(btn_save);
         btn_save.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
+                //not yet implemented
             }
         });
         btn_restart.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
+                //not yet implemented
             }
         });
         cmb_file_chooser.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
+                //not yet implemented
             }
         });
 
@@ -90,10 +96,12 @@ public class ST_Editor extends JFrame
     public static void main(String[] args)
     {
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run()
             {
                 try {
                     ST_Editor frame = new ST_Editor(new String[]{"/icarus/test1.st", "/icarus/test2.st"});
+                    frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

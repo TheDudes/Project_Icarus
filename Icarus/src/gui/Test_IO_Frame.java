@@ -51,7 +51,7 @@ public class Test_IO_Frame extends JFrame
     public Test_IO_Frame(int Port)
     {
         setTitle("Test IO Manager");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setMinimumSize(new Dimension(500, 300));
         main_panel = new JPanel();
         setContentPane(main_panel);
@@ -85,7 +85,9 @@ public class Test_IO_Frame extends JFrame
         field_log.setEditable(false);
         field_log.setFont(new Font("Monospaced", Font.PLAIN, 11));
         btn_restart.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e){
+                //not yet implemented
             }
         });
         setVisible(true);
@@ -99,6 +101,7 @@ public class Test_IO_Frame extends JFrame
     public static void main(String[] args)
     {
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run()
             {
                 try {

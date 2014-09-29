@@ -27,13 +27,11 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 public class Log_Frame extends JFrame
@@ -52,7 +50,7 @@ public class Log_Frame extends JFrame
     {
         setTitle("Log");
         this.gui_verbose_level = gui_verbose_level;
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setMinimumSize(new Dimension(500, 300));
         main_panel = new JPanel();
         setContentPane(main_panel);
@@ -60,8 +58,9 @@ public class Log_Frame extends JFrame
         main_panel.setBorder(new TitledBorder(null, "Logs", TitledBorder.LEADING, TitledBorder.TOP, null, null));
         main_panel.setLayout(new BorderLayout(0, 0));
 
-        cmb_verbose = new JComboBox<String>(verbose_lvls);
+        cmb_verbose = new JComboBox<>(verbose_lvls);
         cmb_verbose.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent arg0) {
                 changed_verbosity();
             }
@@ -103,6 +102,7 @@ public class Log_Frame extends JFrame
     public static void main(String[] args)
     {
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run()
             {
                 try {

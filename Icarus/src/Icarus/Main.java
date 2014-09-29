@@ -55,6 +55,8 @@ public class Main
 
         config      = new Config_Reader("./icarus.conf");
         log         = new Logger(config);
+        log.
+
         /* Set System Property to make it easy to ignore logs */
             propertie = new Properties(System.getProperties());
             propertie.setProperty("loglevel", Integer.toHexString(config.get_int("verbosity_level", 0, 4)));
