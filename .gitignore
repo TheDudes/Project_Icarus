@@ -1,3 +1,6 @@
 *.class
 *.log
 Icarus/build
+Icarus/.settings
+Icarus/.classpath
+Icarus/.project
