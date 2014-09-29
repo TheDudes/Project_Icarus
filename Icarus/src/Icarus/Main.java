@@ -55,7 +55,6 @@ public class Main
 
         config      = new Config_Reader("./icarus.conf");
         log         = new Logger(config);
-        log.
 
         /* Set System Property to make it easy to ignore logs */
             propertie = new Properties(System.getProperties());
