@@ -26,6 +26,7 @@ import interpreter.*;
 import IOInterface.*;
 
 import java.util.Properties;
+import javax.swing.UIManager;
 
 /**
  * @author d4ryus - https://github.com/d4ryus/
@@ -52,6 +53,7 @@ public class Main
     public static void main(String... args) throws Exception
     {
         print_startup_message();
+        set_Look();
 
         config      = new Config_Reader("./icarus.conf");
         log         = new Logger(config);
@@ -99,4 +101,22 @@ public class Main
         System.out.print("exiting this awesome interpreter\n");
         System.exit(1);
     }
+
+    public static void set_Look()
+    {
+        try {
+//          for( LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
+//              System.out.println("look and feels: " + info.getClassName());
+
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+            //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+            //UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
+        } catch (Exception e) {
+            System.out.println("Error on setting UI Look");
+            }
+        }
 }
