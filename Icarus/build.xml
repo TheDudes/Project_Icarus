@@ -53,6 +53,14 @@
     <java jar="${jar.dir}/${project}.jar" fork="true"/>
   </target>
 
+  <target name="fake-io">
+    <java classname="IOInterface.testServer"
+          dir="${classes.dir}"
+          spawn="true"
+          fork="true">
+    </java>
+  </target>
+
   <target name="clean-build" depends="clean,compile,javadoc,jar"/>
   <target name="magic" depends="clean,compile,jar,run"/>
   <target name="all" depends="clean,compile,javadoc,jar,run"/>
